@@ -34,7 +34,7 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
             ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter,
             @Nonnull Criteria criteria)
     {
-        BootstrapCriteriaVisitor visitor = new BootstrapCriteriaVisitor(bootstrappedParametersByParameter);
+        var visitor = new BootstrapCriteriaVisitor(bootstrappedParametersByParameter);
         criteria.visit(visitor);
         return visitor.getResult();
     }
@@ -73,7 +73,7 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
         klass.model.meta.domain.ExpressionValue bootstrappedTargetValue =
                 BootstrapExpressionValueVisitor.convert(this.bootstrappedParametersByParameter, targetValue);
 
-        klass.model.meta.domain.OperatorCriteria bootstrappedCriteria = new klass.model.meta.domain.OperatorCriteria();
+        var bootstrappedCriteria = new klass.model.meta.domain.OperatorCriteria();
         KlassBootstrapWriter.handleElement(bootstrappedCriteria, operatorCriteria);
 
         bootstrappedCriteria.setOperator(operatorCriteria.getOperator().getOperatorText());
@@ -88,7 +88,7 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
     @Override
     public void visitEdgePoint(@Nonnull EdgePointCriteria edgePointCriteria)
     {
-        klass.model.meta.domain.MemberReferencePath bootstrappedMemberReferencePath = new klass.model.meta.domain.MemberReferencePath();
+        var bootstrappedMemberReferencePath = new klass.model.meta.domain.MemberReferencePath();
         bootstrappedMemberReferencePath.insert();
 
         MemberReferencePath memberExpressionValue = edgePointCriteria.getMemberExpressionValue();
@@ -99,7 +99,7 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
         bootstrappedMemberReferencePath.setPropertyClassName(property.getOwningClassifier().getName());
         bootstrappedMemberReferencePath.setPropertyName(property.getName());
 
-        klass.model.meta.domain.EdgePointCriteria bootstrappedCriteria = new klass.model.meta.domain.EdgePointCriteria();
+        var bootstrappedCriteria = new klass.model.meta.domain.EdgePointCriteria();
         KlassBootstrapWriter.handleElement(bootstrappedCriteria, edgePointCriteria);
         bootstrappedCriteria.setMemberReferencePathId(bootstrappedMemberReferencePath.getId());
         bootstrappedCriteria.insert();

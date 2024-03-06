@@ -635,9 +635,9 @@ public class ReladomoDataStore
 
     private void deleteAll(@Nonnull RelatedFinder<?> finder)
     {
-        Operation                  operation               = finder.all();
-        MithraList<?>              mithraList              = finder.findMany(operation);
-        TransactionalDomainList<?> transactionalDomainList = (TransactionalDomainList<?>) mithraList;
+        Operation     operation               = finder.all();
+        MithraList<?> mithraList              = finder.findMany(operation);
+        var           transactionalDomainList = (TransactionalDomainList<?>) mithraList;
         transactionalDomainList.deleteAll();
     }
 

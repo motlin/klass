@@ -40,8 +40,7 @@ public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
             ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameterId,
             @Nonnull ExpressionValue expressionValue)
     {
-        BootstrapExpressionValueVisitor visitor = new BootstrapExpressionValueVisitor(
-                bootstrappedParametersByParameterId);
+        var visitor = new BootstrapExpressionValueVisitor(bootstrappedParametersByParameterId);
         expressionValue.visit(visitor);
         return visitor.getResult();
     }
@@ -89,7 +88,7 @@ public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
         Parameter                         parameter             = variableReference.getParameter();
         klass.model.meta.domain.Parameter bootstrappedParameter = this.bootstrappedParametersByParameter.get(parameter);
 
-        klass.model.meta.domain.VariableReference bootstrappedVariableReference = new klass.model.meta.domain.VariableReference();
+        var bootstrappedVariableReference = new klass.model.meta.domain.VariableReference();
         bootstrappedVariableReference.setParameter(bootstrappedParameter);
         bootstrappedVariableReference.insert();
 
@@ -127,7 +126,7 @@ public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
             return;
         }
 
-        klass.model.meta.domain.UserLiteral bootstrappedUserLiteral = new klass.model.meta.domain.UserLiteral();
+        var bootstrappedUserLiteral = new klass.model.meta.domain.UserLiteral();
         bootstrappedUserLiteral.insert();
 
         this.bootstrappedExpressionValue = bootstrappedUserLiteral;
@@ -143,7 +142,7 @@ public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
             return;
         }
 
-        klass.model.meta.domain.NullLiteral bootstrappedNullLiteral = new klass.model.meta.domain.NullLiteral();
+        var bootstrappedNullLiteral = new klass.model.meta.domain.NullLiteral();
         bootstrappedNullLiteral.insert();
 
         this.bootstrappedExpressionValue = bootstrappedNullLiteral;

@@ -150,15 +150,15 @@ public class KlassBootstrapWriter
 
     private void deleteAll(@Nonnull RelatedFinder<?> finder)
     {
-        Operation                  operation               = finder.all();
-        MithraList<?>              mithraList              = finder.findMany(operation);
-        TransactionalDomainList<?> transactionalDomainList = (TransactionalDomainList<?>) mithraList;
+        Operation     operation               = finder.all();
+        MithraList<?> mithraList              = finder.findMany(operation);
+        var           transactionalDomainList = (TransactionalDomainList<?>) mithraList;
         transactionalDomainList.deleteAll();
     }
 
     private void handleEnumeration(@Nonnull Enumeration enumeration)
     {
-        klass.model.meta.domain.Enumeration bootstrappedEnumeration = new klass.model.meta.domain.Enumeration();
+        var bootstrappedEnumeration = new klass.model.meta.domain.Enumeration();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedEnumeration, enumeration);
         bootstrappedEnumeration.insert();
 
@@ -172,7 +172,7 @@ public class KlassBootstrapWriter
             klass.model.meta.domain.Enumeration bootstrappedEnumeration,
             @Nonnull EnumerationLiteral enumerationLiteral)
     {
-        klass.model.meta.domain.EnumerationLiteral bootstrappedEnumerationLiteral = new klass.model.meta.domain.EnumerationLiteral();
+        var bootstrappedEnumerationLiteral = new klass.model.meta.domain.EnumerationLiteral();
         KlassBootstrapWriter.handleNamedElement(bootstrappedEnumerationLiteral, enumerationLiteral);
         enumerationLiteral.getDeclaredPrettyName().ifPresent(bootstrappedEnumerationLiteral::setPrettyName);
         bootstrappedEnumerationLiteral.setEnumeration(bootstrappedEnumeration);
@@ -181,7 +181,7 @@ public class KlassBootstrapWriter
 
     private void handleInterface(@Nonnull Interface anInterface)
     {
-        klass.model.meta.domain.Interface bootstrappedInterface = new klass.model.meta.domain.Interface();
+        var bootstrappedInterface = new klass.model.meta.domain.Interface();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedInterface, anInterface);
         // TODO: Report Reladomo bug. If any non-nullable properties are not set on a transient object, insert() ought to throw but doesn't
         bootstrappedInterface.insert();
@@ -193,7 +193,7 @@ public class KlassBootstrapWriter
 
     private void handleClass(@Nonnull Klass klass)
     {
-        klass.model.meta.domain.Klass bootstrappedClass = new klass.model.meta.domain.Klass();
+        var bootstrappedClass = new klass.model.meta.domain.Klass();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedClass, klass);
         // TODO: Report Reladomo bug. If any non-nullable properties are not set on a transient object, insert() ought to throw but doesn't
         bootstrappedClass.setInheritanceType(klass.getInheritanceType().getPrettyName());
@@ -214,7 +214,7 @@ public class KlassBootstrapWriter
                 Maps.immutable.empty(),
                 association.getCriteria());
 
-        klass.model.meta.domain.Association bootstrappedAssociation = new klass.model.meta.domain.Association();
+        var bootstrappedAssociation = new klass.model.meta.domain.Association();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedAssociation, association);
         bootstrappedAssociation.setCriteria(bootstrappedCriteria);
         bootstrappedAssociation.insert();
@@ -228,7 +228,7 @@ public class KlassBootstrapWriter
 
     private void handleProjection(@Nonnull Projection projection)
     {
-        klass.model.meta.domain.ServiceProjection bootstrappedProjection = new klass.model.meta.domain.ServiceProjection();
+        var bootstrappedProjection = new klass.model.meta.domain.ServiceProjection();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedProjection, projection);
         bootstrappedProjection.setClassName(projection.getClassifier().getName());
         bootstrappedProjection.insert();
@@ -245,7 +245,7 @@ public class KlassBootstrapWriter
             @Override
             public void visitProjection(@Nonnull Projection projection)
             {
-                klass.model.meta.domain.ServiceProjection bootstrappedProjection = new klass.model.meta.domain.ServiceProjection();
+                var bootstrappedProjection = new klass.model.meta.domain.ServiceProjection();
                 KlassBootstrapWriter.handlePackageableElement(bootstrappedProjection, projection);
                 bootstrappedProjection.setClassName(projection.getClassifier().getName());
                 bootstrappedProjection.insert();
@@ -438,9 +438,9 @@ public class KlassBootstrapWriter
         {
             if (dataTypeProperty instanceof PrimitiveProperty)
             {
-                PrimitiveProperty primitiveProperty = (PrimitiveProperty) dataTypeProperty;
+                var primitiveProperty = (PrimitiveProperty) dataTypeProperty;
 
-                klass.model.meta.domain.PrimitiveProperty bootstrappedPrimitiveProperty = new klass.model.meta.domain.PrimitiveProperty();
+                var bootstrappedPrimitiveProperty = new klass.model.meta.domain.PrimitiveProperty();
                 this.handleDataTypeProperty(classifier, dataTypeProperty, bootstrappedPrimitiveProperty);
                 bootstrappedPrimitiveProperty.setId(dataTypeProperty.isID());
                 bootstrappedPrimitiveProperty.setPrimitiveType(primitiveProperty.getType().getPrettyName());
@@ -451,9 +451,9 @@ public class KlassBootstrapWriter
             }
             else if (dataTypeProperty instanceof EnumerationProperty)
             {
-                EnumerationProperty enumerationProperty = (EnumerationProperty) dataTypeProperty;
+                var enumerationProperty = (EnumerationProperty) dataTypeProperty;
 
-                klass.model.meta.domain.EnumerationProperty bootstrappedEnumerationProperty = new klass.model.meta.domain.EnumerationProperty();
+                var bootstrappedEnumerationProperty = new klass.model.meta.domain.EnumerationProperty();
                 this.handleDataTypeProperty(classifier, dataTypeProperty, bootstrappedEnumerationProperty);
                 bootstrappedEnumerationProperty.setEnumerationName(enumerationProperty.getType().getName());
                 bootstrappedEnumerationProperty.insert();
@@ -537,7 +537,7 @@ public class KlassBootstrapWriter
     {
         for (ClassifierModifier classifierModifier : classifier.getModifiers())
         {
-            klass.model.meta.domain.ClassifierModifier bootstrappedClassifierModifier = new klass.model.meta.domain.ClassifierModifier();
+            var bootstrappedClassifierModifier = new klass.model.meta.domain.ClassifierModifier();
             KlassBootstrapWriter.handleNamedElement(bootstrappedClassifierModifier, classifierModifier);
             bootstrappedClassifierModifier.setClassifierName(classifier.getName());
             bootstrappedClassifierModifier.insert();
@@ -557,7 +557,7 @@ public class KlassBootstrapWriter
 
     private void bootstrapAssociationEnd(@Nonnull AssociationEnd associationEnd, String direction)
     {
-        klass.model.meta.domain.AssociationEnd bootstrappedAssociationEnd = new klass.model.meta.domain.AssociationEnd();
+        var bootstrappedAssociationEnd = new klass.model.meta.domain.AssociationEnd();
         KlassBootstrapWriter.handleNamedElement(bootstrappedAssociationEnd, associationEnd);
         bootstrappedAssociationEnd.setOwningClassName(associationEnd.getOwningClassifier().getName());
         bootstrappedAssociationEnd.setAssociationName(associationEnd.getOwningAssociation().getName());
@@ -568,7 +568,7 @@ public class KlassBootstrapWriter
 
         for (AssociationEndModifier associationEndModifier : associationEnd.getAssociationEndModifiers())
         {
-            klass.model.meta.domain.AssociationEndModifier bootstrappedAssociationEndModifier = new klass.model.meta.domain.AssociationEndModifier();
+            var bootstrappedAssociationEndModifier = new klass.model.meta.domain.AssociationEndModifier();
             bootstrappedAssociationEndModifier.setOwningClassName(associationEnd.getOwningClassifier().getName());
             bootstrappedAssociationEndModifier.setAssociationEndName(associationEnd.getName());
             KlassBootstrapWriter.handleNamedElement(bootstrappedAssociationEndModifier, associationEndModifier);
@@ -589,7 +589,7 @@ public class KlassBootstrapWriter
             klass.model.meta.domain.ThisMemberReferencePath bootstrappedThisMemberReferencePath =
                     this.bootstrapThisMemberReferencePath(thisMemberReferencePath);
 
-            AssociationEndOrderBy associationEndOrderBy = new AssociationEndOrderBy();
+            var associationEndOrderBy = new AssociationEndOrderBy();
             associationEndOrderBy.setAssociationEndClassName(associationEnd.getOwningClassifier().getName());
             associationEndOrderBy.setAssociationEndName(associationEnd.getName());
             associationEndOrderBy.setThisMemberReferencePathId(bootstrappedThisMemberReferencePath.getId());
@@ -604,7 +604,7 @@ public class KlassBootstrapWriter
     @Nonnull
     private klass.model.meta.domain.ThisMemberReferencePath bootstrapThisMemberReferencePath(@Nonnull ThisMemberReferencePath thisMemberReferencePath)
     {
-        klass.model.meta.domain.ThisMemberReferencePath bootstrappedThisMemberReferencePath = new klass.model.meta.domain.ThisMemberReferencePath();
+        var bootstrappedThisMemberReferencePath = new klass.model.meta.domain.ThisMemberReferencePath();
         bootstrappedThisMemberReferencePath.setClassName(thisMemberReferencePath.getKlass().getName());
         bootstrappedThisMemberReferencePath.setPropertyClassName(thisMemberReferencePath
                 .getProperty()

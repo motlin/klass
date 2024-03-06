@@ -37,8 +37,8 @@ public class OperationVisitor implements DataTypePropertyVisitor
     @Override
     public void visitEnumerationProperty(EnumerationProperty enumerationProperty)
     {
-        EnumerationLiteral enumerationLiteral = (EnumerationLiteral) this.key;
-        String             prettyName         = enumerationLiteral.getPrettyName();
+        var    enumerationLiteral = (EnumerationLiteral) this.key;
+        String prettyName         = enumerationLiteral.getPrettyName();
         this.result = ((StringAttribute<?>) this.attribute).eq(prettyName);
     }
 

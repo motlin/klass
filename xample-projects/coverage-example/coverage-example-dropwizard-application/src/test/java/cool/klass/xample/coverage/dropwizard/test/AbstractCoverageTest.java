@@ -53,7 +53,7 @@ public class AbstractCoverageTest
         DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel();
         Instant      now          = Instant.now(clock);
 
-        SampleDataGenerator sampleDataGenerator = new SampleDataGenerator(
+        var sampleDataGenerator = new SampleDataGenerator(
                 domainModel,
                 dataStore,
                 now,
@@ -63,7 +63,7 @@ public class AbstractCoverageTest
 
     protected Client getClient(String clientName)
     {
-        JerseyClientConfiguration jerseyClientConfiguration = new JerseyClientConfiguration();
+        var jerseyClientConfiguration = new JerseyClientConfiguration();
         jerseyClientConfiguration.setTimeout(Duration.minutes(5));
 
         return new JerseyClientBuilder(this.rule.getEnvironment())
