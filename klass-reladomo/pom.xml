@@ -30,6 +30,7 @@
         <module>klass-reladomo-timestamp</module>
         <module>klass-reladomo-serialize</module>
         <module>klass-reladomo-persistent-writer-test</module>
+        <module>klass-connection-manager-heroku</module>
     </modules>
 
     <dependencyManagement>
