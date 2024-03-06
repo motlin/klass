@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <mainClass>${app.rootPackageName}.dropwizard.${app.name}Application</mainClass>
+        <mainClass>${app.rootPackageName}.dropwizard.application.${app.name}Application</mainClass>
     </properties>
 
     <parent>
