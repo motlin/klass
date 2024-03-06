@@ -3,6 +3,7 @@ package com.stackoverflow.service.resource;
 import java.security.Principal;
 import java.time.Clock;
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -125,7 +126,7 @@ public class QuestionResourceManual
 
         Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
         MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
-        Instant         transactionInstant   = transactionTimestamp.toInstant();
+        Instant         transactionInstant   = transactionTimestamp.toLocalDateTime().toInstant(ZoneOffset.UTC);
         Object          persistentInstance   = Iterate.getOnly(result);
 
         var responseBuilder = new KlassResponseBuilder(
@@ -279,7 +280,7 @@ public class QuestionResourceManual
 
         Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
         MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
-        Instant         transactionInstant   = transactionTimestamp.toInstant();
+        Instant         transactionInstant   = transactionTimestamp.toLocalDateTime().toInstant(ZoneOffset.UTC);
 
         var responseBuilder = new KlassResponseBuilder(
                 persistentInstance,
@@ -314,7 +315,7 @@ public class QuestionResourceManual
 
         Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
         MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
-        Instant         transactionInstant   = transactionTimestamp.toInstant();
+        Instant         transactionInstant   = transactionTimestamp.toLocalDateTime().toInstant(ZoneOffset.UTC);
 
         var responseBuilder = new KlassResponseBuilder(
                 result,
@@ -347,7 +348,7 @@ public class QuestionResourceManual
 
         Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
         MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
-        Instant         transactionInstant   = transactionTimestamp.toInstant();
+        Instant         transactionInstant   = transactionTimestamp.toLocalDateTime().toInstant(ZoneOffset.UTC);
 
         var responseBuilder = new KlassResponseBuilder(
                 result,
@@ -392,7 +393,7 @@ public class QuestionResourceManual
 
         Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
         MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
-        Instant         transactionInstant   = transactionTimestamp.toInstant();
+        Instant         transactionInstant   = transactionTimestamp.toLocalDateTime().toInstant(ZoneOffset.UTC);
 
         var responseBuilder = new KlassResponseBuilder(
                 Iterate.getOnly(result),
@@ -435,7 +436,7 @@ public class QuestionResourceManual
 
         Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
         MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
-        Instant         transactionInstant   = transactionTimestamp.toInstant();
+        Instant         transactionInstant   = transactionTimestamp.toLocalDateTime().toInstant(ZoneOffset.UTC);
 
         var responseBuilder = new KlassResponseBuilder(
                 Iterate.getOnly(result),
@@ -481,11 +482,8 @@ public class QuestionResourceManual
         String            userPrincipalName  = principal.getName();
         Optional<String>  userId             = Optional.of(userPrincipalName);
 
-        Instant  now  = this.clock.instant();
-        MutationContext   mutationContext    = new MutationContext(
-                userId,
-                now,
-                Maps.immutable.empty());
+        Instant         transactionInstant = this.clock.instant();
+        MutationContext mutationContext    = new MutationContext(userId, transactionInstant, Maps.immutable.empty());
 
         Klass userKlass = this.domainModel.getUserClass().get();
         IncomingCreateDataModelValidator.validate(
@@ -512,7 +510,7 @@ public class QuestionResourceManual
 
         Question persistentInstance = MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
         {
-            tx.setProcessingStartTime(now.toEpochMilli());
+            tx.setProcessingStartTime(transactionInstant.toEpochMilli());
 
             Question question = new Question();
             question.generateAndSetId();
@@ -527,7 +525,6 @@ public class QuestionResourceManual
         uriBuilder.path(Long.toString(persistentInstance.getId()));
 
         Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
-        Instant         transactionInstant   = persistentInstance.getSystem().toInstant();
 
         var responseBuilder = new KlassResponseBuilder(
                 persistentInstance,
@@ -559,7 +556,7 @@ public class QuestionResourceManual
 
         Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
         MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
-        Instant         transactionInstant   = transactionTimestamp.toInstant();
+        Instant         transactionInstant   = transactionTimestamp.toLocalDateTime().toInstant(ZoneOffset.UTC);
 
         var responseBuilder = new KlassResponseBuilder(
                 result,
@@ -588,7 +585,7 @@ public class QuestionResourceManual
 
         Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
         MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
-        Instant         transactionInstant   = transactionTimestamp.toInstant();
+        Instant         transactionInstant   = transactionTimestamp.toLocalDateTime().toInstant(ZoneOffset.UTC);
 
         var responseBuilder = new KlassResponseBuilder(
                 result,
