@@ -20,7 +20,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <antlr4.version>4.7.2</antlr4.version>
-        <checkstyle.version>8.18</checkstyle.version>
         <dropwizard.version>2.0.0-rc0+test8</dropwizard.version>
         <eclipse-collections.version>10.0.0.M2</eclipse-collections.version>
         <google-auth.version>0.11.0</google-auth.version>
@@ -44,8 +43,6 @@
         <slf4j.version>1.8.0-beta4</slf4j.version>
         <typesafe-config.version>1.3.3</typesafe-config.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
-
-        <checkstyle.plugin.version>2.17</checkstyle.plugin.version>
     </properties>
 
     <build>
@@ -370,7 +367,7 @@
                         <dependency>
                             <groupId>com.puppycrawl.tools</groupId>
                             <artifactId>checkstyle</artifactId>
-                            <version>${checkstyle.version}</version>
+                            <version>8.19</version>
                         </dependency>
                     </dependencies>
                 </plugin>
