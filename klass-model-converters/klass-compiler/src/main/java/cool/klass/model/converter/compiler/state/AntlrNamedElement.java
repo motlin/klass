@@ -13,10 +13,11 @@ public abstract class AntlrNamedElement extends AntlrElement
     protected AntlrNamedElement(
             ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
+            boolean inferred,
             String name,
             ParserRuleContext nameContext)
     {
-        super(elementContext, compilationUnit);
+        super(elementContext, compilationUnit, inferred);
         this.name = Objects.requireNonNull(name);
         this.nameContext = Objects.requireNonNull(nameContext);
     }

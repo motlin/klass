@@ -9,11 +9,13 @@ public abstract class AntlrElement
 {
     protected final ParserRuleContext elementContext;
     protected final CompilationUnit   compilationUnit;
+    protected final boolean           inferred;
 
-    protected AntlrElement(ParserRuleContext elementContext, CompilationUnit compilationUnit)
+    protected AntlrElement(ParserRuleContext elementContext, CompilationUnit compilationUnit, boolean inferred)
     {
         this.elementContext = Objects.requireNonNull(elementContext);
         this.compilationUnit = compilationUnit;
+        this.inferred = inferred;
     }
 
     public ParserRuleContext getElementContext()

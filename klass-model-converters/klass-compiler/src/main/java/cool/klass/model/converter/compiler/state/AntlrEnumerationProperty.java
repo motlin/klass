@@ -19,6 +19,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
     public AntlrEnumerationProperty(
             EnumerationPropertyContext elementContext,
             CompilationUnit compilationUnit,
+            boolean inferred,
             ParserRuleContext nameContext,
             String name,
             boolean isOptional,
@@ -26,7 +27,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
             AntlrClass owningClassState,
             AntlrEnumeration antlrEnumeration)
     {
-        super(elementContext, compilationUnit, name, nameContext, isOptional, modifiers, owningClassState);
+        super(elementContext, compilationUnit, inferred, name, nameContext, isOptional, modifiers, owningClassState);
         // TODO: is this nullable?
         this.antlrEnumeration = Objects.requireNonNull(antlrEnumeration);
     }

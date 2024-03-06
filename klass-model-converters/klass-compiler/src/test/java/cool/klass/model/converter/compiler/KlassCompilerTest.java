@@ -378,4 +378,31 @@ public class KlassCompilerTest
 
         this.assertCompilerErrors(sourceCodeText, error1, error2, error3, error4);
     }
+
+    @Test
+    public void duplicateAssociationEndKeyword()
+    {
+        //language=Klass
+        String sourceCodeText = "package dummy\n"
+                + "\n"
+                + "class Dummy\n"
+                + "{\n"
+                + "    key id: ID\n"
+                + "}\n"
+                + "\n"
+                + "association DummyAssociation\n"
+                + "{\n"
+                + "    owned owned parent: Dummy[0..1]\n"
+                + "    owned owned children: Dummy[0..*]\n"
+                + "}";
+
+        CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
+        DomainModel     domainModel     = this.compiler.compile(compilationUnit);
+        for (CompilerError compilerError : this.compilerErrorHolder.getCompilerErrors())
+        {
+            LOGGER.warn("{}", compilerError);
+        }
+        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(false));
+        assertThat(domainModel, notNullValue());
+    }
 }

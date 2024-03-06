@@ -13,6 +13,7 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
     public static final AntlrProperty<Type> AMBIGUOUS = new AntlrProperty<Type>(
             Element.NO_CONTEXT,
             null,
+            true,
             "ambiguous property",
             Element.NO_CONTEXT)
     {
@@ -33,10 +34,11 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
     protected AntlrProperty(
             ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
+            boolean inferred,
             String name,
             ParserRuleContext nameContext)
     {
-        super(elementContext, compilationUnit, name, nameContext);
+        super(elementContext, compilationUnit, inferred, name, nameContext);
     }
 
     @Override

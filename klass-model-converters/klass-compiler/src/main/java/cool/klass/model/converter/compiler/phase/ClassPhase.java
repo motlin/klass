@@ -45,6 +45,7 @@ public class ClassPhase extends AbstractCompilerPhase
         this.classState = new AntlrClass(
                 ctx,
                 this.currentCompilationUnit,
+                false,
                 ctx.identifier(),
                 ctx.identifier().getText(),
                 this.packageName);
@@ -77,6 +78,7 @@ public class ClassPhase extends AbstractCompilerPhase
         AntlrPrimitiveProperty primitivePropertyState = new AntlrPrimitiveProperty(
                 ctx,
                 this.currentCompilationUnit,
+                false,
                 propertyName,
                 nameContext,
                 isOptional,
@@ -107,6 +109,7 @@ public class ClassPhase extends AbstractCompilerPhase
         AntlrEnumerationProperty primitivePropertyState = new AntlrEnumerationProperty(
                 ctx,
                 this.currentCompilationUnit,
+                false,
                 nameContext,
                 propertyName,
                 isOptional,

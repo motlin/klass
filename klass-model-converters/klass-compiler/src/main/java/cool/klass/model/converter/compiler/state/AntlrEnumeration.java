@@ -21,12 +21,14 @@ public class AntlrEnumeration extends AntlrPackageableElement
     public static final AntlrEnumeration AMBIGUOUS = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             null,
+            true,
             new ParserRuleContext(),
             "ambiguous enumeration",
             null);
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             null,
+            true,
             new ParserRuleContext(),
             "not found enumeration",
             null);
@@ -40,11 +42,12 @@ public class AntlrEnumeration extends AntlrPackageableElement
     public AntlrEnumeration(
             EnumerationDeclarationContext elementContext,
             CompilationUnit compilationUnit,
+            boolean inferred,
             ParserRuleContext nameContext,
             String name,
             String packageName)
     {
-        super(elementContext, compilationUnit, nameContext, name, packageName);
+        super(elementContext, compilationUnit, inferred, nameContext, name, packageName);
     }
 
     public void enterEnumerationLiteral(AntlrEnumerationLiteral antlrEnumerationLiteral)

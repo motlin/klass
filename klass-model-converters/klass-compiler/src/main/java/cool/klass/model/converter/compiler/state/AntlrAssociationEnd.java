@@ -14,7 +14,10 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
 {
     public static final AntlrAssociationEnd AMBIGUOUS = new AntlrAssociationEnd(
             new AssociationEndContext(null, -1),
-            null, "ambiguous property", Element.NO_CONTEXT,
+            null,
+            true,
+            "ambiguous property",
+            Element.NO_CONTEXT,
             null,
             null,
             Lists.immutable.empty());
@@ -29,13 +32,14 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
     public AntlrAssociationEnd(
             AssociationEndContext elementContext,
             CompilationUnit compilationUnit,
+            boolean inferred,
             String name,
             ParserRuleContext nameContext,
             AntlrClass type,
             AntlrMultiplicity antlrMultiplicity,
             ImmutableList<AntlrAssociationEndModifier> modifiers)
     {
-        super(elementContext, compilationUnit, name, nameContext);
+        super(elementContext, compilationUnit, inferred, name, nameContext);
         this.type = type;
         this.antlrMultiplicity = antlrMultiplicity;
         this.modifiers = modifiers;
@@ -67,17 +71,6 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
     }
 
     @Override
-    public AntlrClass getOwningClassState()
-    {
-        return this.owningClassState;
-    }
-
-    public void setOwningClassState(AntlrClass owningClassState)
-    {
-        this.owningClassState = owningClassState;
-    }
-
-    @Override
     public AssociationEndBuilder build()
     {
         return new AssociationEndBuilder(
@@ -90,18 +83,24 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
                 this.isOwned());
     }
 
+    @Override
+    public AntlrClass getOwningClassState()
+    {
+        return this.owningClassState;
+    }
+
+    public void setOwningClassState(AntlrClass owningClassState)
+    {
+        this.owningClassState = owningClassState;
+    }
+
     public boolean isOwned()
     {
         return this.modifiers.anySatisfy(AntlrAssociationEndModifier::isOwned);
     }
 
-    public void reportErrors1(CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: Check that there are no duplicate modifiers
-    }
-
-    public void reportErrors2(CompilerErrorHolder compilerErrorHolder)
-    {
-        // TODO: Check that we were able to resolve the type? Is that done elsewhere?
     }
 }

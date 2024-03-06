@@ -15,6 +15,7 @@ public class AntlrAssociation extends AntlrPackageableElement
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
             new AssociationDeclarationContext(null, -1),
             null,
+            true,
             new ParserRuleContext(),
             "ambiguous association",
             null);
@@ -26,11 +27,12 @@ public class AntlrAssociation extends AntlrPackageableElement
     public AntlrAssociation(
             AssociationDeclarationContext elementContext,
             CompilationUnit compilationUnit,
+            boolean inferred,
             ParserRuleContext nameContext,
             String name,
             String packageName)
     {
-        super(elementContext, compilationUnit, nameContext, name, packageName);
+        super(elementContext, compilationUnit, inferred, nameContext, name, packageName);
     }
 
     public void enterAssociationEnd(AntlrAssociationEnd antlrAssociationEnd)
@@ -102,10 +104,5 @@ public class AntlrAssociation extends AntlrPackageableElement
         }
 
         // TODO: Check that both ends aren't owned
-
-        for (AntlrAssociationEnd associationEndState : this.associationEndStates)
-        {
-            associationEndState.reportErrors2(compilerErrorHolder);
-        }
     }
 }

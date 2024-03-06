@@ -41,6 +41,7 @@ public class AssociationPhase extends AbstractCompilerPhase
         this.associationState = new AntlrAssociation(
                 ctx,
                 this.currentCompilationUnit,
+                false,
                 identifier,
                 identifier.getText(),
                 this.packageName);
@@ -72,6 +73,7 @@ public class AssociationPhase extends AbstractCompilerPhase
         AntlrAssociationEnd antlrAssociationEnd = new AntlrAssociationEnd(
                 ctx,
                 this.currentCompilationUnit,
+                false,
                 associationEndName,
                 ctx.identifier(),
                 antlrClass,

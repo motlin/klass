@@ -21,12 +21,14 @@ public class AntlrClass extends AntlrPackageableElement
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             null,
+            true,
             new ParserRuleContext(),
             "ambiguous class",
             null);
     public static final AntlrClass NOT_FOUND = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             null,
+            true,
             new ParserRuleContext(),
             "not found class",
             null);
@@ -43,11 +45,12 @@ public class AntlrClass extends AntlrPackageableElement
     public AntlrClass(
             ClassDeclarationContext elementContext,
             CompilationUnit compilationUnit,
+            boolean inferred,
             ParserRuleContext nameContext,
             String name,
             String packageName)
     {
-        super(elementContext, compilationUnit, nameContext, name, packageName);
+        super(elementContext, compilationUnit, inferred, nameContext, name, packageName);
     }
 
     public MutableList<AntlrDataTypeProperty<?>> getDataTypeProperties()
@@ -140,7 +143,7 @@ public class AntlrClass extends AntlrPackageableElement
             {
                 associationEndState.reportDuplicateMemberName(compilerErrorHolder);
             }
-            associationEndState.reportErrors1(compilerErrorHolder);
+            associationEndState.reportErrors(compilerErrorHolder);
         }
 
         // TODO: Warn if class is owned by multiple

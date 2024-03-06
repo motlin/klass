@@ -4,3 +4,9 @@ class Dummy
 {
     key key id: ID
 }
+
+association DummyAssociation
+{
+    owned owned parent: Dummy[0..1]
+    owned owned children: Dummy[0..*]
+}

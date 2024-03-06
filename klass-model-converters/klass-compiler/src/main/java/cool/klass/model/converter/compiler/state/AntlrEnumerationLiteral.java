@@ -11,6 +11,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
     public static final AntlrEnumerationLiteral AMBIGUOUS = new AntlrEnumerationLiteral(
             new ParserRuleContext(),
             null,
+            true,
             "ambiguous enumeration literal",
             new ParserRuleContext(),
             null,
@@ -18,6 +19,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
     public static final AntlrEnumerationLiteral NOT_FOUND = new AntlrEnumerationLiteral(
             new ParserRuleContext(),
             null,
+            true,
             "not found enumeration literal",
             new ParserRuleContext(),
             null,
@@ -31,12 +33,13 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
     public AntlrEnumerationLiteral(
             ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
+            boolean inferred,
             String name,
             ParserRuleContext nameContext,
             String prettyName,
             AntlrEnumeration owningEnumeration)
     {
-        super(elementContext, compilationUnit, name, nameContext);
+        super(elementContext, compilationUnit, inferred, name, nameContext);
         this.prettyName = prettyName;
         this.owningEnumeration = owningEnumeration;
     }

@@ -88,6 +88,7 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
         return new AntlrPrimitiveProperty(
                 ctx,
                 this.currentCompilationUnit,
+                false,
                 name,
                 ctx,
                 false,

@@ -33,6 +33,7 @@ public class EnumerationsPhase extends AbstractCompilerPhase
         this.enumerationState = new AntlrEnumeration(
                 ctx,
                 this.currentCompilationUnit,
+                false,
                 identifier,
                 identifier.getText(),
                 this.packageName);
@@ -59,6 +60,7 @@ public class EnumerationsPhase extends AbstractCompilerPhase
         AntlrEnumerationLiteral antlrEnumerationLiteral = new AntlrEnumerationLiteral(
                 ctx,
                 this.currentCompilationUnit,
+                false,
                 literalName,
                 ctx.identifier(),
                 prettyName,

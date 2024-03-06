@@ -10,11 +10,12 @@ public abstract class AntlrPackageableElement extends AntlrNamedElement
     protected AntlrPackageableElement(
             ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
+            boolean inferred,
             ParserRuleContext nameContext,
             String name,
             String packageName)
     {
-        super(elementContext, compilationUnit, name, nameContext);
+        super(elementContext, compilationUnit, inferred, name, nameContext);
         this.packageName = packageName;
     }
 
