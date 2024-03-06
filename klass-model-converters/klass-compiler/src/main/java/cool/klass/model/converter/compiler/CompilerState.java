@@ -77,7 +77,7 @@ public class CompilerState
         CompilerWalkState compilerWalkState = this.compilerWalkState.withCompilationUnit(compilationUnit);
         this.macroCompilerWalkStates.put(compilationUnit, compilerWalkState);
 
-        this.compilerWalkState.withCompilationUnit(compilationUnit, () ->
+        compilerWalkState.withCompilationUnit(compilationUnit, () ->
                 this.compilerInputState.runCompilerMacro(compilationUnit, Lists.immutable.with(listeners)));
     }
 

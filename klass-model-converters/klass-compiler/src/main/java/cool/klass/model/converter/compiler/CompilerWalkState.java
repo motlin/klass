@@ -172,6 +172,11 @@ public class CompilerWalkState
 
     public void withCompilationUnit(CompilationUnit compilationUnit, @Nonnull Runnable runnable)
     {
+        if (this.currentCompilationUnit != compilationUnit)
+        {
+            throw new AssertionError();
+        }
+
         CompilationUnit oldCompilationUnit = this.currentCompilationUnit;
 
         try
