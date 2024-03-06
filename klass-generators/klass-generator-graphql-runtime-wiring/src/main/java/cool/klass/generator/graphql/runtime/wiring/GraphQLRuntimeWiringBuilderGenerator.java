@@ -49,7 +49,7 @@ public class GraphQLRuntimeWiringBuilderGenerator
                 + "\n"
                 + "import java.util.function.Supplier;\n"
                 + "\n"
-                + "import cool.klass.graphql.scalar.temporal.GraphQLTemporalScalar;\n"
+                + "import io.liftwizard.graphql.scalar.temporal.GraphQLTemporalScalar;\n"
                 + "import " + this.rootPackageName + ".graphql.runtime.wiring.query." + this.applicationName + "QueryTypeRuntimeWiringProvider;\n"
                 + this.domainModel.getClasses().reject(Klass::isAbstract).collect(this::getImport).makeString("")
                 + "import graphql.schema.idl.RuntimeWiring;\n"

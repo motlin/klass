@@ -39,14 +39,13 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-graphql-type-runtime-wiring-provider</artifactId>
-            <version>${klass.version}</version>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-scalar-temporal</artifactId>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-graphql-scalar-temporal</artifactId>
+            <artifactId>klass-graphql-type-runtime-wiring-provider</artifactId>
             <version>${klass.version}</version>
         </dependency>
 

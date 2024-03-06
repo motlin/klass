@@ -30,7 +30,6 @@ graphQL:
   enableTracing: false
   queryCache: maximumSize=10000
   schemaFiles:
-    - cool/klass/grahql/schema/scalar/temporal/TemporalScalars.graphqls
     - com/stackoverflow/graphql/schema/StackOverflowQuery.graphqls
     - com/stackoverflow/graphql/schema/StackOverflow.graphqls
 

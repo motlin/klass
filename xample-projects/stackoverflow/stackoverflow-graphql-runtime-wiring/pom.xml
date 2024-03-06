@@ -31,24 +31,21 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-graphql-data-fetcher</artifactId>
-            <version>${liftwizard.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-graphql-deep-fetcher</artifactId>
-            <version>${liftwizard.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-scalar-temporal</artifactId>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-graphql-type-runtime-wiring-provider</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-graphql-scalar-temporal</artifactId>
             <version>${klass.version}</version>
         </dependency>
 

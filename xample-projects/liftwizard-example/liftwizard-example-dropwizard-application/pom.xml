@@ -381,13 +381,6 @@
             <version>${klass.version}</version>
             <scope>runtime</scope>
         </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-graphql-schema-scalar-temporal</artifactId>
-            <version>${klass.version}</version>
-            <scope>runtime</scope>
-        </dependency>
         <!--endregion-->
 
         <!--region Compile dependencies -->

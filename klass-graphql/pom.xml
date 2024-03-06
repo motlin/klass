@@ -30,9 +30,6 @@
     </dependencyManagement>
 
     <modules>
-        <module>klass-graphql-data-fetcher</module>
         <module>klass-graphql-type-runtime-wiring-provider</module>
-        <module>klass-graphql-scalar-temporal</module>
-        <module>klass-graphql-schema-scalar-temporal</module>
     </modules>
 </project>

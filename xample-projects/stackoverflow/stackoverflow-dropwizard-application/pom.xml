@@ -115,7 +115,6 @@
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-generator-dropwizard-plugin</artifactId>
                 <version>${klass.version}</version>
-
                 <configuration>
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
                     <applicationName>${app.name}</applicationName>
@@ -124,7 +123,6 @@
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>
-
                 <executions>
                     <execution>
                         <goals>
@@ -132,7 +130,6 @@
                         </goals>
                     </execution>
                 </executions>
-
                 <dependencies>
 
                     <dependency>
@@ -162,6 +159,7 @@
 
     <dependencies>
 
+        <!--region Project compile dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-services</artifactId>
@@ -169,28 +167,13 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-sample-data</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-bootstrap-writer</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-graphql</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-graphql-runtime-wiring</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!--endregion-->
 
+        <!--region Project runtime dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-domain-model</artifactId>
@@ -211,7 +194,32 @@
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
+        <!--endregion-->
 
+        <!--region Liftwizard compile dependencies -->
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-clock</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-application</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-graphql</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-graphql</artifactId>
+        </dependency>
+        <!--endregion-->
+
+        <!--region Liftwizard runtime dependencies -->
+        <!--region Liftwizard bundles -->
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-cors</artifactId>
@@ -261,39 +269,49 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-reladomo-jsonview</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-reladomo-response</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-connection-manager-holder</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!--endregion-->
 
+        <!--region Liftwizard config-->
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-model-bootstrapped-services</artifactId>
-            <version>${klass.version}</version>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-logstash-file</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-application</artifactId>
+            <artifactId>liftwizard-config-clock-system</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-uuid-system</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!--endregion-->
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-reladomo-simulated-sequence</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-reladomo-simulated-sequence-ddls</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!--endregion-->
+
+        <!--region Klass compile dependencies -->
+        <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration</artifactId>
+            <artifactId>klass-data-store</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
@@ -304,25 +322,56 @@
         </dependency>
 
         <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-clock</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-graphql</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-data-store</artifactId>
+            <artifactId>klass-model-bootstrapped-services</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.smoketurner.dropwizard</groupId>
-            <artifactId>graphql-core</artifactId>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration</artifactId>
+            <version>${klass.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-bootstrap-writer</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+        <!--endregion-->
+
+        <!--region Klass runtime dependencies -->
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-sample-data</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-data-store-reladomo</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-reladomo-jsonview</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-reladomo-response</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!--endregion-->
+
+        <!--region Compile dependencies -->
+
 
         <dependency>
             <groupId>io.dropwizard</groupId>
@@ -337,6 +386,11 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-util</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.smoketurner.dropwizard</groupId>
+            <artifactId>graphql-core</artifactId>
         </dependency>
 
         <dependency>
@@ -360,40 +414,23 @@
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
         </dependency>
+        <!--endregion-->
 
+        <!--region Runtime dependencies -->
         <!--TODO: Move all runtime dependencies to AbstractKlassApplication-->
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-reladomo-simulated-sequence</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-graphql-schema-scalar-temporal</artifactId>
-            <version>${klass.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-clock-system</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -416,7 +453,9 @@
             <artifactId>activation</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!--endregion-->
 
+        <!--region Test dependencies -->
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-test-rule</artifactId>
@@ -462,6 +501,7 @@
             <artifactId>hamcrest-core</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--endregion-->
 
     </dependencies>
 
