@@ -12,6 +12,8 @@
 
     <artifactId>klass-dropwizard-task-reladomo-clear-cache</artifactId>
 
+    <name>Klass Task: Clear Reladomo Cache</name>
+
     <dependencies>
 
         <dependency>
