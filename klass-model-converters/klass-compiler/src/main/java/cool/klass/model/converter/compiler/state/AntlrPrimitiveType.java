@@ -72,6 +72,12 @@ public final class AntlrPrimitiveType
                 + ".getSurroundingContext() not implemented yet");
     }
 
+    @Override
+    public String getName()
+    {
+        return this.primitiveType.getPrettyName();
+    }
+
     @Nonnull
     public PrimitiveType getPrimitiveType()
     {

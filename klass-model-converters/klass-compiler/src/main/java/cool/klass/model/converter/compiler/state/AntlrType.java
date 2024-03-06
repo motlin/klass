@@ -6,8 +6,11 @@ import cool.klass.model.meta.domain.api.Type.TypeGetter;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public interface AntlrType
+// All AntlrTypes are named elements, but the interface doesn't exist yet
+public interface AntlrType extends IAntlrElement
 {
+    String getName();
+
     TypeGetter getTypeGetter();
 
     @Nonnull

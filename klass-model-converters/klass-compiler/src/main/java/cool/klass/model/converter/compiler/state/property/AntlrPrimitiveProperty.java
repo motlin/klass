@@ -66,6 +66,12 @@ public class AntlrPrimitiveProperty
     }
 
     @Override
+    protected ParserRuleContext getTypeParserRuleContext()
+    {
+        return this.getElementContext().primitiveType();
+    }
+
+    @Override
     public boolean isTemporal()
     {
         return this.antlrPrimitiveType.isTemporal();
@@ -99,6 +105,13 @@ public class AntlrPrimitiveProperty
         this.buildValidations();
 
         return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public PrimitivePropertyContext getElementContext()
+    {
+        return (PrimitivePropertyContext) super.getElementContext();
     }
 
     @Nonnull

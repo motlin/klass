@@ -66,6 +66,12 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
     }
 
     @Override
+    protected ParserRuleContext getTypeParserRuleContext()
+    {
+        return this.getElementContext().enumerationReference();
+    }
+
+    @Override
     public boolean isTemporal()
     {
         return false;

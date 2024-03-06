@@ -50,6 +50,13 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             false)
     {
         @Override
+        protected ParserRuleContext getTypeParserRuleContext()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getTypeParserRuleContext() not implemented yet");
+        }
+
+        @Override
         public boolean isSystem()
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -109,6 +116,13 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             AntlrClassifier.NOT_FOUND,
             false)
     {
+        @Override
+        protected ParserRuleContext getTypeParserRuleContext()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getTypeParserRuleContext() not implemented yet");
+        }
+
         @Override
         public boolean isSystem()
         {
@@ -192,6 +206,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     {
         return Optional.of(this.owningClassifierState);
     }
+
+    protected abstract ParserRuleContext getTypeParserRuleContext();
 
     public boolean isKey()
     {

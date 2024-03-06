@@ -25,6 +25,7 @@ import cool.klass.model.meta.grammar.KlassParser.MinValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
+import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaKeywordContext;
@@ -128,6 +129,12 @@ public class ErrorUnderlineListener
     public void enterMultiplicity(@Nonnull MultiplicityContext ctx)
     {
         this.addUnderlinedRange(ctx);
+    }
+
+    @Override
+    public void enterPrimitiveType(@Nonnull PrimitiveTypeContext ctx)
+    {
+        this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override
