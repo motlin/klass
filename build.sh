@@ -80,7 +80,7 @@ failWithMessage() {
     REASON=$2
 
     if [ "$EXIT_CODE" -ne 0 ]; then
-        MESSAGE="$COMMAND failed on commit: '$COMMIT_MESSAGE' due to: '$REASON' with exit code: '$EXIT_CODE'"
+        MESSAGE="$COMMAND failed on commit: '$COMMIT_MESSAGE' due to: '$REASON' with exit code $EXIT_CODE"
         echoSay "$MESSAGE"
 
         # osascript -e "display notification \"$MESSAGE\" with title \"$COMMAND failed\""
@@ -138,6 +138,7 @@ else
 fi
 
 checkLocalModification
+rm -rf ~/.m2/repository/cool/klass
 
 echo "Beginning build of commit: $COMMIT_MESSAGE"
 
@@ -149,10 +150,6 @@ $MAVEN verify $PARALLELISM -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.ski
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -ne 0 ]; then
-    if [ "$SERIAL" != true ]; then
-        export LIFTWIZARD_FILE_MATCH_RULE_RERECORD=false
-        ./mvnw verify --resume --fail-fast -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip="$ANALYZE_SKIP" --activate-profiles 'dev'
-    fi
     failWithMessage $EXIT_CODE "$MAVEN verify"
     exit 1
 fi
