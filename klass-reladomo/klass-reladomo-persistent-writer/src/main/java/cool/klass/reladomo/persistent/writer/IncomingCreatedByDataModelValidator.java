@@ -82,6 +82,10 @@ public class IncomingCreatedByDataModelValidator
 
     private void handleDataTypePropertyInsideProjection(@Nonnull DataTypeProperty dataTypeProperty)
     {
+        if (dataTypeProperty.isKey())
+        {
+            this.handleAuditProperty(dataTypeProperty);
+        }
         if (dataTypeProperty.isTemporalInstant())
         {
             this.checkPropertyMatchesIfPresent(dataTypeProperty, "temporal");
@@ -105,6 +109,43 @@ public class IncomingCreatedByDataModelValidator
         if (dataTypeProperty.isFinal())
         {
             this.checkPropertyMatchesIfPresent(dataTypeProperty, "final");
+        }
+    }
+
+    private void handleAuditProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    {
+        this.contextStack.push(dataTypeProperty.getName());
+
+        try
+        {
+            JsonNode jsonDataTypeValue = this.objectNode.path(dataTypeProperty.getName());
+            if (jsonDataTypeValue.isMissingNode() || !jsonDataTypeValue.isTextual())
+            {
+                return;
+            }
+
+            Optional<String> maybeUserId = this.mutationContext.getUserId();
+            if (maybeUserId.isEmpty())
+            {
+                return;
+            }
+
+            if (maybeUserId.get().equals(jsonDataTypeValue.asText()))
+            {
+                return;
+            }
+
+            String warning = "Warning at %s. Expected audit property '%s' to match current user '%s' but got '%s'."
+                    .formatted(
+                            this.getContextString(),
+                            dataTypeProperty.getName(),
+                            maybeUserId.get(),
+                            jsonDataTypeValue.asText());
+            this.warnings.add(warning);
+        }
+        finally
+        {
+            this.contextStack.pop();
         }
     }
 

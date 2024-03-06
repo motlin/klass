@@ -181,7 +181,7 @@ public class QuestionResourceManualTest
                 .header("Authorization", "Impersonation test user 1")
                 .put(Entity.json(json));
 
-        this.assertResponse("put_invalid_id", Status.OK, response);
+        this.assertResponse("put_invalid_id", Status.BAD_REQUEST, response);
         this.assertQuestion1Unchanged(client, "assertQuestion1Unchanged_put_invalid_id");
     }
 

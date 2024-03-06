@@ -144,6 +144,11 @@ public class IncomingUpdateDataModelValidator
 
     private void handleDataTypePropertyInsideProjection(@Nonnull DataTypeProperty dataTypeProperty)
     {
+        if (dataTypeProperty.isKey())
+        {
+            this.handleKeyProperty(dataTypeProperty);
+            return;
+        }
         if (dataTypeProperty.isTemporalInstant())
         {
             this.checkPropertyMatchesIfPresent(dataTypeProperty, "temporal");
@@ -171,6 +176,41 @@ public class IncomingUpdateDataModelValidator
         if (dataTypeProperty.isFinal())
         {
             this.checkPropertyMatchesIfPresent(dataTypeProperty, "final");
+        }
+    }
+
+    private void handleKeyProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    {
+        this.contextStack.push(dataTypeProperty.getName());
+
+        try
+        {
+            JsonNode jsonDataTypeValue = this.objectNode.path(dataTypeProperty.getName());
+            if (jsonDataTypeValue.isMissingNode())
+            {
+                return;
+            }
+
+            ImmutableMap<DataTypeProperty, Object> propertyDataFromUrl = this.mutationContext.getPropertyDataFromUrl();
+            if (!propertyDataFromUrl.containsKey(dataTypeProperty))
+            {
+                return;
+            }
+
+            Object propertyData = propertyDataFromUrl.get(dataTypeProperty);
+
+            PropertyVisitor visitor = new AssertValuesMatchPropertyVisitor(
+                    jsonDataTypeValue,
+                    propertyData,
+                    "url parameter key",
+                    this.contextStack,
+                    "Error",
+                    this.errors);
+            dataTypeProperty.visit(visitor);
+        }
+        finally
+        {
+            this.contextStack.pop();
         }
     }
 
