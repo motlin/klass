@@ -14,14 +14,14 @@ import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public abstract class AbstractModifier
+public final class ModifierImpl
         extends AbstractNamedElement
         implements Modifier
 {
     @Nonnull
     private final ModifierOwner modifierOwner;
 
-    protected AbstractModifier(
+    public ModifierImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
@@ -40,18 +40,37 @@ public abstract class AbstractModifier
         return this.modifierOwner;
     }
 
-    public abstract static class ModifierBuilder<BuiltElement extends AbstractModifier>
-            extends NamedElementBuilder<BuiltElement>
+    public static final class ModifierBuilder
+            extends NamedElementBuilder<ModifierImpl>
     {
-        protected ModifierBuilder(
+        @Nonnull
+        private final ElementBuilder<?> surroundingElementBuilder;
+
+        public ModifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
-                int ordinal)
+                int ordinal,
+                @Nonnull ElementBuilder<?> surroundingElementBuilder)
         {
             super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
+            this.surroundingElementBuilder = Objects.requireNonNull(surroundingElementBuilder);
+        }
+
+        @Override
+        @Nonnull
+        protected ModifierImpl buildUnsafe()
+        {
+            return new ModifierImpl(
+                    this.elementContext,
+                    this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.build(),
+                    this.nameContext,
+                    this.name,
+                    this.ordinal,
+                    (ModifierOwner) this.surroundingElementBuilder.getElement());
         }
     }
 }

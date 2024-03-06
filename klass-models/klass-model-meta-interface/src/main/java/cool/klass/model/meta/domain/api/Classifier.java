@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.modifier.ModifierOwner;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.Property;
@@ -17,19 +18,19 @@ public interface Classifier
     ImmutableList<Interface> getInterfaces();
 
     @Nonnull
-    default ImmutableList<ClassifierModifier> getModifiers()
+    default ImmutableList<Modifier> getModifiers()
     {
         Objects.requireNonNull(this.getDeclaredModifiers());
 
         MutableSet<String> propertyNames = this.getDeclaredModifiers().collect(NamedElement::getName).toSet();
 
-        ImmutableList<ClassifierModifier> inheritedProperties = this.getInheritedModifiers()
+        ImmutableList<Modifier> inheritedProperties = this.getInheritedModifiers()
                 .reject(inheritedProperty -> propertyNames.contains(inheritedProperty.getName()));
 
         return this.getDeclaredModifiers().newWithAll(inheritedProperties);
     }
 
-    default ImmutableList<ClassifierModifier> getInheritedModifiers()
+    default ImmutableList<Modifier> getInheritedModifiers()
     {
         return this.getInterfaces()
                 .flatCollect(Classifier::getModifiers)
@@ -38,7 +39,7 @@ public interface Classifier
     }
 
     @Nonnull
-    ImmutableList<ClassifierModifier> getDeclaredModifiers();
+    ImmutableList<Modifier> getDeclaredModifiers();
 
     @Nonnull
     ImmutableList<Property> getProperties();

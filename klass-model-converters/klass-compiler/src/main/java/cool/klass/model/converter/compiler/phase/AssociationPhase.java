@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
-import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndModifier;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
@@ -109,7 +109,7 @@ public class AssociationPhase
         super.enterAssociationEndModifier(ctx);
 
         Objects.requireNonNull(this.associationEndState);
-        AntlrAssociationEndModifier antlrAssociationEndModifier = new AntlrAssociationEndModifier(
+        AntlrModifier antlrAssociationEndModifier = new AntlrModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,

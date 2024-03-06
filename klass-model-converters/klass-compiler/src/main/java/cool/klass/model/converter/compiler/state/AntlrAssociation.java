@@ -11,7 +11,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
-import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndModifier;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
@@ -182,14 +182,8 @@ public class AntlrAssociation
             String message = String.format(
                     "Both associations are owned in association '%s'. At most one end may be owned.",
                     this.name);
-            AntlrAssociationEndModifier sourceOwnedModifier = this.getSourceEnd()
-                    .getModifiers()
-                    .collect(AntlrAssociationEndModifier.class::cast)
-                    .detect(AntlrAssociationEndModifier::isOwned);
-            AntlrAssociationEndModifier targetOwnedModifier = this.getTargetEnd()
-                    .getModifiers()
-                    .collect(AntlrAssociationEndModifier.class::cast)
-                    .detect(AntlrAssociationEndModifier::isOwned);
+            AntlrModifier sourceOwnedModifier = this.getSourceEnd().getModifiers().detect(AntlrModifier::isOwned);
+            AntlrModifier targetOwnedModifier = this.getTargetEnd().getModifiers().detect(AntlrModifier::isOwned);
 
             compilerErrorHolder.add(
                     "ERR_ASO_OWN",
@@ -205,10 +199,7 @@ public class AntlrAssociation
                     "Association end '%s.%s' is owned, but is on the to-one end of a many-to-one association.",
                     this.getTargetEnd().getOwningClassifierState().getName(),
                     this.getTargetEnd().getName());
-            AntlrAssociationEndModifier ownedModifier = this.getTargetEnd()
-                    .getModifiers()
-                    .collect(AntlrAssociationEndModifier.class::cast)
-                    .detect(AntlrAssociationEndModifier::isOwned);
+            AntlrModifier ownedModifier = this.getTargetEnd().getModifiers().detect(AntlrModifier::isOwned);
             compilerErrorHolder.add("ERR_OWN_ONE", message, ownedModifier);
         }
         else if (this.getSourceEnd().isToOne() && this.getTargetEnd().isToMany() && this.getSourceEnd().isOwned())
@@ -217,10 +208,7 @@ public class AntlrAssociation
                     "Association end '%s.%s' is owned, but is on the to-one end of a one-to-many association.",
                     this.getSourceEnd().getOwningClassifierState().getName(),
                     this.getSourceEnd().getName());
-            AntlrAssociationEndModifier ownedModifier = this.getSourceEnd()
-                    .getModifiers()
-                    .collect(AntlrAssociationEndModifier.class::cast)
-                    .detect(AntlrAssociationEndModifier::isOwned);
+            AntlrModifier ownedModifier = this.getSourceEnd().getModifiers().detect(AntlrModifier::isOwned);
             compilerErrorHolder.add("ERR_OWN_ONE", message, ownedModifier);
         }
         else if (this.getSourceEnd().isToOne()

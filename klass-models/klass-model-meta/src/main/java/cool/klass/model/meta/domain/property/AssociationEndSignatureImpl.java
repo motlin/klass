@@ -9,20 +9,16 @@ import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Multiplicity;
-import cool.klass.model.meta.domain.api.modifier.AssociationEndModifier;
 import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 
 // TODO: Super class for reference-type-property?
 public final class AssociationEndSignatureImpl
         extends ReferencePropertyImpl<AbstractClassifier>
         implements AssociationEndSignature
 {
-    private ImmutableList<AssociationEndModifier> associationEndModifiers;
-
     private AssociationEndSignatureImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
@@ -32,8 +28,7 @@ public final class AssociationEndSignatureImpl
             int ordinal,
             @Nonnull AbstractClassifier type,
             @Nonnull AbstractClassifier owningClassifier,
-            @Nonnull Multiplicity multiplicity,
-            boolean owned)
+            @Nonnull Multiplicity multiplicity)
     {
         super(
                 elementContext,
@@ -44,8 +39,7 @@ public final class AssociationEndSignatureImpl
                 ordinal,
                 type,
                 owningClassifier,
-                multiplicity,
-                owned);
+                multiplicity);
     }
 
     @Override
@@ -71,8 +65,7 @@ public final class AssociationEndSignatureImpl
                 int ordinal,
                 @Nonnull ClassifierBuilder<?> type,
                 @Nonnull ClassifierBuilder<?> owningKlassBuilder,
-                @Nonnull Multiplicity multiplicity,
-                boolean isOwned)
+                @Nonnull Multiplicity multiplicity)
         {
             super(
                     elementContext,
@@ -83,8 +76,7 @@ public final class AssociationEndSignatureImpl
                     ordinal,
                     type,
                     owningKlassBuilder,
-                    multiplicity,
-                    isOwned);
+                    multiplicity);
         }
 
         @Override
@@ -100,8 +92,7 @@ public final class AssociationEndSignatureImpl
                     this.ordinal,
                     this.typeBuilder.getElement(),
                     this.owningClassifierBuilder.getElement(),
-                    this.multiplicity,
-                    this.isOwned);
+                    this.multiplicity);
         }
     }
 }

@@ -12,7 +12,7 @@ import cool.klass.model.converter.compiler.state.AntlrMultiplicityOwner;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
-import cool.klass.model.converter.compiler.state.parameter.AntlrParameterModifier;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlConstant;
 import cool.klass.model.meta.domain.api.PrimitiveType;
@@ -136,13 +136,14 @@ public class UrlParameterPhase extends AbstractCompilerPhase
 
         // TODO: Check if parameterState is non null?
         int ordinal = this.parameterState.getNumModifiers();
-        AntlrParameterModifier parameterModifierState = new AntlrParameterModifier(
+        AntlrModifier modifierState = new AntlrModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,
                 ctx.getText(),
-                ordinal);
-        this.parameterState.enterParameterModifier(parameterModifierState);
+                ordinal,
+                this.parameterState);
+        this.parameterState.enterModifier(modifierState);
     }
 
     private void enterParameterDeclaration(

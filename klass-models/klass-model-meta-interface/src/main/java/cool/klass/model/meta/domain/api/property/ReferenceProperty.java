@@ -6,7 +6,9 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Multiplicity;
+import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.order.OrderBy;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public interface ReferenceProperty
         extends Property
@@ -33,4 +35,28 @@ public interface ReferenceProperty
     @Override
     @Nonnull
     Classifier getType();
+
+    @Nonnull
+    ImmutableList<Modifier> getModifiers();
+
+    // TODO: Delete overrides
+    default boolean isOwned()
+    {
+        return this.getModifiers().anySatisfy(modifier -> modifier.is("owned"));
+    }
+
+    default boolean isVersion()
+    {
+        return this.getModifiers().anySatisfy(modifier -> modifier.is("version"));
+    }
+
+    default boolean isFinal()
+    {
+        return this.getModifiers().anySatisfy(modifier -> modifier.is("final"));
+    }
+
+    default boolean isPrivate()
+    {
+        return this.getModifiers().anySatisfy(modifier -> modifier.is("private"));
+    }
 }

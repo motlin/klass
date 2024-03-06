@@ -4,10 +4,9 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrClassifierModifier;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
-import cool.klass.model.converter.compiler.state.property.AntlrDataTypePropertyModifier;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -15,7 +14,8 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class VersionClassInferencePhase extends AbstractCompilerPhase
+public class VersionClassInferencePhase
+        extends AbstractCompilerPhase
 {
     public VersionClassInferencePhase(@Nonnull CompilerState compilerState)
     {
@@ -41,7 +41,7 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
 
         String klassSourceCode = this.getSourceCode();
 
-        AntlrClassifierModifier classifierModifierState = this.compilerState.getCompilerWalkState().getClassifierModifierState();
+        AntlrModifier classifierModifierState = this.compilerState.getCompilerWalkState().getClassifierModifierState();
 
         ImmutableList<ParseTreeListener> compilerPhases = Lists.immutable.with(
                 new TopLevelElementsPhase(this.compilerState),
@@ -69,8 +69,8 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
                 .collect(each -> String.format("    %s\n", each))
                 .makeString("");
 
-        AntlrClassifierModifier auditedModifier   = classState.getClassifierModifierByName("audited");
-        String                  auditedSourceCode = auditedModifier == AntlrClassifierModifier.NOT_FOUND ? "" : " audited";
+        AntlrModifier auditedModifier   = classState.getModifierByName("audited");
+        String        auditedSourceCode = auditedModifier == AntlrModifier.NOT_FOUND ? "" : " audited";
 
         // TODO: If main class is transient, version should also be transient, so copy classifier modifiers
         //language=Klass
@@ -86,17 +86,14 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
 
     private String getSourceCode(@Nonnull AntlrDataTypeProperty<?> dataTypeProperty)
     {
-        ListIterable<AntlrDataTypePropertyModifier> propertyModifiers = dataTypeProperty
-                .getModifiers()
-                .collect(AntlrDataTypePropertyModifier.class::cast)
-                .reject(AntlrDataTypePropertyModifier::isID);
-        String propertyModifierSourceCode = propertyModifiers.isEmpty()
+        ListIterable<AntlrModifier> modifiers = dataTypeProperty.getModifiers().reject(AntlrModifier::isId);
+        String modifierSourceCode = modifiers.isEmpty()
                 ? ""
-                : propertyModifiers.collect(AntlrNamedElement::getName).makeString(" ", " ", "");
+                : modifiers.collect(AntlrNamedElement::getName).makeString(" ", " ", "");
         return String.format(
                 "%s: %s%s;",
                 dataTypeProperty.getName(),
                 dataTypeProperty.getType(),
-                propertyModifierSourceCode);
+                modifierSourceCode);
     }
 }

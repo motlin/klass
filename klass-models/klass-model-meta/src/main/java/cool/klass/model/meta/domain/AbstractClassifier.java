@@ -6,12 +6,11 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cool.klass.model.meta.domain.ClassifierModifierImpl.ClassifierModifierBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.api.Classifier;
-import cool.klass.model.meta.domain.api.ClassifierModifier;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Interface;
+import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
@@ -19,6 +18,7 @@ import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
+import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -26,9 +26,9 @@ public abstract class AbstractClassifier
         extends AbstractPackageableElement
         implements Classifier, TopLevelElementWithSourceCode
 {
-    private ImmutableList<DataTypeProperty>        dataTypeProperties;
-    private ImmutableList<ClassifierModifier>      classifierModifiers;
-    private ImmutableList<Interface>               interfaces;
+    private ImmutableList<DataTypeProperty> dataTypeProperties;
+    private ImmutableList<Modifier>         modifiers;
+    private ImmutableList<Interface>        interfaces;
     private ImmutableList<AssociationEndSignature> associationEndSignatures;
 
     protected AbstractClassifier(
@@ -61,18 +61,18 @@ public abstract class AbstractClassifier
 
     @Nonnull
     @Override
-    public ImmutableList<ClassifierModifier> getDeclaredModifiers()
+    public ImmutableList<Modifier> getDeclaredModifiers()
     {
-        return this.classifierModifiers;
+        return this.modifiers;
     }
 
-    protected void setClassifierModifiers(@Nonnull ImmutableList<ClassifierModifier> classifierModifiers)
+    protected void setModifiers(@Nonnull ImmutableList<Modifier> classifierModifiers)
     {
-        if (this.classifierModifiers != null)
+        if (this.modifiers != null)
         {
             throw new IllegalStateException();
         }
-        this.classifierModifiers = Objects.requireNonNull(classifierModifiers);
+        this.modifiers = Objects.requireNonNull(classifierModifiers);
     }
 
     @Override
@@ -105,7 +105,7 @@ public abstract class AbstractClassifier
             implements TypeGetter, TopLevelElementBuilderWithSourceCode
     {
         protected ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders;
-        protected ImmutableList<ClassifierModifierBuilder>        classifierModifierBuilders;
+        protected ImmutableList<ModifierBuilder>                  modifierBuilders;
         protected ImmutableList<InterfaceBuilder>                 interfaceBuilders;
         protected ImmutableList<AssociationEndSignatureBuilder>   associationEndSignatureBuilders;
 
@@ -130,13 +130,13 @@ public abstract class AbstractClassifier
             this.dataTypePropertyBuilders = Objects.requireNonNull(dataTypePropertyBuilders);
         }
 
-        public void setClassifierModifierBuilders(@Nonnull ImmutableList<ClassifierModifierBuilder> classifierModifierBuilders)
+        public void setModifierBuilders(@Nonnull ImmutableList<ModifierBuilder> modifierBuilders)
         {
-            if (this.classifierModifierBuilders != null)
+            if (this.modifierBuilders != null)
             {
                 throw new IllegalStateException();
             }
-            this.classifierModifierBuilders = Objects.requireNonNull(classifierModifierBuilders);
+            this.modifierBuilders = Objects.requireNonNull(modifierBuilders);
         }
 
         public void setAssociationEndSignatureBuilders(@Nonnull ImmutableList<AssociationEndSignatureBuilder> associationEndSignatureBuilders)
@@ -151,9 +151,8 @@ public abstract class AbstractClassifier
         @Override
         protected void buildChildren()
         {
-            ImmutableList<ClassifierModifier> classifierModifiers =
-                    this.classifierModifierBuilders.collect(ClassifierModifierBuilder::build);
-            this.element.setClassifierModifiers(classifierModifiers);
+            ImmutableList<Modifier> modifiers = this.modifierBuilders.collect(ModifierBuilder::build);
+            this.element.setModifiers(modifiers);
 
             ImmutableList<DataTypeProperty> dataTypeProperties = this.dataTypePropertyBuilders
                     .<DataTypeProperty>collect(DataTypePropertyBuilder::build)

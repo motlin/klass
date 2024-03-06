@@ -24,8 +24,8 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.TopLevelElement;
-import cool.klass.model.meta.domain.api.modifier.AssociationEndModifier;
-import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
+import cool.klass.model.meta.domain.api.modifier.Modifier;
+import cool.klass.model.meta.domain.api.modifier.ModifierOwner;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionElement;
@@ -635,7 +635,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
-                + "    public ImmutableList<ClassifierModifier> getDeclaredModifiers()\n"
+                + "    public ImmutableList<Modifier> getDeclaredModifiers()\n"
                 + "    {\n"
                 + "        throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
                 + "                + \".getDeclaredModifiers() not implemented yet\");\n"
@@ -755,7 +755,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
-                + "    public ImmutableList<ClassifierModifier> getDeclaredModifiers()\n"
+                + "    public ImmutableList<Modifier> getDeclaredModifiers()\n"
                 + "    {\n"
                 + "        throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
                 + "                + \".getDeclaredModifiers() not implemented yet\");\n"
@@ -895,9 +895,9 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
-                + "        public ImmutableList<DataTypePropertyModifier> getPropertyModifiers()\n"
+                + "        public ImmutableList<Modifier> getModifiers()\n"
                 + "        {\n"
-                + this.getPropertyModifiersSourceCode(primitiveProperty.getPropertyModifiers())
+                + this.getPropertyModifiersSourceCode(primitiveProperty.getModifiers())
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
@@ -1004,19 +1004,19 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getPropertyModifiersSourceCode(@Nonnull ImmutableList<DataTypePropertyModifier> propertyModifiers)
+    private String getPropertyModifiersSourceCode(@Nonnull ImmutableList<Modifier> modifiers)
     {
-        if (propertyModifiers.isEmpty())
+        if (modifiers.isEmpty())
         {
             return "            return Lists.immutable.empty();\n";
         }
-        String variablesSourceCode = propertyModifiers
+        String variablesSourceCode = modifiers
                 .collect(this::getDataTypePropertyModifierSourceCode)
                 .makeString("\n");
 
-        ImmutableList<String> variableNames = propertyModifiers
+        ImmutableList<String> variableNames = modifiers
                 .collect(NamedElement::getName)
-                .collect(each -> each + "_" + DataTypePropertyModifier.class.getSimpleName());
+                .collect(each -> each + "_" + Modifier.class.getSimpleName());
 
         return variablesSourceCode
                 + "\n"
@@ -1024,15 +1024,15 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getDataTypePropertyModifierSourceCode(@Nonnull DataTypePropertyModifier dataTypePropertyModifier)
+    private String getDataTypePropertyModifierSourceCode(@Nonnull Modifier modifier)
     {
-        String           className     = DataTypePropertyModifier.class.getSimpleName();
-        DataTypeProperty modifierOwner = dataTypePropertyModifier.getModifierOwner();
+        String        className     = Modifier.class.getSimpleName();
+        ModifierOwner modifierOwner = modifier.getModifierOwner();
 
         // @formatter:off
         //language=JAVA
         return ""
-                + "            " + className + " " + dataTypePropertyModifier.getName() + "_" + className + " = new " + className + "()\n"
+                + "            " + className + " " + modifier.getName() + "_" + className + " = new " + className + "()\n"
                 + "            {\n"
                 + "                @Override\n"
                 + "                public DataTypeProperty getModifierOwner()\n"
@@ -1044,13 +1044,13 @@ public class JavaConstantsMetaModelGenerator
                 + "                @Override\n"
                 + "                public String getName()\n"
                 + "                {\n"
-                + "                    return \"" + StringEscapeUtils.escapeJava(dataTypePropertyModifier.getName()) + "\";\n"
+                + "                    return \"" + StringEscapeUtils.escapeJava(modifier.getName()) + "\";\n"
                 + "                }\n"
                 + "\n"
                 + "                @Override\n"
                 + "                public int getOrdinal()\n"
                 + "                {\n"
-                + "                    return " + dataTypePropertyModifier.getOrdinal() + ";\n"
+                + "                    return " + modifier.getOrdinal() + ";\n"
                 + "                }\n"
                 + "\n"
                 + "                @Override\n"
@@ -1062,7 +1062,7 @@ public class JavaConstantsMetaModelGenerator
                 + "                @Override\n"
                 + "                public String toString()\n"
                 + "                {\n"
-                + "                    return \"" + StringEscapeUtils.escapeJava(dataTypePropertyModifier.toString()) + "\";\n"
+                + "                    return \"" + StringEscapeUtils.escapeJava(modifier.toString()) + "\";\n"
                 + "                }\n"
                 + "            };\n";
         // @formatter:on
@@ -1114,9 +1114,9 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
-                + "        public ImmutableList<DataTypePropertyModifier> getPropertyModifiers()\n"
+                + "        public ImmutableList<Modifier> getModifiers()\n"
                 + "        {\n"
-                + this.getPropertyModifiersSourceCode(enumerationProperty.getPropertyModifiers())
+                + this.getPropertyModifiersSourceCode(enumerationProperty.getModifiers())
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
@@ -1344,15 +1344,9 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
-                + "        public ImmutableList<AssociationEndModifier> getAssociationEndModifiers()\n"
+                + "        public ImmutableList<Modifier> getModifiers()\n"
                 + "        {\n"
-                + "            return Lists.immutable.with(" + associationEnd.getAssociationEndModifiers().collect(NamedElement::getName).collect(TO_CONSTANT_CASE::convert).collect(each -> each + "_MODIFIER").makeString() + ");\n"
-                + "        }\n"
-                + "\n"
-                + "        @Override\n"
-                + "        public boolean isOwned()\n"
-                + "        {\n"
-                + "            return " + associationEnd.isOwned() + ";\n"
+                + "            return Lists.immutable.with(" + associationEnd.getModifiers().collect(NamedElement::getName).collect(TO_CONSTANT_CASE::convert).collect(each -> each + "_MODIFIER").makeString() + ");\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
@@ -1389,21 +1383,21 @@ public class JavaConstantsMetaModelGenerator
     private String getAssociationEndModifierConstantsSourceCode(@Nonnull AssociationEnd associationEnd)
     {
         return associationEnd
-                .getAssociationEndModifiers()
-                .collect(this::getAssociationEndModifierConstantSourceCode)
+                .getModifiers()
+                .collect(this::getModifierConstantSourceCode)
                 .makeString("");
     }
 
     @Nonnull
-    private String getAssociationEndModifierConstantSourceCode(@Nonnull AssociationEndModifier associationEndModifier)
+    private String getModifierConstantSourceCode(@Nonnull Modifier modifier)
     {
-        String         className     = AssociationEndModifier.class.getSimpleName();
-        AssociationEnd modifierOwner = associationEndModifier.getModifierOwner();
+        String        className     = Modifier.class.getSimpleName();
+        ModifierOwner modifierOwner = modifier.getModifierOwner();
 
         // @formatter:off
         //language=JAVA
         return ""
-                + "        public static final " + className + " " + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, associationEndModifier.getName()) + "_MODIFIER = new " + className + "()\n"
+                + "        public static final " + className + " " + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, modifier.getName()) + "_MODIFIER = new " + className + "()\n"
                 + "        {\n"
                 + "            @Override\n"
                 + "            public AssociationEnd getModifierOwner()\n"
@@ -1415,13 +1409,13 @@ public class JavaConstantsMetaModelGenerator
                 + "            @Override\n"
                 + "            public String getName()\n"
                 + "            {\n"
-                + "                return \"" + associationEndModifier.getName() + "\";\n"
+                + "                return \"" + modifier.getName() + "\";\n"
                 + "            }\n"
                 + "\n"
                 + "            @Override\n"
                 + "            public int getOrdinal()\n"
                 + "            {\n"
-                + "                return " + associationEndModifier.getOrdinal() + ";\n"
+                + "                return " + modifier.getOrdinal() + ";\n"
                 + "            }\n"
                 + "\n"
                 + "            @Override\n"

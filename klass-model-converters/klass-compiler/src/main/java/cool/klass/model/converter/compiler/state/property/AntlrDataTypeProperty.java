@@ -192,32 +192,32 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     public boolean isKey()
     {
-        return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isKey);
+        return this.getModifiers().anySatisfy(AntlrModifier::isKey);
     }
 
-    public boolean isID()
+    public boolean isId()
     {
-        return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isID);
+        return this.getModifiers().anySatisfy(AntlrModifier::isId);
     }
 
     public boolean isUserId()
     {
-        return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isUserId);
+        return this.getModifiers().anySatisfy(AntlrModifier::isUserId);
     }
 
     public boolean isAudit()
     {
-        return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isAudit);
+        return this.getModifiers().anySatisfy(AntlrModifier::isAudit);
     }
 
     public boolean isDerived()
     {
-        return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isDerived);
+        return this.getModifiers().anySatisfy(AntlrModifier::isDerived);
     }
 
     public boolean isPrivate()
     {
-        return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isPrivate);
+        return this.getModifiers().anySatisfy(AntlrModifier::isPrivate);
     }
 
     public boolean isOptional()
@@ -368,13 +368,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             return;
         }
         this.owningClassifierState.getParserRuleContexts(parserRuleContexts);
-    }
-
-    private ListIterable<AntlrDataTypePropertyModifier> getDataTypePropertyModifiers()
-    {
-        // TODO: Consider generics instead of cast
-        return this.getModifiers()
-                .collect(AntlrDataTypePropertyModifier.class::cast);
     }
 
     public String getShortString()

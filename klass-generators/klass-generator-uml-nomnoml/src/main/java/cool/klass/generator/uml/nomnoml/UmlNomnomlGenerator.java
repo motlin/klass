@@ -16,7 +16,7 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.TopLevelElement;
 import cool.klass.model.meta.domain.api.TopLevelElementVisitor;
-import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
+import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
@@ -191,13 +191,13 @@ public class UmlNomnomlGenerator
         private String getPropertySourceCode(DataTypeProperty dataTypeProperty)
         {
             String isOptionalString = dataTypeProperty.isOptional() && !dataTypeProperty.isTemporal() ? "?" : "";
-            ImmutableList<DataTypePropertyModifier> relevantModifiers = dataTypeProperty
-                    .getPropertyModifiers()
-                    .reject(DataTypePropertyModifier::isAudit)
-                    .reject(DataTypePropertyModifier::isFrom)
-                    .reject(DataTypePropertyModifier::isTo)
-                    .reject(DataTypePropertyModifier::isSystem)
-                    .reject(DataTypePropertyModifier::isValid);
+            ImmutableList<Modifier> relevantModifiers = dataTypeProperty
+                    .getModifiers()
+                    .reject(Modifier::isAudit)
+                    .reject(Modifier::isFrom)
+                    .reject(Modifier::isTo)
+                    .reject(Modifier::isSystem)
+                    .reject(Modifier::isValid);
             String propertyModifiersString = relevantModifiers.isEmpty()
                     ? ""
                     :  relevantModifiers

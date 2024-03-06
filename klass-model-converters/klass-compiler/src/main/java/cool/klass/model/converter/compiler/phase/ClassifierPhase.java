@@ -8,8 +8,8 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
-import cool.klass.model.converter.compiler.state.AntlrClassifierModifier;
 import cool.klass.model.converter.compiler.state.AntlrInterface;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.grammar.KlassParser.AbstractDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
@@ -110,7 +110,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
 
         int ordinal = this.classifierState.getNumClassifierModifiers();
 
-        AntlrClassifierModifier classifierModifierState = new AntlrClassifierModifier(
+        AntlrModifier modifierState = new AntlrModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,
@@ -118,6 +118,6 @@ public class ClassifierPhase extends AbstractCompilerPhase
                 ordinal + 1,
                 this.classifierState);
 
-        this.classifierState.enterClassifierModifier(classifierModifierState);
+        this.classifierState.enterModifier(modifierState);
     }
 }

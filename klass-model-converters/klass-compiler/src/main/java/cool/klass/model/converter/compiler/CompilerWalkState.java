@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
-import cool.klass.model.converter.compiler.state.AntlrClassifierModifier;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrInterface;
@@ -22,6 +21,7 @@ import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
@@ -95,11 +95,11 @@ public class CompilerWalkState
     @Nullable
     private AntlrClassifier         thisReference;
     @Nullable
-    private AntlrOrderByOwner       orderByOwnerState;
+    private AntlrOrderByOwner  orderByOwnerState;
     @Nullable
-    private AntlrClassifierModifier classifierModifierState;
+    private AntlrModifier      classifierModifierState;
     @Nullable
-    private PackageNameContext      packageNameContext;
+    private PackageNameContext packageNameContext;
 
     @Nullable
     private AntlrParameterOwner      parameterOwnerState;
@@ -202,7 +202,7 @@ public class CompilerWalkState
     }
 
     @Nullable
-    public AntlrClassifierModifier getClassifierModifierState()
+    public AntlrModifier getClassifierModifierState()
     {
         return this.classifierModifierState;
     }
@@ -824,7 +824,7 @@ public class CompilerWalkState
             }
 
             CompilerWalkState.this.classifierModifierState =
-                    CompilerWalkState.this.classifierState.getClassifierModifierByContext(ctx);
+                    CompilerWalkState.this.classifierState.getModifierByContext(ctx);
         }
 
         @Override

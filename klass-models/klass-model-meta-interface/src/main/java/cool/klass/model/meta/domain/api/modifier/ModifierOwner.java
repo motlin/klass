@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain.api.modifier;
 
-public interface ModifierOwner
+import cool.klass.model.meta.domain.api.NamedElement;
+
+public interface ModifierOwner extends NamedElement
 {
 }

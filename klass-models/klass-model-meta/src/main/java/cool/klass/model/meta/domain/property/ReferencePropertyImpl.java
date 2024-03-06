@@ -12,13 +12,13 @@ import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.Type.TypeGetter;
-import cool.klass.model.meta.domain.api.modifier.AssociationEndModifier;
+import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
-import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
+import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -27,11 +27,10 @@ public abstract class ReferencePropertyImpl<T extends Classifier>
         implements ReferenceProperty
 {
     @Nonnull
-    protected final Multiplicity                          multiplicity;
-    protected final boolean                               owned;
+    protected final Multiplicity            multiplicity;
     @Nonnull
-    private         Optional<OrderBy>                     orderBy = Optional.empty();
-    private         ImmutableList<AssociationEndModifier> associationEndModifiers;
+    private         Optional<OrderBy>       orderBy = Optional.empty();
+    private         ImmutableList<Modifier> modifiers;
 
     protected ReferencePropertyImpl(
             ParserRuleContext elementContext,
@@ -42,11 +41,10 @@ public abstract class ReferencePropertyImpl<T extends Classifier>
             int ordinal,
             T type,
             AbstractClassifier owningClassifier,
-            @Nonnull Multiplicity multiplicity, boolean owned)
+            @Nonnull Multiplicity multiplicity)
     {
         super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, type, owningClassifier);
         this.multiplicity = Objects.requireNonNull(multiplicity);
-        this.owned        = owned;
     }
 
     @Override
@@ -68,20 +66,16 @@ public abstract class ReferencePropertyImpl<T extends Classifier>
         this.orderBy = Objects.requireNonNull(orderBy);
     }
 
+    @Override
     @Nonnull
-    public final ImmutableList<AssociationEndModifier> getAssociationEndModifiers()
+    public final ImmutableList<Modifier> getModifiers()
     {
-        return this.associationEndModifiers;
+        return this.modifiers;
     }
 
-    public final boolean isOwned()
+    protected final void setModifiers(ImmutableList<Modifier> modifiers)
     {
-        return this.owned;
-    }
-
-    protected final void setAssociationEndModifiers(ImmutableList<AssociationEndModifier> associationEndModifiers)
-    {
-        this.associationEndModifiers = associationEndModifiers;
+        this.modifiers = modifiers;
     }
 
     public abstract static class ReferencePropertyBuilder<T extends Classifier, TG extends TypeGetter, BuiltElement extends ReferencePropertyImpl<T>>
@@ -89,12 +83,11 @@ public abstract class ReferencePropertyImpl<T extends Classifier>
     {
         @Nonnull
         protected final Multiplicity multiplicity;
-        protected final boolean      isOwned;
 
         @Nonnull
         private Optional<OrderByBuilder> orderByBuilder = Optional.empty();
 
-        private ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders;
+        private ImmutableList<ModifierBuilder> modifierBuilders;
 
         protected ReferencePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -105,12 +98,10 @@ public abstract class ReferencePropertyImpl<T extends Classifier>
                 int ordinal,
                 @Nonnull TG type,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
-                @Nonnull Multiplicity multiplicity,
-                boolean isOwned)
+                @Nonnull Multiplicity multiplicity)
         {
             super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, type, owningClassifierBuilder);
             this.multiplicity = Objects.requireNonNull(multiplicity);
-            this.isOwned      = isOwned;
         }
 
         public void setOrderByBuilder(@Nonnull Optional<OrderByBuilder> orderByBuilder)
@@ -118,17 +109,17 @@ public abstract class ReferencePropertyImpl<T extends Classifier>
             this.orderByBuilder = Objects.requireNonNull(orderByBuilder);
         }
 
-        public void setAssociationEndModifierBuilders(ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders)
+        public void setModifierBuilders(ImmutableList<ModifierBuilder> modifierBuilders)
         {
-            this.associationEndModifierBuilders = associationEndModifierBuilders;
+            this.modifierBuilders = modifierBuilders;
         }
 
         @Override
         protected final void buildChildren()
         {
-            ImmutableList<AssociationEndModifier> associationEndModifiers =
-                    this.associationEndModifierBuilders.collect(AssociationEndModifierBuilder::build);
-            this.element.setAssociationEndModifiers(associationEndModifiers);
+            ImmutableList<Modifier> modifiers =
+                    this.modifierBuilders.collect(ModifierBuilder::build);
+            this.element.setModifiers(modifiers);
 
             Optional<OrderBy> orderBy = this.orderByBuilder.map(OrderByBuilder::build);
             this.element.setOrderBy(orderBy);

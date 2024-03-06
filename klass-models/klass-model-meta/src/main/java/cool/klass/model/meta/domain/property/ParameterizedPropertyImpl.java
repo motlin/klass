@@ -34,7 +34,6 @@ public final class ParameterizedPropertyImpl
             @Nonnull KlassImpl owningKlass,
             @Nonnull Multiplicity multiplicity)
     {
-        // TODO: Push owned back down
         super(
                 elementContext,
                 macroElement,
@@ -44,8 +43,7 @@ public final class ParameterizedPropertyImpl
                 ordinal,
                 type,
                 owningKlass,
-                multiplicity,
-                false);
+                multiplicity);
     }
 
     @Nonnull
@@ -78,8 +76,7 @@ public final class ParameterizedPropertyImpl
                     ordinal,
                     type,
                     owningKlassBuilder,
-                    multiplicity,
-                    false);
+                    multiplicity);
         }
 
         @Override

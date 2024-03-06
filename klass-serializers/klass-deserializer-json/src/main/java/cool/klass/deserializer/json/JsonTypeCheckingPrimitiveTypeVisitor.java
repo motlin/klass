@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import cool.klass.model.meta.domain.api.Classifier;
-import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
+import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import org.eclipse.collections.api.list.MutableList;
@@ -181,7 +181,7 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
     {
         if (this.jsonDataTypeValue.isNull()
                 && this.primitiveProperty.isTemporalInstant()
-                && this.primitiveProperty.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isTo))
+                && this.primitiveProperty.getModifiers().anySatisfy(Modifier::isTo))
         {
             // TODO: Other validations might make this one unreachable
             return;

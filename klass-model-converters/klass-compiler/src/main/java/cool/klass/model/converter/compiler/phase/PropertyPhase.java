@@ -15,11 +15,10 @@ import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicityOwner;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
-import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
-import cool.klass.model.converter.compiler.state.property.AntlrDataTypePropertyModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.converter.compiler.state.property.validation.AntlrMaxLengthPropertyValidation;
 import cool.klass.model.converter.compiler.state.property.validation.AntlrMaxPropertyValidation;
@@ -199,14 +198,14 @@ public class PropertyPhase
     @Override
     public void enterDataTypePropertyModifier(DataTypePropertyModifierContext ctx)
     {
-        AntlrDataTypePropertyModifier propertyModifierState = new AntlrDataTypePropertyModifier(
+        AntlrModifier modifierState = new AntlrModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,
                 ctx.getText(),
                 this.dataTypePropertyState.getNumModifiers() + 1,
                 this.dataTypePropertyState);
-        this.dataTypePropertyState.enterModifier(propertyModifierState);
+        this.dataTypePropertyState.enterModifier(modifierState);
     }
 
     @Override
@@ -260,7 +259,7 @@ public class PropertyPhase
             return;
         }
 
-        AntlrAssociationEndModifier antlrAssociationEndModifier = new AntlrAssociationEndModifier(
+        AntlrModifier antlrAssociationEndModifier = new AntlrModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,

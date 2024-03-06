@@ -10,8 +10,8 @@ import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.meta.domain.EnumerationImpl;
-import cool.klass.model.meta.domain.property.DataTypePropertyModifierImpl.DataTypePropertyModifierBuilder;
 import cool.klass.model.meta.domain.property.EnumerationPropertyImpl.EnumerationPropertyBuilder;
+import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -104,11 +104,10 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
                 this.owningClassifierState.getElementBuilder(),
                 this.isOptional);
 
-        ImmutableList<DataTypePropertyModifierBuilder> dataTypePropertyModifierBuilders = this.getModifiers()
-                .collect(AntlrDataTypePropertyModifier.class::cast)
-                .collect(AntlrDataTypePropertyModifier::build)
+        ImmutableList<ModifierBuilder> modifierBuilders = this.getModifiers()
+                .collect(AntlrModifier::build)
                 .toImmutable();
-        this.elementBuilder.setDataTypePropertyModifierBuilders(dataTypePropertyModifierBuilders);
+        this.elementBuilder.setModifierBuilders(modifierBuilders);
 
         this.buildValidations();
 
@@ -147,10 +146,8 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
     @Override
     protected void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        ListIterable<AntlrDataTypePropertyModifier> idModifiers = this.getModifiers()
-                .collect(AntlrDataTypePropertyModifier.class::cast)
-                .select(AntlrDataTypePropertyModifier::isID);
-        for (AntlrDataTypePropertyModifier idModifier : idModifiers)
+        ListIterable<AntlrModifier> idModifiers = this.getModifiers().select(AntlrModifier::isId);
+        for (AntlrModifier idModifier : idModifiers)
         {
             ParserRuleContext offendingToken = idModifier.getElementContext();
             String            message        = "Enumeration properties may not be auto-generated ids.";

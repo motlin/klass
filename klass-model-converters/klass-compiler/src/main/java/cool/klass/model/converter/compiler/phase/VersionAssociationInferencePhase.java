@@ -5,8 +5,8 @@ import javax.annotation.Nonnull;
 import com.google.common.base.CaseFormat;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrClassifierModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
@@ -48,7 +48,7 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
             return;
         }
 
-        AntlrClassifierModifier classifierModifierState =
+        AntlrModifier classifierModifierState =
                 this.compilerState.getCompilerWalkState().getClassifierModifierState();
         String                  klassSourceCode         = this.getSourceCode(keyProperties);
 

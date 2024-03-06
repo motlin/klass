@@ -12,7 +12,6 @@ import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
-import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.RichIterable;
@@ -101,9 +100,8 @@ public class KlassProjectionGenerator
         String referencePropertiesSourceCode = classifier
                 .getProperties()
                 .selectInstancesOf(ReferenceProperty.class)
-                // TODO Pull up these modifiers onto ReferenceProperty
-                .select(each -> each.getMultiplicity().isToMany() || each instanceof AssociationEnd && ((AssociationEnd) each).isOwned())
-                .reject(each -> each instanceof AssociationEnd && ((AssociationEnd) each).isPrivate())
+                .select(each -> each.getMultiplicity().isToMany() && each.isOwned())
+                .reject(ReferenceProperty::isPrivate)
                 .collect(KlassProjectionGenerator::getSourceCode)
                 .makeString("");
 

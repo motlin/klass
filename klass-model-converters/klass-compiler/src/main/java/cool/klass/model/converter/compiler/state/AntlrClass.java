@@ -13,16 +13,17 @@ import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
-import cool.klass.model.meta.domain.ClassifierModifierImpl.ClassifierModifierBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
+import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -160,13 +161,13 @@ public class AntlrClass
     }
 
     @Override
-    protected ImmutableList<AntlrClassifierModifier> getInheritedModifiers(@Nonnull MutableList<AntlrClassifier> visited)
+    protected ImmutableList<AntlrModifier> getInheritedModifiers(@Nonnull MutableList<AntlrClassifier> visited)
     {
-        ImmutableList<AntlrClassifierModifier> superClassModifiers = this.superClassState
-                .map(antlrClass -> antlrClass.getClassifierModifiers(visited)).orElseGet(Lists.immutable::empty);
+        ImmutableList<AntlrModifier> superClassModifiers = this.superClassState
+                .map(antlrClass -> antlrClass.getModifiers(visited)).orElseGet(Lists.immutable::empty);
 
-        ImmutableList<AntlrClassifierModifier> interfaceModifiers = this.interfaceStates
-                .flatCollectWith(AntlrClassifier::getClassifierModifiers, visited)
+        ImmutableList<AntlrModifier> interfaceModifiers = this.interfaceStates
+                .flatCollectWith(AntlrClassifier::getModifiers, visited)
                 .toImmutable();
 
         return superClassModifiers.newWithAll(interfaceModifiers).distinctBy(AntlrNamedElement::getName);
@@ -217,7 +218,7 @@ public class AntlrClass
                 (name, builder) -> builder == null
                         ? antlrAssociationEnd
                         : AntlrAssociationEnd.AMBIGUOUS);
-        AntlrReferenceProperty duplicate2 = this.referencePropertiesByContext.put(
+        AntlrReferenceProperty<?> duplicate2 = this.referencePropertiesByContext.put(
                 antlrAssociationEnd.getElementContext(),
                 antlrAssociationEnd);
         if (duplicate2 != null)
@@ -249,7 +250,7 @@ public class AntlrClass
                 (name, builder) -> builder == null
                         ? parameterizedPropertyState
                         : AntlrParameterizedProperty.AMBIGUOUS);
-        AntlrReferenceProperty duplicate2 = this.referencePropertiesByContext.put(
+        AntlrReferenceProperty<?> duplicate2 = this.referencePropertiesByContext.put(
                 parameterizedPropertyState.getElementContext(),
                 parameterizedPropertyState);
         if (duplicate2 != null)
@@ -322,10 +323,10 @@ public class AntlrClass
                 this.isUser,
                 this.isTransient());
 
-        ImmutableList<ClassifierModifierBuilder> classifierModifierBuilders = this.classifierModifierStates
-                .collect(AntlrClassifierModifier::build)
+        ImmutableList<ModifierBuilder> classifierModifierBuilders = this.modifierStates
+                .collect(AntlrModifier::build)
                 .toImmutable();
-        this.klassBuilder.setClassifierModifierBuilders(classifierModifierBuilders);
+        this.klassBuilder.setModifierBuilders(classifierModifierBuilders);
 
         ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders = this.dataTypePropertyStates
                 .<DataTypePropertyBuilder<?, ?, ?>>collect(AntlrDataTypeProperty::build)
@@ -485,7 +486,7 @@ public class AntlrClass
 
     private boolean hasIDProperty()
     {
-        return this.getDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isID);
+        return this.getDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isId);
     }
 
     private boolean hasKeyProperty()
@@ -588,7 +589,7 @@ public class AntlrClass
     private void reportTransientIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (!this.isTransient()
-                || this.getDataTypeProperties().noneSatisfy(AntlrDataTypeProperty::isID))
+                || this.getDataTypeProperties().noneSatisfy(AntlrDataTypeProperty::isId))
         {
             return;
         }
@@ -750,17 +751,17 @@ public class AntlrClass
     }
 
     @Override
-    public AntlrClassifierModifier getClassifierModifierByName(String name)
+    public AntlrModifier getModifierByName(String name)
     {
-        if (this.classifierModifiersByName.containsKey(name))
+        if (this.modifiersByName.containsKey(name))
         {
-            return this.classifierModifiersByName.get(name);
+            return this.modifiersByName.get(name);
         }
 
         if (this.superClassState.isPresent())
         {
-            AntlrClassifierModifier superClassProperty = this.superClassState.get().getClassifierModifierByName(name);
-            if (superClassProperty != AntlrClassifierModifier.NOT_FOUND)
+            AntlrModifier superClassProperty = this.superClassState.get().getModifierByName(name);
+            if (superClassProperty != AntlrModifier.NOT_FOUND)
             {
                 return superClassProperty;
             }

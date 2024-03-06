@@ -13,12 +13,12 @@ import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
@@ -97,15 +97,15 @@ public abstract class AntlrClassifier
     protected final MutableOrderedMap<ParserRuleContext, AntlrReferenceProperty<?>> referencePropertiesByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    protected final MutableList<AntlrClassifierModifier>  classifierModifierStates = Lists.mutable.empty();
-    protected final MutableList<AntlrDataTypeProperty<?>> dataTypePropertyStates   = Lists.mutable.empty();
-    protected final MutableList<AntlrInterface>           interfaceStates          = Lists.mutable.empty();
+    protected final MutableList<AntlrModifier>            modifierStates         = Lists.mutable.empty();
+    protected final MutableList<AntlrDataTypeProperty<?>> dataTypePropertyStates = Lists.mutable.empty();
+    protected final MutableList<AntlrInterface>           interfaceStates        = Lists.mutable.empty();
 
-    protected final MutableOrderedMap<String, AntlrDataTypeProperty<?>>                   dataTypePropertiesByName     =
+    protected final MutableOrderedMap<String, AntlrDataTypeProperty<?>>         dataTypePropertiesByName =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    protected final MutableOrderedMap<String, AntlrClassifierModifier>                    classifierModifiersByName    =
+    protected final MutableOrderedMap<String, AntlrModifier>                    modifiersByName          =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    protected final MutableOrderedMap<ClassifierModifierContext, AntlrClassifierModifier> classifierModifiersByContext =
+    protected final MutableOrderedMap<ParserRuleContext, AntlrModifier> modifiersByContext       =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     protected AntlrClassifier(
@@ -146,10 +146,10 @@ public abstract class AntlrClassifier
                 + ".getTypeGetter() not implemented yet");
     }
 
-    public AntlrClassifierModifier getClassifierModifierByName(String name)
+    public AntlrModifier getModifierByName(String name)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getClassifierModifierByName() not implemented yet");
+                + ".getModifierByName() not implemented yet");
     }
 
     public final ImmutableList<AntlrDataTypeProperty<?>> getDataTypeProperties()
@@ -181,12 +181,12 @@ public abstract class AntlrClassifier
                 .toImmutable();
     }
 
-    private ImmutableList<AntlrClassifierModifier> getClassifierModifiers()
+    private ImmutableList<AntlrModifier> getModifiers()
     {
-        return this.getClassifierModifiers(Lists.mutable.empty());
+        return this.getModifiers(Lists.mutable.empty());
     }
 
-    protected ImmutableList<AntlrClassifierModifier> getClassifierModifiers(@Nonnull MutableList<AntlrClassifier> visited)
+    protected ImmutableList<AntlrModifier> getModifiers(@Nonnull MutableList<AntlrClassifier> visited)
     {
         if (visited.contains(this))
         {
@@ -194,25 +194,25 @@ public abstract class AntlrClassifier
         }
         visited.add(this);
 
-        MutableSet<String> modifierNames = this.classifierModifierStates.collect(AntlrNamedElement::getName).toSet();
+        MutableSet<String> modifierNames = this.modifierStates.collect(AntlrNamedElement::getName).toSet();
 
-        ImmutableList<AntlrClassifierModifier> inheritedModifiers = this.getInheritedModifiers(visited)
+        ImmutableList<AntlrModifier> inheritedModifiers = this.getInheritedModifiers(visited)
                 .reject(inheritedProperty -> modifierNames.contains(inheritedProperty.getName()));
 
-        return this.classifierModifierStates.toImmutable().newWithAll(inheritedModifiers);
+        return this.modifierStates.toImmutable().newWithAll(inheritedModifiers);
     }
 
-    protected ImmutableList<AntlrClassifierModifier> getInheritedModifiers(@Nonnull MutableList<AntlrClassifier> visited)
+    protected ImmutableList<AntlrModifier> getInheritedModifiers(@Nonnull MutableList<AntlrClassifier> visited)
     {
         return this.interfaceStates
-                .flatCollectWith(AntlrClassifier::getClassifierModifiers, visited)
+                .flatCollectWith(AntlrClassifier::getModifiers, visited)
                 .distinctBy(AntlrNamedElement::getName)
                 .toImmutable();
     }
 
     public boolean isTransient()
     {
-        return this.getClassifierModifiers().anySatisfy(AntlrClassifierModifier::isTransient);
+        return this.getModifiers().anySatisfy(AntlrModifier::isTransient);
     }
 
     public AntlrAssociationEnd getAssociationEndByName(String name)
@@ -267,7 +267,7 @@ public abstract class AntlrClassifier
                 (name, builder) -> builder == null
                         ? associationEndSignatureState
                         : AntlrAssociationEndSignature.AMBIGUOUS);
-        AntlrReferenceProperty duplicate2 = this.referencePropertiesByContext.put(
+        AntlrReferenceProperty<?> duplicate2 = this.referencePropertiesByContext.put(
                 associationEndSignatureState.getElementContext(),
                 associationEndSignatureState);
         if (duplicate2 != null)
@@ -276,34 +276,34 @@ public abstract class AntlrClassifier
         }
     }
 
-    public void enterClassifierModifier(@Nonnull AntlrClassifierModifier classifierModifierState)
+    public void enterModifier(@Nonnull AntlrModifier modifierState)
     {
-        Objects.requireNonNull(classifierModifierState);
-        this.classifierModifierStates.add(classifierModifierState);
-        this.classifierModifiersByName.compute(
-                classifierModifierState.getName(),
+        Objects.requireNonNull(modifierState);
+        this.modifierStates.add(modifierState);
+        this.modifiersByName.compute(
+                modifierState.getName(),
                 (name, builder) -> builder == null
-                        ? classifierModifierState
-                        : AntlrClassifierModifier.AMBIGUOUS);
+                        ? modifierState
+                        : AntlrModifier.AMBIGUOUS);
 
-        AntlrClassifierModifier duplicate = this.classifierModifiersByContext.put(
-                classifierModifierState.getElementContext(),
-                classifierModifierState);
+        AntlrModifier duplicate = this.modifiersByContext.put(
+                modifierState.getElementContext(),
+                modifierState);
         if (duplicate != null)
         {
             throw new AssertionError();
         }
     }
 
-    public AntlrClassifierModifier getClassifierModifierByContext(@Nonnull ClassifierModifierContext classifierModifierContext)
+    public AntlrModifier getModifierByContext(@Nonnull ParserRuleContext modifierContext)
     {
-        Objects.requireNonNull(classifierModifierContext);
-        return this.classifierModifiersByContext.get(classifierModifierContext);
+        Objects.requireNonNull(modifierContext);
+        return this.modifiersByContext.get(modifierContext);
     }
 
     public int getNumClassifierModifiers()
     {
-        return this.classifierModifierStates.size();
+        return this.modifierStates.size();
     }
 
     public void enterImplementsDeclaration(@Nonnull AntlrInterface interfaceState)
@@ -351,14 +351,14 @@ public abstract class AntlrClassifier
 
     private void reportMultipleIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        int numIdProperties = this.dataTypePropertyStates.count(AntlrDataTypeProperty::isID);
+        int numIdProperties = this.dataTypePropertyStates.count(AntlrDataTypeProperty::isId);
         if (numIdProperties > 1)
         {
             String message = String.format(
                     "Class '%s' may only have one id property. Found: %s.",
                     this.name,
                     this.dataTypePropertyStates
-                            .select(AntlrDataTypeProperty::isID)
+                            .select(AntlrDataTypeProperty::isId)
                             .collect(AntlrDataTypeProperty::getShortString)
                             .makeString());
             compilerErrorHolder.add("ERR_MNY_IDS", message, this);
@@ -368,7 +368,7 @@ public abstract class AntlrClassifier
     private void reportIdAndKeyProperties(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         MutableList<String> idProperties = this.dataTypePropertyStates
-                .select(AntlrDataTypeProperty::isID)
+                .select(AntlrDataTypeProperty::isId)
                 .collect(AntlrDataTypeProperty::getShortString);
         if (idProperties.isEmpty())
         {
@@ -377,7 +377,7 @@ public abstract class AntlrClassifier
 
         MutableList<String> nonIdKeyProperties = this.dataTypePropertyStates
                 .select(AntlrDataTypeProperty::isKey)
-                .reject(AntlrDataTypeProperty::isID)
+                .reject(AntlrDataTypeProperty::isId)
                 .collect(AntlrDataTypeProperty::getShortString);
         if (nonIdKeyProperties.isEmpty())
         {
@@ -500,7 +500,7 @@ public abstract class AntlrClassifier
     @OverridingMethodsMustInvokeSuper
     public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        this.classifierModifierStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
+        this.modifierStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
         this.dataTypePropertyStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
         this.associationEndSignatureStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
     }
@@ -514,13 +514,13 @@ public abstract class AntlrClassifier
                 .orElse(AntlrEnumerationProperty.NOT_FOUND);
     }
 
-    protected AntlrClassifierModifier getInterfaceClassifierModifierByName(String name)
+    protected AntlrModifier getInterfaceClassifierModifierByName(String name)
     {
         return this.interfaceStates
                 .asLazy()
-                .collectWith(AntlrInterface::getClassifierModifierByName, name)
-                .detectOptional(interfaceModifier -> interfaceModifier != AntlrClassifierModifier.NOT_FOUND)
-                .orElse(AntlrClassifierModifier.NOT_FOUND);
+                .collectWith(AntlrInterface::getModifierByName, name)
+                .detectOptional(interfaceModifier -> interfaceModifier != AntlrModifier.NOT_FOUND)
+                .orElse(AntlrModifier.NOT_FOUND);
     }
 
     public boolean isSubClassOf(AntlrClassifier classifier)

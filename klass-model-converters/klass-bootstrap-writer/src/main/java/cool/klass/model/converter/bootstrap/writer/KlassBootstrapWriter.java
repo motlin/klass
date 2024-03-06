@@ -14,7 +14,6 @@ import com.gs.fw.finder.TransactionalDomainList;
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.Association;
 import cool.klass.model.meta.domain.api.Classifier;
-import cool.klass.model.meta.domain.api.ClassifierModifier;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Enumeration;
@@ -24,8 +23,7 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
-import cool.klass.model.meta.domain.api.modifier.AssociationEndModifier;
-import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
+import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.order.OrderByMemberReferencePath;
 import cool.klass.model.meta.domain.api.parameter.Parameter;
@@ -474,10 +472,10 @@ public class KlassBootstrapWriter
 
     private void handlePropertyModifiers(@Nonnull Classifier classifier, @Nonnull DataTypeProperty dataTypeProperty)
     {
-        for (DataTypePropertyModifier propertyModifier : dataTypeProperty.getPropertyModifiers())
+        for (Modifier modifier : dataTypeProperty.getModifiers())
         {
             klass.model.meta.domain.PropertyModifier bootstrappedPropertyModifier = new klass.model.meta.domain.PropertyModifier();
-            KlassBootstrapWriter.handleNamedElement(bootstrappedPropertyModifier, propertyModifier);
+            KlassBootstrapWriter.handleNamedElement(bootstrappedPropertyModifier, modifier);
             bootstrappedPropertyModifier.setClassifierName(classifier.getName());
             bootstrappedPropertyModifier.setPropertyName(dataTypeProperty.getName());
             bootstrappedPropertyModifier.insert();
@@ -512,23 +510,23 @@ public class KlassBootstrapWriter
     protected void handleValidation(
             @Nonnull Classifier classifier,
             @Nonnull DataTypeProperty dataTypeProperty,
-            @Nonnull klass.model.meta.domain.NumericPropertyValidation boostrappedValidation,
+            @Nonnull klass.model.meta.domain.NumericPropertyValidation bootstrappedValidation,
             @Nonnull NumericPropertyValidation validation)
     {
         // TODO: Fix reladomo bug causing abstract classes to not implement interfaces
         // TODO: Consider changing inferred: boolean to macroElement: Element
-        boostrappedValidation.setClassifierName(classifier.getName());
-        boostrappedValidation.setPropertyName(dataTypeProperty.getName());
-        boostrappedValidation.setNumber(validation.getNumber());
-        boostrappedValidation.insert();
+        bootstrappedValidation.setClassifierName(classifier.getName());
+        bootstrappedValidation.setPropertyName(dataTypeProperty.getName());
+        bootstrappedValidation.setNumber(validation.getNumber());
+        bootstrappedValidation.insert();
     }
 
     private void handleClassifierModifiers(@Nonnull Classifier classifier)
     {
-        for (ClassifierModifier classifierModifier : classifier.getModifiers())
+        for (Modifier modifier : classifier.getModifiers())
         {
             var bootstrappedClassifierModifier = new klass.model.meta.domain.ClassifierModifier();
-            KlassBootstrapWriter.handleNamedElement(bootstrappedClassifierModifier, classifierModifier);
+            KlassBootstrapWriter.handleNamedElement(bootstrappedClassifierModifier, modifier);
             bootstrappedClassifierModifier.setClassifierName(classifier.getName());
             bootstrappedClassifierModifier.insert();
         }
@@ -556,12 +554,12 @@ public class KlassBootstrapWriter
         bootstrappedAssociationEnd.setResultTypeName(associationEnd.getType().getName());
         bootstrappedAssociationEnd.insert();
 
-        for (AssociationEndModifier associationEndModifier : associationEnd.getAssociationEndModifiers())
+        for (Modifier modifier : associationEnd.getModifiers())
         {
             var bootstrappedAssociationEndModifier = new klass.model.meta.domain.AssociationEndModifier();
             bootstrappedAssociationEndModifier.setOwningClassName(associationEnd.getOwningClassifier().getName());
             bootstrappedAssociationEndModifier.setAssociationEndName(associationEnd.getName());
-            KlassBootstrapWriter.handleNamedElement(bootstrappedAssociationEndModifier, associationEndModifier);
+            KlassBootstrapWriter.handleNamedElement(bootstrappedAssociationEndModifier, modifier);
             bootstrappedAssociationEndModifier.insert();
         }
 

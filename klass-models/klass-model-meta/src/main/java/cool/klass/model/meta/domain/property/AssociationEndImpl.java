@@ -36,8 +36,7 @@ public final class AssociationEndImpl
             @Nonnull KlassImpl type,
             @Nonnull KlassImpl owningKlass,
             @Nonnull AssociationImpl owningAssociation,
-            @Nonnull Multiplicity multiplicity,
-            boolean owned)
+            @Nonnull Multiplicity multiplicity)
     {
         super(
                 elementContext,
@@ -48,8 +47,7 @@ public final class AssociationEndImpl
                 ordinal,
                 type,
                 owningKlass,
-                multiplicity,
-                owned);
+                multiplicity);
         this.owningAssociation = Objects.requireNonNull(owningAssociation);
     }
 
@@ -94,8 +92,7 @@ public final class AssociationEndImpl
                 @Nonnull KlassBuilder type,
                 @Nonnull KlassBuilder owningKlassBuilder,
                 @Nonnull AssociationBuilder owningAssociation,
-                @Nonnull Multiplicity multiplicity,
-                boolean isOwned)
+                @Nonnull Multiplicity multiplicity)
         {
             super(
                     elementContext,
@@ -106,8 +103,7 @@ public final class AssociationEndImpl
                     ordinal,
                     type,
                     owningKlassBuilder,
-                    multiplicity,
-                    isOwned);
+                    multiplicity);
             this.owningAssociation = Objects.requireNonNull(owningAssociation);
         }
 
@@ -125,8 +121,7 @@ public final class AssociationEndImpl
                     this.typeBuilder.getElement(),
                     (KlassImpl) this.owningClassifierBuilder.getElement(),
                     this.owningAssociation.getElement(),
-                    this.multiplicity,
-                    this.isOwned);
+                    this.multiplicity);
         }
     }
 }

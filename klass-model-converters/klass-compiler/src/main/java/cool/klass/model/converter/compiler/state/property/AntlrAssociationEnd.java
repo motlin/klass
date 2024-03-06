@@ -16,7 +16,7 @@ import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
-import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
+import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -97,15 +97,13 @@ public class AntlrAssociationEnd
                 this.getType().getElementBuilder(),
                 this.owningClassState.getElementBuilder(),
                 this.owningAssociationState.getElementBuilder(),
-                this.multiplicityState.getMultiplicity(),
-                this.isOwned());
+                this.multiplicityState.getMultiplicity());
 
-        ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders = this.getModifiers()
-                .collect(AntlrAssociationEndModifier.class::cast)
-                .collect(AntlrAssociationEndModifier::build)
+        ImmutableList<ModifierBuilder> modifierBuilders = this.getModifiers()
+                .collect(AntlrModifier::build)
                 .toImmutable();
 
-        this.associationEndBuilder.setAssociationEndModifierBuilders(associationEndModifierBuilders);
+        this.associationEndBuilder.setModifierBuilders(modifierBuilders);
 
         Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);
         this.associationEndBuilder.setOrderByBuilder(orderByBuilder);
@@ -115,9 +113,7 @@ public class AntlrAssociationEnd
 
     public boolean isOwned()
     {
-        return this.getModifiers()
-                .collect(AntlrAssociationEndModifier.class::cast)
-                .anySatisfy(AntlrAssociationEndModifier::isOwned);
+        return this.getModifiers().anySatisfy(AntlrModifier::isOwned);
     }
 
     @Override
@@ -166,9 +162,7 @@ public class AntlrAssociationEnd
 
     public boolean isVersion()
     {
-        return this.getModifiers()
-                .collect(AntlrAssociationEndModifier.class::cast)
-                .anySatisfy(AntlrAssociationEndModifier::isVersion);
+        return this.getModifiers().anySatisfy(AntlrModifier::isVersion);
     }
 
     public void setOpposite(@Nonnull AntlrAssociationEnd opposite)
@@ -187,9 +181,7 @@ public class AntlrAssociationEnd
             @Nonnull CompilerErrorState compilerErrorHolder,
             @Nonnull AntlrClass antlrClass)
     {
-        AntlrAssociationEndModifier versionModifier = this.getModifiers()
-                .collect(AntlrAssociationEndModifier.class::cast)
-                .detect(AntlrAssociationEndModifier::isVersion);
+        AntlrModifier versionModifier = this.getModifiers().detect(AntlrModifier::isVersion);
         String message = String.format(
                 "Multiple version properties on '%s'.",
                 antlrClass.getName());

@@ -11,7 +11,7 @@ import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
-import cool.klass.model.meta.domain.property.DataTypePropertyModifierImpl.DataTypePropertyModifierBuilder;
+import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.domain.property.PrimitivePropertyImpl.PrimitivePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -74,17 +74,13 @@ public class AntlrPrimitiveProperty
     @Override
     public boolean isSystem()
     {
-        return this.getModifiers()
-                .collect(AntlrDataTypePropertyModifier.class::cast)
-                .anySatisfy(AntlrDataTypePropertyModifier::isSystem);
+        return this.getModifiers().anySatisfy(AntlrModifier::isSystem);
     }
 
     @Override
     public boolean isValid()
     {
-        return this.getModifiers()
-                .collect(AntlrDataTypePropertyModifier.class::cast)
-                .anySatisfy(AntlrDataTypePropertyModifier::isValid);
+        return this.getModifiers().anySatisfy(AntlrModifier::isValid);
     }
 
     @Nonnull
@@ -107,11 +103,10 @@ public class AntlrPrimitiveProperty
                 this.owningClassifierState.getElementBuilder(),
                 this.isOptional);
 
-        ImmutableList<DataTypePropertyModifierBuilder> propertyModifierBuilders = this.getModifiers()
-                .collect(AntlrDataTypePropertyModifier.class::cast)
-                .collect(AntlrDataTypePropertyModifier::build)
+        ImmutableList<ModifierBuilder> propertyModifierBuilders = this.getModifiers()
+                .collect(AntlrModifier::build)
                 .toImmutable();
-        this.elementBuilder.setDataTypePropertyModifierBuilders(propertyModifierBuilders);
+        this.elementBuilder.setModifierBuilders(propertyModifierBuilders);
 
         this.buildValidations();
 
@@ -156,10 +151,8 @@ public class AntlrPrimitiveProperty
             return;
         }
 
-        ListIterable<AntlrDataTypePropertyModifier> idModifiers = this.getModifiers()
-                .collect(AntlrDataTypePropertyModifier.class::cast)
-                .select(AntlrDataTypePropertyModifier::isID);
-        for (AntlrDataTypePropertyModifier idModifier : idModifiers)
+        ListIterable<AntlrModifier> idModifiers = this.getModifiers().select(AntlrModifier::isId);
+        for (AntlrModifier idModifier : idModifiers)
         {
             ParserRuleContext offendingToken = idModifier.getElementContext();
             String            message        = "Properties with the 'id' modifier must also have the 'key' modifier.";
@@ -171,10 +164,8 @@ public class AntlrPrimitiveProperty
     {
         PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
 
-        ListIterable<AntlrDataTypePropertyModifier> idModifiers = this.getModifiers()
-                .collect(AntlrDataTypePropertyModifier.class::cast)
-                .select(AntlrDataTypePropertyModifier::isID);
-        for (AntlrDataTypePropertyModifier idModifier : idModifiers)
+        ListIterable<AntlrModifier> idModifiers = this.getModifiers().select(AntlrModifier::isId);
+        for (AntlrModifier idModifier : idModifiers)
         {
             ParserRuleContext offendingToken = idModifier.getElementContext();
             String message = String.format(

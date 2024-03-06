@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
@@ -11,7 +12,8 @@ import cool.klass.model.meta.domain.api.property.Property;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public interface Klass extends Classifier
+public interface Klass
+        extends Classifier
 {
     @Override
     default void visit(TopLevelElementVisitor visitor)
@@ -20,13 +22,13 @@ public interface Klass extends Classifier
     }
 
     @Override
-    default ImmutableList<ClassifierModifier> getInheritedModifiers()
+    default ImmutableList<Modifier> getInheritedModifiers()
     {
-        ImmutableList<ClassifierModifier> superClassProperties = this.getSuperClass()
+        ImmutableList<Modifier> superClassProperties = this.getSuperClass()
                 .map(Classifier::getModifiers)
                 .orElseGet(Lists.immutable::empty);
 
-        ImmutableList<ClassifierModifier> interfaceProperties = Classifier.super.getInheritedModifiers();
+        ImmutableList<Modifier> interfaceProperties = Classifier.super.getInheritedModifiers();
 
         return superClassProperties.newWithAll(interfaceProperties).distinctBy(NamedElement::getName);
     }
@@ -139,7 +141,7 @@ public interface Klass extends Classifier
 
     default boolean isTransient()
     {
-        return this.getModifiers().anySatisfy(ClassifierModifier::isTransient);
+        return this.getModifiers().anySatisfy(classifierModifier -> classifierModifier.is("transient"));
     }
 
     default boolean isVersioned()

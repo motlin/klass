@@ -14,8 +14,8 @@ import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
-import cool.klass.model.converter.compiler.state.parameter.AntlrParameterModifier;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
@@ -202,13 +202,14 @@ public class ParameterizedPropertyPhase
         }
 
         int ordinal = this.parameterState.getNumModifiers();
-        AntlrParameterModifier parameterModifierState = new AntlrParameterModifier(
+        AntlrModifier modifierState = new AntlrModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,
                 ctx.getText(),
-                ordinal);
-        this.parameterState.enterParameterModifier(parameterModifierState);
+                ordinal,
+                this.parameterState);
+        this.parameterState.enterModifier(modifierState);
     }
 
     private void enterParameterDeclaration(

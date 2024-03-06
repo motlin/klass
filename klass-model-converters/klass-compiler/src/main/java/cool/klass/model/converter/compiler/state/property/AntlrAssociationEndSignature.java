@@ -15,8 +15,8 @@ import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
-import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
+import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -91,15 +91,13 @@ public class AntlrAssociationEndSignature
                 this.ordinal,
                 this.getType().getElementBuilder(),
                 this.owningClassifierState.getElementBuilder(),
-                this.multiplicityState.getMultiplicity(),
-                this.isOwned());
+                this.multiplicityState.getMultiplicity());
 
-        ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders = this.getModifiers()
-                .collect(AntlrAssociationEndModifier.class::cast)
-                .collect(AntlrAssociationEndModifier::build)
+        ImmutableList<ModifierBuilder> modifierBuilders = this.getModifiers()
+                .collect(AntlrModifier::build)
                 .toImmutable();
 
-        this.associationEndSignatureBuilder.setAssociationEndModifierBuilders(associationEndModifierBuilders);
+        this.associationEndSignatureBuilder.setModifierBuilders(modifierBuilders);
 
         Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);
         this.associationEndSignatureBuilder.setOrderByBuilder(orderByBuilder);
@@ -109,10 +107,7 @@ public class AntlrAssociationEndSignature
 
     public boolean isOwned()
     {
-        // TODO: Consider generics instead of cast
-        return this.getModifiers()
-                .collect(AntlrAssociationEndModifier.class::cast)
-                .anySatisfy(AntlrAssociationEndModifier::isOwned);
+        return this.getModifiers().anySatisfy(AntlrModifier::isOwned);
     }
 
     @Override

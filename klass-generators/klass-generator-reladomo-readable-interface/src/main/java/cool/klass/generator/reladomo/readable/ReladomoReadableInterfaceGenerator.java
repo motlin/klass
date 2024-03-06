@@ -95,7 +95,7 @@ public class ReladomoReadableInterfaceGenerator
 
     private String getPropertySourceCode(PrimitiveProperty property)
     {
-        ImmutableList<String> propertyModifierNames = property.getPropertyModifiers().collect(NamedElement::getName);
+        ImmutableList<String> propertyModifierNames = property.getModifiers().collect(NamedElement::getName);
 
         String comment = propertyModifierNames.isEmpty()
                 ? ""

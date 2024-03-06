@@ -9,12 +9,13 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
-import cool.klass.model.meta.domain.ClassifierModifierImpl.ClassifierModifierBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
+import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
@@ -115,10 +116,10 @@ public class AntlrInterface extends AntlrClassifier
                 this.ordinal,
                 this.packageName);
 
-        ImmutableList<ClassifierModifierBuilder> classifierModifierBuilders = this.classifierModifierStates
-                .collect(AntlrClassifierModifier::build)
+        ImmutableList<ModifierBuilder> classifierModifierBuilders = this.modifierStates
+                .collect(AntlrModifier::build)
                 .toImmutable();
-        this.interfaceBuilder.setClassifierModifierBuilders(classifierModifierBuilders);
+        this.interfaceBuilder.setModifierBuilders(classifierModifierBuilders);
 
         ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders = this.dataTypePropertyStates
                 .<DataTypePropertyBuilder<?, ?, ?>>collect(AntlrDataTypeProperty::build)
@@ -230,8 +231,7 @@ public class AntlrInterface extends AntlrClassifier
     private void reportTransientModifier(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // Only need to check declared modifiers
-        Optional<AntlrClassifierModifier> transientModifier = this.classifierModifierStates
-                .detectOptional(AntlrClassifierModifier::isTransient);
+        Optional<AntlrModifier> transientModifier = this.modifierStates.detectOptional(AntlrModifier::isTransient);
 
         if (!transientModifier.isPresent())
         {
@@ -343,11 +343,11 @@ public class AntlrInterface extends AntlrClassifier
     }
 
     @Override
-    public AntlrClassifierModifier getClassifierModifierByName(String name)
+    public AntlrModifier getModifierByName(String name)
     {
-        if (this.classifierModifiersByName.containsKey(name))
+        if (this.modifiersByName.containsKey(name))
         {
-            return this.classifierModifiersByName.get(name);
+            return this.modifiersByName.get(name);
         }
 
         return this.getInterfaceClassifierModifierByName(name);

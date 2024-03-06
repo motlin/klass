@@ -6,8 +6,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrClassifierModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -97,7 +97,7 @@ public class ClassAuditPropertyInferencePhase
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
-        AntlrClassifierModifier classifierModifierState =
+        AntlrModifier classifierModifierState =
                 this.compilerState.getCompilerWalkState().getClassifierModifierState();
         ParseTreeListener       compilerPhase           = new PropertyPhase(this.compilerState);
 

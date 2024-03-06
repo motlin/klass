@@ -15,6 +15,7 @@ import cool.klass.model.converter.compiler.state.AntlrMultiplicityOwner;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.meta.domain.api.DataType.DataTypeGetter;
 import cool.klass.model.meta.domain.parameter.ParameterImpl.ParameterBuilder;
@@ -54,7 +55,7 @@ public final class AntlrParameter
     private final AntlrType     typeState;
 
     // TODO: Factor modifiers into type checking
-    private final MutableList<AntlrParameterModifier> parameterModifiers = Lists.mutable.empty();
+    private final MutableList<AntlrModifier> modifiers = Lists.mutable.empty();
 
     @Nullable
     private AntlrMultiplicity multiplicityState;
@@ -97,7 +98,7 @@ public final class AntlrParameter
 
     public int getNumModifiers()
     {
-        return this.parameterModifiers.size();
+        return this.modifiers.size();
     }
 
     @Override
@@ -110,9 +111,9 @@ public final class AntlrParameter
         this.multiplicityState = Objects.requireNonNull(multiplicityState);
     }
 
-    public void enterParameterModifier(AntlrParameterModifier parameterModifierState)
+    public void enterModifier(AntlrModifier modifierState)
     {
-        this.parameterModifiers.add(parameterModifierState);
+        this.modifiers.add(modifierState);
     }
 
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)

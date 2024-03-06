@@ -80,7 +80,7 @@ public abstract class AntlrProperty
                 modifierState.getName(),
                 (name, builder) -> builder == null
                         ? modifierState
-                        : AntlrDataTypePropertyModifier.AMBIGUOUS);
+                        : AntlrModifier.AMBIGUOUS);
 
         AntlrModifier duplicate = this.modifiersByContext.put(
                 modifierState.getElementContext(),

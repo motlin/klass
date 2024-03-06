@@ -7,21 +7,21 @@ public class AssociationEndDTO
     private final String                     name;
     private final MultiplicityDTO            multiplicity;
     private final ReferenceDTO               resultType;
-    private final ImmutableList<ModifierDTO> associationEndModifiers;
+    private final ImmutableList<ModifierDTO> modifiers;
     private final ImmutableList<OrderByDTO>  orderBys;
 
     public AssociationEndDTO(
             String name,
             MultiplicityDTO multiplicity,
             ReferenceDTO resultType,
-            ImmutableList<ModifierDTO> associationEndModifiers,
+            ImmutableList<ModifierDTO> modifiers,
             ImmutableList<OrderByDTO> orderBys)
     {
         this.name                    = name;
         this.multiplicity            = multiplicity;
-        this.resultType              = resultType;
-        this.associationEndModifiers = associationEndModifiers;
-        this.orderBys                = orderBys;
+        this.resultType = resultType;
+        this.modifiers  = modifiers;
+        this.orderBys   = orderBys;
     }
 
     public String getName()
@@ -39,9 +39,9 @@ public class AssociationEndDTO
         return this.resultType;
     }
 
-    public ImmutableList<ModifierDTO> getAssociationEndModifiers()
+    public ImmutableList<ModifierDTO> getModifiers()
     {
-        return this.associationEndModifiers;
+        return this.modifiers;
     }
 
     public ImmutableList<OrderByDTO> getOrderBys()
