@@ -26,6 +26,6 @@ public interface ProjectionAssociationEnd extends ProjectionParent
     @Override
     default Klass getKlass()
     {
-        return this.getAssociationEnd().getOwningKlass();
+        return this.getAssociationEnd().getType();
     }
 }
