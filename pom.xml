@@ -30,6 +30,7 @@
         <module>klass-servlet</module>
         <module>xample-projects</module>
         <module>klass-maven-archetype</module>
+        <module>klass-logging-context</module>
     </modules>
 
     <properties>
