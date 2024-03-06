@@ -10,19 +10,25 @@ import cool.klass.model.converter.compiler.token.categorizing.parser.ParserBased
 import cool.klass.model.meta.grammar.KlassLexer;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.test.constants.KlassTestConstants;
+import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.eclipse.collections.api.map.MapIterable;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SyntaxHighlighterListenerTest
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(SyntaxHighlighterListenerTest.class);
+
+    @Rule
+    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
 
     @Test
     public void lightColorScheme()

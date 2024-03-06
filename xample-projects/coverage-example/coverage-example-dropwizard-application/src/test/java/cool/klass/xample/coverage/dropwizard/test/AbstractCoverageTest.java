@@ -19,6 +19,7 @@ import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
+import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import io.liftwizard.reladomo.test.rule.ReladomoTestRuleBuilder;
 import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Before;
@@ -30,6 +31,9 @@ import static org.junit.Assert.assertThat;
 
 public class AbstractCoverageTest
 {
+    @Rule
+    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+
     @Rule
     public final DropwizardAppRule<CoverageExampleConfiguration> rule = new DropwizardAppRule<>(
             CoverageExampleApplication.class,

@@ -13,17 +13,22 @@ import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
 import io.liftwizard.dropwizard.configuration.reladomo.ReladomoFactory;
+import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import io.liftwizard.junit.rule.match.json.JsonMatchRule;
 import klass.model.meta.domain.dropwizard.application.KlassBootstrappedMetaModelApplication;
 import klass.model.meta.domain.dropwizard.application.KlassBootstrappedMetaModelConfiguration;
 import org.eclipse.collections.impl.utility.Iterate;
 import org.junit.Rule;
+import org.junit.rules.TestRule;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class AbstractResourceTestCase
 {
+    @Rule
+    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+
     @Rule
     public final DropwizardAppRule<KlassBootstrappedMetaModelConfiguration> appRule = new DropwizardAppRule<>(
             KlassBootstrappedMetaModelApplication.class,

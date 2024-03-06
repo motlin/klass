@@ -12,16 +12,22 @@ import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.reladomo.persistent.writer.IncomingCreateDataModelValidator;
 import io.liftwizard.dropwizard.configuration.uuid.seed.SeedUUIDSupplier;
+import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
+import org.junit.Rule;
+import org.junit.rules.TestRule;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public abstract class AbstractValidatorTest
 {
+    @Rule
+    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+
     protected final MutableList<String> actualErrors      = Lists.mutable.empty();
     protected final MutableList<String> actualWarnings    = Lists.mutable.empty();
     protected final ReladomoDataStore   reladomoDataStore = this.getReladomoDataStore();

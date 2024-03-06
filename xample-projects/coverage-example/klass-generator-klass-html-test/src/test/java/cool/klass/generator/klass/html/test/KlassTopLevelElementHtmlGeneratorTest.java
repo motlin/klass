@@ -13,8 +13,11 @@ import cool.klass.model.converter.compiler.error.RootCompilerError;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.TopLevelElement;
 import cool.klass.test.constants.KlassTestConstants;
+import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +28,9 @@ import static org.junit.Assert.fail;
 public class KlassTopLevelElementHtmlGeneratorTest
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(KlassTopLevelElementHtmlGeneratorTest.class);
+
+    @Rule
+    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
 
     @Test
     public void smokeTest()

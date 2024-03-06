@@ -16,6 +16,7 @@
 
 package io.liftwizard.reladomo.test.resource.writer.tests;
 
+import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import io.liftwizard.reladomo.test.resource.writer.ReladomoTestResourceWriter;
 import io.liftwizard.reladomo.test.rule.ExecuteSqlTestRule;
 import io.liftwizard.reladomo.test.rule.ReladomoInitializeTestRule;
@@ -25,11 +26,15 @@ import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
+import org.junit.rules.TestRule;
 
 import static org.junit.Assert.assertEquals;
 
 public class ReladomoTestResourceWriterTest
 {
+    @Rule
+    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+
     private final ExecuteSqlTestRule executeSqlTestRule = new ExecuteSqlTestRule();
 
     private final ReladomoInitializeTestRule initializeTestRule =

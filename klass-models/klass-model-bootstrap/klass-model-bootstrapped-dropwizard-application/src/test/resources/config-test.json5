@@ -34,7 +34,7 @@
     },
     "appenders": [
       {
-        "type"     : "console",
+        "type"     : "buffered",
         "timeZone" : "system",
         "logFormat": "%highlight(%-5level) %cyan(%date{HH:mm:ss}) [%magenta(%thread)] %green(%logger): %message%n%red(%rootException)"
       }
