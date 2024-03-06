@@ -11,10 +11,6 @@
 <!-- To completely disable a check, just comment it out or delete it from the file. -->
 
 <module name="Checker">
-    <module name="SuppressionFilter">
-        <property name="file" value="checkstyle-suppressions.xml" />
-    </module>
-
     <property name="charset" value="UTF-8" />
 
     <property name="severity" value="error" />
@@ -66,7 +62,9 @@
 
         <module name="ParameterName" />
         <module name="StaticVariableName" />
-        <module name="TypeName" />
+        <module name="TypeName">
+            <property name="format" value="(^[A-Z][a-zA-Z0-9]*$)|(^[A-Z][a-zA-Z0-9_]*Test$)" />
+        </module>
         <module name="LambdaParameterName" />
 
         <module name="AvoidStarImport">
@@ -260,8 +258,9 @@
         <module name="CovariantEquals" />
 
         <module name="AvoidStaticImport">
-            <property name="excludes"
-                    value="org.junit.Assert.*,org.junit.Assume.*,org.hamcrest.CoreMatchers.*,org.hamcrest.Matchers.*,org.eclipse.collections.impl.test.Verify.*" />
+            <property
+                    name="excludes"
+                    value="org.junit.Assert.*,org.junit.Assume.*,org.hamcrest.CoreMatchers.*,org.hamcrest.Matchers.*,org.hamcrest.MatcherAssert.*,org.eclipse.collections.impl.test.Verify.*" />
         </module>
 
         <module name="MissingDeprecated" />
