@@ -66,10 +66,4 @@ public class ReactPropTypeGenerator
             throw new RuntimeException(e);
         }
     }
-
-    @Nonnull
-    public static String getIndent(int indentLevel)
-    {
-        return new String(new char[indentLevel]).replace("\0", "    ");
-    }
 }

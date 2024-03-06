@@ -95,7 +95,7 @@ public class PropTypeSourceCodeProjectionVisitor
                 .collect(this::getPropTypeSourceCode)
                 .makeString("");
 
-        String            indent            = ReactPropTypeGenerator.getIndent(this.indentLevel);
+        String            indent            = getIndent(this.indentLevel);
         ReferenceProperty referenceProperty = projectionReferenceProperty.getProperty();
         Multiplicity      multiplicity      = referenceProperty.getMultiplicity();
         String            isRequiredSuffix  = multiplicity.isRequired() || multiplicity.isToMany() ? ".isRequired" : "";
@@ -123,7 +123,7 @@ public class PropTypeSourceCodeProjectionVisitor
             return;
         }
 
-        String            indent            = ReactPropTypeGenerator.getIndent(this.indentLevel);
+        String            indent            = getIndent(this.indentLevel);
         ReferenceProperty referenceProperty = projectionProjectionReference.getProperty();
         Multiplicity      multiplicity      = referenceProperty.getMultiplicity();
         String            isRequiredSuffix  = multiplicity.isRequired() || multiplicity.isToMany() ? ".isRequired" : "";
@@ -151,7 +151,7 @@ public class PropTypeSourceCodeProjectionVisitor
 
         String isRequiredSuffix = property.isRequired() && !isNullableInfinity ? ".isRequired" : "";
 
-        String indent = ReactPropTypeGenerator.getIndent(this.indentLevel);
+        String indent = getIndent(this.indentLevel);
 
         this.result = String.format(
                 "%s%s: PropTypes.%s%s,\n",
@@ -159,5 +159,11 @@ public class PropTypeSourceCodeProjectionVisitor
                 projectionDataTypeProperty.getName(),
                 visitor.getResult(),
                 isRequiredSuffix);
+    }
+
+    @Nonnull
+    public static String getIndent(int indentLevel)
+    {
+        return new String(new char[indentLevel]).replace("\0", "    ");
     }
 }
