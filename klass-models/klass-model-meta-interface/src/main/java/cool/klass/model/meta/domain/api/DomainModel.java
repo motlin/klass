@@ -9,7 +9,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 public interface DomainModel
 {
     @Nonnull
-    ImmutableList<PackageableElement> getTopLevelElements();
+    ImmutableList<TopLevelElement> getTopLevelElements();
 
     @Nonnull
     ImmutableList<Enumeration> getEnumerations();

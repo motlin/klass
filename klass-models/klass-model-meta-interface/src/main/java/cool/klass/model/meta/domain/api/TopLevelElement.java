@@ -15,6 +15,6 @@ public interface TopLevelElement extends Element
     interface TopLevelElementBuilder
     {
         @Nonnull
-        PackageableElement getElement();
+        TopLevelElement getElement();
     }
 }

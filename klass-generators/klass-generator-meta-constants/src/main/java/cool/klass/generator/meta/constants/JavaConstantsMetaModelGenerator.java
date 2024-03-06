@@ -23,6 +23,7 @@ import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.TopLevelElement;
 import cool.klass.model.meta.domain.api.modifier.AssociationEndModifier;
 import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
 import cool.klass.model.meta.domain.api.projection.Projection;
@@ -111,7 +112,7 @@ public class JavaConstantsMetaModelGenerator
     {
         String imports = this.domainModel
                 .getTopLevelElements()
-                .collect(PackageableElement::getPackageName)
+                .collect(TopLevelElement::getPackageName)
                 .distinct()
                 .toSortedList()
                 .collect(packageName -> "import " + packageName + ".meta.constants.*;\n")
@@ -144,7 +145,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
-                + "    public ImmutableList<PackageableElement> getTopLevelElements()\n"
+                + "    public ImmutableList<TopLevelElement> getTopLevelElements()\n"
                 + "    {\n"
                 + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getTopLevelElements() not implemented yet\");\n"
                 + "    }\n"
@@ -249,7 +250,7 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getTopLevelElementSourceCode(PackageableElement topLevelElement)
+    private String getTopLevelElementSourceCode(TopLevelElement topLevelElement)
     {
         if (topLevelElement instanceof ServiceGroup)
         {

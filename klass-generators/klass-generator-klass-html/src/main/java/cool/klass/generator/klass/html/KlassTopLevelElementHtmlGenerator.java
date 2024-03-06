@@ -7,7 +7,7 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import cool.klass.model.converter.compiler.token.categories.TokenCategory;
 import cool.klass.model.meta.domain.AbstractElement;
-import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.TopLevelElement;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -26,10 +26,10 @@ public final class KlassTopLevelElementHtmlGenerator
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    public static String writeHtml(PackageableElement packageableElement)
+    public static String writeHtml(TopLevelElement topLevelElement)
     {
-        Optional<SourceCode> sourceCodeObject = packageableElement.getSourceCodeObject();
-        AbstractElement      abstractElement  = (AbstractElement) packageableElement;
+        Optional<SourceCode> sourceCodeObject = topLevelElement.getSourceCodeObject();
+        AbstractElement      abstractElement  = (AbstractElement) topLevelElement;
         ParserRuleContext    elementContext   = abstractElement.getElementContext();
         Token                start            = elementContext.getStart();
         Token                stop             = elementContext.getStop();

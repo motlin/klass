@@ -11,12 +11,16 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.api.Association;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Enumeration;
+import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
-import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.TopLevelElement;
+import cool.klass.model.meta.domain.api.TopLevelElementVisitor;
 import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
+import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class UmlNomnomlGenerator
@@ -54,105 +58,11 @@ public class UmlNomnomlGenerator
         this.printStringToFile(schemaOutputPath, sourceCode);
     }
 
-    private String getSourceCode(PackageableElement packageableElement)
+    private String getSourceCode(TopLevelElement packageableElement)
     {
-        if (packageableElement instanceof Enumeration)
-        {
-            return this.getEnumerationSourceCode((Enumeration) packageableElement);
-        }
-
-        if (packageableElement instanceof Klass)
-        {
-            return this.getClassSourceCode((Klass) packageableElement);
-        }
-
-        if (packageableElement instanceof Association)
-        {
-            return this.getAssociationSourceCode((Association) packageableElement);
-        }
-
-        return String.format("// %s %s%n", packageableElement.getClass().getSimpleName(), packageableElement.getName());
-    }
-
-    private String getEnumerationSourceCode(Enumeration enumeration)
-    {
-        String enumerationLiteralsSourceCode = enumeration
-                .getEnumerationLiterals()
-                .collect(NamedElement::getName)
-                .collect(each -> "     " + each)
-                .makeString(";\n");
-
-        return ""
-                + "[ < enumeration >\n"
-                + enumeration.getName() + "\n"
-                + "|\n"
-                + enumerationLiteralsSourceCode + "\n"
-                + "]\n"
-                + "\n";
-    }
-
-    private String getClassSourceCode(Klass klass)
-    {
-        String propertiesSourceCode = klass
-                .getDataTypeProperties()
-                .reject(DataTypeProperty::isPrivate)
-                .reject(DataTypeProperty::isTemporalRange)
-                .collect(this::getPropertySourceCode)
-                .makeString(";\n");
-
-        return ""
-                + "[ " + klass.getName() + " |\n"
-                + propertiesSourceCode + "\n"
-                + "]\n"
-                + "\n";
-    }
-
-    private String getAssociationSourceCode(Association association)
-    {
-        AssociationEnd sourceAssociationEnd = association.getSourceAssociationEnd();
-        AssociationEnd targetAssociationEnd = association.getTargetAssociationEnd();
-
-        String sourceClassName = sourceAssociationEnd.getOwningClassifier().getName();
-        String targetClassName = targetAssociationEnd.getOwningClassifier().getName();
-
-        String sourceName = sourceAssociationEnd.getName();
-        String targetName = targetAssociationEnd.getName();
-
-        String sourceMultiplicity = sourceAssociationEnd.getMultiplicity().getPrettyName();
-        String targetMultiplicity = targetAssociationEnd.getMultiplicity().getPrettyName();
-
-        return String.format(
-                "// %s%n[%s] %s %s - %s %s [%s]%n%n",
-                association.getName(),
-                targetClassName,
-                sourceName,
-                sourceMultiplicity,
-                targetName,
-                targetMultiplicity,
-                sourceClassName);
-    }
-
-    private String getPropertySourceCode(DataTypeProperty dataTypeProperty)
-    {
-        String isOptionalString = dataTypeProperty.isOptional() && !dataTypeProperty.isTemporal() ? "?" : "";
-        ImmutableList<DataTypePropertyModifier> relevantModifiers = dataTypeProperty
-                .getPropertyModifiers()
-                .reject(DataTypePropertyModifier::isAudit)
-                .reject(DataTypePropertyModifier::isFrom)
-                .reject(DataTypePropertyModifier::isTo)
-                .reject(DataTypePropertyModifier::isSystem)
-                .reject(DataTypePropertyModifier::isValid);
-        String propertyModifiersString = relevantModifiers.isEmpty()
-                ? ""
-                :  relevantModifiers
-                        .collect(NamedElement::getName)
-                        .makeString(" // ", " ", "");
-        return String.format(
-                "%s: %s%s%s",
-                dataTypeProperty.getName(),
-                dataTypeProperty.getType(),
-                isOptionalString,
-                propertyModifiersString);
+        var visitor = new TopLevelElementSourceCodeVisitor();
+        packageableElement.visit(visitor);
+        return visitor.getSourceCode();
     }
 
     @Nonnull
@@ -177,6 +87,124 @@ public class UmlNomnomlGenerator
         catch (FileNotFoundException e)
         {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static class TopLevelElementSourceCodeVisitor implements TopLevelElementVisitor
+    {
+        private String sourceCode;
+
+        private String getSourceCode()
+        {
+            return this.sourceCode;
+        }
+
+        @Override
+        public void visitEnumeration(Enumeration enumeration)
+        {
+            String enumerationLiteralsSourceCode = enumeration
+                    .getEnumerationLiterals()
+                    .collect(NamedElement::getName)
+                    .collect(each -> "     " + each)
+                    .makeString(";\n");
+
+            this.sourceCode = ""
+                    + "[ < enumeration >\n"
+                    + enumeration.getName() + "\n"
+                    + "|\n"
+                    + enumerationLiteralsSourceCode + "\n"
+                    + "]\n"
+                    + "\n";
+        }
+
+        @Override
+        public void visitInterface(Interface anInterface)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".visitInterface() not implemented yet");
+        }
+
+        @Override
+        public void visitKlass(Klass klass)
+        {
+            String propertiesSourceCode = klass
+                    .getDataTypeProperties()
+                    .reject(DataTypeProperty::isPrivate)
+                    .reject(DataTypeProperty::isTemporalRange)
+                    .collect(this::getPropertySourceCode)
+                    .makeString(";\n");
+
+            this.sourceCode = ""
+                    + "[ " + klass.getName() + " |\n"
+                    + propertiesSourceCode + "\n"
+                    + "]\n"
+                    + "\n";
+        }
+
+        @Override
+        public void visitAssociation(Association association)
+        {
+            AssociationEnd sourceAssociationEnd = association.getSourceAssociationEnd();
+            AssociationEnd targetAssociationEnd = association.getTargetAssociationEnd();
+
+            String sourceClassName = sourceAssociationEnd.getOwningClassifier().getName();
+            String targetClassName = targetAssociationEnd.getOwningClassifier().getName();
+
+            String sourceName = sourceAssociationEnd.getName();
+            String targetName = targetAssociationEnd.getName();
+
+            String sourceMultiplicity = sourceAssociationEnd.getMultiplicity().getPrettyName();
+            String targetMultiplicity = targetAssociationEnd.getMultiplicity().getPrettyName();
+
+            this.sourceCode = String.format(
+                    "// %s%n[%s] %s %s - %s %s [%s]%n%n",
+                    association.getName(),
+                    targetClassName,
+                    sourceName,
+                    sourceMultiplicity,
+                    targetName,
+                    targetMultiplicity,
+                    sourceClassName);
+        }
+
+        @Override
+        public void visitProjection(Projection projection)
+        {
+            this.sourceCode = this.getPlaceholderComment(projection);
+        }
+
+        @Override
+        public void visitServiceGroup(ServiceGroup serviceGroup)
+        {
+            this.sourceCode = this.getPlaceholderComment(serviceGroup);
+        }
+
+        private  String getPlaceholderComment(TopLevelElement topLevelElement)
+        {
+            return String.format("// %s %s%n", topLevelElement.getClass().getSimpleName(), topLevelElement.getName());
+        }
+
+        private String getPropertySourceCode(DataTypeProperty dataTypeProperty)
+        {
+            String isOptionalString = dataTypeProperty.isOptional() && !dataTypeProperty.isTemporal() ? "?" : "";
+            ImmutableList<DataTypePropertyModifier> relevantModifiers = dataTypeProperty
+                    .getPropertyModifiers()
+                    .reject(DataTypePropertyModifier::isAudit)
+                    .reject(DataTypePropertyModifier::isFrom)
+                    .reject(DataTypePropertyModifier::isTo)
+                    .reject(DataTypePropertyModifier::isSystem)
+                    .reject(DataTypePropertyModifier::isValid);
+            String propertyModifiersString = relevantModifiers.isEmpty()
+                    ? ""
+                    :  relevantModifiers
+                            .collect(NamedElement::getName)
+                            .makeString(" // ", " ", "");
+            return String.format(
+                    "%s: %s%s%s",
+                    dataTypeProperty.getName(),
+                    dataTypeProperty.getType(),
+                    isOptionalString,
+                    propertyModifiersString);
         }
     }
 }

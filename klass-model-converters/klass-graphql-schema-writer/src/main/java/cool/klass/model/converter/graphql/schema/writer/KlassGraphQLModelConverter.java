@@ -18,8 +18,8 @@ import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
-import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.TopLevelElement;
 import cool.klass.model.meta.domain.api.Type;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.property.Property;
@@ -49,24 +49,24 @@ public class KlassGraphQLModelConverter
     }
 
     @Nonnull
-    public static GraphQLElement convertTopLevelElement(PackageableElement packageableElement)
+    public static GraphQLElement convertTopLevelElement(TopLevelElement topLevelElement)
     {
-        if (packageableElement instanceof Enumeration)
+        if (topLevelElement instanceof Enumeration)
         {
-            return KlassGraphQLModelConverter.convertEnumeration((Enumeration) packageableElement);
+            return KlassGraphQLModelConverter.convertEnumeration((Enumeration) topLevelElement);
         }
 
-        if (packageableElement instanceof Interface)
+        if (topLevelElement instanceof Interface)
         {
-            return KlassGraphQLModelConverter.convertInterface((Interface) packageableElement);
+            return KlassGraphQLModelConverter.convertInterface((Interface) topLevelElement);
         }
 
-        if (packageableElement instanceof Klass)
+        if (topLevelElement instanceof Klass)
         {
-            return KlassGraphQLModelConverter.convertClass((Klass) packageableElement);
+            return KlassGraphQLModelConverter.convertClass((Klass) topLevelElement);
         }
 
-        throw new AssertionError(packageableElement.getClass().getSimpleName());
+        throw new AssertionError(topLevelElement.getClass().getSimpleName());
     }
 
     @Nonnull

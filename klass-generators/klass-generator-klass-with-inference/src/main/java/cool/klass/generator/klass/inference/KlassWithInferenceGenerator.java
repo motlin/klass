@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.TopLevelElement;
 import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.tuple.Pair;
 
@@ -28,18 +28,18 @@ public class KlassWithInferenceGenerator
     {
         this.domainModel
                 .getTopLevelElements()
-                .groupBy(PackageableElement::getPackageName)
+                .groupBy(TopLevelElement::getPackageName)
                 .keyMultiValuePairsView()
                 .forEachWith(this::writeFile, outputPath);
     }
 
-    private void writeFile(Pair<String, RichIterable<PackageableElement>> packagePair, Path outputPath)
+    private void writeFile(Pair<String, RichIterable<TopLevelElement>> packagePair, Path outputPath)
     {
-        String                           fullyQualifiedPackage = packagePair.getOne();
-        RichIterable<PackageableElement> packageableElements   = packagePair.getTwo();
+        String                        fullyQualifiedPackage = packagePair.getOne();
+        RichIterable<TopLevelElement> topLevelElements      = packagePair.getTwo();
 
         Path   klassOutputPath = this.getOutputPath(outputPath, fullyQualifiedPackage);
-        String classSourceCode = this.getKlassSourceCode(packageableElements, fullyQualifiedPackage);
+        String classSourceCode = this.getKlassSourceCode(topLevelElements, fullyQualifiedPackage);
 
         this.printStringToFile(klassOutputPath, classSourceCode);
     }
@@ -59,10 +59,10 @@ public class KlassWithInferenceGenerator
 
     @Nonnull
     private String getKlassSourceCode(
-            @Nonnull RichIterable<PackageableElement> packageableElements,
+            @Nonnull RichIterable<TopLevelElement> topLevelElements,
             @Nonnull String fullyQualifiedPackage)
     {
-        String topLevelElementsSourceCode = packageableElements
+        String topLevelElementsSourceCode = topLevelElements
                 .collect(Element::getSourceCodeWithInference)
                 .makeString("\n\n");
 

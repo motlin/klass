@@ -16,7 +16,7 @@ import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
-import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.TopLevelElement;
 import cool.klass.model.meta.domain.api.TopLevelElement.TopLevelElementBuilder;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
@@ -29,21 +29,21 @@ import org.eclipse.collections.api.map.ImmutableMap;
 public final class DomainModelImpl implements DomainModel
 {
     @Nonnull
-    private final ImmutableList<PackageableElement> topLevelElements;
+    private final ImmutableList<TopLevelElement> topLevelElements;
     @Nonnull
-    private final ImmutableList<Enumeration>        enumerations;
+    private final ImmutableList<Enumeration>     enumerations;
     @Nonnull
-    private final ImmutableList<Classifier>         classifiers;
+    private final ImmutableList<Classifier>      classifiers;
     @Nonnull
-    private final ImmutableList<Interface>          interfaces;
+    private final ImmutableList<Interface>       interfaces;
     @Nonnull
-    private final ImmutableList<Klass>              classes;
+    private final ImmutableList<Klass>           classes;
     @Nonnull
-    private final ImmutableList<Association>        associations;
+    private final ImmutableList<Association>     associations;
     @Nonnull
-    private final ImmutableList<Projection>         projections;
+    private final ImmutableList<Projection>      projections;
     @Nonnull
-    private final ImmutableList<ServiceGroup>       serviceGroups;
+    private final ImmutableList<ServiceGroup>    serviceGroups;
 
     private final ImmutableMap<String, Enumeration> enumerationsByName;
     private final ImmutableMap<String, Interface>   interfacesByName;
@@ -54,7 +54,7 @@ public final class DomainModelImpl implements DomainModel
     private final ImmutableMap<String, Classifier>  classifiersByName;
 
     private DomainModelImpl(
-            @Nonnull ImmutableList<PackageableElement> topLevelElements,
+            @Nonnull ImmutableList<TopLevelElement> topLevelElements,
             @Nonnull ImmutableList<Enumeration> enumerations,
             @Nonnull ImmutableList<Classifier> classifiers,
             @Nonnull ImmutableList<Interface> interfaces,
@@ -83,7 +83,7 @@ public final class DomainModelImpl implements DomainModel
 
     @Override
     @Nonnull
-    public ImmutableList<PackageableElement> getTopLevelElements()
+    public ImmutableList<TopLevelElement> getTopLevelElements()
     {
         return this.topLevelElements;
     }
@@ -227,7 +227,7 @@ public final class DomainModelImpl implements DomainModel
             this.projectionBuilders.each(AbstractProjectionParentBuilder::build2);
             ImmutableList<ServiceGroup> serviceGroups =
                     this.serviceGroupBuilders.<ServiceGroup>collect(ServiceGroupBuilder::build).toImmutable();
-            ImmutableList<PackageableElement> topLevelElements =
+            ImmutableList<TopLevelElement> topLevelElements =
                     this.topLevelElementBuilders.collect(TopLevelElementBuilder::getElement);
 
             return new DomainModelImpl(
