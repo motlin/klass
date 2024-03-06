@@ -10,7 +10,8 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public class Klass extends Type
 {
-    private ImmutableList<Property<?>> properties;
+    private ImmutableList<Property<?>>         properties;
+    private ImmutableList<DataTypeProperty<?>> dataTypeProperties;
 
     public Klass(
             ParserRuleContext elementContext,
@@ -29,13 +30,18 @@ public class Klass extends Type
     private void setProperties(ImmutableList<Property<?>> properties)
     {
         this.properties = properties;
+        this.dataTypeProperties = (ImmutableList<DataTypeProperty<?>>) (ImmutableList<?>) properties
+                .selectInstancesOf(DataTypeProperty.class);
+    }
+
+    public ImmutableList<DataTypeProperty<?>> getDataTypeProperties()
+    {
+        return this.dataTypeProperties;
     }
 
     public static final class KlassBuilder extends TypeBuilder
     {
-        private final MutableList<PropertyBuilder<?>>         memberBuilders              = Lists.mutable.empty();
-        private final MutableList<PrimitivePropertyBuilder>   primitivePropertyBuilders   = Lists.mutable.empty();
-        private final MutableList<EnumerationPropertyBuilder> enumerationPropertyBuilders = Lists.mutable.empty();
+        private final MutableList<PropertyBuilder<?>> memberBuilders = Lists.mutable.empty();
 
         public KlassBuilder(
                 ParserRuleContext elementContext,
@@ -49,14 +55,12 @@ public class Klass extends Type
         public KlassBuilder primitiveProperty(PrimitivePropertyBuilder primitivePropertyBuilder)
         {
             this.memberBuilders.add(primitivePropertyBuilder);
-            this.primitivePropertyBuilders.add(primitivePropertyBuilder);
             return this;
         }
 
         public KlassBuilder enumerationProperty(EnumerationPropertyBuilder enumerationPropertyBuilder)
         {
             this.memberBuilders.add(enumerationPropertyBuilder);
-            this.enumerationPropertyBuilders.add(enumerationPropertyBuilder);
             return this;
         }
 

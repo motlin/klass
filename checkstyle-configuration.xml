@@ -169,7 +169,7 @@
             <property name="message" value="Line has trailing spaces." />
         </module>
 
-        <!--TODO-->
+        <!--TODO RegexpSinglelineJava-->
         <!--<module name="RegexpSinglelineJava">-->
         <!--<property name="ignoreComments" value="true" />-->
 

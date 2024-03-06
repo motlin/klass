@@ -13,6 +13,7 @@ public class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
             PrimitiveType primitiveType,
             ParserRuleContext owningKlassContext,
             Klass owningKlass,
+            boolean isKey,
             boolean isOptional)
     {
         super(
@@ -23,6 +24,7 @@ public class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                 primitiveType,
                 owningKlassContext,
                 owningKlass,
+                isKey,
                 isOptional);
     }
 
@@ -51,6 +53,7 @@ public class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                     this.type,
                     owningKlassContext,
                     owningKlass,
+                    this.isKey(),
                     this.isOptional);
         }
     }

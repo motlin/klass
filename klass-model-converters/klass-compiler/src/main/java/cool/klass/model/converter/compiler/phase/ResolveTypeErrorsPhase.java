@@ -102,7 +102,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
         EnumerationDeclarationContext declaration = this.resolveTypesPhase.getType(ctx);
         if (declaration == DeclarationsByNamePhase.NO_SUCH_ENUMERATION)
         {
-            // TODO: Many different contexts possible here
+            // TODO: Many different error contexts possible for ParameterDeclarations
             DataTypeContext dataTypeContext = ctx.dataTypeDeclaration().dataType();
             this.error(
                     String.format("Cannot find enumeration '%s'", dataTypeContext.getText()),

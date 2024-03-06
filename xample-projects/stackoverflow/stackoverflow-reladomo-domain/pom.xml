@@ -78,8 +78,6 @@
                                         classpath="plugin_classpath"
                                         classname="com.gs.fw.common.mithra.generator.MithraGenerator" />
 
-                                <!--TODO: -->
-
                                 <gen-reladomo
                                         xml="${project.build.directory}/generated-resources/reladomo/DomainModelReladomoClassList.xml"
                                         generateEcListMethod="true"

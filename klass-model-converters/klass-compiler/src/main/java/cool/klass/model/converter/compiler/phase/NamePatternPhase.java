@@ -15,7 +15,7 @@ public class NamePatternPhase extends AbstractCompilerPhase
     private static final   Pattern MEMBER_NAME_PATTERN   = Pattern.compile("^[a-z][a-zA-Z0-9]*$");
     private static final   Pattern CONSTANT_NAME_PATTERN = Pattern.compile("^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$");
 
-    protected NamePatternPhase(
+    public NamePatternPhase(
             CompilerErrorHolder compilerErrorHolder,
             MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext)
     {

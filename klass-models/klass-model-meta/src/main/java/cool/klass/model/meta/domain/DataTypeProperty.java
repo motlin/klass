@@ -9,7 +9,8 @@ import org.eclipse.collections.impl.set.mutable.SetAdapter;
 
 public class DataTypeProperty<T extends DataType> extends Property<T>
 {
-    private final boolean isOptional;
+    private final boolean key;
+    private final boolean optional;
 
     public DataTypeProperty(
             ParserRuleContext elementContext,
@@ -19,21 +20,28 @@ public class DataTypeProperty<T extends DataType> extends Property<T>
             T dataType,
             ParserRuleContext owningKlassContext,
             Klass owningKlass,
+            boolean isKey,
             boolean isOptional)
     {
         super(elementContext, nameContext, name, dataTypeContext, dataType, owningKlassContext, owningKlass);
-        this.isOptional = isOptional;
+        this.key = isKey;
+        this.optional = isOptional;
+    }
+
+    public boolean isKey()
+    {
+        return this.key;
     }
 
     public boolean isOptional()
     {
-        return this.isOptional;
+        return this.optional;
     }
 
     public abstract static class DataTypePropertyBuilder<T extends DataType> extends PropertyBuilder<T>
     {
         protected final boolean            isOptional;
-        private final   MutableSet<String> modifiers = SetAdapter.adapt(new LinkedHashSet<>());
+        protected final MutableSet<String> modifiers = SetAdapter.adapt(new LinkedHashSet<>());
 
         protected DataTypePropertyBuilder(
                 ParserRuleContext elementContext,
@@ -51,6 +59,11 @@ public class DataTypeProperty<T extends DataType> extends Property<T>
         public boolean addModifier(String modifier)
         {
             return this.modifiers.add(modifier);
+        }
+
+        protected boolean isKey()
+        {
+            return this.modifiers.contains("key");
         }
     }
 }

@@ -152,7 +152,7 @@ keywordValidAsIdentifier
     | 'native'
     | 'relationship'
     | 'multiplicity' | 'orderBy'
-    // TODO: Split these out, since they're really only ok as enumeration literals
+    // TODO: Split these keywords out, since they're really only ok as enumeration literals
     | 'ID' | 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate'
     ;
 
@@ -160,7 +160,7 @@ literal
 	:	IntegerLiteral
 	|	FloatingPointLiteral
 	|	BooleanLiteral
-	// TODO: Characters?
+	// TODO: Character Reladomo types and character literals?
 	|	CharacterLiteral
 	|	StringLiteral
 	|	NullLiteral

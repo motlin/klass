@@ -18,7 +18,7 @@ public class AbstractReladomoGenerator
 
     protected String sanitizeXmlString(StringBuilder stringBuilder)
     {
-        // TODO
+        // TODO: sanitizeXmlString
         return stringBuilder.toString();
     }
 
