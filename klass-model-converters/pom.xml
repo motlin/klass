@@ -20,7 +20,6 @@
         <module>klass-bootstrap-writer</module>
         <module>klass-compiler</module>
         <module>klass-grammar</module>
-        <module>klass-graphql-schema-writer</module>
         <module>klass-syntax-highlighter</module>
         <module>klass-token-categories</module>
         <module>klass-token-categorizing-lexer</module>
