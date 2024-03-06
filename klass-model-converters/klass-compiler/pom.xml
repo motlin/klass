@@ -15,6 +15,17 @@
 
     <name>Klass Compiler</name>
 
+    <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/inputresources</directory>
+            </testResource>
+        </testResources>
+    </build>
+
     <dependencies>
 
         <dependency>
