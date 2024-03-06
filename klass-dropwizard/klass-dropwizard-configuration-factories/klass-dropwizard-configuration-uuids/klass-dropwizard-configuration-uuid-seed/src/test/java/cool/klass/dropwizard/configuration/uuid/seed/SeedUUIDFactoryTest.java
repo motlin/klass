@@ -50,7 +50,7 @@ public class SeedUUIDFactoryTest
         UUIDSupplierFactory uuidFactory = this.factory.build(yml);
         assertThat(uuidFactory, instanceOf(SeedUUIDSupplierFactory.class));
         Supplier<UUID> uuidSupplier     = uuidFactory.createUUIDSupplier();
-        UUID           uuid            = uuidSupplier.get();
+        UUID           uuid             = uuidSupplier.get();
         String         actualUUIDString = uuid.toString();
         assertThat(actualUUIDString, is("4bb909d0-4c29-3f81-957f-aab6d7f73c9f"));
     }
