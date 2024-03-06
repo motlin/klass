@@ -10,9 +10,7 @@ import javax.annotation.Nonnull;
 
 import com.gs.fw.common.mithra.finder.AbstractRelatedFinder;
 import com.gs.fw.common.mithra.finder.Operation;
-import com.gs.fw.common.mithra.finder.RelatedFinder;
 import com.gs.fw.common.mithra.finder.orderby.OrderBy;
-import cool.klass.xample.coverage.OwnedNaturalOneToManySource;
 import cool.klass.xample.coverage.OwnedNaturalOneToManySourceFinder;
 import cool.klass.xample.coverage.PropertiesOptionalFinder;
 import cool.klass.xample.coverage.PropertiesRequiredFinder;
@@ -365,8 +363,6 @@ public class GraphQLQueryToOperationConverterTest
     @Test
     public void relationshipNavigation()
     {
-        RelatedFinder<OwnedNaturalOneToManySource> finder = OwnedNaturalOneToManySourceFinder.getFinderInstance();
-
         this.assertCompiles(
                 "{ ownedNaturalOneToManySourceByFinder(operation: { targets: { exists: {} } }) { value } }");
         this.assertCompiles(
