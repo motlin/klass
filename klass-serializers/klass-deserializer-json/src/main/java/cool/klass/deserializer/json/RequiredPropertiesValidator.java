@@ -753,14 +753,12 @@ public class RequiredPropertiesValidator
     {
         if (this.operationMode == OperationMode.CREATE)
         {
-            // TODO: recurse and error only if the user isn't the current user principal
             this.handleWarnIfPresent(associationEnd, "createdBy");
         }
     }
 
     protected void handleLastUpdatedByAssociationEnd(@Nonnull AssociationEnd associationEnd)
     {
-        // TODO: recurse and error only if the user isn't the current user principal
         this.handleWarnIfPresent(associationEnd, "lastUpdatedBy");
     }
 
