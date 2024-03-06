@@ -25,9 +25,6 @@
 
         <fileSet filtered="true">
             <directory></directory>
-            <includes>
-                <include>__rootArtifactId__.iml</include>
-            </includes>
         </fileSet>
 
         <fileSet>
@@ -54,9 +51,6 @@
 
                 <fileSet filtered="true">
                     <directory></directory>
-                    <includes>
-                        <include>__rootArtifactId__-domain-model.iml</include>
-                    </includes>
                 </fileSet>
 
             </fileSets>
@@ -69,9 +63,6 @@
             <fileSets>
                 <fileSet filtered="true">
                     <directory></directory>
-                    <includes>
-                        <include>__rootArtifactId__-reladomo-definitions.iml</include>
-                    </includes>
                 </fileSet>
             </fileSets>
         </module>
@@ -86,9 +77,6 @@
                 </fileSet>
                 <fileSet filtered="true">
                     <directory></directory>
-                    <includes>
-                        <include>__rootArtifactId__-reladomo-pojos.iml</include>
-                    </includes>
                 </fileSet>
             </fileSets>
         </module>
@@ -100,9 +88,6 @@
             <fileSets>
                 <fileSet filtered="true">
                     <directory></directory>
-                    <includes>
-                        <include>__rootArtifactId__-reladomo-ddls.iml</include>
-                    </includes>
                 </fileSet>
             </fileSets>
         </module>
@@ -117,9 +102,6 @@
                 </fileSet>
                 <fileSet filtered="true">
                     <directory></directory>
-                    <includes>
-                        <include>__rootArtifactId__-services.iml</include>
-                    </includes>
                 </fileSet>
             </fileSets>
         </module>
@@ -131,12 +113,52 @@
             <fileSets>
                 <fileSet filtered="true">
                     <directory></directory>
-                    <includes>
-                        <include>__rootArtifactId__-dtos.iml</include>
-                    </includes>
                 </fileSet>
             </fileSets>
         </module>
+
+        <module
+                id="${rootArtifactId}-graphql-data-fetchers"
+                dir="__rootArtifactId__-graphql-data-fetchers"
+                name="${rootArtifactId}-graphql-data-fetchers">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-graphql-runtime-wiring"
+                dir="__rootArtifactId__-graphql-runtime-wiring"
+                name="${rootArtifactId}-graphql-runtime-wiring">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/java</directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-graphql-schema"
+                dir="__rootArtifactId__-graphql-schema"
+                name="${rootArtifactId}-graphql-schema">
+            <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/resources</directory>
+                </fileSet>
+
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+
+            </fileSets>
+        </module>
+
 
         <module
                 id="${rootArtifactId}-json-views"
@@ -145,9 +167,6 @@
             <fileSets>
                 <fileSet filtered="true">
                     <directory></directory>
-                    <includes>
-                        <include>__rootArtifactId__-json-views.iml</include>
-                    </includes>
                 </fileSet>
             </fileSets>
         </module>
@@ -163,7 +182,6 @@
                         <include>.gitignore</include>
                         <include>config.yml</include>
                         <include>README.md</include>
-                        <include>__rootArtifactId__-dropwizard-application.iml</include>
                     </includes>
                 </fileSet>
 
@@ -186,9 +204,6 @@
             <fileSets>
                 <fileSet filtered="true">
                     <directory></directory>
-                    <includes>
-                        <include>__rootArtifactId__-meta-model-constants.iml</include>
-                    </includes>
                 </fileSet>
             </fileSets>
         </module>
