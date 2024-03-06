@@ -338,4 +338,10 @@ public class KlassStructuredArguments
     {
         return this.pageNumber;
     }
+
+    @Override
+    public String toString()
+    {
+        return "structured logging";
+    }
 }
