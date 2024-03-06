@@ -13,12 +13,17 @@ public abstract class Element
 
     @Nonnull
     private final ParserRuleContext elementContext;
+    private final boolean           inferred;
 
-    // TODO: ❗️ Element.inferred: Boolean
-
-    protected Element(@Nonnull ParserRuleContext elementContext)
+    protected Element(@Nonnull ParserRuleContext elementContext, boolean inferred)
     {
         this.elementContext = Objects.requireNonNull(elementContext);
+        this.inferred = inferred;
+    }
+
+    public boolean isInferred()
+    {
+        return this.inferred;
     }
 
     @Nonnull
@@ -39,10 +44,12 @@ public abstract class Element
     {
         @Nonnull
         protected final ParserRuleContext elementContext;
+        protected final boolean           inferred;
 
-        protected ElementBuilder(@Nonnull ParserRuleContext elementContext)
+        protected ElementBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred)
         {
             this.elementContext = Objects.requireNonNull(elementContext);
+            this.inferred = inferred;
         }
 
         @Nonnull

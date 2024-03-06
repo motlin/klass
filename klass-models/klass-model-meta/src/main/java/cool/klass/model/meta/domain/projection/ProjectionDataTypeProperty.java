@@ -22,6 +22,7 @@ public final class ProjectionDataTypeProperty extends NamedElement implements Pr
 
     private ProjectionDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -29,7 +30,7 @@ public final class ProjectionDataTypeProperty extends NamedElement implements Pr
             @Nonnull String headerText,
             @Nonnull DataTypeProperty<?> property)
     {
-        super(elementContext, nameContext, name, ordinal);
+        super(elementContext, inferred, nameContext, name, ordinal);
         this.headerContext = Objects.requireNonNull(headerContext);
         this.headerText = Objects.requireNonNull(headerText);
         this.property = Objects.requireNonNull(property);
@@ -76,6 +77,7 @@ public final class ProjectionDataTypeProperty extends NamedElement implements Pr
 
         public ProjectionDataTypePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -83,7 +85,7 @@ public final class ProjectionDataTypeProperty extends NamedElement implements Pr
                 @Nonnull String headerText,
                 @Nonnull DataTypePropertyBuilder<?, ?> propertyBuilder)
         {
-            super(elementContext, nameContext, name, ordinal);
+            super(elementContext, inferred, nameContext, name, ordinal);
             this.headerContext = Objects.requireNonNull(headerContext);
             this.headerText = Objects.requireNonNull(headerText);
             this.propertyBuilder = Objects.requireNonNull(propertyBuilder);
@@ -94,6 +96,7 @@ public final class ProjectionDataTypeProperty extends NamedElement implements Pr
         {
             return new ProjectionDataTypeProperty(
                     this.elementContext,
+                    this.inferred,
                     this.nameContext,
                     this.name,
                     this.ordinal,

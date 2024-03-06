@@ -6,11 +6,12 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class AllCriteria extends Criteria
 {
-    public static final AllCriteria INSTANCE = new AllCriteria(new ParserRuleContext());
+    // TODO: Make a distinction between inferred and declaration
+    public static final AllCriteria INSTANCE = new AllCriteria(new ParserRuleContext(), false);
 
-    private AllCriteria(@Nonnull ParserRuleContext elementContext)
+    private AllCriteria(@Nonnull ParserRuleContext elementContext, boolean inferred)
     {
-        super(elementContext);
+        super(elementContext, inferred);
     }
 
     @Override
@@ -27,9 +28,9 @@ public final class AllCriteria extends Criteria
 
     public static final class AllCriteriaBuilder extends CriteriaBuilder
     {
-        public AllCriteriaBuilder(@Nonnull ParserRuleContext elementContext)
+        public AllCriteriaBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred)
         {
-            super(elementContext);
+            super(elementContext, inferred);
         }
 
         @Nonnull

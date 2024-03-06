@@ -14,12 +14,13 @@ public final class Enumeration extends DataType
 
     private Enumeration(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName)
     {
-        super(elementContext, nameContext, name, ordinal, packageName);
+        super(elementContext, inferred, nameContext, name, ordinal, packageName);
     }
 
     public ImmutableList<EnumerationLiteral> getEnumerationLiterals()
@@ -39,12 +40,13 @@ public final class Enumeration extends DataType
 
         public EnumerationBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName)
         {
-            super(elementContext, nameContext, name, ordinal, packageName);
+            super(elementContext, inferred, nameContext, name, ordinal, packageName);
         }
 
         public Enumeration build()
@@ -56,6 +58,7 @@ public final class Enumeration extends DataType
 
             this.enumeration = new Enumeration(
                     this.elementContext,
+                    this.inferred,
                     this.nameContext,
                     this.name,
                     this.ordinal,

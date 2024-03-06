@@ -141,9 +141,11 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
 
         this.associationBuilder = new AssociationBuilder(
                 this.elementContext,
+                this.inferred,
                 this.nameContext,
                 this.name,
-                ordinal, this.packageName,
+                this.ordinal,
+                this.packageName,
                 criteriaBuilder);
 
         ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates

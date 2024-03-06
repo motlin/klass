@@ -226,7 +226,7 @@ public abstract class PrimitiveType extends DataType
 
     private PrimitiveType(@Nonnull String name, int ordinal)
     {
-        super(NO_CONTEXT, NO_CONTEXT, name, ordinal, META_PACKAGE);
+        super(NO_CONTEXT, false, NO_CONTEXT, name, ordinal, META_PACKAGE);
     }
 
     public static PrimitiveType valueOf(String name)
@@ -293,6 +293,7 @@ public abstract class PrimitiveType extends DataType
         {
             super(
                     new ParserRuleContext(),
+                    false,
                     new ParserRuleContext(),
                     new ParserRuleContext().getText(),
                     ordinal,

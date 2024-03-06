@@ -6,9 +6,12 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class InequalityOperator extends Operator
 {
-    private InequalityOperator(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
+    private InequalityOperator(
+            @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
+            @Nonnull String operatorText)
     {
-        super(elementContext, operatorText);
+        super(elementContext, inferred, operatorText);
     }
 
     @Override
@@ -19,16 +22,19 @@ public final class InequalityOperator extends Operator
 
     public static class InequalityOperatorBuilder extends OperatorBuilder
     {
-        public InequalityOperatorBuilder(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
+        public InequalityOperatorBuilder(
+                @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
+                @Nonnull String operatorText)
         {
-            super(elementContext, operatorText);
+            super(elementContext, inferred, operatorText);
         }
 
         @Nonnull
         @Override
         public InequalityOperator build()
         {
-            return new InequalityOperator(this.elementContext, this.operatorText);
+            return new InequalityOperator(this.elementContext, this.inferred, this.operatorText);
         }
     }
 }

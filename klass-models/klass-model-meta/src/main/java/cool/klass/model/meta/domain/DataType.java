@@ -11,24 +11,26 @@ public abstract class DataType extends Type
 {
     protected DataType(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName)
     {
-        super(elementContext, nameContext, name, ordinal, packageName);
+        super(elementContext, inferred, nameContext, name, ordinal, packageName);
     }
 
     public abstract static class DataTypeBuilder extends TypeBuilder
     {
         protected DataTypeBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName)
         {
-            super(elementContext, nameContext, name, ordinal, packageName);
+            super(elementContext, inferred, nameContext, name, ordinal, packageName);
         }
     }
 }

@@ -31,7 +31,7 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
             AntlrDomainModel domainModelState,
             MutableSet<CompilationUnit> compilationUnits)
     {
-        super(compilerErrorHolder, compilationUnitsByContext);
+        super(compilerErrorHolder, compilationUnitsByContext, true);
         this.domainModelState = domainModelState;
         this.compilationUnits = compilationUnits;
     }
@@ -91,7 +91,7 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
         KlassListener classPhase = new ClassPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState);
+                this.domainModelState, isInference);
 
         KlassListener temporalPropertyInferencePhase = new ClassTemporalPropertyInferencePhase(
                 this.compilerErrorHolder,

@@ -108,9 +108,10 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
         // TODO: 🔗 Set association end's opposite
         this.associationEndBuilder = new AssociationEndBuilder(
                 this.elementContext,
+                this.inferred,
                 this.nameContext,
                 this.name,
-                ordinal,
+                this.ordinal,
                 this.type.getKlassBuilder(),
                 this.owningClassState.getKlassBuilder(),
                 this.owningAssociationState.getAssociationBuilder(),

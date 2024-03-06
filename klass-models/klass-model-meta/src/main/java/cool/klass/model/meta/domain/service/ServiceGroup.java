@@ -21,13 +21,14 @@ public final class ServiceGroup extends PackageableElement
 
     private ServiceGroup(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
             @Nonnull Klass klass)
     {
-        super(elementContext, nameContext, name, ordinal, packageName);
+        super(elementContext, inferred, nameContext, name, ordinal, packageName);
         this.klass = Objects.requireNonNull(klass);
     }
 
@@ -62,13 +63,14 @@ public final class ServiceGroup extends PackageableElement
 
         public ServiceGroupBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
                 @Nonnull KlassBuilder klassBuilder)
         {
-            super(elementContext, nameContext, name, ordinal, packageName);
+            super(elementContext, inferred, nameContext, name, ordinal, packageName);
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
         }
 
@@ -87,6 +89,7 @@ public final class ServiceGroup extends PackageableElement
 
             this.serviceGroup = new ServiceGroup(
                     this.elementContext,
+                    this.inferred,
                     this.nameContext,
                     this.name,
                     this.ordinal,

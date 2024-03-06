@@ -13,12 +13,13 @@ public abstract class PackageableElement extends NamedElement
 
     protected PackageableElement(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName)
     {
-        super(elementContext, nameContext, name, ordinal);
+        super(elementContext, inferred, nameContext, name, ordinal);
         this.packageName = Objects.requireNonNull(packageName);
     }
 
@@ -36,12 +37,13 @@ public abstract class PackageableElement extends NamedElement
 
         protected PackageableElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName)
         {
-            super(elementContext, nameContext, name, ordinal);
+            super(elementContext, inferred, nameContext, name, ordinal);
             this.packageName = Objects.requireNonNull(packageName);
         }
     }

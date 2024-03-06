@@ -81,9 +81,11 @@ public class AntlrPrimitiveUrlQueryParameter extends AntlrUrlQueryParameter
         }
         this.primitiveUrlQueryParameterBuilder = new PrimitiveUrlQueryParameterBuilder(
                 this.elementContext,
+                this.inferred,
                 this.nameContext,
                 this.name,
-                ordinal, this.multiplicityState.getMultiplicity(),
+                this.ordinal,
+                this.multiplicityState.getMultiplicity(),
                 this.urlState.getUrlBuilder(),
                 this.primitiveTypeState.getPrimitiveType());
         return this.primitiveUrlQueryParameterBuilder;

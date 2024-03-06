@@ -40,7 +40,10 @@ public class AntlrVariableReference extends AntlrExpressionValue
     @Override
     public VariableReferenceBuilder build()
     {
-        return new VariableReferenceBuilder(this.elementContext, this.antlrUrlParameter.getUrlParameterBuilder());
+        return new VariableReferenceBuilder(
+                this.elementContext,
+                this.inferred,
+                this.antlrUrlParameter.getUrlParameterBuilder());
     }
 
     @Override

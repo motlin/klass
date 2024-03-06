@@ -15,6 +15,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
 
     private PrimitiveProperty(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -27,6 +28,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
     {
         super(
                 elementContext,
+                inferred,
                 nameContext,
                 name,
                 ordinal,
@@ -69,6 +71,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
 
         public PrimitivePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -81,6 +84,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
         {
             super(
                     elementContext,
+                    inferred,
                     nameContext,
                     name,
                     ordinal,
@@ -104,6 +108,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
 
             this.primitiveProperty = new PrimitiveProperty(
                     this.elementContext,
+                    this.inferred,
                     this.nameContext,
                     this.name,
                     this.ordinal,

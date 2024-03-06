@@ -25,7 +25,7 @@ public class AntlrStringOperator extends AntlrOperator
     @Override
     public StringOperatorBuilder build()
     {
-        return new StringOperatorBuilder(this.elementContext, this.operatorText);
+        return new StringOperatorBuilder(this.elementContext, this.inferred, this.operatorText);
     }
 
     @Override

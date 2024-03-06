@@ -8,10 +8,11 @@ public final class AndCriteria extends BinaryCriteria
 {
     private AndCriteria(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull Criteria left,
             @Nonnull Criteria right)
     {
-        super(elementContext, left, right);
+        super(elementContext, inferred, left, right);
     }
 
     @Override
@@ -24,10 +25,11 @@ public final class AndCriteria extends BinaryCriteria
     {
         public AndCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull CriteriaBuilder left,
                 @Nonnull CriteriaBuilder right)
         {
-            super(elementContext, left, right);
+            super(elementContext, inferred, left, right);
         }
 
         @Nonnull
@@ -36,6 +38,7 @@ public final class AndCriteria extends BinaryCriteria
         {
             return new AndCriteria(
                     this.elementContext,
+                    this.inferred,
                     this.left.build(),
                     this.right.build());
         }

@@ -72,6 +72,6 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
     @Nonnull
     public ServiceProjectionDispatchBuilder build()
     {
-        return new ServiceProjectionDispatchBuilder(this.elementContext, this.projection.getProjectionBuilder());
+        return new ServiceProjectionDispatchBuilder(this.elementContext, this.inferred, this.projection.getProjectionBuilder());
     }
 }

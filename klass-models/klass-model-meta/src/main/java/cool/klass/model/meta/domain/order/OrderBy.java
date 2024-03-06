@@ -25,10 +25,11 @@ public final class OrderBy extends Element
 
     private OrderBy(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull Klass thisContext,
             @Nonnull AssociationEnd associationEnd)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.thisContext = Objects.requireNonNull(thisContext);
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
@@ -55,10 +56,11 @@ public final class OrderBy extends Element
 
         public OrderByBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull KlassBuilder thisContextBuilder,
                 @Nonnull AssociationEndBuilder associationEndBuilder)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.thisContextBuilder = Objects.requireNonNull(thisContextBuilder);
             this.associationEndBuilder = Objects.requireNonNull(associationEndBuilder);
         }
@@ -82,6 +84,7 @@ public final class OrderBy extends Element
 
             this.orderBy = new OrderBy(
                     this.elementContext,
+                    this.inferred,
                     this.thisContextBuilder.getKlass(),
                     this.associationEndBuilder.getAssociationEnd());
 

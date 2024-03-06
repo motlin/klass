@@ -30,11 +30,12 @@ public final class Service extends Element
 
     private Service(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull Url url,
             @Nonnull Verb verb,
             @Nonnull ServiceMultiplicity serviceMultiplicity)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.url = Objects.requireNonNull(url);
         this.verb = Objects.requireNonNull(verb);
         this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
@@ -181,11 +182,12 @@ public final class Service extends Element
 
         public ServiceBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull UrlBuilder urlBuilder,
                 @Nonnull Verb verb,
                 @Nonnull ServiceMultiplicity serviceMultiplicity)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.urlBuilder = Objects.requireNonNull(urlBuilder);
             this.verb = Objects.requireNonNull(verb);
             this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
@@ -251,6 +253,7 @@ public final class Service extends Element
             }
             this.service = new Service(
                     this.elementContext,
+                    this.inferred,
                     this.urlBuilder.getUrl(),
                     this.verb,
                     this.serviceMultiplicity);

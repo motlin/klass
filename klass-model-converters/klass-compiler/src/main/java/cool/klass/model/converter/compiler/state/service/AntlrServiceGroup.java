@@ -154,9 +154,11 @@ public class AntlrServiceGroup extends AntlrPackageableElement
 
         this.serviceGroupBuilder = new ServiceGroupBuilder(
                 this.elementContext,
+                this.inferred,
                 this.nameContext,
                 this.name,
-                ordinal, this.packageName,
+                this.ordinal,
+                this.packageName,
                 this.klass.getKlassBuilder());
 
         ImmutableList<UrlBuilder> urlBuilders = this.urls

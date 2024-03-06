@@ -9,27 +9,29 @@ public final class PropertyModifier extends NamedElement
 {
     private PropertyModifier(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, nameContext, name, ordinal);
+        super(elementContext, inferred, nameContext, name, ordinal);
     }
 
     public static final class PropertyModifierBuilder extends NamedElementBuilder
     {
         public PropertyModifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal)
         {
-            super(elementContext, nameContext, name, ordinal);
+            super(elementContext, inferred, nameContext, name, ordinal);
         }
 
         public PropertyModifier build()
         {
-            return new PropertyModifier(this.elementContext, this.nameContext, this.name, this.ordinal);
+            return new PropertyModifier(this.elementContext, this.inferred, this.nameContext, this.name, this.ordinal);
         }
     }
 }

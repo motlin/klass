@@ -14,9 +14,10 @@ public final class OrderByDirectionDeclaration extends Element
 
     private OrderByDirectionDeclaration(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull OrderByDirection orderByDirection)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.orderByDirection = Objects.requireNonNull(orderByDirection);
     }
 
@@ -33,15 +34,16 @@ public final class OrderByDirectionDeclaration extends Element
 
         public OrderByDirectionDeclarationBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull OrderByDirection orderByDirection)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.orderByDirection = Objects.requireNonNull(orderByDirection);
         }
 
         public OrderByDirectionDeclaration build()
         {
-            return new OrderByDirectionDeclaration(this.elementContext, this.orderByDirection);
+            return new OrderByDirectionDeclaration(this.elementContext, this.inferred, this.orderByDirection);
         }
     }
 }

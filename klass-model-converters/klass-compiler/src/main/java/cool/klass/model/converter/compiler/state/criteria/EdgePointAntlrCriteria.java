@@ -51,6 +51,7 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
     {
         return new EdgePointCriteriaBuilder(
                 this.elementContext,
+                this.inferred,
                 this.memberExpressionValue.build());
     }
 

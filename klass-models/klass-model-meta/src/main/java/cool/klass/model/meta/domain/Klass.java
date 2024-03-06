@@ -30,6 +30,7 @@ public final class Klass extends Type
 
     private Klass(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -38,7 +39,7 @@ public final class Klass extends Type
             boolean isUser,
             boolean isTransient)
     {
-        super(elementContext, nameContext, name, ordinal, packageName);
+        super(elementContext, inferred, nameContext, name, ordinal, packageName);
         this.classModifiers = Objects.requireNonNull(classModifiers);
         this.isUser = isUser;
         this.isTransient = isTransient;
@@ -119,6 +120,7 @@ public final class Klass extends Type
 
         public KlassBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -127,7 +129,7 @@ public final class Klass extends Type
                 boolean isUser,
                 boolean isTransient)
         {
-            super(elementContext, nameContext, name, ordinal, packageName);
+            super(elementContext, inferred, nameContext, name, ordinal, packageName);
             this.classModifierBuilders = Objects.requireNonNull(classModifierBuilders);
             this.isUser = isUser;
             this.isTransient = isTransient;
@@ -164,6 +166,7 @@ public final class Klass extends Type
 
             this.klass = new Klass(
                     this.elementContext,
+                    this.inferred,
                     this.nameContext,
                     this.name,
                     this.ordinal,

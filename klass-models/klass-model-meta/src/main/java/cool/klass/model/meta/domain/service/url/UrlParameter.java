@@ -19,13 +19,14 @@ public abstract class UrlParameter extends NamedElement
 
     protected UrlParameter(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull Multiplicity multiplicity,
             @Nonnull Url url)
     {
-        super(elementContext, nameContext, name, ordinal);
+        super(elementContext, inferred, nameContext, name, ordinal);
         this.url = Objects.requireNonNull(url);
         this.multiplicity = Objects.requireNonNull(multiplicity);
     }
@@ -54,13 +55,14 @@ public abstract class UrlParameter extends NamedElement
 
         public UrlParameterBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull Multiplicity multiplicity,
                 @Nonnull UrlBuilder urlBuilder)
         {
-            super(elementContext, nameContext, name, ordinal);
+            super(elementContext, inferred, nameContext, name, ordinal);
             this.multiplicity = Objects.requireNonNull(multiplicity);
             this.urlBuilder = Objects.requireNonNull(urlBuilder);
         }

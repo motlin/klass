@@ -34,7 +34,7 @@ public class AntlrUrlConstant extends AntlrNamedElement implements AntlrUrlPathS
     @Override
     public UrlPathSegmentBuilder build()
     {
-        return new UrlConstantBuilder(this.elementContext, this.nameContext, this.name, ordinal);
+        return new UrlConstantBuilder(this.elementContext, this.inferred, this.nameContext, this.name, this.ordinal);
     }
 
     @Override

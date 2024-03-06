@@ -91,9 +91,11 @@ public class AntlrEnumerationUrlQueryParameter extends AntlrUrlQueryParameter
     {
         return new EnumerationUrlQueryParameterBuilder(
                 this.elementContext,
+                this.inferred,
                 this.nameContext,
                 this.name,
-                ordinal, this.multiplicityState.getMultiplicity(),
+                this.ordinal,
+                this.multiplicityState.getMultiplicity(),
                 this.urlState.getUrlBuilder(),
                 this.antlrEnumeration.getEnumerationBuilder());
     }

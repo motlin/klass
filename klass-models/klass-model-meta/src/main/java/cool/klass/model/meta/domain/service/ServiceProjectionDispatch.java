@@ -16,9 +16,10 @@ public final class ServiceProjectionDispatch extends Element
 
     private ServiceProjectionDispatch(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull Projection projection)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.projection = Objects.requireNonNull(projection);
     }
 
@@ -35,15 +36,19 @@ public final class ServiceProjectionDispatch extends Element
 
         public ServiceProjectionDispatchBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ProjectionBuilder projectionBuilder)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.projectionBuilder = Objects.requireNonNull(projectionBuilder);
         }
 
         public ServiceProjectionDispatch build()
         {
-            return new ServiceProjectionDispatch(this.elementContext, this.projectionBuilder.getProjection());
+            return new ServiceProjectionDispatch(
+                    this.elementContext,
+                    this.inferred,
+                    this.projectionBuilder.getProjection());
         }
     }
 }

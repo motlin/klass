@@ -24,11 +24,12 @@ public abstract class MemberReferencePath extends ExpressionValue
 
     protected MemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull Klass klass,
             @Nonnull ImmutableList<AssociationEnd> associationEnds,
             @Nonnull DataTypeProperty<?> property)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.klass = Objects.requireNonNull(klass);
         this.associationEnds = Objects.requireNonNull(associationEnds);
         this.property = Objects.requireNonNull(property);
@@ -63,11 +64,12 @@ public abstract class MemberReferencePath extends ExpressionValue
 
         protected MemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull KlassBuilder klassBuilder,
                 @Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders,
                 @Nonnull DataTypePropertyBuilder<?, ?> propertyBuilder)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
             this.associationEndBuilders = Objects.requireNonNull(associationEndBuilders);
             this.propertyBuilder = Objects.requireNonNull(propertyBuilder);

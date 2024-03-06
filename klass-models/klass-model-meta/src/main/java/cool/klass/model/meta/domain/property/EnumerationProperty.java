@@ -14,6 +14,7 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
 {
     private EnumerationProperty(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -25,6 +26,7 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
     {
         super(
                 elementContext,
+                inferred,
                 nameContext,
                 name,
                 ordinal,
@@ -59,6 +61,7 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
 
         public EnumerationPropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -70,6 +73,7 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
         {
             super(
                     elementContext,
+                    inferred,
                     nameContext,
                     name,
                     ordinal,
@@ -93,6 +97,7 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
 
             this.enumerationProperty = new EnumerationProperty(
                     this.elementContext,
+                    this.inferred,
                     this.nameContext,
                     this.name,
                     this.ordinal,

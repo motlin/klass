@@ -4,6 +4,7 @@ class Class
     transient
 {
     name                          : String key;
+    inferred                      : Boolean;
     packageName                   : String private;
     // TODO: Ordinals should have a syntax and be inferred using macros
     ordinal                       : Integer;
@@ -36,6 +37,7 @@ class PrimitiveProperty
 {
     className                     : String key;
     name                          : String key;
+    inferred                      : Boolean;
     primitiveType                 : PrimitiveType;
     optional                      : Boolean;
     key                           : Boolean;
@@ -57,6 +59,7 @@ class Enumeration
     transient
 {
     name                          : String key;
+    inferred                      : Boolean;
     packageName                   : String private;
     ordinal                       : Integer;
 }
@@ -65,8 +68,9 @@ class EnumerationLiteral
     transient
 {
     enumerationName               : String key;
-    prettyName                    : String;
     name                          : String key;
+    inferred                      : Boolean;
+    prettyName                    : String;
     ordinal                       : Integer;
 }
 
@@ -84,6 +88,7 @@ class EnumerationProperty
 {
     className                     : String key;
     name                          : String key;
+    inferred                      : Boolean;
     enumerationName               : String private;
     optional                      : Boolean;
     key                           : Boolean;
@@ -113,6 +118,7 @@ class PrimitivePropertyModifier
     className                     : String key;
     propertyName                  : String key;
     name                          : String key;
+    inferred                      : Boolean;
     ordinal                       : Integer;
 }
 
@@ -122,6 +128,7 @@ class EnumerationPropertyModifier
     className                     : String key;
     propertyName                  : String key;
     name                          : String key;
+    inferred                      : Boolean;
     ordinal                       : Integer;
 }
 
@@ -150,6 +157,7 @@ class ClassModifier
 {
     className                     : String key;
     name                          : String key;
+    inferred                      : Boolean;
     ordinal                       : Integer;
 }
 
@@ -172,6 +180,7 @@ class Association
     transient
 {
     name                          : String key;
+    inferred                      : Boolean;
     packageName                   : String private;
     ordinal                       : Integer;
 
@@ -193,6 +202,7 @@ class AssociationEnd
 {
     owningClassName               : String key private;
     name                          : String key;
+    inferred                      : Boolean;
     associationName               : String;
     direction                     : AssociationEndDirection;
     multiplicity                  : Multiplicity;
@@ -233,6 +243,7 @@ class AssociationEndModifier
     owningClassName               : String key;
     associationEndName            : String key;
     name                          : String key;
+    inferred                      : Boolean;
     ordinal                       : Integer;
 }
 
@@ -251,6 +262,7 @@ class ParameterizedProperty
 {
     owningClassName               : String key private;
     name                          : String key;
+    inferred                      : Boolean;
     multiplicity                  : Multiplicity;
     resultTypeName                : String private;
     ordinal                       : Integer;
@@ -278,6 +290,7 @@ class AssociationEndOrdering
 {
     associationName               : String key private;
     name                          : String;
+    inferred                      : Boolean;
     multiplicity                  : Multiplicity;
     direction                     : AssociationEndDirection key;
     orderingId                    : Long private;
@@ -288,6 +301,7 @@ class ParameterizedPropertyOrdering
 {
     owningClassName               : String private key;
     name                          : String key;
+    inferred                      : Boolean;
     orderingId                    : Long private;
 }
 
@@ -333,6 +347,7 @@ class Ordering
     transient
 {
     id                            : Long id key;
+    inferred                      : Boolean;
 }
 
 // Split into data type / enum type order bys?
@@ -340,6 +355,7 @@ class OrderingPart
     transient
 {
     orderingId                    : Long key;
+    inferred                      : Boolean;
 
     // TODO: order keyword for properties meant for sorting?
     ordinal                       : Integer key;
@@ -396,6 +412,7 @@ class ParameterizedPropertyParameter
     parameterizedPropertyClassName: String key private;
     parameterizedPropertyName     : String key;
     name                          : String;
+    inferred                      : Boolean;
 }
 
 /*
@@ -441,16 +458,19 @@ association PackageHasAssociations
 projection ClassReadProjection on Class
 {
     name                 : "Class name",
+    inferred             : "Class inferred",
     packageName          : "Class package name",
     ordinal              : "Class ordinal",
     classModifiers       :
     {
-        name   : "Class modifier name",
-        ordinal: "Class modifier ordinal",
+        name    : "Class modifier name",
+        inferred: "Class modifier inferred",
+        ordinal : "Class modifier ordinal",
     },
     primitiveProperties  :
     {
         name                      : "Primitive property name",
+        inferred                  : "Primitive property inferred",
         primitiveType             : "Primitive property type",
         optional                  : "Primitive property is optional",
         key                       : "Primitive property is key",
@@ -458,29 +478,34 @@ projection ClassReadProjection on Class
         ordinal                   : "Primitive property ordinal",
         primitivePropertyModifiers:
         {
-            name   : "Primitive property modifier name",
-            ordinal: "Primitive property modifier ordinal",
+            name    : "Primitive property modifier name",
+            inferred: "Primitive property modifier inferred",
+            ordinal : "Primitive property modifier ordinal",
         },
     },
     enumerationProperties:
     {
         name                        : "Enumeration property name",
+        inferred                    : "Enumeration property inferred",
         optional                    : "Enumeration property is optional",
         key                         : "Enumeration property is key",
         ordinal                     : "Enumeration property ordinal",
         enumeration                 :
         {
-            name: "Enumeration name",
+            name    : "Enumeration name",
+            inferred: "Enumeration inferred",
         },
         enumerationPropertyModifiers:
         {
-            name   : "Enumeration property modifier name",
-            ordinal: "Enumeration property modifier ordinal",
+            name    : "Enumeration property modifier name",
+            inferred: "Enumeration property inferred",
+            ordinal : "Enumeration property modifier ordinal",
         },
     },
     associationEnds      :
     {
         name                   : "Association end name",
+        inferred               : "Association end inferred",
         direction              : "Association end direction",
         multiplicity           : "Association end multiplicity",
         resultType             :
@@ -493,8 +518,9 @@ projection ClassReadProjection on Class
         },
         associationEndModifiers:
         {
-            name   : "Association end modifier name",
-            ordinal: "Association end modifier ordinal",
+            name    : "Association end modifier name",
+            inferred: "Association end modifier inferred",
+            ordinal : "Association end modifier ordinal",
         },
     },
 }

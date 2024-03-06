@@ -44,6 +44,7 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
         ImmutableList<LiteralValueBuilder> literalValueBuilders = this.literalStates.collect(AntlrLiteralValue::build);
         return new LiteralListValueBuilder(
                 this.elementContext,
+                this.inferred,
                 literalValueBuilders,
                 this.getInferredType().getTypeBuilder());
     }

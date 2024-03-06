@@ -81,9 +81,11 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
 
         this.enumerationBuilder = new EnumerationBuilder(
                 this.getElementContext(),
+                this.inferred,
                 this.getElementContext().identifier(),
                 this.name,
-                ordinal, this.packageName);
+                this.ordinal,
+                this.packageName);
 
         ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders = this.enumerationLiteralStates
                 .collect(AntlrEnumerationLiteral::build)

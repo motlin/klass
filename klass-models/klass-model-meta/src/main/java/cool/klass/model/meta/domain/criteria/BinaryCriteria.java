@@ -15,10 +15,11 @@ public abstract class BinaryCriteria extends Criteria
 
     protected BinaryCriteria(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull Criteria left,
             @Nonnull Criteria right)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.left = Objects.requireNonNull(left);
         this.right = Objects.requireNonNull(right);
     }
@@ -44,10 +45,11 @@ public abstract class BinaryCriteria extends Criteria
 
         protected BinaryCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull CriteriaBuilder left,
                 @Nonnull CriteriaBuilder right)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.left = Objects.requireNonNull(left);
             this.right = Objects.requireNonNull(right);
         }

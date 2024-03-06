@@ -6,9 +6,9 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class EqualityOperator extends Operator
 {
-    private EqualityOperator(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
+    private EqualityOperator(@Nonnull ParserRuleContext elementContext, boolean inferred, @Nonnull String operatorText)
     {
-        super(elementContext, operatorText);
+        super(elementContext, inferred, operatorText);
     }
 
     @Override
@@ -19,16 +19,19 @@ public final class EqualityOperator extends Operator
 
     public static class EqualityOperatorBuilder extends OperatorBuilder
     {
-        public EqualityOperatorBuilder(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
+        public EqualityOperatorBuilder(
+                @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
+                @Nonnull String operatorText)
         {
-            super(elementContext, operatorText);
+            super(elementContext, inferred, operatorText);
         }
 
         @Nonnull
         @Override
         public EqualityOperator build()
         {
-            return new EqualityOperator(this.elementContext, this.operatorText);
+            return new EqualityOperator(this.elementContext, this.inferred, this.operatorText);
         }
     }
 }

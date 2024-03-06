@@ -15,9 +15,10 @@ public final class VariableReference extends ExpressionValue
 
     private VariableReference(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull UrlParameter urlParameter)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.urlParameter = Objects.requireNonNull(urlParameter);
     }
 
@@ -40,9 +41,10 @@ public final class VariableReference extends ExpressionValue
 
         public VariableReferenceBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull UrlParameterBuilder urlParameterBuilder)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.urlParameterBuilder = Objects.requireNonNull(urlParameterBuilder);
         }
 
@@ -50,7 +52,7 @@ public final class VariableReference extends ExpressionValue
         @Override
         public VariableReference build()
         {
-            return new VariableReference(this.elementContext, this.urlParameterBuilder.getUrlParameter());
+            return new VariableReference(this.elementContext, this.inferred, this.urlParameterBuilder.getUrlParameter());
         }
     }
 }

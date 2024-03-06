@@ -56,6 +56,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     {
         return new OperatorCriteriaBuilder(
                 this.elementContext,
+                this.inferred,
                 this.operator.build(),
                 this.sourceValue.build(),
                 this.targetValue.build());

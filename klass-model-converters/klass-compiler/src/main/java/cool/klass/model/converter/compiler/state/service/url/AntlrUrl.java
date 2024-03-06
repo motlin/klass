@@ -240,6 +240,7 @@ public class AntlrUrl extends AntlrElement
 
         this.urlBuilder = new UrlBuilder(
                 this.elementContext,
+                this.inferred,
                 this.serviceGroup.getServiceGroupBuilder());
 
         ImmutableList<UrlPathSegmentBuilder> pathSegments = this.urlPathSegments

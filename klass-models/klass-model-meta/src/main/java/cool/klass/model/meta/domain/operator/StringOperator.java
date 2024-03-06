@@ -6,9 +6,9 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class StringOperator extends Operator
 {
-    private StringOperator(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
+    private StringOperator(@Nonnull ParserRuleContext elementContext, boolean inferred, @Nonnull String operatorText)
     {
-        super(elementContext, operatorText);
+        super(elementContext, inferred, operatorText);
     }
 
     @Override
@@ -19,16 +19,19 @@ public final class StringOperator extends Operator
 
     public static class StringOperatorBuilder extends OperatorBuilder
     {
-        public StringOperatorBuilder(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
+        public StringOperatorBuilder(
+                @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
+                @Nonnull String operatorText)
         {
-            super(elementContext, operatorText);
+            super(elementContext, inferred, operatorText);
         }
 
         @Nonnull
         @Override
         public StringOperator build()
         {
-            return new StringOperator(this.elementContext, this.operatorText);
+            return new StringOperator(this.elementContext, this.inferred, this.operatorText);
         }
     }
 }

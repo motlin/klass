@@ -29,7 +29,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
             null,
             null);
 
-    private final String           prettyName;
+    private final String prettyName;
     private final AntlrEnumeration owningEnumeration;
 
     private EnumerationLiteralBuilder enumerationLiteralBuilder;
@@ -63,9 +63,11 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
 
         this.enumerationLiteralBuilder = new EnumerationLiteralBuilder(
                 this.getElementContext(),
+                this.inferred,
                 this.nameContext,
                 this.name,
-                ordinal, this.prettyName,
+                this.ordinal,
+                this.prettyName,
                 this.owningEnumeration.getEnumerationBuilder());
         return this.enumerationLiteralBuilder;
     }

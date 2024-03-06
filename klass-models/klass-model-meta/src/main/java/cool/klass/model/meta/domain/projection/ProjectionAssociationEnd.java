@@ -17,12 +17,13 @@ public final class ProjectionAssociationEnd extends ProjectionParent implements 
 
     private ProjectionAssociationEnd(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull AssociationEnd associationEnd)
     {
-        super(elementContext, nameContext, name, ordinal);
+        super(elementContext, inferred, nameContext, name, ordinal);
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
 
@@ -53,12 +54,13 @@ public final class ProjectionAssociationEnd extends ProjectionParent implements 
 
         public ProjectionAssociationEndBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull AssociationEndBuilder associationEndBuilder)
         {
-            super(elementContext, nameContext, name, ordinal);
+            super(elementContext, inferred, nameContext, name, ordinal);
             this.associationEndBuilder = Objects.requireNonNull(associationEndBuilder);
         }
 
@@ -71,6 +73,7 @@ public final class ProjectionAssociationEnd extends ProjectionParent implements 
             }
             this.projectionAssociationEnd = new ProjectionAssociationEnd(
                     this.elementContext,
+                    this.inferred,
                     this.nameContext,
                     this.name,
                     this.ordinal,

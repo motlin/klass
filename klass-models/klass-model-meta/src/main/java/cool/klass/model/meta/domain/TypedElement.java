@@ -14,12 +14,13 @@ public abstract class TypedElement<T extends Type> extends NamedElement
 
     protected TypedElement(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull T type)
     {
-        super(elementContext, nameContext, name, ordinal);
+        super(elementContext, inferred, nameContext, name, ordinal);
         this.type = Objects.requireNonNull(type);
     }
 
@@ -36,12 +37,13 @@ public abstract class TypedElement<T extends Type> extends NamedElement
 
         protected TypedElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull TB typeBuilder)
         {
-            super(elementContext, nameContext, name, ordinal);
+            super(elementContext, inferred, nameContext, name, ordinal);
             this.typeBuilder = Objects.requireNonNull(typeBuilder);
         }
     }

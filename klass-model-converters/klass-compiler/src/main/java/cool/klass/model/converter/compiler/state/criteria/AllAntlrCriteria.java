@@ -34,7 +34,7 @@ public class AllAntlrCriteria extends AntlrCriteria
     @Override
     public AllCriteriaBuilder build()
     {
-        return new AllCriteriaBuilder(this.elementContext);
+        return new AllCriteriaBuilder(this.elementContext, this.inferred);
     }
 
     @Override

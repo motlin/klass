@@ -21,11 +21,12 @@ public final class OperatorCriteria extends Criteria
 
     private OperatorCriteria(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull Operator operator,
             @Nonnull ExpressionValue sourceValue,
             @Nonnull ExpressionValue targetValue)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.operator = Objects.requireNonNull(operator);
         this.sourceValue = Objects.requireNonNull(sourceValue);
         this.targetValue = Objects.requireNonNull(targetValue);
@@ -66,11 +67,12 @@ public final class OperatorCriteria extends Criteria
 
         public OperatorCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull OperatorBuilder operator,
                 @Nonnull ExpressionValueBuilder sourceValue,
                 @Nonnull ExpressionValueBuilder targetValue)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.operator = Objects.requireNonNull(operator);
             this.sourceValue = Objects.requireNonNull(sourceValue);
             this.targetValue = Objects.requireNonNull(targetValue);
@@ -82,6 +84,7 @@ public final class OperatorCriteria extends Criteria
         {
             return new OperatorCriteria(
                     this.elementContext,
+                    this.inferred,
                     this.operator.build(),
                     this.sourceValue.build(),
                     this.targetValue.build());

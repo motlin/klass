@@ -33,7 +33,7 @@ public class AntlrClassModifier extends AntlrNamedElement
 
     public ClassModifierBuilder build()
     {
-        return new ClassModifierBuilder(this.elementContext, this.nameContext, this.name, this.ordinal);
+        return new ClassModifierBuilder(this.elementContext, this.inferred, this.nameContext, this.name, this.ordinal);
     }
 
     @Override

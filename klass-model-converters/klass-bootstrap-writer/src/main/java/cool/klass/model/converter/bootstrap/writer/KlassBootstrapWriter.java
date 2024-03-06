@@ -40,6 +40,7 @@ public class KlassBootstrapWriter
         {
             klass.model.meta.domain.Enumeration bootstrappedEnumeration = new klass.model.meta.domain.Enumeration();
             bootstrappedEnumeration.setName(enumeration.getName());
+            bootstrappedEnumeration.setInferred(enumeration.isInferred());
             bootstrappedEnumeration.setOrdinal(enumeration.getOrdinal());
             bootstrappedEnumeration.setPackageName(enumeration.getPackageName());
             bootstrappedEnumeration.insert();
@@ -48,6 +49,7 @@ public class KlassBootstrapWriter
             {
                 klass.model.meta.domain.EnumerationLiteral bootstrappedEnumerationLiteral = new klass.model.meta.domain.EnumerationLiteral();
                 bootstrappedEnumerationLiteral.setName(enumerationLiteral.getName());
+                bootstrappedEnumerationLiteral.setInferred(enumerationLiteral.isInferred());
                 bootstrappedEnumerationLiteral.setOrdinal(enumerationLiteral.getOrdinal());
                 bootstrappedEnumerationLiteral.setPrettyName(enumerationLiteral.getPrettyName());
                 bootstrappedEnumerationLiteral.setEnumeration(bootstrappedEnumeration);
@@ -59,6 +61,7 @@ public class KlassBootstrapWriter
         {
             klass.model.meta.domain.Class bootstrappedClass = new klass.model.meta.domain.Class();
             bootstrappedClass.setName(klass.getName());
+            bootstrappedClass.setInferred(klass.isInferred());
             bootstrappedClass.setOrdinal(klass.getOrdinal());
             bootstrappedClass.setPackageName(klass.getPackageName());
             bootstrappedClass.insert();
@@ -67,6 +70,7 @@ public class KlassBootstrapWriter
             {
                 klass.model.meta.domain.ClassModifier bootstrappedClassModifier = new klass.model.meta.domain.ClassModifier();
                 bootstrappedClassModifier.setClassName(klass.getName());
+                bootstrappedClassModifier.setInferred(classModifier.isInferred());
                 bootstrappedClassModifier.setName(classModifier.getName());
                 bootstrappedClassModifier.setOrdinal(classModifier.getOrdinal());
                 bootstrappedClassModifier.insert();
@@ -80,6 +84,7 @@ public class KlassBootstrapWriter
 
                     klass.model.meta.domain.PrimitiveProperty bootstrappedPrimitiveProperty = new klass.model.meta.domain.PrimitiveProperty();
                     bootstrappedPrimitiveProperty.setName(primitiveProperty.getName());
+                    bootstrappedPrimitiveProperty.setInferred(primitiveProperty.isInferred());
                     bootstrappedPrimitiveProperty.setOrdinal(primitiveProperty.getOrdinal());
                     bootstrappedPrimitiveProperty.setPrimitiveType(primitiveProperty.getType().getName());
                     bootstrappedPrimitiveProperty.setClassName(klass.getName());
@@ -94,6 +99,7 @@ public class KlassBootstrapWriter
                         primitivePropertyModifier.setClassName(klass.getName());
                         primitivePropertyModifier.setPropertyName(primitiveProperty.getName());
                         primitivePropertyModifier.setName(propertyModifier.getName());
+                        primitivePropertyModifier.setInferred(propertyModifier.isInferred());
                         primitivePropertyModifier.setOrdinal(propertyModifier.getOrdinal());
                         primitivePropertyModifier.insert();
                     }
@@ -104,6 +110,7 @@ public class KlassBootstrapWriter
 
                     klass.model.meta.domain.EnumerationProperty bootstrappedEnumerationProperty = new klass.model.meta.domain.EnumerationProperty();
                     bootstrappedEnumerationProperty.setName(enumerationProperty.getName());
+                    bootstrappedEnumerationProperty.setInferred(enumerationProperty.isInferred());
                     bootstrappedEnumerationProperty.setOrdinal(enumerationProperty.getOrdinal());
                     bootstrappedEnumerationProperty.setEnumerationName(enumerationProperty.getType().getName());
                     bootstrappedEnumerationProperty.setClassName(klass.getName());
@@ -117,6 +124,7 @@ public class KlassBootstrapWriter
                         enumerationPropertyModifier.setClassName(klass.getName());
                         enumerationPropertyModifier.setPropertyName(enumerationProperty.getName());
                         enumerationPropertyModifier.setName(propertyModifier.getName());
+                        enumerationPropertyModifier.setInferred(propertyModifier.isInferred());
                         enumerationPropertyModifier.setOrdinal(propertyModifier.getOrdinal());
                         enumerationPropertyModifier.insert();
                     }
@@ -132,6 +140,7 @@ public class KlassBootstrapWriter
         {
             klass.model.meta.domain.Association bootstrappedAssociation = new klass.model.meta.domain.Association();
             bootstrappedAssociation.setName(association.getName());
+            bootstrappedAssociation.setInferred(association.isInferred());
             bootstrappedAssociation.setOrdinal(association.getOrdinal());
             bootstrappedAssociation.setPackageName(association.getPackageName());
             bootstrappedAssociation.insert();
@@ -149,6 +158,7 @@ public class KlassBootstrapWriter
         klass.model.meta.domain.AssociationEnd bootstrappedAssociationEnd = new klass.model.meta.domain.AssociationEnd();
         bootstrappedAssociationEnd.setOwningClassName(associationEnd.getOwningKlass().getName());
         bootstrappedAssociationEnd.setName(associationEnd.getName());
+        bootstrappedAssociationEnd.setInferred(associationEnd.isInferred());
         bootstrappedAssociationEnd.setOrdinal(associationEnd.getOrdinal());
         bootstrappedAssociationEnd.setAssociationName(associationEnd.getOwningAssociation().getName());
         bootstrappedAssociationEnd.setDirection(direction);
@@ -162,6 +172,7 @@ public class KlassBootstrapWriter
             bootstrappedAssociationEndModifier.setOwningClassName(associationEnd.getOwningKlass().getName());
             bootstrappedAssociationEndModifier.setAssociationEndName(associationEnd.getName());
             bootstrappedAssociationEndModifier.setName(associationEndModifier.getName());
+            bootstrappedAssociationEndModifier.setInferred(associationEndModifier.isInferred());
             bootstrappedAssociationEndModifier.setOrdinal(associationEndModifier.getOrdinal());
             bootstrappedAssociationEndModifier.insert();
         }

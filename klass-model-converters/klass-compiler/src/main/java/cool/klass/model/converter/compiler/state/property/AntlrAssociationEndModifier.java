@@ -29,7 +29,12 @@ public class AntlrAssociationEndModifier extends AntlrNamedElement
 
     public AssociationEndModifierBuilder build()
     {
-        return new AssociationEndModifierBuilder(this.elementContext, this.nameContext, this.name, this.ordinal);
+        return new AssociationEndModifierBuilder(
+                this.elementContext,
+                this.inferred,
+                this.nameContext,
+                this.name,
+                this.ordinal);
     }
 
     @Override

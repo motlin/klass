@@ -157,6 +157,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
 
         this.klassBuilder = new KlassBuilder(
                 this.elementContext,
+                this.inferred,
                 this.nameContext,
                 this.name,
                 this.ordinal,

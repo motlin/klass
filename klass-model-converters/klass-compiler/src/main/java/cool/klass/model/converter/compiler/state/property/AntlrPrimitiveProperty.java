@@ -86,6 +86,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
 
         this.primitivePropertyBuilder = new PrimitivePropertyBuilder(
                 this.elementContext,
+                this.inferred,
                 this.nameContext,
                 this.name,
                 this.ordinal,

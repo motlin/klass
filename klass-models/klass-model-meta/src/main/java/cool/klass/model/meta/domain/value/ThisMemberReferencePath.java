@@ -15,11 +15,12 @@ public final class ThisMemberReferencePath extends MemberReferencePath
 {
     private ThisMemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull Klass klass,
             @Nonnull ImmutableList<AssociationEnd> associationEnds,
             @Nonnull DataTypeProperty<?> property)
     {
-        super(elementContext, klass, associationEnds, property);
+        super(elementContext, inferred, klass, associationEnds, property);
     }
 
     @Override
@@ -32,11 +33,12 @@ public final class ThisMemberReferencePath extends MemberReferencePath
     {
         public ThisMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull KlassBuilder klassBuilder,
                 @Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders,
                 @Nonnull DataTypePropertyBuilder<?, ?> propertyBuilder)
         {
-            super(elementContext, klassBuilder, associationEndBuilders, propertyBuilder);
+            super(elementContext, inferred, klassBuilder, associationEndBuilders, propertyBuilder);
         }
 
         @Nonnull
@@ -45,6 +47,7 @@ public final class ThisMemberReferencePath extends MemberReferencePath
         {
             return new ThisMemberReferencePath(
                     this.elementContext,
+                    this.inferred,
                     this.klassBuilder.getKlass(),
                     this.associationEndBuilders.collect(AssociationEndBuilder::getAssociationEnd),
                     this.propertyBuilder.getProperty());

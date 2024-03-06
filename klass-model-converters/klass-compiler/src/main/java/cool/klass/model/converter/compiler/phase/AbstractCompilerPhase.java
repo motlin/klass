@@ -38,7 +38,6 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     @Nullable
     protected CompilationUnit currentCompilationUnit;
 
-    // TODO: Use isInference flag consistently
     protected boolean isInference;
 
     @Nullable
@@ -60,10 +59,12 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     protected AbstractCompilerPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext)
+            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
+            boolean isInference)
     {
         this.compilerErrorHolder = Objects.requireNonNull(compilerErrorHolder);
         this.compilationUnitsByContext = Objects.requireNonNull(compilationUnitsByContext);
+        this.isInference = isInference;
     }
 
     @Override

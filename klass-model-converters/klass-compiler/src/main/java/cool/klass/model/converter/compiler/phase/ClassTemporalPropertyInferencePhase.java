@@ -24,7 +24,7 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
             AntlrDomainModel domainModelState)
     {
-        super(compilerErrorHolder, compilationUnitsByContext);
+        super(compilerErrorHolder, compilationUnitsByContext, true);
         this.domainModelState = domainModelState;
     }
 
@@ -90,11 +90,14 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
         return new AntlrPrimitiveProperty(
                 ctx,
                 this.currentCompilationUnit,
-                false,
+                this.isInference,
                 ctx,
                 name,
                 classState.getNumMembers() + 1,
-                classState, false, Lists.immutable.empty(),
+                classState,
+                false,
+                // TODO: Temporal properties need "from" and "to" property modifiers
+                Lists.immutable.empty(),
                 AntlrPrimitiveType.valueOf(primitiveType));
     }
 }

@@ -20,10 +20,11 @@ public final class LiteralListValue extends ExpressionValue
 
     private LiteralListValue(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ImmutableList<LiteralValue> literalValues,
             Type type)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.literalValues = Objects.requireNonNull(literalValues);
         this.type = Objects.requireNonNull(type);
     }
@@ -53,10 +54,11 @@ public final class LiteralListValue extends ExpressionValue
 
         public LiteralListValueBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ImmutableList<LiteralValueBuilder> literalValueBuilders,
                 TypeBuilder typeBuilder)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.literalValueBuilders = Objects.requireNonNull(literalValueBuilders);
             this.typeBuilder = Objects.requireNonNull(typeBuilder);
         }
@@ -66,7 +68,7 @@ public final class LiteralListValue extends ExpressionValue
         public LiteralListValue build()
         {
             ImmutableList<LiteralValue> literalValues = this.literalValueBuilders.collect(LiteralValueBuilder::build);
-            return new LiteralListValue(this.elementContext, literalValues, this.typeBuilder.getType());
+            return new LiteralListValue(this.elementContext, this.inferred, literalValues, this.typeBuilder.getType());
         }
     }
 }

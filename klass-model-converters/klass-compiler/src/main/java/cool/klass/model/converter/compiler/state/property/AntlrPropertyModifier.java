@@ -39,7 +39,12 @@ public class AntlrPropertyModifier extends AntlrNamedElement
 
     public PropertyModifierBuilder build()
     {
-        return new PropertyModifierBuilder(this.elementContext, this.nameContext, this.name, this.ordinal);
+        return new PropertyModifierBuilder(
+                this.elementContext,
+                this.inferred,
+                this.nameContext,
+                this.name,
+                this.ordinal);
     }
 
     @Override

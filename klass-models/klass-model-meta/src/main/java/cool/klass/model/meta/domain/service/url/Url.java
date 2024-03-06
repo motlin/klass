@@ -24,9 +24,9 @@ public final class Url extends Element
     private       ImmutableList<UrlParameter>      urlParameters;
     private       ImmutableList<Service>           services;
 
-    private Url(@Nonnull ParserRuleContext elementContext, @Nonnull ServiceGroup serviceGroup)
+    private Url(@Nonnull ParserRuleContext elementContext, boolean inferred, @Nonnull ServiceGroup serviceGroup)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.serviceGroup = Objects.requireNonNull(serviceGroup);
     }
 
@@ -103,9 +103,12 @@ public final class Url extends Element
         private Url                                     url;
         private ImmutableList<UrlParameterBuilder>      urlParameters;
 
-        public UrlBuilder(@Nonnull ParserRuleContext elementContext, @Nonnull ServiceGroupBuilder serviceGroupBuilder)
+        public UrlBuilder(
+                @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
+                @Nonnull ServiceGroupBuilder serviceGroupBuilder)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.serviceGroupBuilder = Objects.requireNonNull(serviceGroupBuilder);
         }
 
@@ -135,7 +138,7 @@ public final class Url extends Element
             {
                 throw new IllegalStateException();
             }
-            this.url = new Url(this.elementContext, this.serviceGroupBuilder.getServiceGroup());
+            this.url = new Url(this.elementContext, this.inferred, this.serviceGroupBuilder.getServiceGroup());
 
             ImmutableList<UrlPathSegment> urlPathSegments = this.pathSegmentBuilders.collect(UrlPathSegmentBuilder::build);
             this.url.setUrlPathSegments(urlPathSegments);

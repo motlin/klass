@@ -7,18 +7,18 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class ExpressionValue extends Element
 {
-    protected ExpressionValue(@Nonnull ParserRuleContext elementContext)
+    protected ExpressionValue(@Nonnull ParserRuleContext elementContext, boolean inferred)
     {
-        super(elementContext);
+        super(elementContext, inferred);
     }
 
     public abstract void visit(ExpressionValueVisitor visitor);
 
     public abstract static class ExpressionValueBuilder extends ElementBuilder
     {
-        protected ExpressionValueBuilder(@Nonnull ParserRuleContext elementContext)
+        protected ExpressionValueBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred)
         {
-            super(elementContext);
+            super(elementContext, inferred);
         }
 
         @Nonnull

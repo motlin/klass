@@ -10,26 +10,28 @@ public abstract class UrlQueryParameter extends UrlParameter
 {
     protected UrlQueryParameter(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull Multiplicity multiplicity,
             @Nonnull Url url)
     {
-        super(elementContext, nameContext, name, ordinal, multiplicity, url);
+        super(elementContext, inferred, nameContext, name, ordinal, multiplicity, url);
     }
 
     public abstract static class UrlQueryParameterBuilder extends UrlParameterBuilder
     {
         protected UrlQueryParameterBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull Multiplicity multiplicity,
                 @Nonnull UrlBuilder urlBuilder)
         {
-            super(elementContext, nameContext, name, ordinal, multiplicity, urlBuilder);
+            super(elementContext, inferred, nameContext, name, ordinal, multiplicity, urlBuilder);
         }
 
         @Override

@@ -23,12 +23,13 @@ public final class OrderByMemberReferencePath extends Element
 
     private OrderByMemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull OrderBy orderBy,
             int ordinal,
             @Nonnull ThisMemberReferencePath thisMemberReferencePath,
             @Nonnull OrderByDirectionDeclaration orderByDirectionDeclaration)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.orderBy = Objects.requireNonNull(orderBy);
         this.ordinal = ordinal;
         this.thisMemberReferencePath = Objects.requireNonNull(thisMemberReferencePath);
@@ -59,12 +60,13 @@ public final class OrderByMemberReferencePath extends Element
 
         public OrderByMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull OrderByBuilder orderByBuilder,
                 int ordinal,
                 @Nonnull ThisMemberReferencePathBuilder thisMemberReferencePathBuilder,
                 @Nonnull OrderByDirectionDeclarationBuilder orderByDirectionBuilder)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.orderByBuilder = Objects.requireNonNull(orderByBuilder);
             this.ordinal = ordinal;
             this.thisMemberReferencePathBuilder = Objects.requireNonNull(thisMemberReferencePathBuilder);
@@ -75,6 +77,7 @@ public final class OrderByMemberReferencePath extends Element
         {
             return new OrderByMemberReferencePath(
                     this.elementContext,
+                    this.inferred,
                     this.orderByBuilder.getOrderBy(),
                     this.ordinal,
                     this.thisMemberReferencePathBuilder.build(),

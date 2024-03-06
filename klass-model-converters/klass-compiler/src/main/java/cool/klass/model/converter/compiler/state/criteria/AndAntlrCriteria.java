@@ -34,7 +34,7 @@ public class AndAntlrCriteria extends BinaryAntlrCriteria
     @Override
     public AndCriteriaBuilder build()
     {
-        return new AndCriteriaBuilder(this.elementContext, this.left.build(), this.right.build());
+        return new AndCriteriaBuilder(this.elementContext, this.inferred, this.left.build(), this.right.build());
     }
 
     @Override

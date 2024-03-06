@@ -64,9 +64,11 @@ public class AntlrProjection extends AntlrProjectionParent
 
         this.projectionBuilder = new ProjectionBuilder(
                 this.elementContext,
+                this.inferred,
                 this.nameContext,
                 this.name,
-                ordinal, this.packageName,
+                this.ordinal,
+                this.packageName,
                 this.klass.getKlassBuilder());
 
         ImmutableList<ProjectionElementBuilder> children = this.children

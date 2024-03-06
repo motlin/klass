@@ -18,13 +18,14 @@ public abstract class Property<T extends Type> extends TypedElement<T>
 
     protected Property(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull T type,
             @Nonnull Klass owningKlass)
     {
-        super(elementContext, nameContext, name, ordinal, type);
+        super(elementContext, inferred, nameContext, name, ordinal, type);
         this.owningKlass = Objects.requireNonNull(owningKlass);
     }
 
@@ -41,13 +42,14 @@ public abstract class Property<T extends Type> extends TypedElement<T>
 
         protected PropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull TB typeBuilder,
                 @Nonnull KlassBuilder owningKlassBuilder)
         {
-            super(elementContext, nameContext, name, ordinal, typeBuilder);
+            super(elementContext, inferred, nameContext, name, ordinal, typeBuilder);
             this.owningKlassBuilder = Objects.requireNonNull(owningKlassBuilder);
         }
 

@@ -12,9 +12,9 @@ public final class StringLiteralValue extends LiteralValue
     @Nonnull
     private final String value;
 
-    private StringLiteralValue(@Nonnull ParserRuleContext elementContext, @Nonnull String value)
+    private StringLiteralValue(@Nonnull ParserRuleContext elementContext, boolean inferred, @Nonnull String value)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.value = Objects.requireNonNull(value);
     }
 
@@ -35,9 +35,12 @@ public final class StringLiteralValue extends LiteralValue
         @Nonnull
         private final String value;
 
-        public StringLiteralValueBuilder(@Nonnull ParserRuleContext elementContext, @Nonnull String value)
+        public StringLiteralValueBuilder(
+                @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
+                @Nonnull String value)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.value = Objects.requireNonNull(value);
         }
 
@@ -45,7 +48,7 @@ public final class StringLiteralValue extends LiteralValue
         @Override
         public StringLiteralValue build()
         {
-            return new StringLiteralValue(this.elementContext, this.value);
+            return new StringLiteralValue(this.elementContext, this.inferred, this.value);
         }
     }
 }

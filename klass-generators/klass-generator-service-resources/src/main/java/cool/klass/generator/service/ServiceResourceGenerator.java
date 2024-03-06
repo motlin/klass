@@ -219,6 +219,7 @@ public class ServiceResourceGenerator
                 klassName);
 
         Projection                  projection                  = projectionDispatch.getProjection();
+        // TODO: Fix deep fetching redundant stuff
         DeepFetchProjectionListener deepFetchProjectionListener = new DeepFetchProjectionListener();
         ProjectionWalker.walk(projection, deepFetchProjectionListener);
         ImmutableList<String> deepFetchStrings = deepFetchProjectionListener.getResult();

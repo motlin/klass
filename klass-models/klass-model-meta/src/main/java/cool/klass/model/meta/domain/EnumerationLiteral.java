@@ -11,13 +11,14 @@ public final class EnumerationLiteral extends TypedElement<Enumeration>
 
     private EnumerationLiteral(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull Enumeration enumeration,
             String prettyName)
     {
-        super(elementContext, nameContext, name, ordinal, enumeration);
+        super(elementContext, inferred, nameContext, name, ordinal, enumeration);
         this.prettyName = prettyName;
     }
 
@@ -35,13 +36,14 @@ public final class EnumerationLiteral extends TypedElement<Enumeration>
 
         public EnumerationLiteralBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 String prettyName,
                 EnumerationBuilder enumerationBuilder)
         {
-            super(elementContext, nameContext, name, ordinal);
+            super(elementContext, inferred, nameContext, name, ordinal);
             this.prettyName = prettyName;
             this.enumerationBuilder = enumerationBuilder;
         }
@@ -55,6 +57,7 @@ public final class EnumerationLiteral extends TypedElement<Enumeration>
 
             this.enumerationLiteral = new EnumerationLiteral(
                     this.elementContext,
+                    this.inferred,
                     this.nameContext,
                     this.name,
                     this.ordinal,

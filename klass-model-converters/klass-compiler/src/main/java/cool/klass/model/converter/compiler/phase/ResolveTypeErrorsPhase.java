@@ -30,7 +30,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
             ResolveTypesPhase resolveTypesPhase)
     {
-        super(compilerErrorHolder, compilationUnitsByContext);
+        super(compilerErrorHolder, compilationUnitsByContext, false);
         this.resolveTypesPhase = resolveTypesPhase;
     }
 

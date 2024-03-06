@@ -36,9 +36,10 @@ public class ProjectionPhase extends AbstractCompilerPhase
     public ProjectionPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            @Nonnull AntlrDomainModel domainModelState)
+            @Nonnull AntlrDomainModel domainModelState,
+            boolean isInference)
     {
-        super(compilerErrorHolder, compilationUnitsByContext);
+        super(compilerErrorHolder, compilationUnitsByContext, isInference);
         this.domainModelState = Objects.requireNonNull(domainModelState);
     }
 

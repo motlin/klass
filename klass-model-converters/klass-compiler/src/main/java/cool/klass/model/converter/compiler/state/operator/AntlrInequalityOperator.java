@@ -25,7 +25,7 @@ public class AntlrInequalityOperator extends AntlrOperator
     @Override
     public InequalityOperatorBuilder build()
     {
-        return new InequalityOperatorBuilder(this.elementContext, this.operatorText);
+        return new InequalityOperatorBuilder(this.elementContext, this.inferred, this.operatorText);
     }
 
     @Override

@@ -26,7 +26,7 @@ public class AntlrInOperator extends AntlrOperator
     @Override
     public InOperatorBuilder build()
     {
-        return new InOperatorBuilder(this.elementContext, this.operatorText);
+        return new InOperatorBuilder(this.elementContext, this.inferred, this.operatorText);
     }
 
     @Override

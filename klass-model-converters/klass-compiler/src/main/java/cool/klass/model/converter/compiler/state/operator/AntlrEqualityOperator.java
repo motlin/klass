@@ -26,7 +26,7 @@ public class AntlrEqualityOperator extends AntlrOperator
     @Override
     public EqualityOperatorBuilder build()
     {
-        return new EqualityOperatorBuilder(this.elementContext, this.operatorText);
+        return new EqualityOperatorBuilder(this.elementContext, this.inferred, this.operatorText);
     }
 
     @Override

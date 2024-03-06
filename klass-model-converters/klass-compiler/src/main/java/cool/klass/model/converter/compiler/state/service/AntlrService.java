@@ -187,7 +187,7 @@ public class AntlrService extends AntlrElement
         UrlBuilder          urlBuilder          = this.urlState.getUrlBuilder();
         Verb                verb                = this.verbState.getVerb();
         ServiceMultiplicity serviceMultiplicity = this.serviceMultiplicityState.getServiceMultiplicity();
-        this.serviceBuilder = new ServiceBuilder(this.elementContext, urlBuilder, verb, serviceMultiplicity);
+        this.serviceBuilder = new ServiceBuilder(this.elementContext, this.inferred, urlBuilder, verb, serviceMultiplicity);
 
         for (AntlrServiceCriteria serviceCriteriaState : this.serviceCriteriaStates)
         {

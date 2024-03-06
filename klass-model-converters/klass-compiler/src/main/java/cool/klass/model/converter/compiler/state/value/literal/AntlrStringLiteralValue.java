@@ -28,7 +28,7 @@ public final class AntlrStringLiteralValue extends AntlrLiteralValue
     @Override
     public StringLiteralValueBuilder build()
     {
-        return new StringLiteralValueBuilder(this.elementContext, this.value);
+        return new StringLiteralValueBuilder(this.elementContext, this.inferred, this.value);
     }
 
     @Nonnull

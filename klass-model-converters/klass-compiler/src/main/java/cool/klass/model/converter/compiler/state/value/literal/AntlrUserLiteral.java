@@ -23,7 +23,7 @@ public class AntlrUserLiteral extends AntlrLiteralValue
     @Override
     public UserLiteralBuilder build()
     {
-        return new UserLiteralBuilder(this.elementContext);
+        return new UserLiteralBuilder(this.elementContext, this.inferred);
     }
 
     @Nonnull

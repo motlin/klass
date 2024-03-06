@@ -40,6 +40,7 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberExpressionValue
     {
         return new TypeMemberReferencePathBuilder(
                 this.elementContext,
+                this.inferred,
                 this.classState.getKlassBuilder(),
                 this.associationEndStates.collect(AntlrAssociationEnd::getAssociationEndBuilder),
                 this.dataTypePropertyState.getPropertyBuilder());

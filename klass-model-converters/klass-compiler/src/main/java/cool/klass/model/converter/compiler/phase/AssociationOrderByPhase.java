@@ -39,9 +39,10 @@ public class AssociationOrderByPhase extends AbstractCompilerPhase
     public AssociationOrderByPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            @Nonnull AntlrDomainModel domainModelState)
+            @Nonnull AntlrDomainModel domainModelState,
+            boolean isInference)
     {
-        super(compilerErrorHolder, compilationUnitsByContext);
+        super(compilerErrorHolder, compilationUnitsByContext, isInference);
         this.domainModelState = Objects.requireNonNull(domainModelState);
     }
 

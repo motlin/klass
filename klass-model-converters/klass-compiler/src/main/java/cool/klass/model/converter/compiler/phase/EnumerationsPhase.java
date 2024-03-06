@@ -24,9 +24,10 @@ public class EnumerationsPhase extends AbstractCompilerPhase
     public EnumerationsPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            AntlrDomainModel domainModelState)
+            AntlrDomainModel domainModelState,
+            boolean isInference)
     {
-        super(compilerErrorHolder, compilationUnitsByContext);
+        super(compilerErrorHolder, compilationUnitsByContext, isInference);
         this.domainModelState = domainModelState;
     }
 

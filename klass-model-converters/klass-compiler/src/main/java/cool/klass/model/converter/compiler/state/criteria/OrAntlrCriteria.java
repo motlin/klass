@@ -34,7 +34,7 @@ public class OrAntlrCriteria extends BinaryAntlrCriteria
     @Override
     public OrCriteriaBuilder build()
     {
-        return new OrCriteriaBuilder(this.elementContext, this.left.build(), this.right.build());
+        return new OrCriteriaBuilder(this.elementContext, this.inferred, this.left.build(), this.right.build());
     }
 
     @Override

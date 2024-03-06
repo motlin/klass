@@ -18,13 +18,14 @@ public final class Projection extends ProjectionParent
 
     private Projection(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
             @Nonnull Klass klass)
     {
-        super(elementContext, nameContext, name, ordinal);
+        super(elementContext, inferred, nameContext, name, ordinal);
         this.packageName = Objects.requireNonNull(packageName);
         this.klass = Objects.requireNonNull(klass);
     }
@@ -50,20 +51,21 @@ public final class Projection extends ProjectionParent
     public static final class ProjectionBuilder extends ProjectionParentBuilder
     {
         @Nonnull
-        private final String packageName;
+        private final String       packageName;
         @Nonnull
         private final KlassBuilder klassBuilder;
-        private       Projection projection;
+        private       Projection   projection;
 
         public ProjectionBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
                 @Nonnull KlassBuilder klassBuilder)
         {
-            super(elementContext, nameContext, name, ordinal);
+            super(elementContext, inferred, nameContext, name, ordinal);
             this.packageName = Objects.requireNonNull(packageName);
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
         }
@@ -76,6 +78,7 @@ public final class Projection extends ProjectionParent
             }
             this.projection = new Projection(
                     this.elementContext,
+                    this.inferred,
                     this.nameContext,
                     this.name,
                     this.ordinal,

@@ -77,9 +77,11 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
 
         this.projectionAssociationEndBuilder = new ProjectionAssociationEndBuilder(
                 this.elementContext,
+                this.inferred,
                 this.nameContext,
                 this.name,
-                ordinal, this.associationEnd.getAssociationEndBuilder());
+                this.ordinal,
+                this.associationEnd.getAssociationEndBuilder());
 
         ImmutableList<ProjectionElementBuilder> projectionMemberBuilders = this.children
                 .collect(AntlrProjectionElement::build)

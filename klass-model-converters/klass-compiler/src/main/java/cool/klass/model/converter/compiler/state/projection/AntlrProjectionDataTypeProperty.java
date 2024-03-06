@@ -31,11 +31,11 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
             AntlrPrimitiveProperty.AMBIGUOUS);
 
     @Nonnull
-    private final AntlrProjectionParent    antlrProjectionParent;
+    private final AntlrProjectionParent antlrProjectionParent;
     @Nonnull
-    private final HeaderContext            headerContext;
+    private final HeaderContext headerContext;
     @Nonnull
-    private final String                   headerText;
+    private final String headerText;
     @Nonnull
     private final AntlrDataTypeProperty<?> dataTypeProperty;
 
@@ -64,9 +64,11 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
     {
         return new ProjectionDataTypePropertyBuilder(
                 this.elementContext,
+                this.inferred,
                 this.nameContext,
                 this.name,
-                ordinal, this.headerContext,
+                this.ordinal,
+                this.headerContext,
                 this.headerText,
                 this.dataTypeProperty.getPropertyBuilder());
     }

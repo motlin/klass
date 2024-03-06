@@ -21,13 +21,14 @@ public final class Association extends PackageableElement
 
     private Association(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
             Criteria criteria)
     {
-        super(elementContext, nameContext, name, ordinal, packageName);
+        super(elementContext, inferred, nameContext, name, ordinal, packageName);
         this.criteria = criteria;
     }
 
@@ -72,13 +73,14 @@ public final class Association extends PackageableElement
 
         public AssociationBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
                 @Nonnull CriteriaBuilder criteriaBuilder)
         {
-            super(elementContext, nameContext, name, ordinal, packageName);
+            super(elementContext, inferred, nameContext, name, ordinal, packageName);
             this.criteriaBuilder = Objects.requireNonNull(criteriaBuilder);
         }
 
@@ -95,6 +97,7 @@ public final class Association extends PackageableElement
             }
             this.association = new Association(
                     this.elementContext,
+                    this.inferred,
                     this.nameContext,
                     this.name,
                     this.ordinal,

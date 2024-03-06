@@ -7,9 +7,9 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class UserLiteral extends LiteralValue
 {
-    private UserLiteral(@Nonnull ParserRuleContext elementContext)
+    private UserLiteral(@Nonnull ParserRuleContext elementContext, boolean inferred)
     {
-        super(elementContext);
+        super(elementContext, inferred);
     }
 
     @Override
@@ -20,16 +20,16 @@ public final class UserLiteral extends LiteralValue
 
     public static final class UserLiteralBuilder extends LiteralValueBuilder
     {
-        public UserLiteralBuilder(@Nonnull ParserRuleContext elementContext)
+        public UserLiteralBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred)
         {
-            super(elementContext);
+            super(elementContext, inferred);
         }
 
         @Nonnull
         @Override
         public UserLiteral build()
         {
-            return new UserLiteral(this.elementContext);
+            return new UserLiteral(this.elementContext, this.inferred);
         }
     }
 }

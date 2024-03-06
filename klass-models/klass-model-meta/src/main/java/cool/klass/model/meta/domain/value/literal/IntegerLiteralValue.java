@@ -9,9 +9,9 @@ public final class IntegerLiteralValue extends LiteralValue
 {
     private final int value;
 
-    private IntegerLiteralValue(@Nonnull ParserRuleContext elementContext, int value)
+    private IntegerLiteralValue(@Nonnull ParserRuleContext elementContext, boolean inferred, int value)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.value = value;
     }
 
@@ -30,9 +30,9 @@ public final class IntegerLiteralValue extends LiteralValue
     {
         private final int value;
 
-        public IntegerLiteralValueBuilder(@Nonnull ParserRuleContext elementContext, int value)
+        public IntegerLiteralValueBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred, int value)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.value = value;
         }
 
@@ -40,7 +40,7 @@ public final class IntegerLiteralValue extends LiteralValue
         @Override
         public IntegerLiteralValue build()
         {
-            return new IntegerLiteralValue(this.elementContext, this.value);
+            return new IntegerLiteralValue(this.elementContext, this.inferred, this.value);
         }
     }
 }

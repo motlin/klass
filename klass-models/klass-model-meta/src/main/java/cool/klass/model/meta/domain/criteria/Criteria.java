@@ -7,18 +7,18 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class Criteria extends Element
 {
-    protected Criteria(@Nonnull ParserRuleContext elementContext)
+    protected Criteria(@Nonnull ParserRuleContext elementContext, boolean inferred)
     {
-        super(elementContext);
+        super(elementContext, inferred);
     }
 
     public abstract void visit(CriteriaVisitor visitor);
 
     public abstract static class CriteriaBuilder extends ElementBuilder
     {
-        protected CriteriaBuilder(@Nonnull ParserRuleContext elementContext)
+        protected CriteriaBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred)
         {
-            super(elementContext);
+            super(elementContext, inferred);
         }
 
         @Nonnull

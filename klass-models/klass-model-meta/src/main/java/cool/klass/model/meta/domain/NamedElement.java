@@ -16,11 +16,12 @@ public abstract class NamedElement extends Element
 
     protected NamedElement(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.nameContext = Objects.requireNonNull(nameContext);
         this.name = Objects.requireNonNull(name);
         this.ordinal = ordinal;
@@ -53,11 +54,12 @@ public abstract class NamedElement extends Element
 
         protected NamedElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.nameContext = Objects.requireNonNull(nameContext);
             this.name = Objects.requireNonNull(name);
             this.ordinal = ordinal;

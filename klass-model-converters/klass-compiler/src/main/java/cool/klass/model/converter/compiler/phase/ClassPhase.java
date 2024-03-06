@@ -38,9 +38,10 @@ public class ClassPhase extends AbstractCompilerPhase
     public ClassPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            AntlrDomainModel domainModelState)
+            AntlrDomainModel domainModelState,
+            boolean isInference)
     {
-        super(compilerErrorHolder, compilationUnitsByContext);
+        super(compilerErrorHolder, compilationUnitsByContext, isInference);
         this.domainModelState = domainModelState;
     }
 
@@ -56,7 +57,7 @@ public class ClassPhase extends AbstractCompilerPhase
         AntlrClass classState = new AntlrClass(
                 ctx,
                 this.currentCompilationUnit,
-                false,
+                this.isInference,
                 ctx.identifier(),
                 ctx.identifier().getText(),
                 this.domainModelState.getNumTopLevelElements() + 1,
@@ -94,7 +95,7 @@ public class ClassPhase extends AbstractCompilerPhase
         AntlrPrimitiveProperty primitivePropertyState = new AntlrPrimitiveProperty(
                 ctx,
                 this.currentCompilationUnit,
-                false,
+                this.isInference,
                 identifier,
                 propertyName,
                 this.classState.getNumMembers() + 1,
@@ -122,7 +123,7 @@ public class ClassPhase extends AbstractCompilerPhase
         AntlrEnumerationProperty primitivePropertyState = new AntlrEnumerationProperty(
                 ctx,
                 this.currentCompilationUnit,
-                false,
+                this.isInference,
                 identifier,
                 propertyName,
                 this.classState.getNumMembers() + 1,
@@ -139,7 +140,7 @@ public class ClassPhase extends AbstractCompilerPhase
         return new AntlrClassModifier(
                 context,
                 this.currentCompilationUnit,
-                false,
+                this.isInference,
                 context,
                 context.getText(),
                 ordinal + 1);
@@ -151,7 +152,7 @@ public class ClassPhase extends AbstractCompilerPhase
         return new AntlrPropertyModifier(
                 context,
                 this.currentCompilationUnit,
-                false,
+                this.isInference,
                 context,
                 context.getText(),
                 ordinal + 1);

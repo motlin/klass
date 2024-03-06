@@ -15,9 +15,10 @@ public final class EdgePointCriteria extends Criteria
 
     private EdgePointCriteria(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull MemberReferencePath memberExpressionValue)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.memberExpressionValue = Objects.requireNonNull(memberExpressionValue);
     }
 
@@ -40,9 +41,10 @@ public final class EdgePointCriteria extends Criteria
 
         public EdgePointCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull MemberReferencePathBuilder memberExpressionValue)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.memberExpressionValue = Objects.requireNonNull(memberExpressionValue);
         }
 
@@ -52,6 +54,7 @@ public final class EdgePointCriteria extends Criteria
         {
             return new EdgePointCriteria(
                     this.elementContext,
+                    this.inferred,
                     this.memberExpressionValue.build());
         }
     }

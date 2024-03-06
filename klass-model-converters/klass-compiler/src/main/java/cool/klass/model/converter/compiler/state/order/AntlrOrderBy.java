@@ -72,6 +72,7 @@ public class AntlrOrderBy extends AntlrElement
         }
         this.orderByBuilder = new OrderByBuilder(
                 this.elementContext,
+                this.inferred,
                 this.thisContext.getKlassBuilder(),
                 this.associationEndState.getAssociationEndBuilder());
 

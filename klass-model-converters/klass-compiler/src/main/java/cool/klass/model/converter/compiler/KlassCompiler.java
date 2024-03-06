@@ -97,12 +97,14 @@ public class KlassCompiler
         KlassListener phase1 = new EnumerationsPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState);
+                this.domainModelState,
+                false);
 
         KlassListener phase2 = new ClassPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState);
+                this.domainModelState,
+                false);
 
         KlassListener phase3 = new ClassTemporalPropertyInferencePhase(
                 this.compilerErrorHolder,
@@ -118,12 +120,14 @@ public class KlassCompiler
         KlassListener phase5 = new AssociationPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState);
+                this.domainModelState,
+                false);
 
         KlassListener associationOrderByPhase = new AssociationOrderByPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState);
+                this.domainModelState,
+                false);
 
         KlassListener phase6 = new VersionAssociationInferencePhase(
                 this.compilerErrorHolder,
@@ -134,7 +138,8 @@ public class KlassCompiler
         KlassListener phase7 = new VersionReferencePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState);
+                this.domainModelState,
+                false);
 
         // TODO: Redo these 4 phases to use domainModelState
         DeclarationsByNamePhase    phase8  = new DeclarationsByNamePhase();
@@ -148,12 +153,14 @@ public class KlassCompiler
         KlassListener phase12 = new ProjectionPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState);
+                this.domainModelState,
+                false);
 
         KlassListener phase13 = new ServicePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState);
+                this.domainModelState,
+                false);
 
         return Lists.immutable.with(
                 phase1,

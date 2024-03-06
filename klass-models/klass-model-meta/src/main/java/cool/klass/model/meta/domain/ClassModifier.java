@@ -8,27 +8,29 @@ public final class ClassModifier extends NamedElement
 {
     private ClassModifier(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, nameContext, name, ordinal);
+        super(elementContext, inferred, nameContext, name, ordinal);
     }
 
     public static final class ClassModifierBuilder extends NamedElementBuilder
     {
         public ClassModifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal)
         {
-            super(elementContext, nameContext, name, ordinal);
+            super(elementContext, inferred, nameContext, name, ordinal);
         }
 
         public ClassModifier build()
         {
-            return new ClassModifier(this.elementContext, this.nameContext, this.name, this.ordinal);
+            return new ClassModifier(this.elementContext, this.inferred, this.nameContext, this.name, this.ordinal);
         }
     }
 }

@@ -22,6 +22,7 @@ public abstract class DataTypeProperty<T extends DataType> extends Property<T>
 
     protected DataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -31,7 +32,7 @@ public abstract class DataTypeProperty<T extends DataType> extends Property<T>
             boolean isKey,
             boolean isOptional)
     {
-        super(elementContext, nameContext, name, ordinal, dataType, owningKlass);
+        super(elementContext, inferred, nameContext, name, ordinal, dataType, owningKlass);
         this.propertyModifiers = Objects.requireNonNull(propertyModifiers);
         this.key = isKey;
         this.optional = isOptional;
@@ -67,6 +68,7 @@ public abstract class DataTypeProperty<T extends DataType> extends Property<T>
 
         protected DataTypePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -76,7 +78,7 @@ public abstract class DataTypeProperty<T extends DataType> extends Property<T>
                 boolean isKey,
                 boolean isOptional)
         {
-            super(elementContext, nameContext, name, ordinal, typeBuilder, owningKlassBuilder);
+            super(elementContext, inferred, nameContext, name, ordinal, typeBuilder, owningKlassBuilder);
             this.propertyModifierBuilders = Objects.requireNonNull(propertyModifierBuilders);
             this.isKey = isKey;
             this.isOptional = isOptional;

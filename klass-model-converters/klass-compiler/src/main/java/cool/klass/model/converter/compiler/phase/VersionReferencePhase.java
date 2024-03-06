@@ -19,9 +19,10 @@ public class VersionReferencePhase extends AbstractCompilerPhase
     public VersionReferencePhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            AntlrDomainModel domainModelState)
+            AntlrDomainModel domainModelState,
+            boolean isInference)
     {
-        super(compilerErrorHolder, compilationUnitsByContext);
+        super(compilerErrorHolder, compilationUnitsByContext, isInference);
         this.domainModelState = domainModelState;
     }
 

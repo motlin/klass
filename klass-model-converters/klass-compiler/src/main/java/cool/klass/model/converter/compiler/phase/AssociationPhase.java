@@ -40,9 +40,10 @@ public class AssociationPhase extends AbstractCompilerPhase
     public AssociationPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            @Nonnull AntlrDomainModel domainModelState)
+            @Nonnull AntlrDomainModel domainModelState,
+            boolean isInference)
     {
-        super(compilerErrorHolder, compilationUnitsByContext);
+        super(compilerErrorHolder, compilationUnitsByContext, isInference);
         this.domainModelState = Objects.requireNonNull(domainModelState);
     }
 
@@ -53,7 +54,7 @@ public class AssociationPhase extends AbstractCompilerPhase
         this.associationState = new AntlrAssociation(
                 ctx,
                 this.currentCompilationUnit,
-                false,
+                this.isInference,
                 identifier,
                 identifier.getText(),
                 this.domainModelState.getNumTopLevelElements() + 1,
@@ -81,7 +82,7 @@ public class AssociationPhase extends AbstractCompilerPhase
         AntlrMultiplicity antlrMultiplicity = new AntlrMultiplicity(
                 multiplicityContext,
                 this.currentCompilationUnit,
-                false);
+                this.isInference);
 
         ImmutableList<AntlrAssociationEndModifier> associationEndModifiers = ListAdapter.adapt(ctx.associationEndModifier())
                 .collectWithIndex(this::getAntlrAssociationEndModifier)
@@ -90,7 +91,7 @@ public class AssociationPhase extends AbstractCompilerPhase
         AntlrAssociationEnd antlrAssociationEnd = new AntlrAssociationEnd(
                 ctx,
                 this.currentCompilationUnit,
-                false,
+                this.isInference,
                 ctx.identifier(),
                 associationEndName,
                 this.associationState.getNumAssociationEnds() + 1,
@@ -126,7 +127,7 @@ public class AssociationPhase extends AbstractCompilerPhase
         return new AntlrAssociationEndModifier(
                 context,
                 this.currentCompilationUnit,
-                false,
+                this.isInference,
                 context,
                 context.getText(),
                 ordinal + 1);

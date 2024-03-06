@@ -12,9 +12,9 @@ public abstract class Operator extends Element
     @Nonnull
     private final String operatorText;
 
-    protected Operator(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
+    protected Operator(@Nonnull ParserRuleContext elementContext, boolean inferred, @Nonnull String operatorText)
     {
-        super(elementContext);
+        super(elementContext, inferred);
         this.operatorText = Objects.requireNonNull(operatorText);
     }
 
@@ -31,9 +31,12 @@ public abstract class Operator extends Element
         @Nonnull
         protected final String operatorText;
 
-        protected OperatorBuilder(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
+        protected OperatorBuilder(
+                @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
+                @Nonnull String operatorText)
         {
-            super(elementContext);
+            super(elementContext, inferred);
             this.operatorText = Objects.requireNonNull(operatorText);
         }
 

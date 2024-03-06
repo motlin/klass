@@ -32,6 +32,7 @@ public final class AssociationEnd extends Property<Klass>
 
     private AssociationEnd(
             @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -42,7 +43,7 @@ public final class AssociationEnd extends Property<Klass>
             @Nonnull ImmutableList<AssociationEndModifier> associationEndModifiers,
             boolean owned)
     {
-        super(elementContext, nameContext, name, ordinal, type, owningKlass);
+        super(elementContext, inferred, nameContext, name, ordinal, type, owningKlass);
         this.owningAssociation = Objects.requireNonNull(owningAssociation);
         this.multiplicity = Objects.requireNonNull(multiplicity);
         this.associationEndModifiers = Objects.requireNonNull(associationEndModifiers);
@@ -115,6 +116,7 @@ public final class AssociationEnd extends Property<Klass>
 
         public AssociationEndBuilder(
                 @Nonnull ParserRuleContext elementContext,
+                boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -125,7 +127,7 @@ public final class AssociationEnd extends Property<Klass>
                 @Nonnull ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders,
                 boolean isOwned)
         {
-            super(elementContext, nameContext, name, ordinal, type, owningKlassBuilder);
+            super(elementContext, inferred, nameContext, name, ordinal, type, owningKlassBuilder);
             this.owningAssociation = Objects.requireNonNull(owningAssociation);
             this.multiplicity = Objects.requireNonNull(multiplicity);
             this.associationEndModifierBuilders = Objects.requireNonNull(associationEndModifierBuilders);
@@ -150,6 +152,7 @@ public final class AssociationEnd extends Property<Klass>
 
             this.associationEnd = new AssociationEnd(
                     this.elementContext,
+                    this.inferred,
                     this.nameContext,
                     this.name,
                     this.ordinal,
