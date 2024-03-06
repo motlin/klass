@@ -1,0 +1,8 @@
+package scratch
+
+class ClassWithPrivateDerived
+{
+    key: String key;
+    // TODO: Derived properties should not be private
+    value: String derived private;
+}
