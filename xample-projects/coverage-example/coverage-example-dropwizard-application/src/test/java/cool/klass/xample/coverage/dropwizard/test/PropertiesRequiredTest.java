@@ -1,6 +1,7 @@
 package cool.klass.xample.coverage.dropwizard.test;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -80,7 +81,8 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 "cool.klass.xample.coverage.dropwizard.test.PropertiesRequiredTest.putFirst");
 
         //language=JSON
-        String json = "{\n"
+        String json = ""
+                + "{\n"
                 + "  \"propertiesRequiredId\": 1,\n"
                 + "  \"requiredString\": \"PropertiesRequired requiredString 1 ☝\",\n"
                 + "  \"requiredInteger\": 1,\n"
