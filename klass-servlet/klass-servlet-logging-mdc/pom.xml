@@ -12,14 +12,14 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
 
-    <artifactId>klass-servlet-logging-structured</artifactId>
+    <artifactId>klass-servlet-logging-mdc</artifactId>
 
-    <name>Klass Servlet Structured Logging</name>
+    <name>Klass Servlet MDC Logging</name>
 
     <modules>
-        <module>klass-servlet-logging-structured-duration</module>
-        <module>klass-servlet-logging-structured-argument</module>
-        <module>klass-servlet-logging-structured-status-info</module>
-        <module>klass-servlet-logging-structured-klass-response</module>
+        <module>klass-servlet-logging-mdc-clear</module>
+        <module>klass-servlet-logging-mdc-correlation-id</module>
+        <module>klass-servlet-logging-mdc-jsonview</module>
+        <module>klass-servlet-logging-mdc-resource-info</module>
     </modules>
 </project>
