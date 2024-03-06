@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="StackOverflowApplication (Local)" type="Application" factoryName="Application" singleton="true">
+    <option name="MAIN_CLASS_NAME" value="com.stackoverflow.dropwizard.application.StackOverflowApplication" />
+    <module name="stackoverflow-dropwizard-application" />
+    <option name="PROGRAM_PARAMETERS" value="server config.yml" />
+    <option name="VM_PARAMETERS" value="-Dconfig.resource=local.conf" />
+    <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.stackoverflow.dropwizard.application.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method />
+  </configuration>
+</component>

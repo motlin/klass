@@ -5,7 +5,6 @@ import java.io.InputStream;
 
 import com.gs.fw.common.mithra.MithraManager;
 import com.gs.fw.common.mithra.MithraManagerProvider;
-import com.stackoverflow.Question;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
@@ -39,11 +38,6 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
             Environment environment)
     {
         super.run(configuration, environment);
-
-        Question question = new Question();
-        question.setTitle("Example 1");
-        question.setBody("Example 1");
-        question.insert();
     }
 
     private void initializeReladomo()

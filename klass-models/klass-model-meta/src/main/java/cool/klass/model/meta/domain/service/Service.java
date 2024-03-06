@@ -16,15 +16,16 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public final class Service extends Element
 {
     @Nonnull
-    private final Url                 url;
+    private final Url                       url;
     @Nonnull
-    private final Verb                verb;
+    private final Verb                      verb;
     @Nonnull
-    private final ServiceMultiplicity serviceMultiplicity;
-    private       Criteria            queryCriteria;
-    private       Criteria            authorizeCriteria;
-    private       Criteria            validateCriteria;
-    private       Criteria            conflictCriteria;
+    private final ServiceMultiplicity       serviceMultiplicity;
+    private       Criteria                  queryCriteria;
+    private       Criteria                  authorizeCriteria;
+    private       Criteria                  validateCriteria;
+    private       Criteria                  conflictCriteria;
+    private       ServiceProjectionDispatch projectionDispatch;
 
     private Service(
             @Nonnull ParserRuleContext elementContext,
@@ -110,6 +111,20 @@ public final class Service extends Element
             throw new IllegalStateException();
         }
         this.conflictCriteria = Objects.requireNonNull(conflictCriteria);
+    }
+
+    public ServiceProjectionDispatch getProjectionDispatch()
+    {
+        return Objects.requireNonNull(this.projectionDispatch);
+    }
+
+    private void setProjectionDispatch(ServiceProjectionDispatch projectionDispatch)
+    {
+        if (this.projectionDispatch != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.projectionDispatch = Objects.requireNonNull(projectionDispatch);
     }
 
     public static final class ServiceBuilder extends ElementBuilder
@@ -198,7 +213,8 @@ public final class Service extends Element
                     this.verb,
                     this.serviceMultiplicity);
 
-            this.projectionDispatchBuilder.build();
+            ServiceProjectionDispatch projectionDispatch = this.projectionDispatchBuilder.build();
+            this.service.setProjectionDispatch(projectionDispatch);
 
             Criteria queryCriteria     = this.criteria == null ? AllCriteria.INSTANCE : this.criteria.build();
             Criteria authorizeCriteria = this.authorize == null ? AllCriteria.INSTANCE : this.authorize.build();

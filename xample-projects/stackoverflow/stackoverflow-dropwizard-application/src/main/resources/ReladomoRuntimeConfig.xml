@@ -1,9 +1,10 @@
 <MithraRuntime>
     <ConnectionManager className="cool.klass.reladomo.connectionmanager.h2.H2ConnectionManager">
 
-        <MithraObjectConfiguration className="sample.domain.ObjectSequence" cacheType="none" />
-        <MithraObjectConfiguration className="com.stackoverflow.Question" cacheType="partial" />
-        <MithraObjectConfiguration className="com.stackoverflow.Answer" cacheType="partial" />
+        <MithraObjectConfiguration cacheType="none" className="cool.klass.reladomo.simseq.ObjectSequence" />
+        <MithraObjectConfiguration cacheType="partial" className="com.stackoverflow.QuestionVersion" />
+        <MithraObjectConfiguration cacheType="partial" className="com.stackoverflow.Question" />
+        <MithraObjectConfiguration cacheType="partial" className="com.stackoverflow.Answer" />
 
     </ConnectionManager>
 </MithraRuntime>

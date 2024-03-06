@@ -43,8 +43,11 @@ public final class H2ConnectionManager implements SourcelessConnectionManager
 
         if (LOGGER.isInfoEnabled())
         {
-            ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults().setJson(false);
-            LOGGER.info("\n{}", h2Config.root().render(configRenderOptions));
+            ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
+                    .setJson(false)
+                    .setOriginComments(false);
+            String render = h2Config.root().render(configRenderOptions);
+            LOGGER.info("H2 configuration:\n{}", render);
         }
 
         XAConnectionManager xaConnectionManager = new XAConnectionManager();

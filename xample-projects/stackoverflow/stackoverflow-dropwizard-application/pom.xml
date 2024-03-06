@@ -33,12 +33,6 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-reladomo-pojos</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-services</artifactId>
             <version>${project.version}</version>
         </dependency>

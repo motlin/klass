@@ -15,9 +15,11 @@ import cool.klass.model.meta.domain.DomainModel;
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.criteria.AllCriteria;
 import cool.klass.model.meta.domain.criteria.Criteria;
+import cool.klass.model.meta.domain.projection.Projection;
 import cool.klass.model.meta.domain.service.Service;
 import cool.klass.model.meta.domain.service.ServiceGroup;
 import cool.klass.model.meta.domain.service.ServiceMultiplicity;
+import cool.klass.model.meta.domain.service.ServiceProjectionDispatch;
 import cool.klass.model.meta.domain.service.Verb;
 import cool.klass.model.meta.domain.service.url.Url;
 import cool.klass.model.meta.domain.service.url.UrlParameter;
@@ -117,27 +119,21 @@ public class ServiceResourceGenerator
         ImmutableList<UrlQueryParameter> queryParameters = url.getQueryParameters();
         ImmutableList<UrlParameter>      urlParameters   = url.getUrlParameters();
 
-        Klass klass = serviceGroup.getKlass();
-
-        boolean uniqueResult         = serviceMultiplicity == ServiceMultiplicity.ONE;
-        boolean hasAuthorizeCriteria = service.getAuthorizeCriteria() != AllCriteria.INSTANCE;
-
-        String returnType = uniqueResult
-                ? klass.getName()
-                : "List<" + klass.getName() + ">";
-
-        String returnStatement = uniqueResult
-                ? "        return Iterate.getOnly(result);\n"
-                : "        return result;\n";
+        Klass  klass           = serviceGroup.getKlass();
+        String klassName       = klass.getName();
+        String returnType      = this.getReturnType(serviceMultiplicity, klassName);
+        String returnStatement = this.getReturnStatement(serviceMultiplicity, service);
 
         String executeOperationSourceCode = MessageFormat.format(
                 "        {0}List result = {0}Finder.findMany(queryOperation);\n",
-                klass.getName());
+                klassName);
 
         String urlPathString = urlPathSegments.makeString("/", "/", "");
         String queryParametersString = queryParameters.isEmpty()
                 ? ""
                 : queryParameters.makeString("?", "&", "");
+
+        boolean hasAuthorizeCriteria = service.getAuthorizeCriteria() != AllCriteria.INSTANCE;
 
         int     numUrlParameters       = urlParameters.size();
         int     numAuthorizeParameters = hasAuthorizeCriteria ? 1 : 0;
@@ -159,7 +155,7 @@ public class ServiceResourceGenerator
 
         String parametersSourceCode = parameterStrings.makeString(",\n");
 
-        String finderName                   = klass.getName() + "Finder";
+        String finderName                   = klassName + "Finder";
         String queryOperationSourceCode     = this.getOperation(service.getQueryCriteria(), finderName);
         String authorizeOperationSourceCode = this.getOperation(service.getAuthorizeCriteria(), finderName);
         String validateOperationSourceCode  = this.getOperation(service.getValidateCriteria(), finderName);
@@ -187,6 +183,40 @@ public class ServiceResourceGenerator
                 + "    }\n";
 
         return sourceCode;
+    }
+
+    @Nonnull
+    private String getReturnType(ServiceMultiplicity serviceMultiplicity, String klassName)
+    {
+        boolean uniqueResult = serviceMultiplicity == ServiceMultiplicity.ONE;
+
+        return uniqueResult
+                ? klassName
+                : "List<" + klassName + ">";
+    }
+
+    @Nonnull
+    private String getReturnStatement(ServiceMultiplicity serviceMultiplicity, Service service)
+    {
+        ServiceProjectionDispatch projectionDispatch = service.getProjectionDispatch();
+        Projection                projection         = projectionDispatch.getProjection();
+        String                    projectionName     = projection.getName();
+
+        boolean uniqueResult = serviceMultiplicity == ServiceMultiplicity.ONE;
+
+        if (uniqueResult)
+        {
+            return ""
+                    + "        // TODO: Use Projection " + projectionName + "\n"
+                    + "        if (result.isEmpty())\n"
+                    + "        {\n"
+                    + "            throw new NotFoundException();\n"
+                    + "        }\n"
+                    + "        return Iterate.getOnly(result);\n";
+        }
+
+        return "        // TODO: Use Projection " + projectionName + "\n"
+                + "        return result;\n";
     }
 
     @Nonnull
