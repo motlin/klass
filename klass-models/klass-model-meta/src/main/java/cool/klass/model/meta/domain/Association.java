@@ -24,7 +24,7 @@ public final class Association extends PackageableElement
 
     public static class AssociationBuilder extends PackageableElementBuilder
     {
-        private ImmutableList<AssociationEndBuilder> associationEnds;
+        private ImmutableList<AssociationEndBuilder> associationEndBuilders;
 
         public AssociationBuilder(
                 ParserRuleContext elementContext,
@@ -35,9 +35,9 @@ public final class Association extends PackageableElement
             super(elementContext, nameContext, name, packageName);
         }
 
-        public void setAssociationEnds(ImmutableList<AssociationEndBuilder> associationEnds)
+        public void setAssociationEndBuilders(ImmutableList<AssociationEndBuilder> associationEndBuilders)
         {
-            this.associationEnds = associationEnds;
+            this.associationEndBuilders = associationEndBuilders;
         }
 
         public Association build()
@@ -48,7 +48,7 @@ public final class Association extends PackageableElement
                     this.name,
                     this.packageName);
 
-            ImmutableList<AssociationEnd> associationEnds = this.associationEnds
+            ImmutableList<AssociationEnd> associationEnds = this.associationEndBuilders
                     .collect(AssociationEndBuilder::getAssociationEnd);
 
             association.setAssociationEnds(associationEnds);

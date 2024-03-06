@@ -22,7 +22,7 @@ public class ReladomoClassListGenerator extends AbstractReladomoGenerator
         MithraGeneratorMarshaller mithraGeneratorMarshaller = new MithraGeneratorMarshaller();
         mithraGeneratorMarshaller.setIndent(true);
 
-        Mithra mithra = this.generateObjectResources(this.domainModel);
+        Mithra mithra = this.generateObjectResources();
 
         StringBuilder stringBuilder = new StringBuilder();
         mithraGeneratorMarshaller.marshall(stringBuilder, mithra);
@@ -31,9 +31,9 @@ public class ReladomoClassListGenerator extends AbstractReladomoGenerator
         this.printStringToFile(path, xmlString);
     }
 
-    private Mithra generateObjectResources(DomainModel domainModel)
+    private Mithra generateObjectResources()
     {
-        ImmutableList<MithraObjectResourceType> mithraObjectResources = domainModel
+        ImmutableList<MithraObjectResourceType> mithraObjectResources = this.domainModel
                 .getKlasses()
                 .collect(NamedElement::getName)
                 .collect(this::getMithraObjectResource);
@@ -43,7 +43,7 @@ public class ReladomoClassListGenerator extends AbstractReladomoGenerator
         return mithra;
     }
 
-    private <V> MithraObjectResourceType getMithraObjectResource(String className)
+    private MithraObjectResourceType getMithraObjectResource(String className)
     {
         MithraObjectResourceType mithraObjectResource = new MithraObjectResourceType();
         mithraObjectResource.setName(className);

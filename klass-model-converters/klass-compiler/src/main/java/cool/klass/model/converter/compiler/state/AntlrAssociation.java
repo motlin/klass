@@ -85,7 +85,7 @@ public class AntlrAssociation
                 .collect(AntlrAssociationEnd::build)
                 .toImmutable();
 
-        this.associationBuilder.setAssociationEnds(associationEndBuilders);
+        this.associationBuilder.setAssociationEndBuilders(associationEndBuilders);
         return this.associationBuilder;
     }
 
