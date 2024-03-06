@@ -17,13 +17,13 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public final class AntlrIntegerLiteralValue extends AbstractAntlrLiteralValue
 {
-    private final int                        value;
+    private final long                       value;
     private       IntegerLiteralValueBuilder elementBuilder;
 
     public AntlrIntegerLiteralValue(
             @Nonnull IntegerLiteralContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            int value,
+            long value,
             @Nonnull IAntlrElement expressionValueOwner)
     {
         super(elementContext, compilationUnit, expressionValueOwner);

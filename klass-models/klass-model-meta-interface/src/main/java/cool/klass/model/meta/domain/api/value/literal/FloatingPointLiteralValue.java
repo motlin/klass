@@ -4,14 +4,14 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.value.ExpressionValueVisitor;
 
-public interface IntegerLiteralValue
+public interface FloatingPointLiteralValue
         extends LiteralValue
 {
-    long getValue();
+    double getValue();
 
     @Override
     default void visit(@Nonnull ExpressionValueVisitor visitor)
     {
-        visitor.visitIntegerLiteral(this);
+        visitor.visitFloatingPointLiteral(this);
     }
 }

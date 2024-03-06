@@ -8,20 +8,20 @@ import javax.annotation.Nullable;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
-import cool.klass.model.meta.grammar.KlassParser.IntegerLiteralContext;
+import cool.klass.model.meta.domain.api.value.literal.FloatingPointLiteralValue;
+import cool.klass.model.meta.grammar.KlassParser.FloatingPointLiteralContext;
 
-public final class IntegerLiteralValueImpl
+public final class FloatingPointLiteralValueImpl
         extends AbstractLiteralValue
-        implements IntegerLiteralValue
+        implements FloatingPointLiteralValue
 {
-    private final long value;
+    private final double value;
 
-    private IntegerLiteralValueImpl(
-            @Nonnull IntegerLiteralContext elementContext,
+    private FloatingPointLiteralValueImpl(
+            @Nonnull FloatingPointLiteralContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            long value)
+            double value)
     {
         super(elementContext, macroElement, sourceCode);
         this.value = value;
@@ -29,27 +29,27 @@ public final class IntegerLiteralValueImpl
 
     @Nonnull
     @Override
-    public IntegerLiteralContext getElementContext()
+    public FloatingPointLiteralContext getElementContext()
     {
-        return (IntegerLiteralContext) super.getElementContext();
+        return (FloatingPointLiteralContext) super.getElementContext();
     }
 
     @Override
-    public long getValue()
+    public double getValue()
     {
         return this.value;
     }
 
-    public static final class IntegerLiteralValueBuilder
-            extends AbstractLiteralValueBuilder<IntegerLiteralValueImpl>
+    public static final class FloatingPointLiteralValueBuilder
+            extends AbstractLiteralValueBuilder<FloatingPointLiteralValueImpl>
     {
-        private final long value;
+        private final double value;
 
-        public IntegerLiteralValueBuilder(
-                @Nonnull IntegerLiteralContext elementContext,
+        public FloatingPointLiteralValueBuilder(
+                @Nonnull FloatingPointLiteralContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                long value)
+                double value)
         {
             super(elementContext, macroElement, sourceCode);
             this.value = value;
@@ -57,10 +57,10 @@ public final class IntegerLiteralValueImpl
 
         @Override
         @Nonnull
-        protected IntegerLiteralValueImpl buildUnsafe()
+        protected FloatingPointLiteralValueImpl buildUnsafe()
         {
-            return new IntegerLiteralValueImpl(
-                    (IntegerLiteralContext) this.elementContext,
+            return new FloatingPointLiteralValueImpl(
+                    (FloatingPointLiteralContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.value);

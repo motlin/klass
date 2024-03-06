@@ -3,6 +3,7 @@ package cool.klass.model.meta.domain.api.value;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.value.literal.BooleanLiteralValue;
+import cool.klass.model.meta.domain.api.value.literal.FloatingPointLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
@@ -20,6 +21,8 @@ public interface ExpressionValueVisitor
     void visitBooleanLiteral(@Nonnull BooleanLiteralValue booleanLiteralValue);
 
     void visitIntegerLiteral(@Nonnull IntegerLiteralValue integerLiteralValue);
+
+    void visitFloatingPointLiteral(@Nonnull FloatingPointLiteralValue floatingPointLiteralValue);
 
     void visitStringLiteral(@Nonnull StringLiteralValue stringLiteralValue);
 

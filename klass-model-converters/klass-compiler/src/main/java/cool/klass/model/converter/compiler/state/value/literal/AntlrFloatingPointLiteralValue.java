@@ -10,21 +10,21 @@ import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
-import cool.klass.model.meta.domain.value.literal.BooleanLiteralValueImpl.BooleanLiteralValueBuilder;
-import cool.klass.model.meta.grammar.KlassParser.BooleanLiteralContext;
+import cool.klass.model.meta.domain.value.literal.FloatingPointLiteralValueImpl.FloatingPointLiteralValueBuilder;
+import cool.klass.model.meta.grammar.KlassParser.FloatingPointLiteralContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public final class AntlrBooleanLiteralValue
+public final class AntlrFloatingPointLiteralValue
         extends AbstractAntlrLiteralValue
 {
-    private final boolean                    value;
-    private       BooleanLiteralValueBuilder elementBuilder;
+    private final double                           value;
+    private       FloatingPointLiteralValueBuilder elementBuilder;
 
-    public AntlrBooleanLiteralValue(
-            @Nonnull BooleanLiteralContext elementContext,
+    public AntlrFloatingPointLiteralValue(
+            @Nonnull FloatingPointLiteralContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            boolean value,
+            double value,
             @Nonnull IAntlrElement expressionValueOwner)
     {
         super(elementContext, compilationUnit, expressionValueOwner);
@@ -38,14 +38,14 @@ public final class AntlrBooleanLiteralValue
 
     @Nonnull
     @Override
-    public BooleanLiteralValueBuilder build()
+    public FloatingPointLiteralValueBuilder build()
     {
         if (this.elementBuilder != null)
         {
             throw new IllegalStateException();
         }
-        this.elementBuilder = new BooleanLiteralValueBuilder(
-                (BooleanLiteralContext) this.elementContext,
+        this.elementBuilder = new FloatingPointLiteralValueBuilder(
+                (FloatingPointLiteralContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.value);
@@ -54,7 +54,7 @@ public final class AntlrBooleanLiteralValue
 
     @Nonnull
     @Override
-    public BooleanLiteralValueBuilder getElementBuilder()
+    public FloatingPointLiteralValueBuilder getElementBuilder()
     {
         return Objects.requireNonNull(this.elementBuilder);
     }
@@ -63,6 +63,8 @@ public final class AntlrBooleanLiteralValue
     @Override
     public ImmutableList<AntlrType> getPossibleTypes()
     {
-        return Lists.immutable.with(AntlrPrimitiveType.BOOLEAN);
+        return Lists.immutable.with(
+                AntlrPrimitiveType.FLOAT,
+                AntlrPrimitiveType.DOUBLE);
     }
 }

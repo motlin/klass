@@ -9,6 +9,7 @@ import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.literal.AbstractAntlrLiteralValue;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrBooleanLiteralValue;
+import cool.klass.model.converter.compiler.state.value.literal.AntlrFloatingPointLiteralValue;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrIntegerLiteralValue;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrNullLiteral;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrStringLiteralValue;
@@ -39,7 +40,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
     @Override
     public AntlrIntegerLiteralValue visitIntegerLiteral(@Nonnull IntegerLiteralContext ctx)
     {
-        int value = Integer.parseInt(ctx.getText());
+        long value = Long.parseLong(ctx.getText());
         return new AntlrIntegerLiteralValue(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
@@ -49,15 +50,19 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
 
     @Nonnull
     @Override
-    public AbstractAntlrLiteralValue visitFloatingPointLiteral(FloatingPointLiteralContext ctx)
+    public AntlrFloatingPointLiteralValue visitFloatingPointLiteral(FloatingPointLiteralContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".visitFloatingPointLiteral() not implemented yet");
+        double value = Double.parseDouble(ctx.getText());
+        return new AntlrFloatingPointLiteralValue(
+                ctx,
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                value,
+                this.expressionValueOwner);
     }
 
     @Nonnull
     @Override
-    public AbstractAntlrLiteralValue visitBooleanLiteral(BooleanLiteralContext ctx)
+    public AntlrBooleanLiteralValue visitBooleanLiteral(BooleanLiteralContext ctx)
     {
         boolean value     = Boolean.parseBoolean(ctx.getText());
         return new AntlrBooleanLiteralValue(
@@ -77,7 +82,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
 
     @Nonnull
     @Override
-    public AbstractAntlrLiteralValue visitStringLiteral(@Nonnull StringLiteralContext ctx)
+    public AntlrStringLiteralValue visitStringLiteral(@Nonnull StringLiteralContext ctx)
     {
         String quotedText = ctx.getText();
         String text       = quotedText.substring(1, quotedText.length() - 1);
@@ -90,7 +95,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
 
     @Nonnull
     @Override
-    public AbstractAntlrLiteralValue visitNullLiteral(@Nonnull NullLiteralContext ctx)
+    public AntlrNullLiteral visitNullLiteral(@Nonnull NullLiteralContext ctx)
     {
         return new AntlrNullLiteral(
                 ctx,

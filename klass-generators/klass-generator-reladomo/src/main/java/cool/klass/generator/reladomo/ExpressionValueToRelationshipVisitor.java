@@ -9,6 +9,7 @@ import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
 import cool.klass.model.meta.domain.api.value.TypeMemberReferencePath;
 import cool.klass.model.meta.domain.api.value.VariableReference;
 import cool.klass.model.meta.domain.api.value.literal.BooleanLiteralValue;
+import cool.klass.model.meta.domain.api.value.literal.FloatingPointLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
@@ -79,6 +80,13 @@ class ExpressionValueToRelationshipVisitor
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".visitIntegerLiteral() not implemented yet");
+    }
+
+    @Override
+    public void visitFloatingPointLiteral(@Nonnull FloatingPointLiteralValue floatingPointLiteralValue)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitFloatingPointLiteral() not implemented yet");
     }
 
     @Override
