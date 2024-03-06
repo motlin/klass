@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.Criteria;
+import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.service.url.Url;
 
 public interface Service extends Element
@@ -19,17 +20,25 @@ public interface Service extends Element
     @Nonnull
     ServiceMultiplicity getServiceMultiplicity();
 
+    @Nonnull
     Optional<Criteria> getQueryCriteria();
 
+    @Nonnull
     Optional<Criteria> getAuthorizeCriteria();
 
+    @Nonnull
     Optional<Criteria> getValidateCriteria();
 
+    @Nonnull
     Optional<Criteria> getConflictCriteria();
 
+    @Nonnull
     Optional<Criteria> getVersionCriteria();
 
     ServiceProjectionDispatch getProjectionDispatch();
+
+    @Nonnull
+    Optional<OrderBy> getOrderBy();
 
     default int getNumParameters()
     {

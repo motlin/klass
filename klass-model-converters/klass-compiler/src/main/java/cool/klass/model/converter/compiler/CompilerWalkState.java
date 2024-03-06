@@ -341,16 +341,24 @@ public class CompilerWalkState
     public void enterServiceDeclaration(ServiceDeclarationContext ctx)
     {
         CompilerWalkState.assertNull(this.serviceState);
+        CompilerWalkState.assertNull(this.orderByOwnerState);
+
         if (this.urlState == null)
         {
             return;
         }
         this.serviceState = this.urlState.getServiceByContext(ctx);
+        if (this.serviceState == null)
+        {
+            return;
+        }
+        this.orderByOwnerState = this.serviceState;
     }
 
     public void exitServiceDeclaration()
     {
         this.serviceState = null;
+        this.orderByOwnerState = null;
     }
 
     private static void assertNull(Object object)

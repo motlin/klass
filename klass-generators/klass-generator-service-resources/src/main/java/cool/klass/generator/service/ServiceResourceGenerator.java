@@ -20,6 +20,10 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.criteria.Criteria;
+import cool.klass.model.meta.domain.api.order.OrderBy;
+import cool.klass.model.meta.domain.api.order.OrderByDirection;
+import cool.klass.model.meta.domain.api.order.OrderByDirectionDeclaration;
+import cool.klass.model.meta.domain.api.order.OrderByMemberReferencePath;
 import cool.klass.model.meta.domain.api.parameter.Parameter;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionWalker;
@@ -29,6 +33,7 @@ import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
 import cool.klass.model.meta.domain.api.service.Verb;
 import cool.klass.model.meta.domain.api.service.url.Url;
+import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.tuple.primitive.ObjectBooleanPair;
 import org.eclipse.collections.impl.tuple.primitive.PrimitiveTuples;
@@ -260,9 +265,11 @@ public class ServiceResourceGenerator
         DeepFetchProjectionListener deepFetchProjectionListener = new DeepFetchProjectionListener();
         ProjectionWalker.walk(projection, deepFetchProjectionListener);
         ImmutableList<String> deepFetchStrings = deepFetchProjectionListener.getResult();
-        String deepFetchString = deepFetchStrings
+        String deepFetchSourceCode = deepFetchStrings
                 .collect(each -> "        result.deepFetch(" + each + ");\n")
                 .makeString("");
+
+        String orderBySourceCode = service.getOrderBy().map(this::getOrderBysSourceCode).orElse("");
 
         // @formatter:off
         //language=JAVA
@@ -285,7 +292,8 @@ public class ServiceResourceGenerator
                 + "\n"
                 + executeOperationSourceCode
                 + "        // Deep fetch using projection " + projectionName + "\n"
-                + deepFetchString
+                + deepFetchSourceCode
+                + orderBySourceCode
                 + "\n"
                 + authorizePredicateSourceCode
                 + validatePredicateSourceCode
@@ -328,8 +336,10 @@ public class ServiceResourceGenerator
             // @formatter:on
         }
 
-        //language=JAVA
-        return "        return this.applyProjection(result.asEcList(), " + this.applicationName + "DomainModel." + projectionName + ");\n";
+        return String.format(
+                "        return this.applyProjection(result.asEcList(), %sDomainModel.%s);\n",
+                this.applicationName,
+                projectionName);
     }
 
     private String getParameterSourceCode(@Nonnull ObjectBooleanPair<Parameter> pair, String indent)
@@ -406,6 +416,62 @@ public class ServiceResourceGenerator
                 "        {0}List result = {0}Finder.findMany(queryOperation{1});\n",
                 klassName,
                 versionClause);
+    }
+
+    private String getOrderBysSourceCode(OrderBy orderBy)
+    {
+        ImmutableList<String> orderBySourceCodeClauses = orderBy.getOrderByMemberReferencePaths().collect(this::getOrderBySourceCode);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < orderBySourceCodeClauses.size(); i++)
+        {
+            String orderBySourceCodeClause = orderBySourceCodeClauses.get(i);
+            if (i == 0)
+            {
+                stringBuilder.append(orderBySourceCodeClause);
+            }
+            else
+            {
+                stringBuilder.append(".and(");
+                stringBuilder.append(orderBySourceCodeClause);
+                stringBuilder.append(")");
+            }
+        }
+
+        return "\n        result.setOrderBy(" + stringBuilder + ");\n";
+    }
+
+    private String getOrderBySourceCode(OrderByMemberReferencePath orderByMemberReferencePath)
+    {
+        return this.getThisMemberReferencePathSourceCode(orderByMemberReferencePath.getThisMemberReferencePath())
+                + this.getOrderByDirectionDeclarationSourceCode(orderByMemberReferencePath.getOrderByDirectionDeclaration());
+    }
+
+    private String getThisMemberReferencePathSourceCode(ThisMemberReferencePath thisMemberReferencePath)
+    {
+        if (thisMemberReferencePath.getAssociationEnds().notEmpty())
+        {
+            throw new AssertionError();
+        }
+
+        return String.format(
+                "%sFinder.%s()",
+                thisMemberReferencePath.getKlass().getName(),
+                thisMemberReferencePath.getProperty().getName());
+    }
+
+    private String getOrderByDirectionDeclarationSourceCode(OrderByDirectionDeclaration orderByDirectionDeclaration)
+    {
+        OrderByDirection orderByDirection = orderByDirectionDeclaration.getOrderByDirection();
+        switch (orderByDirection)
+        {
+            case ASCENDING:
+                return ".ascendingOrderBy()";
+            case DESCENDING:
+                return ".descendingOrderBy()";
+            default:
+                throw new AssertionError();
+        }
     }
 
     private String getParameterType(DataType dataType)

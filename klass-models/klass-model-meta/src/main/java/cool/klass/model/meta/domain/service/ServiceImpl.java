@@ -7,10 +7,12 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.criteria.Criteria;
+import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.service.Service;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.Verb;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
+import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.service.ServiceProjectionDispatchImpl.ServiceProjectionDispatchBuilder;
 import cool.klass.model.meta.domain.service.url.UrlImpl;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
@@ -32,6 +34,9 @@ public final class ServiceImpl extends AbstractElement implements Service
     private Optional<Criteria> versionCriteria;
 
     private ServiceProjectionDispatchImpl projectionDispatch;
+
+    @Nonnull
+    private Optional<OrderBy> orderBy = Optional.empty();
 
     private ServiceImpl(
             @Nonnull ParserRuleContext elementContext,
@@ -67,6 +72,7 @@ public final class ServiceImpl extends AbstractElement implements Service
         return this.serviceMultiplicity;
     }
 
+    @Nonnull
     @Override
     public Optional<Criteria> getQueryCriteria()
     {
@@ -82,6 +88,7 @@ public final class ServiceImpl extends AbstractElement implements Service
         this.queryCriteria = Objects.requireNonNull(queryCriteria);
     }
 
+    @Nonnull
     @Override
     public Optional<Criteria> getAuthorizeCriteria()
     {
@@ -97,6 +104,7 @@ public final class ServiceImpl extends AbstractElement implements Service
         this.authorizeCriteria = Objects.requireNonNull(authorizeCriteria);
     }
 
+    @Nonnull
     @Override
     public Optional<Criteria> getValidateCriteria()
     {
@@ -112,6 +120,7 @@ public final class ServiceImpl extends AbstractElement implements Service
         this.validateCriteria = Objects.requireNonNull(validateCriteria);
     }
 
+    @Nonnull
     @Override
     public Optional<Criteria> getConflictCriteria()
     {
@@ -127,6 +136,7 @@ public final class ServiceImpl extends AbstractElement implements Service
         this.conflictCriteria = Objects.requireNonNull(conflictCriteria);
     }
 
+    @Nonnull
     @Override
     public Optional<Criteria> getVersionCriteria()
     {
@@ -155,6 +165,18 @@ public final class ServiceImpl extends AbstractElement implements Service
             throw new IllegalStateException();
         }
         this.projectionDispatch = Objects.requireNonNull(projectionDispatch);
+    }
+
+    @Override
+    @Nonnull
+    public Optional<OrderBy> getOrderBy()
+    {
+        return Objects.requireNonNull(this.orderBy);
+    }
+
+    private void setOrderBy(@Nonnull Optional<OrderBy> orderBy)
+    {
+        this.orderBy = Objects.requireNonNull(orderBy);
     }
 
     @Override
@@ -189,6 +211,9 @@ public final class ServiceImpl extends AbstractElement implements Service
         private final ServiceMultiplicity serviceMultiplicity;
 
         private ServiceProjectionDispatchBuilder projectionDispatchBuilder;
+
+        @Nonnull
+        private Optional<OrderByBuilder> orderByBuilder = Optional.empty();
 
         private Optional<AbstractCriteriaBuilder<?>> criteria  = Optional.empty();
         private Optional<AbstractCriteriaBuilder<?>> authorize = Optional.empty();
@@ -263,6 +288,11 @@ public final class ServiceImpl extends AbstractElement implements Service
             this.projectionDispatchBuilder = Objects.requireNonNull(projectionDispatchBuilder);
         }
 
+        public void setOrderByBuilder(@Nonnull Optional<OrderByBuilder> orderByBuilder)
+        {
+            this.orderByBuilder = Objects.requireNonNull(orderByBuilder);
+        }
+
         @Nonnull
         @Override
         protected ServiceImpl buildUnsafe()
@@ -290,6 +320,13 @@ public final class ServiceImpl extends AbstractElement implements Service
             service.setVersionCriteria(versionCriteria);
 
             return service;
+        }
+
+        @Override
+        protected void buildChildren()
+        {
+            Optional<OrderBy> orderBy = this.orderByBuilder.map(OrderByBuilder::build);
+            this.element.setOrderBy(orderBy);
         }
     }
 }

@@ -9,6 +9,7 @@ import cool.klass.model.converter.compiler.phase.criteria.ExpressionValueVisitor
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByDirection;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByMemberReferencePath;
+import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
 import cool.klass.model.converter.compiler.state.value.AntlrThisMemberReferencePath;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
@@ -28,6 +29,7 @@ public class OrderByPhase extends AbstractCompilerPhase
     public void enterOrderByDeclaration(@Nonnull OrderByDeclarationContext ctx)
     {
         super.enterOrderByDeclaration(ctx);
+
         if (this.compilerState.getCompilerWalkState().getOrderByOwnerState() == null)
         {
             return;
@@ -39,7 +41,8 @@ public class OrderByPhase extends AbstractCompilerPhase
                 this.compilerState.getCompilerInputState().isInference(),
                 this.compilerState.getCompilerWalkState().getThisReference(),
                 this.compilerState.getCompilerWalkState().getOrderByOwnerState()));
-        this.compilerState.getCompilerWalkState().getOrderByOwnerState().setOrderByState(this.orderByState);
+        AntlrOrderByOwner orderByOwnerState = this.compilerState.getCompilerWalkState().getOrderByOwnerState();
+        orderByOwnerState.setOrderByState(this.orderByState);
     }
 
     @Override

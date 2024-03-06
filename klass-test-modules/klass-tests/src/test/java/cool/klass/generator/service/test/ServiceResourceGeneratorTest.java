@@ -276,6 +276,8 @@ public class ServiceResourceGeneratorTest
                 + "        QuestionList result = QuestionFinder.findMany(queryOperation);\n"
                 + "        // Deep fetch using projection QuestionWriteProjection\n"
                 + "\n"
+                + "        result.setOrderBy(QuestionFinder.createdOn().ascendingOrderBy());\n"
+                + "\n"
                 + "        return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionWriteProjection);\n"
                 + "    }\n"
                 + "\n"

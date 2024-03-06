@@ -24,6 +24,7 @@ import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.Verb;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
+import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.service.ServiceImpl.ServiceBuilder;
 import cool.klass.model.meta.domain.service.ServiceProjectionDispatchImpl.ServiceProjectionDispatchBuilder;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
@@ -72,7 +73,6 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private AntlrServiceProjectionDispatch serviceProjectionDispatchState;
-    // TODO: ❗ Service OrderBy
     @Nonnull
     private Optional<AntlrOrderBy>         orderByState = Optional.empty();
     private ServiceBuilder                 elementBuilder;
@@ -284,6 +284,9 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
         ServiceProjectionDispatchBuilder projectionDispatchBuilder = this.serviceProjectionDispatchState.build();
         this.elementBuilder.setProjectionDispatch(projectionDispatchBuilder);
+
+        Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);
+        this.elementBuilder.setOrderByBuilder(orderByBuilder);
 
         return this.elementBuilder;
     }
