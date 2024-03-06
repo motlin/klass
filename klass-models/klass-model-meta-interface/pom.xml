@@ -17,12 +17,6 @@
     <dependencies>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-token-categories</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
         </dependency>

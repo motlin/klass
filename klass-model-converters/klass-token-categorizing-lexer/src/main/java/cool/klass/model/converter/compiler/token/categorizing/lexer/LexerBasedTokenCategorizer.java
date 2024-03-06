@@ -20,11 +20,18 @@ public final class LexerBasedTokenCategorizer
     public static MapIterable<Token, TokenCategory> findTokenCategoriesFromLexer(BufferedTokenStream tokenStream)
     {
         MutableMapIterable<Token, TokenCategory> tokenCategories = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+        findTokenCategoriesFromLexer(tokenStream, tokenCategories);
+        return tokenCategories.asUnmodifiable();
+    }
+
+    public static void findTokenCategoriesFromLexer(
+            BufferedTokenStream tokenStream,
+            MutableMapIterable<Token, TokenCategory> tokenCategories)
+    {
         for (Token token : tokenStream.getTokens())
         {
             LexerBasedTokenCategorizer.findTokenCategoriesFromLexer(token, tokenCategories);
         }
-        return tokenCategories.asUnmodifiable();
     }
 
     private static void findTokenCategoriesFromLexer(

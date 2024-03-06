@@ -10,9 +10,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.phase.AbstractCompilerPhase;
 import cool.klass.model.converter.compiler.state.AntlrElement;
-import cool.klass.model.converter.compiler.token.categories.TokenCategory;
-import cool.klass.model.converter.compiler.token.categorizing.lexer.LexerBasedTokenCategorizer;
-import cool.klass.model.converter.compiler.token.categorizing.parser.ParserBasedTokenCategorizer;
 import cool.klass.model.meta.domain.SourceCodeImpl.SourceCodeBuilderImpl;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassLexer;
@@ -24,9 +21,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.block.function.Function;
-import org.eclipse.collections.api.map.MapIterable;
 
 public final class CompilationUnit
 {
@@ -45,10 +40,6 @@ public final class CompilationUnit
     private final BufferedTokenStream               tokenStream;
     @Nonnull
     private final ParserRuleContext                 parserContext;
-    @Nonnull
-    private final MapIterable<Token, TokenCategory> tokenCategoriesFromLexer;
-    @Nonnull
-    private final MapIterable<Token, TokenCategory> tokenCategoriesFromParser;
 
     private SourceCodeBuilder sourceCodeBuilder;
 
@@ -73,9 +64,6 @@ public final class CompilationUnit
         {
             throw new AssertionError(sourceName);
         }
-
-        this.tokenCategoriesFromLexer  = LexerBasedTokenCategorizer.findTokenCategoriesFromLexer(tokenStream);
-        this.tokenCategoriesFromParser = ParserBasedTokenCategorizer.findTokenCategoriesFromParser(this.parserContext);
     }
 
     public int getOrdinal()
@@ -248,8 +236,6 @@ public final class CompilationUnit
                 this.sourceCodeText,
                 this.tokenStream,
                 this.parserContext,
-                macroSourceCodeBuilder,
-                this.tokenCategoriesFromLexer,
-                this.tokenCategoriesFromParser);
+                macroSourceCodeBuilder);
     }
 }

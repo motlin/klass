@@ -65,6 +65,7 @@ import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferencePathContext;
 import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.collections.api.map.MapIterable;
@@ -79,12 +80,23 @@ public class ParserBasedTokenCategorizer
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     @Nonnull
+    public MutableMapIterable<Token, TokenCategory> getTokenCategories()
+    {
+        return this.tokenCategories.asUnmodifiable();
+    }
+
+    @Nonnull
     public static MapIterable<Token, TokenCategory> findTokenCategoriesFromParser(@Nonnull ParseTree parseTree)
     {
-        ParseTreeWalker             parseTreeWalker = new ParseTreeWalker();
-        ParserBasedTokenCategorizer listener        = new ParserBasedTokenCategorizer();
-        parseTreeWalker.walk(listener, parseTree);
+        ParserBasedTokenCategorizer listener = new ParserBasedTokenCategorizer();
+        findTokenCategoriesFromParser(parseTree, listener);
         return listener.tokenCategories.asUnmodifiable();
+    }
+
+    public static void findTokenCategoriesFromParser(ParseTree parseTree, ParseTreeListener listener)
+    {
+        ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
+        parseTreeWalker.walk(listener, parseTree);
     }
 
     @Override

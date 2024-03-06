@@ -38,6 +38,7 @@ public class ReferencePropertyPhase
         String           className        = ctx.identifier().getText();
         AntlrDomainModel domainModelState = this.compilerState.getDomainModelState();
         AntlrClass       classState       = domainModelState.getClassByName(className);
+
         AntlrClassReference classReferenceState = new AntlrClassReference(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),

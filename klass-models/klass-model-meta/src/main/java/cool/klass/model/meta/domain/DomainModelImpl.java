@@ -1,9 +1,14 @@
 package cool.klass.model.meta.domain;
 
+import java.util.LinkedHashMap;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.converter.compiler.token.categories.TokenCategory;
+import cool.klass.model.converter.compiler.token.categorizing.lexer.LexerBasedTokenCategorizer;
+import cool.klass.model.converter.compiler.token.categorizing.parser.ParserBasedTokenCategorizer;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
@@ -20,20 +25,39 @@ import cool.klass.model.meta.domain.api.TopLevelElement.TopLevelElementBuilder;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
+import cool.klass.model.meta.domain.api.source.ElementWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
+import cool.klass.model.meta.domain.reference.DomainModelDeclarations;
+import cool.klass.model.meta.domain.reference.DomainModelDeclarationsTopLevelElementVisitor;
+import cool.klass.model.meta.domain.reference.DomainModelReferences;
+import cool.klass.model.meta.domain.reference.DomainModelReferencesTopLevelElementVisitor;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
+import org.eclipse.collections.api.map.MapIterable;
+import org.eclipse.collections.api.map.MutableMapIterable;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public final class DomainModelImpl
         implements DomainModelWithSourceCode
 {
     @Nonnull
     private final ImmutableList<SourceCode> sourceCodes;
+
+    @Nonnull
+    private final MapIterable<Token, TokenCategory> tokenCategoriesFromLexer;
+    @Nonnull
+    private final MapIterable<Token, TokenCategory> tokenCategoriesFromParser;
+
+    @Nonnull
+    private final DomainModelDeclarations domainModelDeclarations;
+    @Nonnull
+    private final DomainModelReferences   domainModelReferences;
 
     @Nonnull
     private final ImmutableList<TopLevelElement> topLevelElements;
@@ -63,6 +87,10 @@ public final class DomainModelImpl
 
     private DomainModelImpl(
             @Nonnull ImmutableList<SourceCode> sourceCodes,
+            @Nonnull MapIterable<Token, TokenCategory> tokenCategoriesFromLexer,
+            @Nonnull MapIterable<Token, TokenCategory> tokenCategoriesFromParser,
+            @Nonnull DomainModelDeclarations domainModelDeclarations,
+            @Nonnull DomainModelReferences domainModelReferences,
             @Nonnull ImmutableList<TopLevelElement> topLevelElements,
             @Nonnull ImmutableList<Enumeration> enumerations,
             @Nonnull ImmutableList<Classifier> classifiers,
@@ -72,15 +100,19 @@ public final class DomainModelImpl
             @Nonnull ImmutableList<Projection> projections,
             @Nonnull ImmutableList<ServiceGroup> serviceGroups)
     {
-        this.sourceCodes      = sourceCodes;
-        this.topLevelElements = Objects.requireNonNull(topLevelElements);
-        this.enumerations     = Objects.requireNonNull(enumerations);
-        this.classifiers      = Objects.requireNonNull(classifiers);
-        this.interfaces       = Objects.requireNonNull(interfaces);
-        this.classes          = Objects.requireNonNull(classes);
-        this.associations     = Objects.requireNonNull(associations);
-        this.projections      = Objects.requireNonNull(projections);
-        this.serviceGroups    = Objects.requireNonNull(serviceGroups);
+        this.sourceCodes               = Objects.requireNonNull(sourceCodes);
+        this.tokenCategoriesFromLexer  = Objects.requireNonNull(tokenCategoriesFromLexer);
+        this.tokenCategoriesFromParser = Objects.requireNonNull(tokenCategoriesFromParser);
+        this.domainModelDeclarations   = Objects.requireNonNull(domainModelDeclarations);
+        this.domainModelReferences     = Objects.requireNonNull(domainModelReferences);
+        this.topLevelElements          = Objects.requireNonNull(topLevelElements);
+        this.enumerations              = Objects.requireNonNull(enumerations);
+        this.classifiers               = Objects.requireNonNull(classifiers);
+        this.interfaces                = Objects.requireNonNull(interfaces);
+        this.classes                   = Objects.requireNonNull(classes);
+        this.associations              = Objects.requireNonNull(associations);
+        this.projections               = Objects.requireNonNull(projections);
+        this.serviceGroups             = Objects.requireNonNull(serviceGroups);
 
         this.topLevelElementsByName = this.topLevelElements
                 .reject(ServiceGroup.class::isInstance)
@@ -98,6 +130,58 @@ public final class DomainModelImpl
     public ImmutableList<SourceCode> getSourceCodes()
     {
         return this.sourceCodes;
+    }
+
+    @Override
+    public Optional<TokenCategory> getTokenCategory(Token token)
+    {
+        TokenCategory lexerCategory  = this.tokenCategoriesFromLexer.get(token);
+        TokenCategory parserCategory = this.tokenCategoriesFromParser.get(token);
+        if (lexerCategory != null && parserCategory != null)
+        {
+            throw new AssertionError(token);
+        }
+        if (lexerCategory != null)
+        {
+            return Optional.of(lexerCategory);
+        }
+        if (parserCategory != null)
+        {
+            return Optional.of(parserCategory);
+        }
+        return Optional.empty();
+    }
+
+    @Nonnull
+    public MapIterable<Token, TokenCategory> getTokenCategoriesFromLexer()
+    {
+        return this.tokenCategoriesFromLexer;
+    }
+
+    @Nonnull
+    public MapIterable<Token, TokenCategory> getTokenCategoriesFromParser()
+    {
+        return this.tokenCategoriesFromParser;
+    }
+
+    @Override
+    @Nonnull
+    public Optional<ElementWithSourceCode> getElementByDeclaration(Token token)
+    {
+        return this.domainModelDeclarations.getElementByDeclaration(token);
+    }
+
+    @Override
+    @Nonnull
+    public Optional<ElementWithSourceCode> getElementByReference(Token token)
+    {
+        return this.domainModelReferences.getElementByReference(token);
+    }
+
+    @Nonnull
+    public DomainModelReferences getDomainModelReferences()
+    {
+        return this.domainModelReferences;
     }
 
     @Override
@@ -255,11 +339,21 @@ public final class DomainModelImpl
 
             ImmutableList<Projection> projections = this.projectionBuilders.<Projection>collect(ProjectionBuilder::build).toImmutable();
             this.projectionBuilders.each(AbstractProjectionParentBuilder::build2);
-            ImmutableList<ServiceGroup>                  serviceGroups    = this.serviceGroupBuilders.<ServiceGroup>collect(ServiceGroupBuilder::build).toImmutable();
+            ImmutableList<ServiceGroup> serviceGroups = this.serviceGroupBuilders.<ServiceGroup>collect(ServiceGroupBuilder::build).toImmutable();
             ImmutableList<TopLevelElement> topLevelElements = this.topLevelElementBuilders.collect(TopLevelElementBuilder::getElement);
+
+            MapIterable<Token, TokenCategory> tokenCategoriesFromLexer  = this.getTokenCategoriesFromLexer(sourceCodes);
+            MapIterable<Token, TokenCategory> tokenCategoriesFromParser = this.getTokenCategoriesFromParser(sourceCodes);
+
+            DomainModelDeclarations domainModelDeclarations = this.getDomainModelDeclarations(sourceCodes, topLevelElements);
+            DomainModelReferences domainModelReferences = this.getDomainModelReferences(sourceCodes, topLevelElements);
 
             return new DomainModelImpl(
                     sourceCodes,
+                    tokenCategoriesFromLexer,
+                    tokenCategoriesFromParser,
+                    domainModelDeclarations,
+                    domainModelReferences,
                     topLevelElements,
                     enumerations,
                     classifiers,
@@ -268,6 +362,50 @@ public final class DomainModelImpl
                     associations,
                     projections,
                     serviceGroups);
+        }
+
+        private MapIterable<Token, TokenCategory> getTokenCategoriesFromLexer(ImmutableList<SourceCode> sourceCodes)
+        {
+            MutableMapIterable<Token, TokenCategory> tokenCategoriesFromLexer = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+            sourceCodes
+                    .collect(SourceCode::getTokenStream)
+                    .forEachWith(LexerBasedTokenCategorizer::findTokenCategoriesFromLexer, tokenCategoriesFromLexer);
+            return tokenCategoriesFromLexer.asUnmodifiable();
+        }
+
+        private MapIterable<Token, TokenCategory> getTokenCategoriesFromParser(ImmutableList<SourceCode> sourceCodes)
+        {
+            ParserBasedTokenCategorizer listener = new ParserBasedTokenCategorizer();
+
+            sourceCodes
+                    .collect(SourceCode::getParserContext)
+                    .forEachWith(ParserBasedTokenCategorizer::findTokenCategoriesFromParser, listener);
+            MapIterable<Token, TokenCategory> tokenCategoriesFromParser = listener.getTokenCategories();
+            return tokenCategoriesFromParser;
+        }
+
+        private DomainModelDeclarations getDomainModelDeclarations(
+                ImmutableList<SourceCode> sourceCodes,
+                ImmutableList<TopLevelElement> topLevelElements)
+        {
+            DomainModelDeclarations domainModelDeclarations = new DomainModelDeclarations();
+            for (TopLevelElement topLevelElement : topLevelElements)
+            {
+                topLevelElement.visit(new DomainModelDeclarationsTopLevelElementVisitor(domainModelDeclarations));
+            }
+            return domainModelDeclarations;
+        }
+
+        private DomainModelReferences getDomainModelReferences(
+                ImmutableList<SourceCode> sourceCodes,
+                ImmutableList<TopLevelElement> topLevelElements)
+        {
+            DomainModelReferences domainModelReferences = new DomainModelReferences();
+            for (TopLevelElement topLevelElement : topLevelElements)
+            {
+                topLevelElement.visit(new DomainModelReferencesTopLevelElementVisitor(domainModelReferences));
+            }
+            return domainModelReferences;
         }
     }
 }

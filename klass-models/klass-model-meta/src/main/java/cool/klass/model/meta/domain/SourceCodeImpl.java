@@ -5,12 +5,9 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.token.categories.TokenCategory;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
-import org.eclipse.collections.api.map.MapIterable;
 
 public final class SourceCodeImpl
         implements SourceCode
@@ -24,10 +21,6 @@ public final class SourceCodeImpl
     @Nonnull
     private final ParserRuleContext                 parserContext;
     @Nonnull
-    private final MapIterable<Token, TokenCategory> tokenCategoriesFromLexer;
-    @Nonnull
-    private final MapIterable<Token, TokenCategory> tokenCategoriesFromParser;
-    @Nonnull
     private final Optional<SourceCode>              macroSourceCode;
 
     public SourceCodeImpl(
@@ -35,17 +28,13 @@ public final class SourceCodeImpl
             @Nonnull String sourceCodeText,
             @Nonnull BufferedTokenStream tokenStream,
             @Nonnull ParserRuleContext parserContext,
-            @Nonnull Optional<SourceCode> macroSourceCode,
-            @Nonnull MapIterable<Token, TokenCategory> tokenCategoriesFromLexer,
-            @Nonnull MapIterable<Token, TokenCategory> tokenCategoriesFromParser)
+            @Nonnull Optional<SourceCode> macroSourceCode)
     {
         this.sourceName                = Objects.requireNonNull(sourceName);
         this.sourceCodeText            = Objects.requireNonNull(sourceCodeText);
         this.tokenStream               = Objects.requireNonNull(tokenStream);
         this.parserContext             = Objects.requireNonNull(parserContext);
         this.macroSourceCode           = Objects.requireNonNull(macroSourceCode);
-        this.tokenCategoriesFromLexer  = Objects.requireNonNull(tokenCategoriesFromLexer);
-        this.tokenCategoriesFromParser = Objects.requireNonNull(tokenCategoriesFromParser);
     }
 
     @Override
@@ -84,23 +73,9 @@ public final class SourceCodeImpl
     }
 
     @Override
-    public Optional<TokenCategory> getTokenCategory(Token token)
+    public String toString()
     {
-        TokenCategory lexerCategory  = this.tokenCategoriesFromLexer.get(token);
-        TokenCategory parserCategory = this.tokenCategoriesFromParser.get(token);
-        if (lexerCategory != null && parserCategory != null)
-        {
-            throw new AssertionError(token);
-        }
-        if (lexerCategory != null)
-        {
-            return Optional.of(lexerCategory);
-        }
-        if (parserCategory != null)
-        {
-            return Optional.of(parserCategory);
-        }
-        return Optional.empty();
+        return this.sourceName;
     }
 
     public static final class SourceCodeBuilderImpl
@@ -116,10 +91,6 @@ public final class SourceCodeImpl
         private final ParserRuleContext                 parserContext;
         @Nonnull
         private final Optional<SourceCodeBuilder>       macroSourceCodeBuilder;
-        @Nonnull
-        private final MapIterable<Token, TokenCategory> tokenCategoriesFromLexer;
-        @Nonnull
-        private final MapIterable<Token, TokenCategory> tokenCategoriesFromParser;
 
         private SourceCode sourceCode;
 
@@ -128,17 +99,13 @@ public final class SourceCodeImpl
                 @Nonnull String sourceCodeText,
                 @Nonnull BufferedTokenStream tokenStream,
                 @Nonnull ParserRuleContext parserContext,
-                @Nonnull Optional<SourceCodeBuilder> macroSourceCodeBuilder,
-                @Nonnull MapIterable<Token, TokenCategory> tokenCategoriesFromLexer,
-                @Nonnull MapIterable<Token, TokenCategory> tokenCategoriesFromParser)
+                @Nonnull Optional<SourceCodeBuilder> macroSourceCodeBuilder)
         {
             this.sourceName                = Objects.requireNonNull(sourceName);
             this.sourceCodeText            = Objects.requireNonNull(sourceCodeText);
             this.tokenStream               = Objects.requireNonNull(tokenStream);
             this.parserContext             = Objects.requireNonNull(parserContext);
             this.macroSourceCodeBuilder    = Objects.requireNonNull(macroSourceCodeBuilder);
-            this.tokenCategoriesFromLexer  = Objects.requireNonNull(tokenCategoriesFromLexer);
-            this.tokenCategoriesFromParser = Objects.requireNonNull(tokenCategoriesFromParser);
         }
 
         @Override
@@ -151,9 +118,7 @@ public final class SourceCodeImpl
                         this.sourceCodeText,
                         this.tokenStream,
                         this.parserContext,
-                        this.macroSourceCodeBuilder.map(SourceCodeBuilder::build),
-                        this.tokenCategoriesFromLexer,
-                        this.tokenCategoriesFromParser);
+                        this.macroSourceCodeBuilder.map(SourceCodeBuilder::build));
             }
             return this.sourceCode;
         }

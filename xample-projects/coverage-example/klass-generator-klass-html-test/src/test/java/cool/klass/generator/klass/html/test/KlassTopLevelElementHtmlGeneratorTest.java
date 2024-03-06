@@ -61,7 +61,7 @@ public class KlassTopLevelElementHtmlGeneratorTest
             {
                 TopLevelElementWithSourceCode topLevelElementWithSourceCode = (TopLevelElementWithSourceCode) topLevelElement;
 
-                String html = KlassTopLevelElementHtmlGenerator.writeHtml(topLevelElementWithSourceCode);
+                String html = KlassTopLevelElementHtmlGenerator.writeHtml(topLevelElementWithSourceCode, domainModel);
                 LOGGER.info(html);
             }
         }

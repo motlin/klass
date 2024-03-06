@@ -68,11 +68,11 @@ public abstract class AbstractKlassCompilerErrorTestCase
 
     protected void assertNoCompilerErrors()
     {
-        Class<?> callingClass   = this.getClass();
-        String   testName       = callingClass.getSimpleName();
-        String   sourceName     = testName + ".klass";
+        Class<?> callingClass = this.getClass();
+        String   testName     = callingClass.getSimpleName();
+        String   sourceName   = testName + ".klass";
 
-        String   sourceCodeText = FileMatchRule.slurp(sourceName, callingClass);
+        String sourceCodeText = FileMatchRule.slurp(sourceName, callingClass);
 
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
                 0,

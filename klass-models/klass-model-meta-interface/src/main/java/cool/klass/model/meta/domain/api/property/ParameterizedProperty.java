@@ -4,8 +4,13 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Klass;
 
-public interface ParameterizedProperty extends ReferenceProperty
+public interface ParameterizedProperty
+        extends ReferenceProperty
 {
+    @Nonnull
+    @Override
+    Klass getType();
+
     @Nonnull
     @Override
     Klass getOwningClassifier();

@@ -1,12 +1,12 @@
 package cool.klass.generator.klass.html;
 
 import java.util.Optional;
-import java.util.function.Function;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import cool.klass.model.converter.compiler.token.categories.TokenCategory;
 import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import org.antlr.v4.runtime.BufferedTokenStream;
@@ -26,7 +26,7 @@ public final class KlassTopLevelElementHtmlGenerator
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    public static String writeHtml(TopLevelElementWithSourceCode topLevelElement)
+    public static String writeHtml(TopLevelElementWithSourceCode topLevelElement, DomainModelWithSourceCode domainModel)
     {
         SourceCode        sourceCode      = topLevelElement.getSourceCodeObject();
         AbstractElement   abstractElement = (AbstractElement) topLevelElement;
@@ -57,18 +57,18 @@ public final class KlassTopLevelElementHtmlGenerator
                 + "<pre>\n"
                 + tokens
                 .reject(token -> token.getType() == Token.EOF)
-                .collectWith(KlassTopLevelElementHtmlGenerator::getSourceCode, sourceCode).makeString("")
+                .collect(token -> getSourceCode(token, domainModel)).makeString("")
                 + "</pre>\n"
                 + "</body>\n"
                 + "</html>\n";
     }
 
-    private static String getSourceCode(Token token, Function<Token, Optional<TokenCategory>> tokenCategorizer)
+    private static String getSourceCode(Token token, DomainModelWithSourceCode domainModel)
     {
-        Optional<TokenCategory> maybeTokenCategory = tokenCategorizer.apply(token);
+        Optional<TokenCategory> maybeTokenCategory = domainModel.getTokenCategory(token);
         return maybeTokenCategory.map(tokenCategory -> KlassTopLevelElementHtmlGenerator.getSourceCode(
-                token,
-                tokenCategory))
+                        token,
+                        tokenCategory))
                 .orElseGet(() -> KlassTopLevelElementHtmlGenerator.getSourceCodeWithoutCategory(token));
     }
 

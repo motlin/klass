@@ -8,16 +8,16 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.service.ServiceProjectionDispatchWithSourceCode;
 import cool.klass.model.meta.domain.projection.ProjectionImpl;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 
 public final class ServiceProjectionDispatchImpl
         extends AbstractElement
-        implements ServiceProjectionDispatch
+        implements ServiceProjectionDispatchWithSourceCode
 {
     @Nonnull
     private final ProjectionImpl projection;

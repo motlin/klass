@@ -7,7 +7,6 @@ import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
@@ -50,7 +49,7 @@ public class KlassSourceCodeHtmlGenerator
     private void writeHtmlFile(SourceCode sourceCode, Path outputPath)
     {
         Path   htmlOutputPath = KlassSourceCodeHtmlGenerator.getOutputPath(outputPath, sourceCode);
-        String sourceCodeText = KlassSourceCodeHtmlGenerator.getSourceCode(sourceCode);
+        String sourceCodeText = this.getSourceCode(sourceCode);
         KlassSourceCodeHtmlGenerator.printStringToFile(htmlOutputPath, sourceCodeText);
     }
 
@@ -99,7 +98,7 @@ public class KlassSourceCodeHtmlGenerator
     }
 
     @Nonnull
-    private static String getSourceCode(SourceCode sourceCode)
+    private String getSourceCode(SourceCode sourceCode)
     {
         BufferedTokenStream tokenStream = sourceCode.getTokenStream();
         MutableList<Token>  tokens      = ListAdapter.adapt(tokenStream.getTokens());
@@ -121,16 +120,16 @@ public class KlassSourceCodeHtmlGenerator
                 + "<body class=\"klass-theme-light\">"
                 + "<pre>\n"
                 + tokens
-                    .reject(token -> token.getType() == Token.EOF)
-                    .collectWith(KlassSourceCodeHtmlGenerator::getSourceCode, sourceCode).makeString("")
+                .reject(token -> token.getType() == Token.EOF)
+                .collect(token -> getSourceCode(token, this.domainModel)).makeString("")
                 + "</pre>\n"
                 + "</body>\n"
                 + "</html>\n";
     }
 
-    private static String getSourceCode(Token token, Function<Token, Optional<TokenCategory>> tokenCategorizer)
+    private static String getSourceCode(Token token, DomainModelWithSourceCode domainModel)
     {
-        Optional<TokenCategory> maybeTokenCategory = tokenCategorizer.apply(token);
+        Optional<TokenCategory> maybeTokenCategory = domainModel.getTokenCategory(token);
         return maybeTokenCategory.map(tokenCategory -> KlassSourceCodeHtmlGenerator.getSourceCode(token, tokenCategory))
                 .orElseGet(() -> KlassSourceCodeHtmlGenerator.getSourceCodeWithoutCategory(token));
     }

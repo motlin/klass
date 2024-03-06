@@ -4,7 +4,8 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-public interface EnumerationLiteral extends TypedElement
+public interface EnumerationLiteral
+        extends TypedElement
 {
     @Nonnull
     Optional<String> getDeclaredPrettyName();

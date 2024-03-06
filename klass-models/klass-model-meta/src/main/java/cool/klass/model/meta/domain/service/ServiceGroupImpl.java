@@ -10,11 +10,10 @@ import cool.klass.model.meta.domain.AbstractPackageableElement;
 import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.service.url.Url;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
+import cool.klass.model.meta.domain.api.source.service.ServiceGroupWithSourceCode;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
@@ -22,7 +21,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public final class ServiceGroupImpl
         extends AbstractPackageableElement
-        implements ServiceGroup, TopLevelElementWithSourceCode
+        implements ServiceGroupWithSourceCode
 {
     @Nonnull
     private final KlassImpl klass;
