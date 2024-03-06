@@ -20,5 +20,8 @@
         <module>klass-model-meta</module>
         <module>klass-model-loader</module>
         <module>klass-model-bootstrap</module>
+        <module>klass-model-meta-schema-json</module>
+        <module>klass-model-meta-json</module>
+        <module>klass-model-meta-json-pojo</module>
     </modules>
 </project>
