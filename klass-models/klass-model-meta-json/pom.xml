@@ -12,4 +12,6 @@
 
     <artifactId>klass-model-meta-json</artifactId>
 
+    <name>Klass Meta Model: JSON</name>
+
 </project>

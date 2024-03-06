@@ -12,4 +12,6 @@
 
     <artifactId>klass-model-meta-json-pojo</artifactId>
 
+    <name>Klass Meta Model: JSON Pojos</name>
+
 </project>
