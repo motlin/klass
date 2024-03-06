@@ -34,5 +34,6 @@
         <module>klass-dropwizard-bundles</module>
         <module>klass-dropwizard-configuration</module>
         <module>klass-dropwizard-configuration-factories</module>
+        <module>klass-dropwizard-healthchecks</module>
     </modules>
 </project>
