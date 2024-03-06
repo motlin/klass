@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import com.google.common.base.CaseFormat;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.Type;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
@@ -122,6 +123,10 @@ public class GraphQLSchemaQueryGenerator
         if (type == PrimitiveType.INTEGER)
         {
             return "Int";
+        }
+        if (type instanceof Enumeration)
+        {
+            return "String";
         }
         return type.toString();
     }

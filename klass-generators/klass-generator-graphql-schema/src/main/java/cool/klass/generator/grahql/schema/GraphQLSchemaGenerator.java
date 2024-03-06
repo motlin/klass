@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.graphql.schema.writer.KlassGraphQLModelConverter;
 import cool.klass.model.graphql.domain.GraphQLDomainModel;
 import cool.klass.model.graphql.domain.GraphQLElement;
+import cool.klass.model.graphql.domain.GraphQLEnumeration;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.PrimitiveType;
@@ -42,7 +43,9 @@ public class GraphQLSchemaGenerator
 
         String scalarsSourceCode = this.getScalarsSourceCode();
 
-        String topLevelElementsCode = graphQLDomainModel.getTopLevelElements()
+        String topLevelElementsCode = graphQLDomainModel
+                .getTopLevelElements()
+                .reject(GraphQLEnumeration.class::isInstance)
                 .collect(this::getSourceCode)
                 .makeString("");
 
@@ -110,14 +113,14 @@ public class GraphQLSchemaGenerator
 
     private String getSourceCode(@Nonnull GraphQLElement graphQLElement)
     {
-        GraphQLElementToSchemaSourceVisitor visitor = new GraphQLElementToSchemaSourceVisitor();
+        var visitor = new GraphQLElementToSchemaSourceVisitor();
         graphQLElement.visit(visitor);
         return visitor.getSourceCode();
     }
 
     private void printStringToFile(@Nonnull Path path, String contents)
     {
-        try (PrintStream printStream = new PrintStream(new FileOutputStream(path.toFile())))
+        try (var printStream = new PrintStream(new FileOutputStream(path.toFile())))
         {
             printStream.print(contents);
         }

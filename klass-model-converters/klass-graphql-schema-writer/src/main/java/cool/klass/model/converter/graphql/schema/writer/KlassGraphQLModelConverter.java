@@ -117,6 +117,10 @@ public class KlassGraphQLModelConverter
         {
             return "Int";
         }
+        if (type instanceof Enumeration)
+        {
+            return "String";
+        }
         return type.toString();
     }
 }
