@@ -111,11 +111,6 @@ public class AntlrAssociationEnd
         return this.associationEndBuilder;
     }
 
-    public boolean isOwned()
-    {
-        return this.getModifiers().anySatisfy(AntlrModifier::isOwned);
-    }
-
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
@@ -158,16 +153,6 @@ public class AntlrAssociationEnd
     public boolean isVersioned()
     {
         return this.opposite.isVersion();
-    }
-
-    public boolean isVersion()
-    {
-        return this.getModifiers().anySatisfy(AntlrModifier::isVersion);
-    }
-
-    public boolean isAudit()
-    {
-        return this.getModifiers().anySatisfy(AntlrModifier::isAudit);
     }
 
     public void setOpposite(@Nonnull AntlrAssociationEnd opposite)

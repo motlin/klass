@@ -105,11 +105,6 @@ public class AntlrAssociationEndSignature
         return this.associationEndSignatureBuilder;
     }
 
-    public boolean isOwned()
-    {
-        return this.getModifiers().anySatisfy(AntlrModifier::isOwned);
-    }
-
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {

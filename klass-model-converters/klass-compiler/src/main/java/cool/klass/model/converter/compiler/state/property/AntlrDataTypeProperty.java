@@ -224,6 +224,11 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         return this.getModifiers().anySatisfy(AntlrModifier::isUserId);
     }
 
+    public boolean isVersion()
+    {
+        return this.getModifiers().anySatisfy(AntlrModifier::isVersion);
+    }
+
     public boolean isAudit()
     {
         return this.getModifiers().anySatisfy(AntlrModifier::isAudit);

@@ -798,4 +798,9 @@ public class AntlrClass
     {
         return this.associationEndStates.anySatisfy(AntlrAssociationEnd::isVersion);
     }
+
+    public boolean isVersion()
+    {
+        return this.dataTypePropertyStates.anySatisfy(AntlrDataTypeProperty::isVersion);
+    }
 }

@@ -197,6 +197,21 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         return this.multiplicityState != null && this.multiplicityState.getMultiplicity() == Multiplicity.ONE_TO_ONE;
     }
 
+    public boolean isOwned()
+    {
+        return this.getModifiers().anySatisfy(AntlrModifier::isOwned);
+    }
+
+    public boolean isVersion()
+    {
+        return this.getModifiers().anySatisfy(AntlrModifier::isVersion);
+    }
+
+    public boolean isAudit()
+    {
+        return this.getModifiers().anySatisfy(AntlrModifier::isAudit);
+    }
+
     protected void reportInvalidMultiplicity(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.multiplicityState.getMultiplicity() == null)
