@@ -1,6 +1,7 @@
-package cool.klass.jackson.response;
+package cool.klass.serialization.jackson.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import cool.klass.logging.context.MDCCloseable;
 
 public class KlassResponsePagination
 {
@@ -10,9 +11,9 @@ public class KlassResponsePagination
 
     public KlassResponsePagination(int pageSize, int numberOfPages, int pageNumber)
     {
-        this.pageSize = pageSize;
+        this.pageSize      = pageSize;
         this.numberOfPages = numberOfPages;
-        this.pageNumber = pageNumber;
+        this.pageNumber    = pageNumber;
     }
 
     @JsonProperty
@@ -41,5 +42,12 @@ public class KlassResponsePagination
                 this.pageSize,
                 this.numberOfPages,
                 this.pageNumber);
+    }
+
+    public void withMDC(MDCCloseable mdc)
+    {
+        mdc.put("klass.response.pagination.pageSize", String.valueOf(this.pageSize));
+        mdc.put("klass.response.pagination.numberOfPages", String.valueOf(this.numberOfPages));
+        mdc.put("klass.response.pagination.pageNumber", String.valueOf(this.pageNumber));
     }
 }

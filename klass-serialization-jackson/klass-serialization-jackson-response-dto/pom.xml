@@ -5,28 +5,14 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>cool.klass</groupId>
-        <artifactId>klass</artifactId>
+        <artifactId>klass-serialization-jackson</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-jackson-response</artifactId>
+    <artifactId>klass-serialization-jackson-response-dto</artifactId>
 
-    <name>Klass Jackson Response</name>
-
-    <dependencyManagement>
-        <dependencies>
-
-            <dependency>
-                <groupId>cool.klass</groupId>
-                <artifactId>klass-bom</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-        </dependencies>
-    </dependencyManagement>
+    <name>Klass Serialization: Jackson Response DTO</name>
 
     <dependencies>
 
@@ -34,6 +20,13 @@
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-meta-interface</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-logging-context</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

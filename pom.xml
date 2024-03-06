@@ -30,7 +30,6 @@
         <module>klass-serialization-jackson</module>
         <module>xample-projects</module>
         <module>klass-maven-archetype</module>
-        <module>klass-jackson-response</module>
         <module>klass-jetty-admin-login-service</module>
         <module>klass-logging</module>
     </modules>

@@ -1,4 +1,4 @@
-package cool.klass.jackson.response;
+package cool.klass.serialization.jackson.response;
 
 import java.security.Principal;
 import java.time.Instant;

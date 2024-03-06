@@ -36,7 +36,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-jackson-response</artifactId>
+            <artifactId>klass-serialization-jackson-response-dto</artifactId>
             <version>${project.version}</version>
         </dependency>
 

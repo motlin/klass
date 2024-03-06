@@ -1,4 +1,4 @@
-package cool.klass.jackson.response;
+package cool.klass.serialization.jackson.response;
 
 import java.security.Principal;
 import java.time.Instant;
@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import cool.klass.logging.context.MDCCloseable;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.projection.Projection;
 
@@ -94,5 +95,31 @@ public class KlassResponseMetadata
     public Optional<? extends Principal> getPrincipal()
     {
         return this.principal;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format(
+                "{\"criteria\":%s,\"orderBy\":%s,\"multiplicity\":%s,\"projection\":%s,\"transactionTimestamp\":%s,\"pagination\":%s,\"principal\":%s}",
+                this.criteria.orElse(null),
+                this.orderBy.orElse(null),
+                this.multiplicity.getPrettyName(),
+                this.projection,
+                this.transactionTimestamp,
+                this.pagination.orElse(null),
+                this.principal.orElse(null));
+    }
+
+    public void withMDC(MDCCloseable mdc)
+    {
+        mdc.put("klass.response.criteria", this.criteria.orElse(null));
+        mdc.put("klass.response.orderBy", this.orderBy.orElse(null));
+        mdc.put("klass.response.multiplicity", this.multiplicity.getPrettyName());
+        mdc.put("klass.response.projection.name", String.valueOf(this.projection));
+        mdc.put("klass.response.projection.class", this.projection.getKlass().getFullyQualifiedName());
+        mdc.put("klass.response.transactionTimestamp", String.valueOf(this.transactionTimestamp));
+        mdc.put("klass.response.principal", this.principal.map(Object::toString).orElse(null));
+        this.pagination.ifPresent(responsePagination -> responsePagination.withMDC(mdc));
     }
 }

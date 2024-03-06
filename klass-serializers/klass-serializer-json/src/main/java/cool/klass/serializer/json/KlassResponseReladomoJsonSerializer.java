@@ -14,8 +14,8 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.gs.fw.common.mithra.MithraObject;
 import cool.klass.context.threadlocal.ThreadLocalContext;
 import cool.klass.data.store.DataStore;
-import cool.klass.jackson.response.KlassResponse;
-import cool.klass.jackson.response.KlassResponseMetadata;
+import cool.klass.serialization.jackson.response.KlassResponse;
+import cool.klass.serialization.jackson.response.KlassResponseMetadata;
 
 // TODO: Split into one for non-null lists and one for nullable MithraObjects
 public class KlassResponseReladomoJsonSerializer extends JsonSerializer<KlassResponse>

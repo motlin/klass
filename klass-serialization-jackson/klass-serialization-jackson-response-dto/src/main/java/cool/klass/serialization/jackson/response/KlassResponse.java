@@ -1,4 +1,4 @@
-package cool.klass.jackson.response;
+package cool.klass.serialization.jackson.response;
 
 import java.util.List;
 import java.util.Objects;
@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import cool.klass.logging.context.MDCCloseable;
 
 @JsonPropertyOrder({"_metadata", "_data"})
 public class KlassResponse
@@ -22,7 +23,7 @@ public class KlassResponse
     public KlassResponse(@Nonnull KlassResponseMetadata metadata, Object data)
     {
         this.metadata = Objects.requireNonNull(metadata);
-        this.data = data;
+        this.data     = data;
 
         if (metadata.getMultiplicity().isToMany() && !(data instanceof List))
         {
@@ -48,5 +49,21 @@ public class KlassResponse
     public String toString()
     {
         return String.format("{\"_metadata\":%s,\"_data\":%s}", this.metadata, this.data);
+    }
+
+    public void withMDC(MDCCloseable mdc)
+    {
+        this.metadata.withMDC(mdc);
+
+        if (this.data instanceof List)
+        {
+            List<?> list = (List<?>) this.data;
+            int     size = list.size();
+            mdc.put("klass.response.data.size", String.valueOf(size));
+        }
+        else if (this.data != null)
+        {
+            mdc.put("klass.response.data.type", this.data.getClass().getCanonicalName());
+        }
     }
 }
