@@ -21,5 +21,6 @@
         <module>klass-servlet-logging-structured-argument</module>
         <module>klass-servlet-logging-structured-status-info</module>
         <module>klass-servlet-logging-structured-klass-response</module>
+        <module>klass-servlet-logging-structured-reladomo</module>
     </modules>
 </project>
