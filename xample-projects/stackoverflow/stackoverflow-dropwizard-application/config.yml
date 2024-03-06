@@ -1,3 +1,9 @@
+server:
+  detailedJsonProcessingExceptionMapper: true
+  requestLog:
+    appenders:
+      - type: console
+
 logging:
   level: DEBUG
   loggers:
@@ -6,6 +12,3 @@ logging:
     com.gs.fw.common.mithra.batch.sqllogs: DEBUG
     com.gs.fw.common.mithra.connectionmanager: INFO
     org.eclipse.jetty: INFO
-
-server:
-  detailedJsonProcessingExceptionMapper: true

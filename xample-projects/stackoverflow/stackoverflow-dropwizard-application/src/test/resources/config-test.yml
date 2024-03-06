@@ -6,6 +6,9 @@ server:
     - type: http
       port: 0
   detailedJsonProcessingExceptionMapper: true
+  requestLog:
+    appenders:
+      - type: console
 
 logging:
   level: DEBUG
@@ -18,6 +21,6 @@ logging:
     org.apache.http: INFO
   appenders:
     - type: console
-      # In production, always use UTC. In unit t ests, system is more convenient
+      # In production, always use UTC. In unit tests, system is more convenient
       timeZone: system
       logFormat: "%highlight(%-5level) [%date{HH:mm:ss}] %logger: %message%n%rootException"
