@@ -20,6 +20,7 @@
 
         <module>stackoverflow</module>
         <module>coverage-example</module>
+        <module>reladomo-to-many-abstract</module>
     </modules>
 
     <dependencyManagement>
@@ -42,9 +43,9 @@
             <modules>
                 <module>stackoverflow</module>
                 <module>coverage-example</module>
-                <module>reladomo-bug</module>
                 <module>reladomo-abstract-implements-interface</module>
                 <module>reladomo-abstract-owned-foreign-key</module>
+                <module>reladomo-to-many-abstract</module>
             </modules>
         </profile>
     </profiles>
