@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="klass [display-dependency-updates]" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
+  <configuration default="false" name="dependency:go-offline" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -10,8 +10,8 @@
           </option>
           <option name="goals">
             <list>
-              <option value="versions:display-dependency-updates" />
-              <option value="versions:display-property-updates" />
+              <option value="-DexcludeGroupIds=cool.klass" />
+              <option value="dependency:go-offline" />
             </list>
           </option>
           <option name="pomFileName" value="pom.xml" />
@@ -23,6 +23,6 @@
         </MavenRunnerParameters>
       </option>
     </MavenSettings>
-    <method />
+    <method v="2" />
   </configuration>
 </component>
