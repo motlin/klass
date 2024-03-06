@@ -1,18 +1,6 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
-    <option name="HTML_ATTRIBUTE_WRAP" value="0" />
-    <option name="HTML_SPACE_INSIDE_EMPTY_TAG" value="true" />
-    <option name="HTML_DO_NOT_INDENT_CHILDREN_OF" value="html,body" />
-    <option name="HTML_QUOTE_STYLE" value="Single" />
-    <option name="HTML_ENFORCE_QUOTES" value="true" />
     <option name="FORMATTER_TAGS_ENABLED" value="true" />
-    <HTMLCodeStyleSettings>
-      <option name="HTML_ATTRIBUTE_WRAP" value="0" />
-      <option name="HTML_SPACE_INSIDE_EMPTY_TAG" value="true" />
-      <option name="HTML_DO_NOT_INDENT_CHILDREN_OF" value="html,body" />
-      <option name="HTML_QUOTE_STYLE" value="Single" />
-      <option name="HTML_ENFORCE_QUOTES" value="true" />
-    </HTMLCodeStyleSettings>
     <HoconCodeStyleSettings>
       <option name="KEEP_BLANK_LINES_IN_OBJECTS" value="1" />
       <option name="KEEP_BLANK_LINES_IN_LISTS" value="0" />
@@ -21,6 +9,7 @@
     </HoconCodeStyleSettings>
     <JSON>
       <option name="KEEP_TRAILING_COMMA" value="true" />
+      <option name="PROPERTY_ALIGNMENT" value="2" />
     </JSON>
     <JavaCodeStyleSettings>
       <option name="VISIBILITY" value="EscalateVisible" />
@@ -125,25 +114,10 @@
         </groups>
       </arrangement>
     </codeStyleSettings>
-    <codeStyleSettings language="JavaScript">
-      <option name="LINE_COMMENT_ADD_SPACE" value="false" />
-      <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
-      <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
-      <option name="BRACE_STYLE" value="2" />
-      <option name="CLASS_BRACE_STYLE" value="2" />
-      <option name="METHOD_BRACE_STYLE" value="2" />
-      <option name="ELSE_ON_NEW_LINE" value="true" />
-      <option name="CATCH_ON_NEW_LINE" value="true" />
-      <option name="FINALLY_ON_NEW_LINE" value="true" />
-      <option name="BINARY_OPERATION_SIGN_ON_NEXT_LINE" value="true" />
-      <option name="TERNARY_OPERATION_SIGNS_ON_NEXT_LINE" value="true" />
-      <option name="KEEP_SIMPLE_BLOCKS_IN_ONE_LINE" value="true" />
-      <option name="IF_BRACE_FORCE" value="3" />
-      <option name="DOWHILE_BRACE_FORCE" value="3" />
-      <option name="WHILE_BRACE_FORCE" value="3" />
-      <option name="FOR_BRACE_FORCE" value="3" />
+    <codeStyleSettings language="JSON">
       <indentOptions>
-        <option name="USE_TAB_CHARACTER" value="true" />
+        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+        <option name="TAB_SIZE" value="2" />
       </indentOptions>
     </codeStyleSettings>
     <codeStyleSettings language="Klass">
@@ -153,13 +127,6 @@
       <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
       <option name="BRACE_STYLE" value="2" />
       <option name="ALIGN_GROUP_FIELD_DECLARATIONS" value="true" />
-    </codeStyleSettings>
-    <codeStyleSettings language="Stylus">
-      <indentOptions>
-        <option name="INDENT_SIZE" value="4" />
-        <option name="CONTINUATION_INDENT_SIZE" value="4" />
-        <option name="USE_TAB_CHARACTER" value="true" />
-      </indentOptions>
     </codeStyleSettings>
     <codeStyleSettings language="XML">
       <option name="LINE_COMMENT_AT_FIRST_COLUMN" value="false" />
