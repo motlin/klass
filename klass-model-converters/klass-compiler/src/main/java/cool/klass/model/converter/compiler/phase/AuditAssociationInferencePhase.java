@@ -55,6 +55,15 @@ public class AuditAssociationInferencePhase
                 .anySatisfy(predicate);
     }
 
+    private boolean hasAuditDataTypeProperty(Predicate<AntlrDataTypeProperty> predicate)
+    {
+        return this.compilerState
+                .getCompilerWalkState()
+                .getClassState()
+                .getDataTypeProperties()
+                .count(predicate) == 1;
+    }
+
     private void addAuditProperties()
     {
         Optional<AntlrClass> maybeUserClass = this.compilerState.getDomainModelState().getUserClassState();
@@ -69,13 +78,13 @@ public class AuditAssociationInferencePhase
             return;
         }
 
-        if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isCreatedBy))
+        if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isCreatedBy) && this.hasAuditDataTypeProperty(AntlrDataTypeProperty::isCreatedBy))
         {
-            this.runCompilerMacro(this.getSourceCode(userClass, "createdBy"));
+            this.runCompilerMacro(this.getSourceCode(userClass, "createdBy", AntlrDataTypeProperty::isCreatedBy));
         }
-        if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isLastUpdatedBy))
+        if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isLastUpdatedBy) && this.hasAuditDataTypeProperty(AntlrDataTypeProperty::isLastUpdatedBy))
         {
-            this.runCompilerMacro(this.getSourceCode(userClass, "lastUpdatedBy"));
+            this.runCompilerMacro(this.getSourceCode(userClass, "lastUpdatedBy", AntlrDataTypeProperty::isLastUpdatedBy));
         }
     }
 
@@ -97,7 +106,10 @@ public class AuditAssociationInferencePhase
     }
 
     @Nonnull
-    private String getSourceCode(AntlrClass userClass, String modifier)
+    private String getSourceCode(
+            AntlrClass userClass,
+            String modifier,
+            Predicate<AntlrDataTypeProperty> predicate)
     {
         String suffix = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, modifier);
 
@@ -110,6 +122,8 @@ public class AuditAssociationInferencePhase
                 .detect(AntlrDataTypeProperty::isUserId)
                 .getName();
 
+        AntlrDataTypeProperty<?> auditProperty = classState.getDataTypeProperties().detect(predicate);
+
         //language=Klass
         return ""
                 + "package " + classState.getPackageName() + "\n"
@@ -119,7 +133,7 @@ public class AuditAssociationInferencePhase
                 + "    " + associationEndName + suffix + ": " + className + "[0..*];\n"
                 + "    " + modifier + ": " + userClass.getName() + "[1..1] " + modifier + ";\n"
                 + "\n"
-                + "    relationship this." + modifier + "Id == " + userClass.getName() + "." + userIdPropertyName
+                + "    relationship this." + auditProperty.getName() + " == " + userClass.getName() + "." + userIdPropertyName
                 + "\n"
                 + "}\n";
     }
