@@ -353,7 +353,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     public ImmutableList<AntlrDataTypeProperty<?>> getOverriddenProperties()
     {
-        return this.getOwningClassifierState().getOverriddenDataTypeProperties(this.getName());
+        return this.owningClassifierState.getOverriddenDataTypeProperties(this.getName());
     }
 
     //<editor-fold desc="Perform Compilation">
@@ -461,9 +461,9 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     }
 
     private void reportInvalidForeignKeyProperties(
-            CompilerAnnotationState compilerAnnotationHolder,
-            AntlrAssociationEnd associationEnd,
-            ListIterable<AntlrDataTypeProperty<?>> keyBuilders)
+            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
+            @Nonnull AntlrAssociationEnd associationEnd,
+            @Nonnull ListIterable<AntlrDataTypeProperty<?>> keyBuilders)
     {
         if (keyBuilders.size() > 1)
         {
@@ -491,17 +491,19 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
         if (!this.isOptional() && associationEnd.isToOneOptional())
         {
-            // TODO: Possibly warn here. However, testing has showed legit examples where this warning fires, where the foreign key data includes references that sometimes cannot be resolved from the set of keys that we currently source.
             String message = String.format(
-                    "Association end '%s.%s' has multiplicity [%s] but foreign key '%s.%s' is %srequired.",
+                    "Association end '%s.%s' has multiplicity [%s] so foreign key '%s.%s' ought to be optional.",
                     associationEnd.getOwningClassifierState().getName(),
                     associationEnd.getName(),
                     associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
-                    this.getOwningClassifierState().getName(),
-                    this.getName(),
-                    this.isOptional ? "not " : "");
-            // compilerAnnotationHolder.add("ERR_FOR_MUL", message, this, this.getTypeParserRuleContext());
-            // compilerAnnotationHolder.add("ERR_FOR_MUL", message, associationEnd.getMultiplicity());
+                    this.owningClassifierState.getName(),
+                    this.getName());
+            compilerAnnotationHolder.add(
+                    "ERR_FOR_MUL",
+                    message,
+                    this,
+                    this.getTypeParserRuleContext(),
+                    AnnotationSeverity.WARNING);
         }
     }
 
@@ -514,7 +516,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
         AntlrType antlrType = this.getType();
         if (antlrType instanceof AntlrPrimitiveType
-                && ((AntlrPrimitiveType) antlrType).getPrimitiveType().equals(PrimitiveType.STRING))
+                && ((AntlrPrimitiveType) antlrType).getPrimitiveType() == PrimitiveType.STRING)
         {
             return;
         }
@@ -646,6 +648,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
     }
 
+    @Override
     protected void reportInvalidAuditProperties(CompilerAnnotationState compilerAnnotationHolder)
     {
         super.reportInvalidAuditProperties(compilerAnnotationHolder);
@@ -774,7 +777,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     {
         String message = String.format(
                 "Class '%s' may have id properties or non-id key properties, but not both. Found id property: %s.",
-                this.getOwningClassifierState().getName(),
+                this.owningClassifierState.getName(),
                 this);
         compilerAnnotationHolder.add("ERR_KEY_IDS", message, this);
     }
@@ -783,7 +786,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     {
         String message = String.format(
                 "Class '%s' may have id properties or non-id key properties, but not both. Found non-id key property: %s.",
-                this.getOwningClassifierState().getName(),
+                this.owningClassifierState.getName(),
                 this);
         compilerAnnotationHolder.add("ERR_KEY_IDS", message, this);
     }
@@ -798,8 +801,12 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
         String message = String.format(
                 "Transient class '%s' may not have id properties.",
-                this.getOwningClassifierState().getName());
-        compilerAnnotationHolder.add("ERR_TNS_IDP", message, this, idModifiers.collect(AntlrElement::getElementContext));
+                this.owningClassifierState.getName());
+        compilerAnnotationHolder.add(
+                "ERR_TNS_IDP",
+                message,
+                this,
+                idModifiers.collect(AntlrElement::getElementContext));
     }
     //</editor-fold>
 
