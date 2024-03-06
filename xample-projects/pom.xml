@@ -19,5 +19,6 @@
     <modules>
         <module>stackoverflow</module>
         <module>coverage-example</module>
+        <module>reladomo-bug</module>
     </modules>
 </project>
