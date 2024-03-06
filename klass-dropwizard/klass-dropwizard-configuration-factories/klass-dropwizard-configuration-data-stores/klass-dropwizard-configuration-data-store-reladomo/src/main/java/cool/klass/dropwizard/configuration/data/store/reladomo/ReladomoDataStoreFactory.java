@@ -14,13 +14,14 @@ import cool.klass.data.store.DataStore;
 import cool.klass.data.store.reladomo.ReladomoDataStore;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
 import cool.klass.dropwizard.configuration.uuid.UUIDSupplierFactory;
+import cool.klass.dropwizard.configuration.uuid.seed.SeedUUIDSupplierFactory;
 
 @JsonTypeName("reladomo")
 @AutoService(DataStoreFactory.class)
 public class ReladomoDataStoreFactory implements DataStoreFactory
 {
-    private @NotNull @Valid UUIDSupplierFactory uuidFactory;
-    private                 int                 retryCount = 1;
+    private @NotNull @Valid UUIDSupplierFactory uuidFactory = new SeedUUIDSupplierFactory();
+    private                 int                 retryCount  = 1;
 
     private DataStore dataStore;
 

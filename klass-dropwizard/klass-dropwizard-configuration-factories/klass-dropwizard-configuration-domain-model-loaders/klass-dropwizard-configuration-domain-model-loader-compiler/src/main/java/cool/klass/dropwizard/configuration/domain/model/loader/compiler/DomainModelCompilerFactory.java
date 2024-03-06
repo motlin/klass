@@ -1,5 +1,6 @@
 package cool.klass.dropwizard.configuration.domain.model.loader.compiler;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -21,7 +22,7 @@ public class DomainModelCompilerFactory implements DomainModelFactory
 {
     // TODO: Add @NotEmpty validation
     // javax.validation.UnexpectedTypeException: HV000030: No validator could be found for constraint 'javax.validation.constraints.NotEmpty' validating type 'java.util.List<java.lang.String>'. Check configuration for 'sourcePackages'
-    private @Valid @NotNull List<String> sourcePackages;
+    private @Valid @NotNull List<String> sourcePackages = Arrays.asList("klass.model.meta.domain");
 
     private DomainModel domainModel;
 

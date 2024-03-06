@@ -30,7 +30,7 @@ import io.dropwizard.Configuration;
 public class AbstractKlassConfiguration extends Configuration
         implements JerseyHttpLoggingFactoryProvider, H2FactoryProvider, CorsFactoryProvider, DdlExecutorFactoryProvider, AuthFilterFactoryProvider, ObjectMapperFactoryProvider, ReladomoFactoryProvider, SampleDataFactoryProvider
 {
-    private @Valid @NotNull KlassFactory             klassFactory;
+    private @Valid @NotNull KlassFactory             klassFactory             = new KlassFactory();
     private @Valid @NotNull JerseyHttpLoggingFactory jerseyHttpLoggingFactory = new JerseyHttpLoggingFactory();
     private @Valid @NotNull H2Factory                h2Factory                = new H2Factory();
     private @Valid @NotNull CorsFactory              corsFactory              = new CorsFactory();

@@ -17,7 +17,7 @@ import cool.klass.dropwizard.configuration.clock.ClockFactory;
 @AutoService(ClockFactory.class)
 public class FixedClockFactory implements ClockFactory
 {
-    private @Valid @NotNull Instant instant;
+    private @Valid @NotNull Instant instant = Instant.parse("2000-12-31T23:59:59Z");
 
     @Nonnull
     @Override

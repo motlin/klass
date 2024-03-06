@@ -17,7 +17,7 @@ import cool.klass.dropwizard.configuration.uuid.UUIDSupplierFactory;
 @AutoService(UUIDSupplierFactory.class)
 public class SeedUUIDSupplierFactory implements UUIDSupplierFactory
 {
-    private @Valid @NotNull String seed;
+    private @Valid @NotNull String seed = "example seed";
 
     @Nonnull
     @Override
