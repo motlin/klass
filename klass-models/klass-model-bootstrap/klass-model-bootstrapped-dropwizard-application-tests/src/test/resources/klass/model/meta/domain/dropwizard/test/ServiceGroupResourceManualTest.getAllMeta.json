@@ -25,7 +25,6 @@
             },
             "queryCriteria": {
               "__typename": "klass.model.meta.domain.OperatorCriteria",
-              "id": 87,
               "operator": "==",
               "sourceExpressionValue": {
                 "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -68,8 +67,7 @@
               "name": "PackageableElementProjection"
             },
             "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 88
+              "__typename": "klass.model.meta.domain.AllCriteria"
             },
             "authorizeCriteria": null,
             "validateCriteria": null,
@@ -106,7 +104,6 @@
             },
             "queryCriteria": {
               "__typename": "klass.model.meta.domain.OperatorCriteria",
-              "id": 89,
               "operator": "==",
               "sourceExpressionValue": {
                 "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -149,8 +146,7 @@
               "name": "EnumerationProjection"
             },
             "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 90
+              "__typename": "klass.model.meta.domain.AllCriteria"
             },
             "authorizeCriteria": null,
             "validateCriteria": null,
@@ -187,7 +183,6 @@
             },
             "queryCriteria": {
               "__typename": "klass.model.meta.domain.OperatorCriteria",
-              "id": 91,
               "operator": "==",
               "sourceExpressionValue": {
                 "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -230,8 +225,7 @@
               "name": "InterfaceProjection"
             },
             "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 92
+              "__typename": "klass.model.meta.domain.AllCriteria"
             },
             "authorizeCriteria": null,
             "validateCriteria": null,
@@ -268,7 +262,6 @@
             },
             "queryCriteria": {
               "__typename": "klass.model.meta.domain.OperatorCriteria",
-              "id": 93,
               "operator": "==",
               "sourceExpressionValue": {
                 "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -311,8 +304,7 @@
               "name": "KlassProjection"
             },
             "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 94
+              "__typename": "klass.model.meta.domain.AllCriteria"
             },
             "authorizeCriteria": null,
             "validateCriteria": null,
@@ -349,7 +341,6 @@
             },
             "queryCriteria": {
               "__typename": "klass.model.meta.domain.OperatorCriteria",
-              "id": 95,
               "operator": "==",
               "sourceExpressionValue": {
                 "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -392,8 +383,7 @@
               "name": "ClassifierProjection"
             },
             "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 96
+              "__typename": "klass.model.meta.domain.AllCriteria"
             },
             "authorizeCriteria": null,
             "validateCriteria": null,
@@ -430,7 +420,6 @@
             },
             "queryCriteria": {
               "__typename": "klass.model.meta.domain.OperatorCriteria",
-              "id": 97,
               "operator": "==",
               "sourceExpressionValue": {
                 "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -473,8 +462,7 @@
               "name": "AssociationProjection"
             },
             "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 98
+              "__typename": "klass.model.meta.domain.AllCriteria"
             },
             "authorizeCriteria": null,
             "validateCriteria": null,
@@ -511,7 +499,6 @@
             },
             "queryCriteria": {
               "__typename": "klass.model.meta.domain.OperatorCriteria",
-              "id": 99,
               "operator": "==",
               "sourceExpressionValue": {
                 "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -554,8 +541,7 @@
               "name": "NamedProjectionProjection"
             },
             "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 100
+              "__typename": "klass.model.meta.domain.AllCriteria"
             },
             "authorizeCriteria": null,
             "validateCriteria": null,
@@ -592,7 +578,6 @@
             },
             "queryCriteria": {
               "__typename": "klass.model.meta.domain.OperatorCriteria",
-              "id": 101,
               "operator": "==",
               "sourceExpressionValue": {
                 "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -635,8 +620,7 @@
               "name": "ServiceGroupProjection"
             },
             "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 102
+              "__typename": "klass.model.meta.domain.AllCriteria"
             },
             "authorizeCriteria": null,
             "validateCriteria": null,

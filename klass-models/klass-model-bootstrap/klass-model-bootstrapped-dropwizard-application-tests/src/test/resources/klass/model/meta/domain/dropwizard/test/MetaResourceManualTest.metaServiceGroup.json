@@ -24,7 +24,6 @@
           },
           "queryCriteria": {
             "__typename": "klass.model.meta.domain.OperatorCriteria",
-            "id": 101,
             "operator": "==",
             "sourceExpressionValue": {
               "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -67,8 +66,7 @@
             "name": "ServiceGroupProjection"
           },
           "queryCriteria": {
-            "__typename": "klass.model.meta.domain.AllCriteria",
-            "id": 102
+            "__typename": "klass.model.meta.domain.AllCriteria"
           },
           "authorizeCriteria": null,
           "validateCriteria": null,

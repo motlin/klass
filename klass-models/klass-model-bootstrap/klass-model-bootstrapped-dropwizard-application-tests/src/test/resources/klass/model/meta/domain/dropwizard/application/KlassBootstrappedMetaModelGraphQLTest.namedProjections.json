@@ -107,150 +107,94 @@
         }
       },
       {
-        "name": "InterfaceSummaryProjection",
+        "name": "NumericPropertyValidationProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 16
         }
       },
       {
-        "name": "NumericPropertyValidationProjection",
+        "name": "DataTypePropertyProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 17
         }
       },
       {
-        "name": "DataTypePropertyProjection",
+        "name": "KlassProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 18
         }
       },
       {
-        "name": "KlassProjection",
+        "name": "ClassifierProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 19
         }
       },
       {
-        "name": "ClassSummaryProjection",
+        "name": "ThisMemberReferencePathProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 20
         }
       },
       {
-        "name": "ClassifierProjection",
+        "name": "AssociationEndModifierProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 21
         }
       },
       {
-        "name": "ThisMemberReferencePathProjection",
+        "name": "AssociationEndOrderByProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 22
         }
       },
       {
-        "name": "AssociationEndModifierProjection",
+        "name": "AssociationEndProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 23
         }
       },
       {
-        "name": "AssociationEndOrderByProjection",
+        "name": "MemberReferencePathAssociationEndMappingProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 24
         }
       },
       {
-        "name": "AssociationEndProjection",
+        "name": "ExpressionValueProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 25
         }
       },
       {
-        "name": "MemberReferencePathAssociationEndMappingProjection",
+        "name": "MemberReferencePathProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 26
         }
       },
       {
-        "name": "MemberReferencePathSummaryProjection",
+        "name": "CriteriaProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 27
         }
       },
       {
-        "name": "AssociationEndSummaryProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 28
-        }
-      },
-      {
-        "name": "ExpressionValueProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 29
-        }
-      },
-      {
-        "name": "ExpressionValueSummaryProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 30
-        }
-      },
-      {
-        "name": "MemberReferencePathProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 31
-        }
-      },
-      {
-        "name": "CriteriaProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 32
-        }
-      },
-      {
-        "name": "CriteriaSummaryProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 33
-        }
-      },
-      {
         "name": "AssociationProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
-          "id": 34
-        }
-      },
-      {
-        "name": "AssociationSummaryProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 35
-        }
-      },
-      {
-        "name": "ServiceGroupSummaryProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 36
+          "id": 28
         }
       }
     ]

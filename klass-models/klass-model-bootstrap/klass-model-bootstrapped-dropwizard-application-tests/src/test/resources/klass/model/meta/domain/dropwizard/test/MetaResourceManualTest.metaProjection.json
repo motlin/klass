@@ -7,7 +7,7 @@
     "children": [
       {
         "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-        "id": 71,
+        "id": 63,
         "name": "id",
         "children": [],
         "dataTypeProperty": {
@@ -16,7 +16,7 @@
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-        "id": 72,
+        "id": 64,
         "name": "name",
         "children": [],
         "dataTypeProperty": {
@@ -25,7 +25,7 @@
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionProjectionReference",
-        "id": 73,
+        "id": 65,
         "name": "children",
         "children": [],
         "associationEnd": {
@@ -37,12 +37,12 @@
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
-        "id": 74,
+        "id": 66,
         "name": "classifier",
         "children": [
           {
             "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "id": 75,
+            "id": 67,
             "name": "name",
             "children": [],
             "dataTypeProperty": {
@@ -56,12 +56,12 @@
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
-        "id": 76,
+        "id": 68,
         "name": "associationEnd",
         "children": [
           {
             "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "id": 77,
+            "id": 69,
             "name": "name",
             "children": [],
             "dataTypeProperty": {
@@ -75,12 +75,12 @@
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
-        "id": 78,
+        "id": 70,
         "name": "projection",
         "children": [
           {
             "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "id": 79,
+            "id": 71,
             "name": "name",
             "children": [],
             "dataTypeProperty": {
@@ -94,12 +94,12 @@
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
-        "id": 80,
+        "id": 72,
         "name": "dataTypeProperty",
         "children": [
           {
             "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "id": 81,
+            "id": 73,
             "name": "name",
             "children": [],
             "dataTypeProperty": {

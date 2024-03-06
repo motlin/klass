@@ -32,10 +32,8 @@
   ],
   "criteria": {
     "__typename": "klass.model.meta.domain.AndCriteria",
-    "id": 20,
     "left": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
-      "id": 21,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -68,7 +66,6 @@
     },
     "right": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
-      "id": 22,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",

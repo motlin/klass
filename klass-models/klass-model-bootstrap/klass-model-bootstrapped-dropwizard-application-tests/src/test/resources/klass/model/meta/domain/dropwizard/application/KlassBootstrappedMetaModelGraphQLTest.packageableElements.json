@@ -5069,7 +5069,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "InterfaceSummaryProjection",
+        "name": "NumericPropertyValidationProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 16
@@ -5077,7 +5077,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "NumericPropertyValidationProjection",
+        "name": "DataTypePropertyProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 17
@@ -5085,7 +5085,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "DataTypePropertyProjection",
+        "name": "KlassProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 18
@@ -5093,7 +5093,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "KlassProjection",
+        "name": "ClassifierProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 19
@@ -5101,7 +5101,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ClassSummaryProjection",
+        "name": "ThisMemberReferencePathProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 20
@@ -5109,7 +5109,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ClassifierProjection",
+        "name": "AssociationEndModifierProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 21
@@ -5117,7 +5117,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ThisMemberReferencePathProjection",
+        "name": "AssociationEndOrderByProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 22
@@ -5125,7 +5125,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "AssociationEndModifierProjection",
+        "name": "AssociationEndProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 23
@@ -5133,7 +5133,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "AssociationEndOrderByProjection",
+        "name": "MemberReferencePathAssociationEndMappingProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 24
@@ -5141,7 +5141,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "AssociationEndProjection",
+        "name": "ExpressionValueProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 25
@@ -5149,7 +5149,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "MemberReferencePathAssociationEndMappingProjection",
+        "name": "MemberReferencePathProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 26
@@ -5157,7 +5157,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "MemberReferencePathSummaryProjection",
+        "name": "CriteriaProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 27
@@ -5165,74 +5165,10 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "AssociationEndSummaryProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 28
-        }
-      },
-      {
-        "__typename": "NamedProjection",
-        "name": "ExpressionValueProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 29
-        }
-      },
-      {
-        "__typename": "NamedProjection",
-        "name": "ExpressionValueSummaryProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 30
-        }
-      },
-      {
-        "__typename": "NamedProjection",
-        "name": "MemberReferencePathProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 31
-        }
-      },
-      {
-        "__typename": "NamedProjection",
-        "name": "CriteriaProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 32
-        }
-      },
-      {
-        "__typename": "NamedProjection",
-        "name": "CriteriaSummaryProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 33
-        }
-      },
-      {
-        "__typename": "NamedProjection",
         "name": "AssociationProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
-          "id": 34
-        }
-      },
-      {
-        "__typename": "NamedProjection",
-        "name": "AssociationSummaryProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 35
-        }
-      },
-      {
-        "__typename": "NamedProjection",
-        "name": "ServiceGroupSummaryProjection",
-        "packageName": "klass.model.meta.domain",
-        "rootProjection": {
-          "id": 36
+          "id": 28
         }
       },
       {

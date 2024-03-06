@@ -1100,24 +1100,6 @@ projection InterfaceProjection on Interface
     dataTypeProperties: DataTypePropertyProjection,
 }
 
-projection InterfaceSummaryProjection on Interface
-{
-    name                   : "Interface name",
-    packageName            : "Interface package name",
-    superInterfaces        :
-    {
-        superInterface:
-        {
-            name           : "Super interface name",
-        },
-    },
-    classifierModifiers    :
-    {
-        keyword: "Interface modifier keyword",
-    },
-    dataTypeProperties: DataTypePropertyProjection,
-}
-
 service InterfaceResource on Interface
 {
     /meta/interface/{name: String[1..1]}
@@ -1174,31 +1156,6 @@ projection KlassProjection on Klass
         name: "NamedElement name",
     },
     parameterizedProperties: ParameterizedPropertyProjection,
-}
-
-projection ClassSummaryProjection on Klass
-{
-    name                   : "Class name",
-    packageName            : "Class package name",
-    abstractClass          : "Class abstractClass",
-    superClass             :
-    {
-        name           : "Super Class name",
-    },
-
-    // TODO: flat many-to-many, or parameterized property
-    superInterfaces        :
-    {
-        superInterface:
-        {
-            name           : "Super interface name",
-        },
-    },
-    classifierModifiers    :
-    {
-        keyword: "Classifier modifier keyword",
-    },
-    dataTypeProperties: DataTypePropertyProjection,
 }
 
 service KlassResource on Klass
@@ -1310,44 +1267,6 @@ projection MemberReferencePathAssociationEndMappingProjection on MemberReference
     },
 }
 
-projection MemberReferencePathSummaryProjection on MemberReferencePath
-{
-    klass           :
-    {
-        name: "MemberReferencePath Class name",
-    },
-    associationEnds :
-    {
-        associationEnd:
-        {
-            name: "MemberReferencePath Association end name",
-        },
-    },
-    dataTypeProperty:
-    {
-        name: "MemberReferencePath Property name",
-    },
-}
-
-projection AssociationEndSummaryProjection on AssociationEnd
-{
-    name                   : "Association end name",
-    multiplicity           : "Association end multiplicity",
-    resultType             :
-    {
-        name: "Association end result class name",
-    },
-    associationEndModifiers:
-    {
-        keyword: "Association end modifier keyword",
-    },
-    orderBys               :
-    {
-        thisMemberReferencePath: MemberReferencePathSummaryProjection,
-        orderByDirection       : "Association end order by direction",
-    },
-}
-
 projection ExpressionValueProjection on ExpressionValue
 {
     id: "ExpressionValue id",
@@ -1369,29 +1288,6 @@ projection ExpressionValueProjection on ExpressionValue
     },
 }
 
-projection ExpressionValueSummaryProjection on ExpressionValue
-{
-    MemberReferencePath.klass           :
-    {
-        name: "MemberReferencePath Class name",
-    },
-    MemberReferencePath.associationEnds :
-    {
-        associationEnd:
-        {
-            name: "MemberReferencePath Association end name",
-        },
-    },
-    MemberReferencePath.dataTypeProperty:
-    {
-        name: "MemberReferencePath Property name",
-    },
-    VariableReference.parameter         :
-    {
-        name: "VariableReference parameter name",
-    },
-}
-
 projection MemberReferencePathProjection on MemberReferencePath
 {
     id: "ExpressionValue id",
@@ -1409,7 +1305,6 @@ projection MemberReferencePathProjection on MemberReferencePath
 
 projection CriteriaProjection on Criteria
 {
-    id: "Criteria id",
     BinaryCriteria.left                   : CriteriaProjection,
     BinaryCriteria.right                  : CriteriaProjection,
     OperatorCriteria.operator: "OperatorCriteria operator",
@@ -1418,30 +1313,12 @@ projection CriteriaProjection on Criteria
     EdgePointCriteria.memberReferencePath : MemberReferencePathProjection,
 }
 
-projection CriteriaSummaryProjection on Criteria
-{
-    BinaryCriteria.left                   : CriteriaSummaryProjection,
-    BinaryCriteria.right                  : CriteriaSummaryProjection,
-    OperatorCriteria.operator             : "Criteria operator",
-    OperatorCriteria.sourceExpressionValue: ExpressionValueSummaryProjection,
-    OperatorCriteria.targetExpressionValue: ExpressionValueSummaryProjection,
-    EdgePointCriteria.memberReferencePath : MemberReferencePathSummaryProjection,
-}
-
 projection AssociationProjection on Association
 {
     name: "NamedElement name",
     packageName: "PackageableElement packageName",
     associationEnds: AssociationEndProjection,
     criteria               : CriteriaProjection,
-}
-
-projection AssociationSummaryProjection on Association
-{
-    packageName            : "Association package name",
-    name                   : "Association name",
-    associationEnds        : AssociationEndSummaryProjection,
-    criteria               : CriteriaSummaryProjection,
 }
 
 service AssociationResource on Association
@@ -1480,26 +1357,6 @@ service NamedProjectionResource on NamedProjection
             projection  : NamedProjectionProjection;
             orderBy     : this.ordinal ascending;
         }
-}
-
-projection ServiceGroupSummaryProjection on ServiceGroup
-{
-    name       : "ServiceGroup name",
-    packageName: "ServiceGroup package name",
-    urls       :
-    {
-        url     : "ServiceGroup url",
-        services:
-        {
-            verb               : "ServiceGroup Url Service verb",
-            serviceMultiplicity: "ServiceGroup Url Service multiplicity",
-            projection         :
-            {
-                name: "ServiceGroup Url Service Projection name",
-            },
-            queryCriteria      : CriteriaSummaryProjection,
-        },
-    },
 }
 
 service ServiceGroupResource on ServiceGroup
