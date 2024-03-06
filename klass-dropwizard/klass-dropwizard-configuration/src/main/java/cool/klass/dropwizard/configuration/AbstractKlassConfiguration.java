@@ -46,6 +46,8 @@ import io.liftwizard.dropwizard.configuration.object.mapper.ObjectMapperFactory;
 import io.liftwizard.dropwizard.configuration.object.mapper.ObjectMapperFactoryProvider;
 import io.liftwizard.dropwizard.configuration.reladomo.ReladomoFactory;
 import io.liftwizard.dropwizard.configuration.reladomo.ReladomoFactoryProvider;
+import io.liftwizard.dropwizard.configuration.system.properties.SystemPropertiesFactory;
+import io.liftwizard.dropwizard.configuration.system.properties.SystemPropertiesFactoryProvider;
 import io.liftwizard.dropwizard.configuration.uuid.UUIDSupplierFactory;
 import io.liftwizard.dropwizard.configuration.uuid.UUIDSupplierFactoryProvider;
 import io.liftwizard.dropwizard.db.NamedDataSourceFactory;
@@ -86,10 +88,12 @@ public class AbstractKlassConfiguration
         UUIDSupplierFactoryProvider,
         ClockFactoryProvider,
         NamedDataSourceProvider,
-        ConnectionManagerFactoryProvider
+        ConnectionManagerFactoryProvider,
+        SystemPropertiesFactoryProvider
 {
     // General
-    private @Valid @NotNull KlassFactory klassFactory = new KlassFactory();
+    private @Valid @NotNull KlassFactory            klassFactory            = new KlassFactory();
+    private @Valid @NotNull SystemPropertiesFactory systemPropertiesFactory = new SystemPropertiesFactory();
 
     // Services
     private @Valid @NotNull EnabledFactory           configLoggingFactory     = new EnabledFactory();
@@ -328,6 +332,19 @@ public class AbstractKlassConfiguration
     public void setBootstrap(EnabledFactory bootstrapFactory)
     {
         this.bootstrapFactory = bootstrapFactory;
+    }
+
+    @Override
+    @JsonProperty("systemProperties")
+    public SystemPropertiesFactory getSystemPropertiesFactory()
+    {
+        return this.systemPropertiesFactory;
+    }
+
+    @JsonProperty("systemProperties")
+    public void setSystemPropertiesFactory(SystemPropertiesFactory systemPropertiesFactory)
+    {
+        this.systemPropertiesFactory = systemPropertiesFactory;
     }
 
     @Override
