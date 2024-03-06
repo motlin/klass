@@ -34,6 +34,7 @@ public class AntlrProjectionDataTypeProperty
             new HeaderContext(null, -1),
             "ambiguous header",
             AntlrProjection.AMBIGUOUS,
+            AntlrClassifier.AMBIGUOUS,
             AntlrPrimitiveProperty.AMBIGUOUS);
 
     @Nonnull
@@ -42,6 +43,8 @@ public class AntlrProjectionDataTypeProperty
     private final String                   headerText;
     @Nonnull
     private final AntlrProjectionParent    antlrProjectionParent;
+    @Nonnull
+    private final AntlrClassifier          classifierState;
     @Nonnull
     private final AntlrDataTypeProperty<?> dataTypeProperty;
 
@@ -55,12 +58,14 @@ public class AntlrProjectionDataTypeProperty
             @Nonnull HeaderContext headerContext,
             @Nonnull String headerText,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
+            @Nonnull AntlrClassifier classifierState,
             @Nonnull AntlrDataTypeProperty<?> dataTypeProperty)
     {
         super(elementContext, compilationUnit, ordinal, nameContext);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.headerText            = Objects.requireNonNull(headerText);
         this.headerContext         = Objects.requireNonNull(headerContext);
+        this.classifierState       = Objects.requireNonNull(classifierState);
         this.dataTypeProperty      = Objects.requireNonNull(dataTypeProperty);
     }
 
@@ -87,6 +92,7 @@ public class AntlrProjectionDataTypeProperty
                 this.headerContext,
                 this.headerText,
                 this.antlrProjectionParent.getElementBuilder(),
+                this.classifierState.getElementBuilder(),
                 this.dataTypeProperty.getElementBuilder());
         return this.projectionDataTypePropertyBuilder;
     }

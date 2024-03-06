@@ -33,6 +33,8 @@ public class AntlrProjectionReferenceProperty
     @Nonnull
     private final AntlrProjectionParent              antlrProjectionParent;
     @Nonnull
+    private final AntlrClassifier                    classifierState;
+    @Nonnull
     private final AntlrReferenceProperty<?>          referenceProperty;
     private       ProjectionReferencePropertyBuilder projectionReferencePropertyBuilder;
 
@@ -43,10 +45,12 @@ public class AntlrProjectionReferenceProperty
             @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrClassifier classifier,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
+            @Nonnull AntlrClassifier classifierState,
             @Nonnull AntlrReferenceProperty<?> referenceProperty)
     {
         super(elementContext, compilationUnit, ordinal, nameContext, classifier);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
+        this.classifierState       = Objects.requireNonNull(classifierState);
         this.referenceProperty     = Objects.requireNonNull(referenceProperty);
     }
 
@@ -99,6 +103,7 @@ public class AntlrProjectionReferenceProperty
                 this.ordinal,
                 this.getNameContext(),
                 this.antlrProjectionParent.getElementBuilder(),
+                this.classifierState.getElementBuilder(),
                 this.referenceProperty.getElementBuilder());
 
         ImmutableList<ProjectionChildBuilder> projectionMemberBuilders = this.children
@@ -165,7 +170,10 @@ public class AntlrProjectionReferenceProperty
 
             if (dataTypeProperty == AntlrEnumerationProperty.NOT_FOUND)
             {
-                String message = String.format("Cannot find member '%s.%s'.", parentClassifier.getName(), this.getName());
+                String message = String.format(
+                        "Cannot find member '%s.%s'.",
+                        parentClassifier.getName(),
+                        this.getName());
                 compilerAnnotationHolder.add("ERR_PRP_NFD", message, this);
             }
             else

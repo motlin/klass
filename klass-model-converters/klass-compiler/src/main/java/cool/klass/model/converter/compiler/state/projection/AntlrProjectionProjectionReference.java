@@ -31,6 +31,8 @@ public class AntlrProjectionProjectionReference
     @Nonnull
     private final AntlrProjectionParent     antlrProjectionParent;
     @Nonnull
+    private final AntlrClassifier           classifierState;
+    @Nonnull
     private final AntlrReferenceProperty<?> referenceProperty;
     @Nonnull
     private final AntlrProjection           referencedProjectionState;
@@ -44,12 +46,14 @@ public class AntlrProjectionProjectionReference
             @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrClassifier classifier,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
+            @Nonnull AntlrClassifier classifierState,
             @Nonnull AntlrReferenceProperty<?> referenceProperty,
             @Nonnull AntlrProjection referencedProjectionState)
     {
         super(elementContext, compilationUnit, ordinal, nameContext);
         this.classifier                = Objects.requireNonNull(classifier);
         this.antlrProjectionParent     = Objects.requireNonNull(antlrProjectionParent);
+        this.classifierState           = Objects.requireNonNull(classifierState);
         this.referenceProperty         = Objects.requireNonNull(referenceProperty);
         this.referencedProjectionState = Objects.requireNonNull(referencedProjectionState);
     }
@@ -89,6 +93,7 @@ public class AntlrProjectionProjectionReference
                 this.ordinal,
                 this.getNameContext(),
                 this.antlrProjectionParent.getElementBuilder(),
+                this.classifierState.getElementBuilder(),
                 this.referenceProperty.getElementBuilder());
 
         return this.projectionProjectionReferenceBuilder;

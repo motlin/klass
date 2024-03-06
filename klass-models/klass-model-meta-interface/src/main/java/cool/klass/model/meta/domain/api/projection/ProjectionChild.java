@@ -9,6 +9,9 @@ public interface ProjectionChild
         extends ProjectionElement
 {
     @Nonnull
+    Classifier getDeclaredClassifier();
+
+    @Nonnull
     Property getProperty();
 
     default boolean isPolymorphic()

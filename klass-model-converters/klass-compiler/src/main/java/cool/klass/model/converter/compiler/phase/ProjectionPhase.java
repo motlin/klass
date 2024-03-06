@@ -83,6 +83,7 @@ public class ProjectionPhase
                 header,
                 headerText,
                 projectionParentState,
+                classifierState,
                 dataTypePropertyState);
 
         projectionParentState.enterAntlrProjectionMember(projectionPrimitiveMemberState);
@@ -111,6 +112,7 @@ public class ProjectionPhase
                 nameContext,
                 referenceProperty.getType(),
                 projectionParentState,
+                classifierState,
                 referenceProperty);
 
         projectionParentState.enterAntlrProjectionMember(projectionReferencePropertyState);
@@ -152,6 +154,7 @@ public class ProjectionPhase
                 nameContext,
                 referenceProperty.getType(),
                 projectionParentState,
+                classifierState,
                 referenceProperty,
                 projectionState);
 

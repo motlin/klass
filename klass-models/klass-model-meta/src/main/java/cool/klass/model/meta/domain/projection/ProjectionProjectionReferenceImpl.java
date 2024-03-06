@@ -6,7 +6,10 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cool.klass.model.meta.domain.AbstractClassifier;
+import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.AbstractIdentifierElement;
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.source.SourceCode;
@@ -28,6 +31,8 @@ public final class ProjectionProjectionReferenceImpl
     @Nonnull
     private final ProjectionParent                parent;
     @Nonnull
+    private final AbstractClassifier              classifier;
+    @Nonnull
     private final ReferencePropertyWithSourceCode referenceProperty;
 
     private ProjectionImpl referencedProjection;
@@ -39,10 +44,12 @@ public final class ProjectionProjectionReferenceImpl
             int ordinal,
             @Nonnull IdentifierContext nameContext,
             @Nonnull ProjectionParent parent,
+            @Nonnull AbstractClassifier classifier,
             @Nonnull ReferencePropertyWithSourceCode referenceProperty)
     {
         super(elementContext, macroElement, sourceCode, ordinal, nameContext);
         this.parent            = Objects.requireNonNull(parent);
+        this.classifier        = Objects.requireNonNull(classifier);
         this.referenceProperty = Objects.requireNonNull(referenceProperty);
     }
 
@@ -64,6 +71,13 @@ public final class ProjectionProjectionReferenceImpl
     public Optional<ProjectionParent> getParent()
     {
         return Optional.of(this.parent);
+    }
+
+    @Nonnull
+    @Override
+    public Classifier getDeclaredClassifier()
+    {
+        return this.classifier;
     }
 
     @Override
@@ -89,6 +103,8 @@ public final class ProjectionProjectionReferenceImpl
         @Nonnull
         private final AbstractProjectionParentBuilder<?> parentBuilder;
         @Nonnull
+        private final ClassifierBuilder<?>               classifierBuilder;
+        @Nonnull
         private final ReferencePropertyBuilder<?, ?, ?>  referencePropertyBuilder;
         private       ProjectionBuilder                  referencedProjectionBuilder;
 
@@ -99,10 +115,12 @@ public final class ProjectionProjectionReferenceImpl
                 int ordinal,
                 @Nonnull IdentifierContext nameContext,
                 @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
+                @Nonnull ClassifierBuilder<?> classifierBuilder,
                 @Nonnull ReferencePropertyBuilder<?, ?, ?> referencePropertyBuilder)
         {
             super(elementContext, macroElement, sourceCode, ordinal, nameContext);
             this.parentBuilder            = Objects.requireNonNull(parentBuilder);
+            this.classifierBuilder        = Objects.requireNonNull(classifierBuilder);
             this.referencePropertyBuilder = Objects.requireNonNull(referencePropertyBuilder);
         }
 
@@ -127,6 +145,7 @@ public final class ProjectionProjectionReferenceImpl
                     this.ordinal,
                     this.getNameContext(),
                     this.parentBuilder.getElement(),
+                    this.classifierBuilder.getElement(),
                     this.referencePropertyBuilder.getElement());
         }
 

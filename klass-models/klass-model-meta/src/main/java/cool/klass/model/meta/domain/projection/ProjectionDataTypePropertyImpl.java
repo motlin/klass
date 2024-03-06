@@ -6,7 +6,10 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cool.klass.model.meta.domain.AbstractClassifier;
+import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.AbstractIdentifierElement;
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.source.SourceCode;
@@ -30,6 +33,8 @@ public final class ProjectionDataTypePropertyImpl
     @Nonnull
     private final ProjectionParent            parent;
     @Nonnull
+    private final AbstractClassifier          classifier;
+    @Nonnull
     private final AbstractDataTypeProperty<?> property;
 
     private ProjectionDataTypePropertyImpl(
@@ -41,12 +46,14 @@ public final class ProjectionDataTypePropertyImpl
             @Nonnull ParserRuleContext headerContext,
             @Nonnull String headerText,
             @Nonnull ProjectionParent parent,
+            @Nonnull AbstractClassifier classifier,
             @Nonnull AbstractDataTypeProperty<?> property)
     {
         super(elementContext, macroElement, sourceCode, ordinal, nameContext);
         this.headerContext = Objects.requireNonNull(headerContext);
         this.headerText    = Objects.requireNonNull(headerText);
         this.parent        = Objects.requireNonNull(parent);
+        this.classifier    = Objects.requireNonNull(classifier);
         this.property      = Objects.requireNonNull(property);
     }
 
@@ -71,6 +78,13 @@ public final class ProjectionDataTypePropertyImpl
         return this.headerText;
     }
 
+    @Nonnull
+    @Override
+    public Classifier getDeclaredClassifier()
+    {
+        return this.classifier;
+    }
+
     @Override
     @Nonnull
     public AbstractDataTypeProperty<?> getProperty()
@@ -89,6 +103,8 @@ public final class ProjectionDataTypePropertyImpl
         @Nonnull
         private final AbstractProjectionParentBuilder<?> parentBuilder;
         @Nonnull
+        private final ClassifierBuilder<?>               classifierBuilder;
+        @Nonnull
         private final DataTypePropertyBuilder<?, ?, ?>   propertyBuilder;
 
         public ProjectionDataTypePropertyBuilder(
@@ -100,13 +116,15 @@ public final class ProjectionDataTypePropertyImpl
                 @Nonnull ParserRuleContext headerContext,
                 @Nonnull String headerText,
                 @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
+                @Nonnull ClassifierBuilder<?> classifierBuilder,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)
         {
             super(elementContext, macroElement, sourceCode, ordinal, nameContext);
-            this.headerContext   = Objects.requireNonNull(headerContext);
-            this.headerText      = Objects.requireNonNull(headerText);
-            this.parentBuilder   = Objects.requireNonNull(parentBuilder);
-            this.propertyBuilder = Objects.requireNonNull(propertyBuilder);
+            this.headerContext     = Objects.requireNonNull(headerContext);
+            this.headerText        = Objects.requireNonNull(headerText);
+            this.parentBuilder     = Objects.requireNonNull(parentBuilder);
+            this.classifierBuilder = Objects.requireNonNull(classifierBuilder);
+            this.propertyBuilder   = Objects.requireNonNull(propertyBuilder);
         }
 
         @Override
@@ -122,6 +140,7 @@ public final class ProjectionDataTypePropertyImpl
                     this.headerContext,
                     this.headerText,
                     this.parentBuilder.getElement(),
+                    this.classifierBuilder.getElement(),
                     this.propertyBuilder.getElement());
         }
 
