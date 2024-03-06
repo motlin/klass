@@ -41,6 +41,12 @@ public abstract class AbstractNamedElement extends AbstractElement implements Na
         return this.ordinal;
     }
 
+    @Override
+    public String toString()
+    {
+        return this.name;
+    }
+
     public abstract static class NamedElementBuilder<BuiltElement extends AbstractNamedElement>
             extends ElementBuilder<BuiltElement>
     {

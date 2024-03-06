@@ -17,12 +17,6 @@ public final class UrlConstantImpl extends AbstractNamedElement
         super(elementContext, inferred, nameContext, name, ordinal);
     }
 
-    @Override
-    public String toString()
-    {
-        return this.getName();
-    }
-
     public static final class UrlConstantBuilder
             extends NamedElementBuilder<UrlConstantImpl>
     {

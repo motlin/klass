@@ -9,6 +9,7 @@ import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DataType.DataTypeGetter;
+import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.PropertyModifier;
@@ -180,6 +181,21 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
             throw new IllegalStateException();
         }
         this.foreignKeysMatchingThisKey = Objects.requireNonNull(foreignKeysMatchingThisKey);
+    }
+
+    @Override
+    public String toString()
+    {
+        String isOptionalString = this.optional ? "?" : "";
+        String propertyModifiersString = this.getPropertyModifiers().isEmpty()
+                ? ""
+                : this.getPropertyModifiers().collect(NamedElement::getName).makeString(" ", " ", "");
+        return String.format(
+                "%s: %s%s%s",
+                this.getName(),
+                this.getType().toString(),
+                isOptionalString,
+                propertyModifiersString);
     }
 
     public abstract static class DataTypePropertyBuilder<T extends DataType, TG extends DataTypeGetter, BuiltElement extends AbstractDataTypeProperty<T>>
