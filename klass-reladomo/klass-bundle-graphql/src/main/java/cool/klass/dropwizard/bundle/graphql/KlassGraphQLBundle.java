@@ -195,7 +195,6 @@ public class KlassGraphQLBundle<T extends Configuration & GraphQLFactoryProvider
     {
         domainModel
                 .getClasses()
-                .reject(Klass::isAbstract)
                 .each(eachKlass -> this.handleQueryAll(
                         queryTypeBuilder,
                         dataStore,
@@ -254,7 +253,6 @@ public class KlassGraphQLBundle<T extends Configuration & GraphQLFactoryProvider
     {
         domainModel
                 .getClasses()
-                .reject(Klass::isAbstract)
                 .each(eachKlass -> this.handleQueryByKey(
                         queryTypeBuilder,
                         dataStore,
@@ -285,7 +283,6 @@ public class KlassGraphQLBundle<T extends Configuration & GraphQLFactoryProvider
     {
         domainModel
                 .getClasses()
-                .reject(Klass::isAbstract)
                 .each(eachKlass -> this.handleQueryByOperation(
                         queryTypeBuilder,
                         dataStore,
@@ -316,7 +313,6 @@ public class KlassGraphQLBundle<T extends Configuration & GraphQLFactoryProvider
     {
         domainModel
                 .getClasses()
-                .reject(Klass::isAbstract)
                 .each(eachKlass -> this.handleQueryByFinder(
                         queryTypeBuilder,
                         dataStore,
