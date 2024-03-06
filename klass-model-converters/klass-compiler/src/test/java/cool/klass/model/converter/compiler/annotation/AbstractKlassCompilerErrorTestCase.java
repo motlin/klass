@@ -16,12 +16,16 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public abstract class AbstractKlassCompilerErrorTestCase
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractKlassCompilerErrorTestCase.class);
+
     @Rule
     public final FileMatchRule rule = new FileMatchRule();
 
@@ -105,10 +109,14 @@ public abstract class AbstractKlassCompilerErrorTestCase
 
         ImmutableListMultimap<Object, RootCompilerAnnotation> annotationsByKey =
                 compilerAnnotations.groupBy(this::getAnnotationKey);
-        annotationsByKey.forEachKeyMultiValues((key, compilerAnnotations1) ->
+        annotationsByKey.forEachKeyMultiValues((key, compilerAnnotationsForKey) ->
         {
-            if (compilerAnnotations1.size() > 1)
+            if (compilerAnnotationsForKey.size() > 1)
             {
+                for (RootCompilerAnnotation compilerAnnotation : compilerAnnotationsForKey)
+                {
+                    LOGGER.warn("Found compiler annotation:\n{}", compilerAnnotation);
+                }
                 fail("Found multiple compiler annotations for key: " + key);
             }
         });
