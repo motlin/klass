@@ -311,6 +311,12 @@ public class ReladomoDataStore
     @Override
     public Object getDataTypeProperty(@Nonnull Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty)
     {
+        if (!(persistentInstance instanceof MithraObject))
+        {
+            String detailMessage = "Expected MithraObject but got " + persistentInstance.getClass().getCanonicalName();
+            throw new AssertionError(detailMessage);
+        }
+
         // TODO: Code generate accessors to avoid reflection
         if (dataTypeProperty.isDerived())
         {
