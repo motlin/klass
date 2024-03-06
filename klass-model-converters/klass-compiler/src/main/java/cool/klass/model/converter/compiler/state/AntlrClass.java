@@ -267,6 +267,8 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
 
         this.klassBuilder.setVersionPropertyBuilder(versionAssociationEndBuilder);
         this.klassBuilder.setVersionedPropertyBuilder(versionedAssociationEndBuilder);
+
+        this.dataTypePropertyStates.each(AntlrDataTypeProperty::build2);
     }
 
     @Override

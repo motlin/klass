@@ -103,6 +103,12 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
         AntlrClass sourceType = sourceAntlrAssociationEnd.getType();
         AntlrClass targetType = targetAntlrAssociationEnd.getType();
 
+        sourceAntlrAssociationEnd.setOpposite(targetAntlrAssociationEnd);
+        targetAntlrAssociationEnd.setOpposite(sourceAntlrAssociationEnd);
+
+        sourceAntlrAssociationEnd.setOwningClassState(targetType);
+        targetAntlrAssociationEnd.setOwningClassState(sourceType);
+
         if (sourceType == AntlrClass.NOT_FOUND
                 || targetType == AntlrClass.NOT_FOUND
                 || sourceType == AntlrClass.AMBIGUOUS
@@ -111,14 +117,8 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
             return;
         }
 
-        sourceAntlrAssociationEnd.setOpposite(targetAntlrAssociationEnd);
-        targetAntlrAssociationEnd.setOpposite(sourceAntlrAssociationEnd);
-
-        sourceAntlrAssociationEnd.setOwningClassState(targetType);
-        targetAntlrAssociationEnd.setOwningClassState(sourceType);
-
         sourceType.enterAssociationEnd(targetAntlrAssociationEnd);
-        targetAntlrAssociationEnd.getType().enterAssociationEnd(sourceAntlrAssociationEnd);
+        targetType.enterAssociationEnd(sourceAntlrAssociationEnd);
     }
 
     public AssociationBuilder build()
@@ -212,5 +212,37 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
     public void setCriteria(@Nonnull AntlrCriteria criteria)
     {
         this.criteriaState = Objects.requireNonNull(criteria);
+    }
+
+    public AntlrAssociationEnd getSourceEnd()
+    {
+        return this.associationEndStates.get(0);
+    }
+
+    public AntlrAssociationEnd getTargetEnd()
+    {
+        return this.associationEndStates.get(1);
+    }
+
+    public AntlrAssociationEnd getEndWithForeignKeys()
+    {
+        boolean sourceHasForeignKeys = this.getSourceEnd().hasForeignKeys();
+        boolean targetHasForeignKeys = this.getTargetEnd().hasForeignKeys();
+
+        if (sourceHasForeignKeys && !targetHasForeignKeys)
+        {
+            return this.getTargetEnd();
+        }
+        if (targetHasForeignKeys && !sourceHasForeignKeys)
+        {
+            return this.getSourceEnd();
+        }
+        if (sourceHasForeignKeys && targetHasForeignKeys)
+        {
+            // TODO: Make sure this error is covered in reportErrors elsewhere.
+            return null;
+        }
+        // TODO: Make sure this error is covered in reportErrors elsewhere.
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state.property;
 
+import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
@@ -22,7 +24,9 @@ import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
 {
@@ -57,7 +61,10 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
     private AntlrClass          owningClassState;
     private AntlrAssociationEnd opposite;
 
-    private AssociationEndBuilder associationEndBuilder;
+    private AssociationEndBuilder                                 associationEndBuilder;
+
+    private final MutableOrderedMap<AntlrDataTypeProperty<?>, AntlrDataTypeProperty<?>> foreignKeys =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     public AntlrAssociationEnd(
             @Nonnull AssociationEndContext elementContext,
@@ -125,6 +132,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
         return this.associationEndModifierStates.anySatisfy(AntlrAssociationEndModifier::isOwned);
     }
 
+    @Override
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: Check that there are no duplicate modifiers
@@ -218,5 +226,41 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
     {
         parserRuleContexts.add(this.getElementContext());
         this.owningAssociationState.getParserRuleContexts(parserRuleContexts);
+    }
+
+    public boolean isToOne()
+    {
+        return this.getMultiplicity().isToOne();
+    }
+
+    public boolean isToMany()
+    {
+        return this.getMultiplicity().isToMany();
+    }
+
+    public void addForeignKeyPropertyMatchingProperty(
+            AntlrDataTypeProperty<?> foreignKeyProperty,
+            AntlrDataTypeProperty<?> keyProperty)
+    {
+        this.foreignKeys.put(foreignKeyProperty, keyProperty);
+        foreignKeyProperty.setKeyMatchingThisForeignKey(this, keyProperty);
+        keyProperty.setForeignKeyMatchingThisKey(this, foreignKeyProperty);
+    }
+
+    public boolean hasForeignKeys()
+    {
+        return this.isOwned()
+                || this.isToMany() && this.opposite.isToOne()
+                || this.isToOneOptional() && this.opposite.isToOneRequired();
+    }
+
+    public boolean isToOneOptional()
+    {
+        return this.getMultiplicity().getMultiplicity() == Multiplicity.ZERO_TO_ONE;
+    }
+
+    public boolean isToOneRequired()
+    {
+        return this.getMultiplicity().getMultiplicity() == Multiplicity.ONE_TO_ONE;
     }
 }

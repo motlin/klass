@@ -88,4 +88,14 @@ public class AntlrMultiplicity extends AntlrElement
     {
         return this.multiplicity;
     }
+
+    public boolean isToOne()
+    {
+        return this.multiplicity.isToOne();
+    }
+
+    public boolean isToMany()
+    {
+        return this.multiplicity.isToMany();
+    }
 }

@@ -308,7 +308,7 @@ class ParameterizedPropertyOrdering
 association AssociationEndHasOrdering
 {
     associationEnd: AssociationEnd[1..1];
-    associationEndOrdering: AssociationEndOrdering[0..1];
+    associationEndOrdering: AssociationEndOrdering[0..1] owned;
 
     relationship this.associationName == AssociationEndOrdering.associationName
             && this.direction == AssociationEndOrdering.direction
@@ -333,7 +333,7 @@ association AssociationEndOrderingHasParts
 
 association ParameterizedPropertyOrderingHasParts
 {
-    parameterizedPropertyOrdering: ParameterizedPropertyOrdering[1..1];
+    parameterizedPropertyOrdering: ParameterizedPropertyOrdering[1..1] owned;
     ordering: Ordering[1..1];
 
     // TODO: error when there's no "this"

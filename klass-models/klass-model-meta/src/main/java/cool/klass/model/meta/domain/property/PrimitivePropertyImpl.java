@@ -65,7 +65,7 @@ public final class PrimitivePropertyImpl
         @Nonnull
         protected PrimitivePropertyImpl buildUnsafe()
         {
-            PrimitivePropertyImpl primitiveProperty = new PrimitivePropertyImpl(
+            return new PrimitivePropertyImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
@@ -74,12 +74,14 @@ public final class PrimitivePropertyImpl
                     this.typeBuilder,
                     this.owningKlassBuilder.getElement(),
                     this.isOptional);
+        }
 
+        @Override
+        protected void buildChildren()
+        {
             ImmutableList<PropertyModifier> propertyModifiers =
                     this.propertyModifierBuilders.collect(PropertyModifierBuilder::build);
-
-            primitiveProperty.setPropertyModifiers(propertyModifiers);
-            return primitiveProperty;
+            this.element.setPropertyModifiers(propertyModifiers);
         }
     }
 }

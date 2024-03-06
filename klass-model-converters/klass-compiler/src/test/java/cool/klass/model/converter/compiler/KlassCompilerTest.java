@@ -239,7 +239,7 @@ public class KlassCompilerTest
                 + "association AssociationEndHasOrdering\n"
                 + "{\n"
                 + "    associationEnd: AssociationEnd[1..1];\n"
-                + "    associationEndOrdering: AssociationEndOrdering[0..1];\n"
+                + "    associationEndOrdering: AssociationEndOrdering[0..1] owned;\n"
                 + "\n"
                 + "    relationship this.associationName == AssociationEndOrdering.associationName\n"
                 + "            && this.direction == AssociationEndOrdering.direction\n"
@@ -264,7 +264,7 @@ public class KlassCompilerTest
                 + "\n"
                 + "association ParameterizedPropertyOrderingHasParts\n"
                 + "{\n"
-                + "    parameterizedPropertyOrdering: ParameterizedPropertyOrdering[1..1];\n"
+                + "    parameterizedPropertyOrdering: ParameterizedPropertyOrdering[1..1] owned;\n"
                 + "    ordering: Ordering[1..1];\n"
                 + "\n"
                 + "    // TODO: error when there's no \"this\"\n"
@@ -632,7 +632,7 @@ public class KlassCompilerTest
     }
 
     @Test
-    public void duplicatePropertyKeyword()
+    public void duplicateModifier()
     {
         //language=Klass
         String sourceCodeText = "package dummy\n"

@@ -15,6 +15,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.MutableMap;
 
@@ -113,6 +114,12 @@ public abstract class AbstractDomainModelCompilerPhase extends AbstractCompilerP
         this.associationEndState = null;
         this.thisReference = null;
         this.orderByOwnerState = null;
+    }
+
+    @Override
+    public void exitRelationship(RelationshipContext ctx)
+    {
+        this.thisReference = null;
     }
 
     private static void assertNull(Object object)

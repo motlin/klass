@@ -8,13 +8,20 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
+import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
+import org.eclipse.collections.api.multimap.list.MutableListMultimap;
+import org.eclipse.collections.impl.factory.Multimaps;
+import org.eclipse.collections.impl.utility.Iterate;
 
 public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrProperty<T>
 {
@@ -23,6 +30,9 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     protected final ImmutableList<AntlrPropertyModifier> propertyModifierStates;
     @Nonnull
     protected final AntlrClass                           owningClassState;
+
+    private final MutableListMultimap<AntlrAssociationEnd, AntlrDataTypeProperty<?>> keyBuildersMatchingThisForeignKey = Multimaps.mutable.list.empty();
+    private final MutableListMultimap<AntlrAssociationEnd, AntlrDataTypeProperty<?>> foreignKeyBuildersMatchingThisKey = Multimaps.mutable.list.empty();
 
     protected AntlrDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
@@ -74,6 +84,45 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     @Override
     public abstract DataTypePropertyBuilder<T, ?, ?> build();
 
+    public void build2()
+    {
+        ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> keysMatchingThisForeignKey =
+                collectKeyMultiValues(
+                        this.keyBuildersMatchingThisForeignKey,
+                        AntlrAssociationEnd::getElementBuilder,
+                        AntlrDataTypeProperty::getPropertyBuilder);
+        this.getPropertyBuilder().setKeyBuildersMatchingThisForeignKey(keysMatchingThisForeignKey);
+
+        ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> foreignKeysMatchingThisKey =
+                collectKeyMultiValues(
+                        this.foreignKeyBuildersMatchingThisKey,
+                        AntlrAssociationEnd::getElementBuilder,
+                        AntlrDataTypeProperty::getPropertyBuilder);
+        this.getPropertyBuilder().setForeignKeyBuildersMatchingThisKey(foreignKeysMatchingThisKey);
+    }
+
+    public static <InputKey, InputValue, OutputKey, OutputValue> ImmutableListMultimap<OutputKey, OutputValue> collectKeyMultiValues(
+            MutableListMultimap<InputKey, InputValue> multimap,
+            Function<? super InputKey, ? extends OutputKey> keyFunction,
+            Function<? super InputValue, ? extends OutputValue> valueFunction)
+    {
+        MutableListMultimap<OutputKey, OutputValue> result = Multimaps.mutable.list.empty();
+        multimap.forEachKeyMultiValues((key, multiValues) ->
+                result.putAll(
+                        keyFunction.valueOf(key),
+                        Iterate.collect(multiValues, valueFunction)));
+        return result.toImmutable();
+    }
+
+    @Override
+    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    {
+        // TODO: Check for duplicate modifiers
+        // TODO: Check for nullable key properties
+        // TODO: Check that ID properties are key properties
+        // TODO: Only Integer and Long may be ID (no enums either)
+    }
+
     @Nonnull
     @Override
     protected AntlrClass getOwningClassState()
@@ -94,11 +143,29 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         this.owningClassState.getParserRuleContexts(parserRuleContexts);
     }
 
-    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    public void setKeyMatchingThisForeignKey(
+            AntlrAssociationEnd associationEnd,
+            AntlrDataTypeProperty<?> keyProperty)
     {
-        // TODO: Check for duplicate modifiers
-        // TODO: Check for nullable key properties
-        // TODO: Check that ID properties are key properties
-        // TODO: Only Integer and Long may be ID (no enums either)
+        this.keyBuildersMatchingThisForeignKey.put(associationEnd, keyProperty);
+    }
+
+    public void setForeignKeyMatchingThisKey(
+            AntlrAssociationEnd associationEnd,
+            AntlrDataTypeProperty<?> foreignKeyProperty)
+    {
+        this.foreignKeyBuildersMatchingThisKey.put(associationEnd, foreignKeyProperty);
+    }
+
+    @Override
+    public String toString()
+    {
+        String result = String.format(
+                "%s.%s: %s %s",
+                this.getOwningClassState().getName(),
+                this.getName(),
+                this.getType().toString(),
+                this.propertyModifierStates.collect(AntlrNamedElement::getName).makeString(" "));
+        return result;
     }
 }

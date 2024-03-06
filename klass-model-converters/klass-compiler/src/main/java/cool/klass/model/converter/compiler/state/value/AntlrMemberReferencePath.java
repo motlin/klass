@@ -43,6 +43,18 @@ public abstract class AntlrMemberReferencePath extends AntlrExpressionValue
     }
 
     @Nonnull
+    public AntlrClass getClassState()
+    {
+        return this.classState;
+    }
+
+    @Nonnull
+    public AntlrDataTypeProperty<?> getDataTypePropertyState()
+    {
+        return this.dataTypePropertyState;
+    }
+
+    @Nonnull
     @Override
     public abstract AbstractMemberReferencePathBuilder<?> build();
 

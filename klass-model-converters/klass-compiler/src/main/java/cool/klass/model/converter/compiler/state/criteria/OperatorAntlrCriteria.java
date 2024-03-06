@@ -11,7 +11,11 @@ import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.operator.AntlrOperator;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
+import cool.klass.model.converter.compiler.state.value.AntlrThisMemberReferencePath;
+import cool.klass.model.converter.compiler.state.value.AntlrTypeMemberReferencePath;
 import cool.klass.model.converter.compiler.state.value.literal.AbstractAntlrLiteralValue;
 import cool.klass.model.meta.domain.criteria.OperatorCriteriaImpl.OperatorCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
@@ -22,12 +26,12 @@ import org.eclipse.collections.api.map.OrderedMap;
 public class OperatorAntlrCriteria extends AntlrCriteria
 {
     @Nonnull
-    private final AntlrOperator        operator;
+    private final AntlrOperator operator;
 
     @Nullable
-    private  AntlrExpressionValue sourceValue;
+    private AntlrExpressionValue sourceValue;
     @Nullable
-    private  AntlrExpressionValue targetValue;
+    private AntlrExpressionValue targetValue;
 
     public OperatorAntlrCriteria(
             @Nonnull CriteriaOperatorContext elementContext,
@@ -129,5 +133,62 @@ public class OperatorAntlrCriteria extends AntlrCriteria
             }
             ((AbstractAntlrLiteralValue) this.targetValue).setInferredType(sourcePossibleTypes.getOnly());
         }
+    }
+
+    @Override
+    public void addForeignKeys(
+            boolean foreignKeysOnThis,
+            AntlrAssociationEnd endWithForeignKeys)
+    {
+        AntlrThisMemberReferencePath thisMemberReferencePathState = this.getThisMemberRefrencePathState();
+        AntlrTypeMemberReferencePath typeMemberReferencePathState = this.getTypeMemberRefrencePathState();
+
+        AntlrDataTypeProperty<?> thisDataTypePropertyState = thisMemberReferencePathState.getDataTypePropertyState();
+        AntlrDataTypeProperty<?> typeDataTypePropertyState = typeMemberReferencePathState.getDataTypePropertyState();
+
+        boolean foreignKeysOnThis2 = endWithForeignKeys.getOwningClassState() == thisMemberReferencePathState.getClassState();
+        if (foreignKeysOnThis2 != foreignKeysOnThis)
+        {
+            throw new AssertionError();
+        }
+
+        if (endWithForeignKeys.getOwningClassState() == thisMemberReferencePathState.getClassState())
+        {
+            endWithForeignKeys.addForeignKeyPropertyMatchingProperty(thisDataTypePropertyState, typeDataTypePropertyState);
+        }
+        else
+        {
+            endWithForeignKeys.addForeignKeyPropertyMatchingProperty(typeDataTypePropertyState, thisDataTypePropertyState);
+        }
+    }
+
+    private AntlrThisMemberReferencePath getThisMemberRefrencePathState()
+    {
+        if (this.sourceValue instanceof AntlrThisMemberReferencePath)
+        {
+            return (AntlrThisMemberReferencePath) this.sourceValue;
+        }
+
+        if (this.targetValue instanceof AntlrThisMemberReferencePath)
+        {
+            return (AntlrThisMemberReferencePath) this.targetValue;
+        }
+
+        throw new AssertionError();
+    }
+
+    private AntlrTypeMemberReferencePath getTypeMemberRefrencePathState()
+    {
+        if (this.sourceValue instanceof AntlrTypeMemberReferencePath)
+        {
+            return (AntlrTypeMemberReferencePath) this.sourceValue;
+        }
+
+        if (this.targetValue instanceof AntlrTypeMemberReferencePath)
+        {
+            return (AntlrTypeMemberReferencePath) this.targetValue;
+        }
+
+        throw new AssertionError();
     }
 }

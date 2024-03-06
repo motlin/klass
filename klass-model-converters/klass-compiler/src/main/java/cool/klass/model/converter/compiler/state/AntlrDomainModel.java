@@ -27,12 +27,12 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrDomainModel
 {
-    private final MutableList<AntlrTopLevelElement>  topLevelElementStates  = Lists.mutable.empty();
-    private final MutableList<AntlrEnumeration>  enumerationStates  = Lists.mutable.empty();
-    private final MutableList<AntlrClass>        classStates        = Lists.mutable.empty();
-    private final MutableList<AntlrAssociation>  associationStates  = Lists.mutable.empty();
-    private final MutableList<AntlrProjection>   projectionStates   = Lists.mutable.empty();
-    private final MutableList<AntlrServiceGroup> serviceGroupStates = Lists.mutable.empty();
+    private final MutableList<AntlrTopLevelElement> topLevelElementStates = Lists.mutable.empty();
+    private final MutableList<AntlrEnumeration>     enumerationStates     = Lists.mutable.empty();
+    private final MutableList<AntlrClass>           classStates           = Lists.mutable.empty();
+    private final MutableList<AntlrAssociation>     associationStates     = Lists.mutable.empty();
+    private final MutableList<AntlrProjection>      projectionStates      = Lists.mutable.empty();
+    private final MutableList<AntlrServiceGroup>    serviceGroupStates    = Lists.mutable.empty();
 
     private final MutableOrderedMap<EnumerationDeclarationContext, AntlrEnumeration>   enumerationsByContext  =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -261,7 +261,8 @@ public class AntlrDomainModel
         ImmutableList<ProjectionBuilder>   projectionBuilders   = this.projectionStates.collect(AntlrProjection::build).toImmutable();
         ImmutableList<ServiceGroupBuilder> serviceGroupBuilders = this.serviceGroupStates.collect(AntlrServiceGroup::build).toImmutable();
 
-        ImmutableList<TopLevelElementBuilder> topLevelElementBuilders = this.topLevelElementStates.collect(AntlrTopLevelElement::getElementBuilder).toImmutable();
+        ImmutableList<TopLevelElementBuilder> topLevelElementBuilders = this.topLevelElementStates.collect(
+                AntlrTopLevelElement::getElementBuilder).toImmutable();
 
         return new DomainModelBuilder(
                 topLevelElementBuilders,

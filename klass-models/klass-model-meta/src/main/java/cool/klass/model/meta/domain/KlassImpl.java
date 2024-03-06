@@ -239,14 +239,15 @@ public final class KlassImpl extends AbstractPackageableElement implements TopLe
                 throw new IllegalStateException();
             }
 
-            this.element.setVersionProperty(this.versionPropertyBuilder.map(AssociationEndBuilder::getElement));
-            this.element.setVersionedProperty(this.versionedPropertyBuilder.map(AssociationEndBuilder::getElement));
-
             ImmutableList<AssociationEnd> associationEnds = this.associationEndBuilders
                     .<AssociationEnd>collect(AssociationEndBuilder::getElement)
                     .toImmutable();
-
             this.element.setAssociationEnds(associationEnds);
+
+            this.element.setVersionProperty(this.versionPropertyBuilder.map(AssociationEndBuilder::getElement));
+            this.element.setVersionedProperty(this.versionedPropertyBuilder.map(AssociationEndBuilder::getElement));
+
+            this.dataTypePropertyBuilders.each(DataTypePropertyBuilder::build2);
         }
 
         @Override

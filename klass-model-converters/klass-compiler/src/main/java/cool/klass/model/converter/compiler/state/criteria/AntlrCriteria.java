@@ -11,6 +11,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceCriteria;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -52,4 +53,12 @@ public abstract class AntlrCriteria extends AntlrElement
     public abstract void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName);
 
     public abstract void resolveTypes();
+
+    public void addForeignKeys(
+            boolean foreignKeysOnThis,
+            AntlrAssociationEnd endWithForeignKeys)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".addForeignKeys() not implemented yet");
+    }
 }

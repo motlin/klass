@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.DataType;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
 
 public interface DataTypeProperty extends Property
 {
@@ -13,6 +14,10 @@ public interface DataTypeProperty extends Property
 
     @Nonnull
     ImmutableList<PropertyModifier> getPropertyModifiers();
+
+    ImmutableListMultimap<AssociationEnd, DataTypeProperty> getKeysMatchingThisForeignKey();
+
+    ImmutableListMultimap<AssociationEnd, DataTypeProperty> getForeignKeysMatchingThisKey();
 
     default boolean isKey()
     {
@@ -33,4 +38,6 @@ public interface DataTypeProperty extends Property
     boolean isTemporalInstant();
 
     boolean isTemporal();
+
+    boolean isForeignKey();
 }

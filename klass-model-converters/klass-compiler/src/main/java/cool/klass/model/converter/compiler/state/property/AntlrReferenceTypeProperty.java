@@ -46,6 +46,11 @@ public abstract class AntlrReferenceTypeProperty extends AntlrProperty<KlassImpl
         return Objects.requireNonNull(this.type);
     }
 
+    public AntlrMultiplicity getMultiplicity()
+    {
+        return this.multiplicityState;
+    }
+
     @Override
     public void setOrderByState(@Nonnull Optional<AntlrOrderBy> orderByState)
     {
