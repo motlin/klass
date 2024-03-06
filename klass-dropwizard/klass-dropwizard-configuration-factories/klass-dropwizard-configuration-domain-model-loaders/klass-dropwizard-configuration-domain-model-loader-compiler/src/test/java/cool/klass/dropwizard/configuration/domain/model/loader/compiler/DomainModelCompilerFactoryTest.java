@@ -5,7 +5,6 @@ import java.net.URL;
 
 import javax.validation.Validator;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
@@ -56,7 +55,7 @@ public class DomainModelCompilerFactoryTest
     private static ObjectMapper newObjectMapper()
     {
         ObjectMapper objectMapper = Jackson.newObjectMapper();
-        ObjectMapperConfig.configure(objectMapper, true, Include.NON_ABSENT);
+        ObjectMapperConfig.configure(objectMapper);
         return objectMapper;
     }
 }

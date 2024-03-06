@@ -10,11 +10,11 @@ import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
-import cool.klass.servlet.filter.mdc.jsonview.JsonViewDynamicFeature;
-import cool.klass.servlet.logging.structured.klass.response.KlassResponseStructuredLoggingFilter;
 import com.stackoverflow.service.resource.QuestionResourceManual;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.liftwizard.dropwizard.bundle.httplogging.JerseyHttpLoggingBundle;
+import io.liftwizard.servlet.logging.mdc.StructuredArgumentsMDCLogger;
 
 public class StackOverflowApplication
         extends AbstractStackOverflowApplication
@@ -41,17 +41,12 @@ public class StackOverflowApplication
     {
         super.initializeBundles(bootstrap);
 
+        var structuredLogger = new StructuredArgumentsMDCLogger(bootstrap.getObjectMapper());
+        bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
+
         // TODO: Implement TypeResolvers for Interfaces
         // https://stackoverflow.com/questions/54251935/graphql-no-resolver-definied-for-interface-union-java
         // bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new StackOverflowRuntimeWiringBuilder()));
-    }
-
-    @Override
-    protected void registerLoggingFilters(@Nonnull Environment environment)
-    {
-        super.registerLoggingFilters(environment);
-
-        environment.jersey().register(KlassResponseStructuredLoggingFilter.class);
     }
 
     @Override
@@ -74,8 +69,6 @@ public class StackOverflowApplication
         DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
         Clock        clock        = klassFactory.getClockFactory().createClock();
         DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel(objectMapper);
-
-        environment.jersey().register(new JsonViewDynamicFeature(domainModel));
 
         environment.jersey().register(new QuestionResourceManual(domainModel, dataStore, clock));
     }

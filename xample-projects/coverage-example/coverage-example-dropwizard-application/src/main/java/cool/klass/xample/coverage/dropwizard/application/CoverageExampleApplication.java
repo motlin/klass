@@ -1,5 +1,8 @@
 package cool.klass.xample.coverage.dropwizard.application;
 
+import java.util.Optional;
+import java.util.function.BiConsumer;
+
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,17 +11,20 @@ import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
 import cool.klass.service.klass.html.KlassHtmlResource;
-import cool.klass.servlet.filter.mdc.jsonview.JsonViewDynamicFeature;
-import cool.klass.servlet.logging.structured.klass.response.KlassResponseStructuredLoggingFilter;
 import cool.klass.xample.coverage.graphql.runtime.wiring.CoverageExampleRuntimeWiringBuilder;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.liftwizard.dropwizard.bundle.graphql.LiftwizardGraphQLBundle;
+import io.liftwizard.dropwizard.bundle.httplogging.JerseyHttpLoggingBundle;
+import io.liftwizard.servlet.logging.logstash.encoder.StructuredArgumentsLogstashEncoderLogger;
+import io.liftwizard.servlet.logging.mdc.StructuredArgumentsMDCLogger;
+import io.liftwizard.servlet.logging.typesafe.StructuredArguments;
 
 public class CoverageExampleApplication
         extends AbstractCoverageExampleApplication
 {
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
+            throws Exception
     {
         new CoverageExampleApplication().run(args);
     }
@@ -40,16 +46,18 @@ public class CoverageExampleApplication
     {
         super.initializeBundles(bootstrap);
 
+        var mdcLogger = new StructuredArgumentsMDCLogger(bootstrap.getObjectMapper());
+        var logstashLogger = new StructuredArgumentsLogstashEncoderLogger();
+
+        BiConsumer<StructuredArguments, Optional<String>> structuredLogger = (structuredArguments, maybeBody) ->
+        {
+            mdcLogger.accept(structuredArguments, maybeBody);
+            logstashLogger.accept(structuredArguments, maybeBody);
+        };
+
+        bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
+
         bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new CoverageExampleRuntimeWiringBuilder()));
-    }
-
-    @Override
-    protected void registerLoggingFilters(@Nonnull Environment environment)
-    {
-        super.registerLoggingFilters(environment);
-
-        environment.jersey().register(KlassResponseStructuredLoggingFilter.class);
-        environment.jersey().register(JsonViewDynamicFeature.class);
     }
 
     @Override
@@ -70,8 +78,6 @@ public class CoverageExampleApplication
                 .getKlassFactory()
                 .getDomainModelFactory()
                 .createDomainModel(objectMapper);
-
-        environment.jersey().register(new JsonViewDynamicFeature(domainModel));
 
         // TODO: Move up to generated abstract class?
         if (domainModel instanceof DomainModelWithSourceCode)

@@ -2,15 +2,12 @@ package klass.model.meta.domain.dropwizard.application;
 
 import javax.annotation.Nonnull;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
-import cool.klass.dropwizard.configuration.KlassFactory;
-import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
-import cool.klass.servlet.filter.mdc.jsonview.JsonViewDynamicFeature;
-import cool.klass.servlet.logging.structured.klass.response.KlassResponseStructuredLoggingFilter;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.liftwizard.dropwizard.bundle.httplogging.JerseyHttpLoggingBundle;
+import io.liftwizard.servlet.logging.mdc.StructuredArgumentsMDCLogger;
 
 public class KlassBootstrappedMetaModelApplication
         extends AbstractKlassBootstrappedMetaModelApplication
@@ -33,11 +30,12 @@ public class KlassBootstrappedMetaModelApplication
     }
 
     @Override
-    protected void registerLoggingFilters(@Nonnull Environment environment)
+    protected void initializeBundles(@Nonnull Bootstrap<KlassBootstrappedMetaModelConfiguration> bootstrap)
     {
-        super.registerLoggingFilters(environment);
+        super.initializeBundles(bootstrap);
 
-        environment.jersey().register(KlassResponseStructuredLoggingFilter.class);
+        var structuredLogger = new StructuredArgumentsMDCLogger(bootstrap.getObjectMapper());
+        bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
     }
 
     @Override
@@ -46,19 +44,5 @@ public class KlassBootstrappedMetaModelApplication
         super.registerJacksonModules(environment);
 
         environment.getObjectMapper().registerModule(new KlassMetaModelJacksonModule());
-    }
-
-    @Override
-    public void run(
-            @Nonnull KlassBootstrappedMetaModelConfiguration configuration,
-            @Nonnull Environment environment) throws Exception
-    {
-        super.run(configuration, environment);
-
-        ObjectMapper objectMapper = environment.getObjectMapper();
-        KlassFactory klassFactory = configuration.getKlassFactory();
-        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel(objectMapper);
-
-        environment.jersey().register(new JsonViewDynamicFeature(domainModel));
     }
 }

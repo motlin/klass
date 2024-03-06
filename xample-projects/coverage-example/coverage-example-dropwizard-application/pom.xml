@@ -192,6 +192,26 @@
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-graphql</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-logging-http</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-servlet-logging-mdc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-servlet-logging-logstash-encoder</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-servlet-logging-typesafe</artifactId>
+        </dependency>
         <!--endregion-->
 
         <!--region Liftwizard runtime dependencies -->
@@ -324,18 +344,6 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-servlet-logging-structured-klass-response</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-servlet-logging-mdc-jsonview</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
