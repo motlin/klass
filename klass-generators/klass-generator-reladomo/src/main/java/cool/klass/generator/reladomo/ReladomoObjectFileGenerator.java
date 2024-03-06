@@ -160,6 +160,8 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         relationshipType.setCardinality(this.getCardinality(associationEnd, opposite));
         relationshipType.setRelatedIsDependent(associationEnd.isOwned());
         relationshipType.setRelatedObject(associationEnd.getType().getName());
+        // TODO: Reladomo Order-By generation
+        // relationshipType.setOrderBy(convertOrderBy(associationEnd.getOrderBy()));
         relationshipType._setValue(this.getRelationshipString(associationEnd.getOwningAssociation().getCriteria()));
         return relationshipType;
     }

@@ -97,7 +97,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
 
     @Nonnull
     @Override
-    public AntlrExpressionValue visitThisMemberReference(@Nonnull ThisMemberReferenceContext ctx)
+    public AntlrThisMemberValue visitThisMemberReference(@Nonnull ThisMemberReferenceContext ctx)
     {
         MemberReferenceContext memberReferenceContext = ctx.memberReference();
 

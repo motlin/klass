@@ -47,7 +47,6 @@ import cool.klass.model.meta.grammar.KlassParser.OperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.OptionalMarkerContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDirectionContext;
-import cool.klass.model.meta.grammar.KlassParser.OrderByListContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
@@ -890,20 +889,6 @@ public class ErrorContextListener extends BaseErrorListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitOrderByDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void enterOrderByList(OrderByListContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterOrderByList() not implemented yet");
-    }
-
-    @Override
-    public void exitOrderByList(OrderByListContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitOrderByList() not implemented yet");
     }
 
     @Override

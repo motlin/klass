@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.phase.AssociationOrderByPhase;
 import cool.klass.model.converter.compiler.phase.AssociationPhase;
 import cool.klass.model.converter.compiler.phase.ClassPhase;
 import cool.klass.model.converter.compiler.phase.ClassTemporalPropertyInferencePhase;
@@ -119,6 +120,11 @@ public class KlassCompiler
                 compilationUnitsByContext,
                 this.domainModelState);
 
+        KlassListener associationOrderByPhase = new AssociationOrderByPhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                this.domainModelState);
+
         KlassListener phase6 = new VersionAssociationInferencePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
@@ -155,6 +161,7 @@ public class KlassCompiler
                 phase3,
                 phase4,
                 phase5,
+                associationOrderByPhase,
                 phase6,
                 phase7,
                 phase8,

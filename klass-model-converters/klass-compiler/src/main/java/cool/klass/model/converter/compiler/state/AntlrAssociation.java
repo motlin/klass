@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state;
 
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -13,11 +14,14 @@ import cool.klass.model.meta.domain.Association.AssociationBuilder;
 import cool.klass.model.meta.domain.criteria.Criteria.CriteriaBuilder;
 import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrAssociation extends AntlrPackageableElement implements CriteriaOwner
 {
@@ -32,15 +36,18 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
             null)
     {
         @Override
-        public void enterAssociationEnd(AntlrAssociationEnd antlrAssociationEnd)
+        public void enterAssociationEnd(AntlrAssociationEnd associationEndState)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".enterAssociationEnd() not implemented yet");
         }
     };
 
-    private final MutableList<AntlrAssociationEnd> associationEndStates = Lists.mutable.empty();
-    private       AntlrCriteria                    antlrCriteria;
+    private final MutableList<AntlrAssociationEnd>                              associationEndStates     = Lists.mutable.empty();
+    private final MutableOrderedMap<AssociationEndContext, AntlrAssociationEnd> associationEndsByContext = OrderedMapAdapter.adapt(
+            new LinkedHashMap<>());
+
+    private AntlrCriteria antlrCriteria;
 
     private AssociationBuilder associationBuilder;
     private AntlrClass         versionClass;
@@ -59,7 +66,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
 
     public MutableList<AntlrAssociationEnd> getAssociationEndStates()
     {
-        return this.associationEndStates;
+        return this.associationEndStates.asUnmodifiable();
     }
 
     public int getNumAssociationEnds()
@@ -67,9 +74,22 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
         return this.associationEndStates.size();
     }
 
-    public void enterAssociationEnd(AntlrAssociationEnd antlrAssociationEnd)
+    public AntlrAssociationEnd getAssociationEndByContext(AssociationEndContext ctx)
     {
-        this.associationEndStates.add(antlrAssociationEnd);
+        return this.associationEndsByContext.get(ctx);
+    }
+
+    public void enterAssociationEnd(AntlrAssociationEnd associationEndState)
+    {
+        AntlrAssociationEnd duplicate = this.associationEndsByContext.put(
+                associationEndState.getElementContext(),
+                associationEndState);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
+
+        this.associationEndStates.add(associationEndState);
     }
 
     public void exitAssociationDeclaration()

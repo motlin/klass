@@ -113,8 +113,8 @@ associationEndModifier: 'owned';
 versions: 'versions' '(' classReference ')';
 
 // order by
-orderByDeclaration: 'orderBy' ':' orderByList;
-orderByList: orderByProperty (',' orderByProperty)*;
+orderByDeclaration: 'orderBy' ':' orderByProperty (',' orderByProperty)*;
+// TODO: Rename for consistency. Either orderByMember or orderByMemberPath or something like that
 orderByProperty: thisMemberReference orderByDirection?;
 orderByDirection: 'ascending' | 'descending';
 
@@ -161,7 +161,9 @@ memberReference: identifier;
 associationEndReference: identifier;
 variableReference: identifier;
 
+// TODO: Rename thisMemberReferencePath
 thisMemberReference: 'this' ('.' associationEndReference)* '.' memberReference;
+// TODO: Rename typeMemberReferencePath
 typeMemberReference: classReference ('.' associationEndReference)* '.' memberReference;
 
 identifier
