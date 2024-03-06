@@ -133,10 +133,15 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-public abstract class AbstractDelegatingKlassListener
+// Deliberately not abstract
+// Implements every method of KlassListener by delegating to getDelegate()
+public class DelegatingKlassListener
         implements KlassListener
 {
-    protected abstract KlassListener getDelegate();
+    protected KlassListener getDelegate()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getDelegate() not implemented yet");
+    }
 
     @Override
     @OverridingMethodsMustInvokeSuper

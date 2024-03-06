@@ -5,11 +5,12 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
-import cool.klass.model.converter.compiler.parser.AbstractDelegatingKlassListener;
+import cool.klass.model.converter.compiler.parser.DelegatingKlassListener;
 import cool.klass.model.meta.grammar.KlassListener;
 
+@SuppressWarnings("AbstractClassExtendsConcreteClass")
 public abstract class AbstractCompilerPhase
-        extends AbstractDelegatingKlassListener
+        extends DelegatingKlassListener
 {
     @Nonnull
     protected final CompilerState compilerState;
