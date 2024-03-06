@@ -22,3 +22,5 @@ logging:
 klass:
   clock:
     type: system
+  uuid:
+    type: system

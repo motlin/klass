@@ -4,6 +4,8 @@ import java.time.Clock;
 import java.util.List;
 import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -15,6 +17,7 @@ import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.dropwizard.configuration.clock.ClockFactory;
+import cool.klass.dropwizard.configuration.uuid.UUIDSupplierFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.loader.DomainModelLoader;
 import com.typesafe.config.Config;
@@ -35,9 +38,10 @@ public abstract class AbstractKlassApplication<T extends AbstractKlassConfigurat
 
     protected final String name;
 
-    protected DomainModel domainModel;
-    protected DataStore   dataStore;
-    protected Clock       clock;
+    protected DomainModel    domainModel;
+    protected DataStore      dataStore;
+    protected Clock          clock;
+    protected Supplier<UUID> uuidSupplier;
 
     protected AbstractKlassApplication(String name)
     {
@@ -145,12 +149,20 @@ public abstract class AbstractKlassApplication<T extends AbstractKlassConfigurat
     public void run(T configuration, Environment environment) throws Exception
     {
         this.initializeClock(configuration);
+        this.initializeUUIDSupplier(configuration);
     }
 
-    public void initializeClock(T configuration)
+    protected void initializeClock(T configuration)
     {
         KlassFactory klassFactory = configuration.getKlassFactory();
         ClockFactory clockFactory = klassFactory.getClockFactory();
         this.clock = clockFactory.createClock();
+    }
+
+    protected void initializeUUIDSupplier(T configuration)
+    {
+        KlassFactory        klassFactory = configuration.getKlassFactory();
+        UUIDSupplierFactory uuidFactory  = klassFactory.getUuidFactory();
+        this.uuidSupplier = uuidFactory.createUUIDSupplier();
     }
 }
