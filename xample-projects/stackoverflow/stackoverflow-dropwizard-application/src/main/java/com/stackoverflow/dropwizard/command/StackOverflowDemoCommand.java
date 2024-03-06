@@ -23,7 +23,6 @@ public class StackOverflowDemoCommand extends EnvironmentCommand<StackOverflowCo
             Namespace namespace,
             StackOverflowConfiguration configuration) throws Exception
     {
-        new StackOverflowDdlExecutorCommand(this.application).run(environment, namespace, configuration);
         new StackOverflowTestDataGeneratorCommand(this.application).run(environment, namespace, configuration);
         new ServerCommand<StackOverflowConfiguration>(this.application)
         {

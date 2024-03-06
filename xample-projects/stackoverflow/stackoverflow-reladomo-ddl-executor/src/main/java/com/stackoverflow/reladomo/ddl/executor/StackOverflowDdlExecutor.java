@@ -12,6 +12,6 @@ public final class StackOverflowDdlExecutor
 
     public static void main(String[] args)
     {
-        DatabaseDdlExecutor.executeSql(H2ConnectionManager.getInstance());
+        DatabaseDdlExecutor.executeSql(H2ConnectionManager.getInstance().getConnection());
     }
 }

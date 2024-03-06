@@ -10,8 +10,6 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
-import com.gs.fw.common.mithra.connectionmanager.SourcelessConnectionManager;
-import cool.klass.reladomo.connectionmanager.h2.H2ConnectionManager;
 import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
 import org.h2.tools.RunScript;
@@ -31,12 +29,7 @@ public final class DatabaseDdlExecutor
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    public static void main(String[] args)
-    {
-        DatabaseDdlExecutor.executeSql(H2ConnectionManager.getInstance());
-    }
-
-    public static void executeSql(SourcelessConnectionManager connectionManager)
+    public static void executeSql(Connection connection)
     {
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .setScanners(new ResourcesScanner())
@@ -45,7 +38,6 @@ public final class DatabaseDdlExecutor
         MutableSet<String> ddlLocations = SetAdapter.adapt(reflections.getResources(Pattern.compile(".*\\.ddl")));
         MutableSet<String> idxLocations = SetAdapter.adapt(reflections.getResources(Pattern.compile(".*\\.idx")));
 
-        Connection connection = connectionManager.getConnection();
         ddlLocations.forEachWith(DatabaseDdlExecutor::runScript, connection);
         idxLocations.forEachWith(DatabaseDdlExecutor::runScript, connection);
     }

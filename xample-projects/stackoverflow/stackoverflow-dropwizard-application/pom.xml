@@ -24,7 +24,7 @@
                     <basedir>${project.basedir}</basedir>
                     <workingDirectory>${project.basedir}</workingDirectory>
                     <executable>java</executable>
-                    <commandlineArgs>-Dconfig.resource=local.conf -jar ${project.build.directory}/${project.artifactId}-${project.version}.jar demo config.yml</commandlineArgs>
+                    <commandlineArgs>-Dconfig.resource=demo.conf -jar ${project.build.directory}/${project.artifactId}-${project.version}.jar demo config.yml</commandlineArgs>
                 </configuration>
             </plugin>
 
@@ -206,24 +206,35 @@
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-http-logging</artifactId>
             <version>${klass.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-object-mapper</artifactId>
             <version>${klass.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-reladomo</artifactId>
             <version>${klass.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-h2</artifactId>
             <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-ddl-executor</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -394,6 +405,7 @@
             <activation>
                     <activeByDefault>true</activeByDefault>
 
+                <!--TODO: There seems to be a bug in maven from using the file-missing trigger together with exec-maven-plugin's working directory-->
                 <!--<file>-->
                     <!--<missing>${project.build.directory}/h2db/klass-app-h2.mv.db</missing>-->
                 <!--</file>-->

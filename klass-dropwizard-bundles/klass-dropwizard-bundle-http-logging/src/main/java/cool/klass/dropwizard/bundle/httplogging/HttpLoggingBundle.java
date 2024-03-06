@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
 
+import com.google.auto.service.AutoService;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
@@ -15,6 +16,7 @@ import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.logging.LoggingFeature.Verbosity;
 import org.slf4j.LoggerFactory;
 
+@AutoService(Bundle.class)
 public class HttpLoggingBundle implements Bundle
 {
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HttpLoggingBundle.class);

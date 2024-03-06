@@ -10,11 +10,22 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-dropwizard-bundle-h2</artifactId>
+    <artifactId>klass-dropwizard-bundle-ddl-executor</artifactId>
 
-    <name>Klass Dropwizard Bundle: H2</name>
+    <name>Klass Dropwizard Bundle: DDL Executor</name>
 
     <dependencies>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-reladomo-ddl-executor</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.goldmansachs.reladomo</groupId>
+            <artifactId>reladomo</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>io.dropwizard</groupId>
@@ -22,24 +33,8 @@
         </dependency>
 
         <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-jetty</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-lifecycle</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
         </dependency>
 
         <dependency>
@@ -53,15 +48,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.auto.service</groupId>
-            <artifactId>auto-service</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
         </dependency>
 
     </dependencies>
-
 </project>

@@ -16,6 +16,7 @@
         <module>klass-dropwizard-bundle-http-logging</module>
         <module>klass-dropwizard-bundle-reladomo</module>
         <module>klass-dropwizard-bundle-h2</module>
+        <module>klass-dropwizard-bundle-ddl-executor</module>
     </modules>
 
     <artifactId>klass-dropwizard-bundles</artifactId>

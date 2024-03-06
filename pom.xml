@@ -301,6 +301,12 @@
                 <artifactId>jackson-annotations</artifactId>
             </dependency>
 
+            <dependency>
+                <groupId>com.google.auto.service</groupId>
+                <artifactId>auto-service</artifactId>
+                <version>${google.auto.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
