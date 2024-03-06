@@ -8,6 +8,7 @@ import com.gs.fw.common.mithra.util.dbextractor.MithraTestDataRowFormatter;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 
+// TODO: Delete?
 public class RelationalTestDataGenerator
 {
     private static final Function<Object, String> FORMATTER = new MithraTestDataRowFormatter()::valueOf;
