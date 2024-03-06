@@ -59,7 +59,7 @@ public class VersionClassInferencePhase extends AbstractDomainModelCompilerPhase
         this.compilationUnitsByContext.put(compilationUnit.getParserContext(), compilationUnit);
     }
 
-    private String getSourceName(@Nonnull ClassModifierContext ctx)
+    private String getSourceName(@Nonnull ParserRuleContext ctx)
     {
         String contextMessage = this.getContextMessage(ctx.getStart());
         return String.format(
@@ -101,7 +101,8 @@ public class VersionClassInferencePhase extends AbstractDomainModelCompilerPhase
         KlassListener temporalPropertyInferencePhase = new ClassTemporalPropertyInferencePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState);
+                this.domainModelState,
+                this.compilationUnits);
 
         KlassCompiler.executeCompilerPhase(classPhase, compilationUnits);
         KlassCompiler.executeCompilerPhase(temporalPropertyInferencePhase, compilationUnits);

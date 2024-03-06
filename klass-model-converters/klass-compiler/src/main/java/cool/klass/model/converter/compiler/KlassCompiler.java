@@ -107,7 +107,8 @@ public class KlassCompiler
         KlassListener phase3 = new ClassTemporalPropertyInferencePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState);
+                this.domainModelState,
+                compilationUnits);
 
         KlassListener phase4 = new VersionClassInferencePhase(
                 this.compilerErrorHolder,
@@ -133,25 +134,25 @@ public class KlassCompiler
                 false,
                 this.domainModelState);
 
-        KlassListener relationshipPhase = new RelationshipPhase(
+        KlassListener phase8 = new RelationshipPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 false,
                 this.domainModelState);
 
-        KlassListener phase8 = new ProjectionPhase(
+        KlassListener phase9 = new ProjectionPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 this.domainModelState,
                 false);
 
-        KlassListener phase9 = new ServicePhase(
+        KlassListener phase10 = new ServicePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 this.domainModelState,
                 false);
 
-        KlassListener phase10 = new OrderByPhase(
+        KlassListener phase11 = new OrderByPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 this.domainModelState,
@@ -165,10 +166,10 @@ public class KlassCompiler
                 phase5,
                 phase6,
                 phase7,
-                relationshipPhase,
                 phase8,
                 phase9,
-                phase10);
+                phase10,
+                phase11);
     }
 
     @Nullable

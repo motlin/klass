@@ -1,28 +1,35 @@
 package cool.klass.model.converter.compiler.phase;
 
+import java.util.IdentityHashMap;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
-import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
-import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
-import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.grammar.KlassListener;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.MutableMap;
-import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.impl.factory.Sets;
+import org.eclipse.collections.impl.map.mutable.MapAdapter;
 
 public class ClassTemporalPropertyInferencePhase extends AbstractDomainModelCompilerPhase
 {
+    private final MutableSet<CompilationUnit> compilationUnits;
+
     public ClassTemporalPropertyInferencePhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            AntlrDomainModel domainModelState)
+            AntlrDomainModel domainModelState,
+            MutableSet<CompilationUnit> compilationUnits)
     {
         super(compilerErrorHolder, compilationUnitsByContext, true, domainModelState);
+        this.compilationUnits = compilationUnits;
     }
 
     @Override
@@ -54,40 +61,50 @@ public class ClassTemporalPropertyInferencePhase extends AbstractDomainModelComp
             @Nonnull ClassModifierContext ctx,
             @Nonnull String prefix)
     {
-        AntlrPrimitiveProperty temporalProperty = this.property(
-                ctx,
-                prefix,
-                PrimitiveType.TEMPORAL_RANGE);
-        AntlrPrimitiveProperty temporalFromProperty = this.property(
-                ctx,
-                prefix + "From",
-                PrimitiveType.TEMPORAL_INSTANT);
-        AntlrPrimitiveProperty temporalToProperty = this.property(
-                ctx,
-                prefix + "To",
-                PrimitiveType.TEMPORAL_INSTANT);
-
-        this.classState.inferDataTypeProperty(temporalProperty);
-        this.classState.inferDataTypeProperty(temporalFromProperty);
-        this.classState.inferDataTypeProperty(temporalToProperty);
+        this.runCompilerMacro(ctx, prefix + "    : TemporalRange   " + prefix + ";");
+        this.runCompilerMacro(ctx, prefix + "From: TemporalInstant " + prefix + " from;");
+        this.runCompilerMacro(ctx, prefix + "To  : TemporalInstant " + prefix + " to;");
     }
 
-    private AntlrPrimitiveProperty property(
-            @Nonnull ClassModifierContext ctx,
-            @Nonnull String name,
-            @Nonnull PrimitiveType primitiveType)
+    private void runCompilerMacro(@Nonnull ParserRuleContext ctx, String sourceCodeText)
     {
-        return new AntlrPrimitiveProperty(
-                ctx,
-                this.currentCompilationUnit,
-                this.isInference,
-                ctx,
-                name,
-                this.classState.getNumMembers() + 1,
-                this.classState,
-                false,
-                // TODO: Temporal properties need "from" and "to" property modifiers
-                Lists.immutable.empty(),
-                AntlrPrimitiveType.valueOf(primitiveType));
+        String sourceName = this.getSourceName(ctx);
+
+        CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                sourceName,
+                sourceCodeText);
+
+        MutableSet<CompilationUnit> compilationUnits = Sets.mutable.with(compilationUnit);
+        MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext = compilationUnits.groupByUniqueKey(
+                CompilationUnit::getParserContext,
+                MapAdapter.adapt(new IdentityHashMap<>()));
+
+        this.runCompilerPhases(compilationUnits, compilationUnitsByContext);
+
+        this.compilationUnits.add(compilationUnit);
+        this.compilationUnitsByContext.put(compilationUnit.getParserContext(), compilationUnit);
+    }
+
+    // TODO: Extract new commonality in newer compiler macros
+    private String getSourceName(@Nonnull ParserRuleContext ctx)
+    {
+        String contextMessage = this.getContextMessage(ctx.getStart());
+        return String.format(
+                "%s compiler macro (%s)",
+                ClassTemporalPropertyInferencePhase.class.getSimpleName(),
+                contextMessage);
+    }
+
+    private void runCompilerPhases(
+            MutableSet<CompilationUnit> compilationUnits,
+            MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext)
+    {
+        KlassListener classPhase = new ClassPhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                this.domainModelState,
+                this.isInference);
+
+        KlassCompiler.executeCompilerPhase(classPhase, compilationUnits);
     }
 }
