@@ -30,6 +30,13 @@
         <module>klass-maven-archetype</module>
         <module>klass-logging-slf4j-mdc-closeable</module>
         <module>klass-utility</module>
+        <module>klass-clock</module>
+        <module>klass-auth</module>
+        <module>klass-bundle</module>
+        <module>klass-config</module>
+        <module>klass-jackson</module>
+        <module>klass-logging</module>
+        <module>klass-uuid</module>
     </modules>
 
     <properties>
