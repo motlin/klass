@@ -2,7 +2,6 @@ package cool.klass.generator.graphql.data.fetcher;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.time.Instant;
 
 import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.model.meta.domain.api.DomainModel;
@@ -17,7 +16,8 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
         defaultPhase = LifecyclePhase.GENERATE_SOURCES,
         threadSafe = true,
         requiresDependencyResolution = ResolutionScope.RUNTIME)
-public class GenerateGraphQLDataFetcherMojo extends AbstractGenerateMojo
+public class GenerateGraphQLDataFetcherMojo
+        extends AbstractGenerateMojo
 {
     @Parameter(
             property = "outputDirectory",
@@ -41,8 +41,7 @@ public class GenerateGraphQLDataFetcherMojo extends AbstractGenerateMojo
         {
             GraphQLDataFetcherGenerator dataFetcherGenerator = new GraphQLDataFetcherGenerator(
                     domainModel,
-                    this.rootPackageName,
-                    Instant.now());
+                    this.rootPackageName);
             dataFetcherGenerator.writeDataFetcherFiles(outputPath);
         }
         catch (RuntimeException e)

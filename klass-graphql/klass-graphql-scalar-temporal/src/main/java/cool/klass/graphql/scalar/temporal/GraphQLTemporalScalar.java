@@ -3,9 +3,11 @@ package cool.klass.graphql.scalar.temporal;
 import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -46,15 +48,17 @@ public class GraphQLTemporalScalar extends GraphQLScalarType
         @Override
         public String serialize(Object input)
         {
-            Instant instant = getInstant(input);
+            Instant instant = InstantCoercing.getInstant(input);
             try
             {
-                return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(instant);
+                return DateTimeFormatter.ISO_OFFSET_DATE_TIME
+                        .withZone(ZoneOffset.UTC)
+                        .format(instant);
             }
             catch (DateTimeException e)
             {
                 throw new CoercingSerializeException(
-                        "Unable to turn TemporalAccessor into OffsetDateTime because of : '" + e.getMessage() + "'.");
+                        "Unable to turn TemporalAccessor into OffsetDateTime because of : '" + e.getMessage() + "'.", e);
             }
         }
 
@@ -75,10 +79,16 @@ public class GraphQLTemporalScalar extends GraphQLScalarType
                 return ((ZonedDateTime) input).toInstant();
             }
 
+            if (input instanceof Date)
+            {
+                Date date = (Date) input;
+                return date.toInstant();
+            }
+
             if (input instanceof String)
             {
                 String inputString = input.toString();
-                OffsetDateTime parsedOffsetDateTime = parseOffsetDateTime(
+                OffsetDateTime parsedOffsetDateTime = InstantCoercing.parseOffsetDateTime(
                         inputString,
                         CoercingSerializeException::new);
                 return parsedOffsetDateTime.toInstant();
@@ -86,7 +96,7 @@ public class GraphQLTemporalScalar extends GraphQLScalarType
 
             String error = String.format(
                     "Expected something we can convert to 'java.time.OffsetDateTime' but was '%s'.",
-                    typeName(input));
+                    GraphQLTemporalScalar.typeName(input));
             throw new CoercingSerializeException(error);
         }
 
@@ -111,13 +121,13 @@ public class GraphQLTemporalScalar extends GraphQLScalarType
             if (input instanceof String)
             {
                 String inputString = input.toString();
-                OffsetDateTime parsedOffsetDateTime = parseOffsetDateTime(
+                OffsetDateTime parsedOffsetDateTime = InstantCoercing.parseOffsetDateTime(
                         inputString,
                         CoercingParseValueException::new);
                 return parsedOffsetDateTime.toInstant();
             }
 
-            String error = String.format("Expected a 'String' but was '%s'.", typeName(input));
+            String error = String.format("Expected a 'String' but was '%s'.", GraphQLTemporalScalar.typeName(input));
             throw new CoercingParseValueException(error);
         }
 
@@ -128,10 +138,10 @@ public class GraphQLTemporalScalar extends GraphQLScalarType
             {
                 String error = String.format(
                         "Expected AST type 'StringValue' but was '%s'.",
-                        typeName(input));
+                        GraphQLTemporalScalar.typeName(input));
                 throw new CoercingParseLiteralException(error);
             }
-            return parseOffsetDateTime(
+            return InstantCoercing.parseOffsetDateTime(
                     ((StringValue) input).getValue(),
                     CoercingParseLiteralException::new).toInstant();
         }

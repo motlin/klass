@@ -26,17 +26,13 @@ public class GraphQLDataFetcherGenerator
     private final DomainModel domainModel;
     @Nonnull
     private final String      rootPackageName;
-    @Nonnull
-    private final Instant     now;
 
     public GraphQLDataFetcherGenerator(
             @Nonnull DomainModel domainModel,
-            @Nonnull String rootPackageName,
-            @Nonnull Instant now)
+            @Nonnull String rootPackageName)
     {
         this.domainModel     = Objects.requireNonNull(domainModel);
         this.rootPackageName = Objects.requireNonNull(rootPackageName);
-        this.now             = Objects.requireNonNull(now);
     }
 
     public void writeDataFetcherFiles(@Nonnull Path outputPath)
