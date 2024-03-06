@@ -52,6 +52,21 @@ public interface PropertyModifier extends NamedElement
         return AUDIT_PROPERTY_NAMES.contains(this.getName());
     }
 
+    default boolean isCreatedBy()
+    {
+        return this.getName().equals("createdBy");
+    }
+
+    default boolean isCreatedOn()
+    {
+        return this.getName().equals("createdOn");
+    }
+
+    default boolean isLastUpdatedBy()
+    {
+        return this.getName().equals("lastUpdatedBy");
+    }
+
     default boolean isVersion()
     {
         return this.getName().equals("version");

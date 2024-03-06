@@ -49,6 +49,21 @@ public interface DataTypeProperty extends Property
         return this.getPropertyModifiers().anySatisfy(PropertyModifier::isAudit);
     }
 
+    default boolean isCreatedBy()
+    {
+        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isCreatedBy);
+    }
+
+    default boolean isCreatedOn()
+    {
+        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isCreatedOn);
+    }
+
+    default boolean isLastUpdatedBy()
+    {
+        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isLastUpdatedBy);
+    }
+
     default boolean isValid()
     {
         return this.getPropertyModifiers().anySatisfy(PropertyModifier::isValid);

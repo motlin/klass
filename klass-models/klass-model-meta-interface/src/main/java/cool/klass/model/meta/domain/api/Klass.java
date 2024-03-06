@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.Property;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -222,5 +223,29 @@ public interface Klass extends Classifier
         }
 
         return superClass.isStrictSubTypeOf(classifier);
+    }
+
+    default Optional<PrimitiveProperty> getCreatedByProperty()
+    {
+        return this.getDataTypeProperties()
+                .asLazy()
+                .selectInstancesOf(PrimitiveProperty.class)
+                .detectOptional(DataTypeProperty::isCreatedBy);
+    }
+
+    default Optional<PrimitiveProperty> getCreatedOnProperty()
+    {
+        return this.getDataTypeProperties()
+                .asLazy()
+                .selectInstancesOf(PrimitiveProperty.class)
+                .detectOptional(DataTypeProperty::isCreatedOn);
+    }
+
+    default Optional<PrimitiveProperty> getLastUpdatedByProperty()
+    {
+        return this.getDataTypeProperties()
+                .asLazy()
+                .selectInstancesOf(PrimitiveProperty.class)
+                .detectOptional(DataTypeProperty::isLastUpdatedBy);
     }
 }
