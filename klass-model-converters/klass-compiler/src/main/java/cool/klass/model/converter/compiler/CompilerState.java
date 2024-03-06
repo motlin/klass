@@ -66,9 +66,7 @@ public class CompilerState
         inPlaceContext.addChild(parserContext);
 
         this.compilerWalk.withInPlaceCompilationUnit(compilationUnit, () ->
-        {
-            this.compilerInput.runInPlaceCompilerMacro(compilationUnit, Lists.immutable.with(listeners));
-        });
+                this.compilerInput.runInPlaceCompilerMacro(compilationUnit, Lists.immutable.with(listeners)));
     }
 
     public void runNonRootCompilerMacro(
