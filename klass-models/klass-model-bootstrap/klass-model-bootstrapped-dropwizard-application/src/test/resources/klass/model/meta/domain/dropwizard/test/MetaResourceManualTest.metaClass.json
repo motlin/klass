@@ -21,22 +21,20 @@
       "direction": "target",
       "multiplicity": "0..*",
       "owningClass": {
-        "name": "Classifier",
-        "packageName": "klass.model.meta.domain"
+        "packageName": "klass.model.meta.domain",
+        "name": "Classifier"
       },
       "resultType": {
-        "name": "ClassifierInterfaceMapping",
-        "packageName": "klass.model.meta.domain"
-      },
-      "owningAssociation": {
-        "name": "ClassifierHasClassifierInterfaceMapping"
+        "packageName": "klass.model.meta.domain",
+        "name": "ClassifierInterfaceMapping"
       },
       "associationEndModifiers": [
         {
           "keyword": "owned",
           "ordinal": 1
         }
-      ]
+      ],
+      "orderBys": []
     },
     {
       "name": "classifierModifiers",
@@ -44,17 +42,35 @@
       "direction": "target",
       "multiplicity": "0..*",
       "owningClass": {
-        "name": "Classifier",
-        "packageName": "klass.model.meta.domain"
+        "packageName": "klass.model.meta.domain",
+        "name": "Classifier"
       },
       "resultType": {
-        "name": "ClassifierModifier",
-        "packageName": "klass.model.meta.domain"
+        "packageName": "klass.model.meta.domain",
+        "name": "ClassifierModifier"
       },
-      "owningAssociation": {
-        "name": "ClassifierHasModifiers"
-      },
-      "associationEndModifiers": []
+      "associationEndModifiers": [],
+      "orderBys": [
+        {
+          "orderByDirection": "ascending",
+          "thisMemberReferencePath": {
+            "id": 166,
+            "edgePointCriteria": null,
+            "klass": {
+              "name": "ClassifierModifier",
+              "packageName": "klass.model.meta.domain"
+            },
+            "associationEnds": [],
+            "dataTypeProperty": {
+              "owningClassifier": {
+                "packageName": "klass.model.meta.domain",
+                "name": "ClassifierModifier"
+              },
+              "name": "ordinal"
+            }
+          }
+        }
+      ]
     },
     {
       "name": "dataTypeProperties",
@@ -62,20 +78,38 @@
       "direction": "target",
       "multiplicity": "0..*",
       "owningClass": {
-        "name": "Classifier",
-        "packageName": "klass.model.meta.domain"
+        "packageName": "klass.model.meta.domain",
+        "name": "Classifier"
       },
       "resultType": {
-        "name": "DataTypeProperty",
-        "packageName": "klass.model.meta.domain"
-      },
-      "owningAssociation": {
-        "name": "ClassifierHasDataTypeTypeProperties"
+        "packageName": "klass.model.meta.domain",
+        "name": "DataTypeProperty"
       },
       "associationEndModifiers": [
         {
           "keyword": "owned",
           "ordinal": 1
+        }
+      ],
+      "orderBys": [
+        {
+          "orderByDirection": "ascending",
+          "thisMemberReferencePath": {
+            "id": 167,
+            "edgePointCriteria": null,
+            "klass": {
+              "name": "DataTypeProperty",
+              "packageName": "klass.model.meta.domain"
+            },
+            "associationEnds": [],
+            "dataTypeProperty": {
+              "owningClassifier": {
+                "packageName": "klass.model.meta.domain",
+                "name": "NamedElement"
+              },
+              "name": "ordinal"
+            }
+          }
         }
       ]
     }

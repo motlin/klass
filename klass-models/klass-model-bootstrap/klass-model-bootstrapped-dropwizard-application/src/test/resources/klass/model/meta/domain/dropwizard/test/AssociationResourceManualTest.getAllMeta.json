@@ -1,7 +1,7 @@
 [
   {
-    "name": "EnumerationHasLiterals",
     "packageName": "klass.model.meta.domain",
+    "name": "EnumerationHasLiterals",
     "associationEnds": [
       {
         "name": "enumeration",
@@ -65,8 +65,8 @@
     }
   },
   {
-    "name": "ClassifierHasClassifierInterfaceMapping",
     "packageName": "klass.model.meta.domain",
+    "name": "ClassifierHasClassifierInterfaceMapping",
     "associationEnds": [
       {
         "name": "subClassifier",
@@ -117,8 +117,8 @@
     }
   },
   {
-    "name": "ClassifierInterfaceMappingHasInterface",
     "packageName": "klass.model.meta.domain",
+    "name": "ClassifierInterfaceMappingHasInterface",
     "associationEnds": [
       {
         "name": "subClassifiers",
@@ -165,8 +165,8 @@
     }
   },
   {
-    "name": "ClassifierHasModifiers",
     "packageName": "klass.model.meta.domain",
+    "name": "ClassifierHasModifiers",
     "associationEnds": [
       {
         "name": "owningClassifier",
@@ -226,8 +226,8 @@
     }
   },
   {
-    "name": "ClassHasSuperClass",
     "packageName": "klass.model.meta.domain",
+    "name": "ClassHasSuperClass",
     "associationEnds": [
       {
         "name": "subClasses",
@@ -274,8 +274,8 @@
     }
   },
   {
-    "name": "EnumerationPropertyHasEnumeration",
     "packageName": "klass.model.meta.domain",
+    "name": "EnumerationPropertyHasEnumeration",
     "associationEnds": [
       {
         "name": "enumerationProperties",
@@ -322,8 +322,8 @@
     }
   },
   {
-    "name": "ClassifierHasDataTypeTypeProperties",
     "packageName": "klass.model.meta.domain",
+    "name": "ClassifierHasDataTypeTypeProperties",
     "associationEnds": [
       {
         "name": "owningClassifier",
@@ -387,8 +387,8 @@
     }
   },
   {
-    "name": "DataTypePropertyHasMinLengthPropertyValidation",
     "packageName": "klass.model.meta.domain",
+    "name": "DataTypePropertyHasMinLengthPropertyValidation",
     "associationEnds": [
       {
         "name": "dataTypeProperty",
@@ -462,8 +462,8 @@
     }
   },
   {
-    "name": "DataTypePropertyHasMaxLengthPropertyValidation",
     "packageName": "klass.model.meta.domain",
+    "name": "DataTypePropertyHasMaxLengthPropertyValidation",
     "associationEnds": [
       {
         "name": "dataTypeProperty",
@@ -537,8 +537,8 @@
     }
   },
   {
-    "name": "PrimitivePropertyHasMinPropertyValidation",
     "packageName": "klass.model.meta.domain",
+    "name": "PrimitivePropertyHasMinPropertyValidation",
     "associationEnds": [
       {
         "name": "primitiveProperty",
@@ -612,8 +612,8 @@
     }
   },
   {
-    "name": "PrimitivePropertyHasMaxPropertyValidation",
     "packageName": "klass.model.meta.domain",
+    "name": "PrimitivePropertyHasMaxPropertyValidation",
     "associationEnds": [
       {
         "name": "primitiveProperty",
@@ -687,8 +687,8 @@
     }
   },
   {
-    "name": "DataTypePropertyHasModifiers",
     "packageName": "klass.model.meta.domain",
+    "name": "DataTypePropertyHasModifiers",
     "associationEnds": [
       {
         "name": "dataTypeProperty",
@@ -775,8 +775,8 @@
     }
   },
   {
-    "name": "VariableReferenceHasParameter",
     "packageName": "klass.model.meta.domain",
+    "name": "VariableReferenceHasParameter",
     "associationEnds": [
       {
         "name": "variableReferences",
@@ -823,8 +823,8 @@
     }
   },
   {
-    "name": "AssociationHasEnds",
     "packageName": "klass.model.meta.domain",
+    "name": "AssociationHasEnds",
     "associationEnds": [
       {
         "name": "owningAssociation",
@@ -888,8 +888,8 @@
     }
   },
   {
-    "name": "ClassHasAssociationEnds",
     "packageName": "klass.model.meta.domain",
+    "name": "ClassHasAssociationEnds",
     "associationEnds": [
       {
         "name": "owningClass",
@@ -936,8 +936,8 @@
     }
   },
   {
-    "name": "AssociationEndHasResultType",
     "packageName": "klass.model.meta.domain",
+    "name": "AssociationEndHasResultType",
     "associationEnds": [
       {
         "name": "associationEndsResultTypeOf",
@@ -984,8 +984,8 @@
     }
   },
   {
-    "name": "AssociationEndHasModifiers",
     "packageName": "klass.model.meta.domain",
+    "name": "AssociationEndHasModifiers",
     "associationEnds": [
       {
         "name": "associationEnd",
@@ -1076,8 +1076,8 @@
     }
   },
   {
-    "name": "AssociationHasCriteria",
     "packageName": "klass.model.meta.domain",
+    "name": "AssociationHasCriteria",
     "associationEnds": [
       {
         "name": "association",
@@ -1124,8 +1124,8 @@
     }
   },
   {
-    "name": "OperatorCriteriaHasSourceExpressionValue",
     "packageName": "klass.model.meta.domain",
+    "name": "OperatorCriteriaHasSourceExpressionValue",
     "associationEnds": [
       {
         "name": "operatorCriteriaSourceOf",
@@ -1176,8 +1176,8 @@
     }
   },
   {
-    "name": "OperatorCriteriaHasTargetExpressionValue",
     "packageName": "klass.model.meta.domain",
+    "name": "OperatorCriteriaHasTargetExpressionValue",
     "associationEnds": [
       {
         "name": "operatorCriteriaTargetOf",
@@ -1228,8 +1228,8 @@
     }
   },
   {
-    "name": "MemberReferencePathHasEdgePointCriteria",
     "packageName": "klass.model.meta.domain",
+    "name": "MemberReferencePathHasEdgePointCriteria",
     "associationEnds": [
       {
         "name": "memberReferencePath",
@@ -1280,8 +1280,8 @@
     }
   },
   {
-    "name": "EnumerationParameterHasEnumeration",
     "packageName": "klass.model.meta.domain",
+    "name": "EnumerationParameterHasEnumeration",
     "associationEnds": [
       {
         "name": "enumerationParameters",
@@ -1328,8 +1328,8 @@
     }
   },
   {
-    "name": "MemberReferencePathHasClass",
     "packageName": "klass.model.meta.domain",
+    "name": "MemberReferencePathHasClass",
     "associationEnds": [
       {
         "name": "memberReferencePaths",
@@ -1376,8 +1376,8 @@
     }
   },
   {
-    "name": "MemberReferencePathHasMemberReferencePathAssociationEndMapping",
     "packageName": "klass.model.meta.domain",
+    "name": "MemberReferencePathHasMemberReferencePathAssociationEndMapping",
     "associationEnds": [
       {
         "name": "memberReferencePath",
@@ -1428,8 +1428,8 @@
     }
   },
   {
-    "name": "MemberReferencePathAssociationEndMappingHasAssociationEnd",
     "packageName": "klass.model.meta.domain",
+    "name": "MemberReferencePathAssociationEndMappingHasAssociationEnd",
     "associationEnds": [
       {
         "name": "memberReferencePaths",
@@ -1503,8 +1503,8 @@
     }
   },
   {
-    "name": "DataTypePropertyHasMemberReferencePaths",
     "packageName": "klass.model.meta.domain",
+    "name": "DataTypePropertyHasMemberReferencePaths",
     "associationEnds": [
       {
         "name": "memberReferencePaths",
@@ -1578,8 +1578,8 @@
     }
   },
   {
-    "name": "BinaryCriteriaHasLeft",
     "packageName": "klass.model.meta.domain",
+    "name": "BinaryCriteriaHasLeft",
     "associationEnds": [
       {
         "name": "ownerOfLeftCriteria",
@@ -1626,8 +1626,8 @@
     }
   },
   {
-    "name": "BinaryCriteriaHasRight",
     "packageName": "klass.model.meta.domain",
+    "name": "BinaryCriteriaHasRight",
     "associationEnds": [
       {
         "name": "ownerOfRightCriteria",
@@ -1674,8 +1674,8 @@
     }
   },
   {
-    "name": "ClassHasParameterizedProperties",
     "packageName": "klass.model.meta.domain",
+    "name": "ClassHasParameterizedProperties",
     "associationEnds": [
       {
         "name": "owningClass",
@@ -1739,8 +1739,8 @@
     }
   },
   {
-    "name": "AssociationEndHasOrderBy",
     "packageName": "klass.model.meta.domain",
+    "name": "AssociationEndHasOrderBy",
     "associationEnds": [
       {
         "name": "associationEnd",
@@ -1818,8 +1818,8 @@
     }
   },
   {
-    "name": "AssociationEndOrderByHasMemberReferencePath",
     "packageName": "klass.model.meta.domain",
+    "name": "AssociationEndOrderByHasMemberReferencePath",
     "associationEnds": [
       {
         "name": "associationEndOrderBy",
@@ -1866,8 +1866,8 @@
     }
   },
   {
-    "name": "ParameterizedPropertyHasResultType",
     "packageName": "klass.model.meta.domain",
+    "name": "ParameterizedPropertyHasResultType",
     "associationEnds": [
       {
         "name": "parameterizedPropertiesResultTypeOf",
@@ -1914,8 +1914,8 @@
     }
   },
   {
-    "name": "ParameterizedPropertyHasOrdering",
     "packageName": "klass.model.meta.domain",
+    "name": "ParameterizedPropertyHasOrdering",
     "associationEnds": [
       {
         "name": "parameterizedProperty",
@@ -1993,8 +1993,8 @@
     }
   },
   {
-    "name": "ParameterizedPropertyHasParameters",
     "packageName": "klass.model.meta.domain",
+    "name": "ParameterizedPropertyHasParameters",
     "associationEnds": [
       {
         "name": "parameterizedProperty",
@@ -2068,8 +2068,8 @@
     }
   },
   {
-    "name": "NamedProjectionHasRootProjection",
     "packageName": "klass.model.meta.domain",
+    "name": "NamedProjectionHasRootProjection",
     "associationEnds": [
       {
         "name": "namedProjection",
@@ -2120,8 +2120,8 @@
     }
   },
   {
-    "name": "ProjectionElementHasChildren",
     "packageName": "klass.model.meta.domain",
+    "name": "ProjectionElementHasChildren",
     "associationEnds": [
       {
         "name": "parent",
@@ -2168,8 +2168,8 @@
     }
   },
   {
-    "name": "ProjectionWithAssociationEndHasAssociationEnd",
     "packageName": "klass.model.meta.domain",
+    "name": "ProjectionWithAssociationEndHasAssociationEnd",
     "associationEnds": [
       {
         "name": "projectionsWithAssociationEnd",
@@ -2243,8 +2243,8 @@
     }
   },
   {
-    "name": "ProjectionDataTypePropertyHasDataTypeProperty",
     "packageName": "klass.model.meta.domain",
+    "name": "ProjectionDataTypePropertyHasDataTypeProperty",
     "associationEnds": [
       {
         "name": "projectionDataTypeProperties",
@@ -2318,8 +2318,8 @@
     }
   },
   {
-    "name": "RootProjectionHasClass",
     "packageName": "klass.model.meta.domain",
+    "name": "RootProjectionHasClass",
     "associationEnds": [
       {
         "name": "projections",
@@ -2366,8 +2366,8 @@
     }
   },
   {
-    "name": "ProjectionProjectionReferenceHasProjection",
     "packageName": "klass.model.meta.domain",
+    "name": "ProjectionProjectionReferenceHasProjection",
     "associationEnds": [
       {
         "name": "projectionProjectionReferences",
@@ -2414,8 +2414,8 @@
     }
   },
   {
-    "name": "ServiceGroupHasClass",
     "packageName": "klass.model.meta.domain",
+    "name": "ServiceGroupHasClass",
     "associationEnds": [
       {
         "name": "serviceGroup",
@@ -2462,8 +2462,8 @@
     }
   },
   {
-    "name": "UrlHasUrlParameters",
     "packageName": "klass.model.meta.domain",
+    "name": "UrlHasUrlParameters",
     "associationEnds": [
       {
         "name": "url",
@@ -2541,8 +2541,8 @@
     }
   },
   {
-    "name": "UrlParameterHasParameter",
     "packageName": "klass.model.meta.domain",
+    "name": "UrlParameterHasParameter",
     "associationEnds": [
       {
         "name": "urlParameter",
@@ -2589,8 +2589,8 @@
     }
   },
   {
-    "name": "ServiceGroupHasUrls",
     "packageName": "klass.model.meta.domain",
+    "name": "ServiceGroupHasUrls",
     "associationEnds": [
       {
         "name": "serviceGroup",
@@ -2641,8 +2641,8 @@
     }
   },
   {
-    "name": "UrlHasServices",
     "packageName": "klass.model.meta.domain",
+    "name": "UrlHasServices",
     "associationEnds": [
       {
         "name": "url",
@@ -2720,8 +2720,8 @@
     }
   },
   {
-    "name": "ServiceHasProjection",
     "packageName": "klass.model.meta.domain",
+    "name": "ServiceHasProjection",
     "associationEnds": [
       {
         "name": "services",
@@ -2768,8 +2768,8 @@
     }
   },
   {
-    "name": "ServiceHasQueryCriteria",
     "packageName": "klass.model.meta.domain",
+    "name": "ServiceHasQueryCriteria",
     "associationEnds": [
       {
         "name": "queryService",
@@ -2820,8 +2820,8 @@
     }
   },
   {
-    "name": "ServiceHasAuthorizeCriteria",
     "packageName": "klass.model.meta.domain",
+    "name": "ServiceHasAuthorizeCriteria",
     "associationEnds": [
       {
         "name": "authorizeService",
@@ -2872,8 +2872,8 @@
     }
   },
   {
-    "name": "ServiceHasValidateCriteria",
     "packageName": "klass.model.meta.domain",
+    "name": "ServiceHasValidateCriteria",
     "associationEnds": [
       {
         "name": "validateService",
@@ -2924,8 +2924,8 @@
     }
   },
   {
-    "name": "ServiceHasConflictCriteria",
     "packageName": "klass.model.meta.domain",
+    "name": "ServiceHasConflictCriteria",
     "associationEnds": [
       {
         "name": "conflictService",
@@ -2976,8 +2976,8 @@
     }
   },
   {
-    "name": "ServiceHasOrderBy",
     "packageName": "klass.model.meta.domain",
+    "name": "ServiceHasOrderBy",
     "associationEnds": [
       {
         "name": "service",
@@ -3082,8 +3082,8 @@
     }
   },
   {
-    "name": "ServiceOrderByHasMemberReferencePath",
     "packageName": "klass.model.meta.domain",
+    "name": "ServiceOrderByHasMemberReferencePath",
     "associationEnds": [
       {
         "name": "serviceOrderBy",

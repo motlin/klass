@@ -1,6 +1,6 @@
 {
-  "name": "DataTypePropertyHasModifiers",
   "packageName": "klass.model.meta.domain",
+  "name": "DataTypePropertyHasModifiers",
   "ordinal": 33,
   "associationEnds": [
     {
@@ -9,17 +9,15 @@
       "direction": "source",
       "multiplicity": "1..1",
       "owningClass": {
-        "name": "PropertyModifier",
-        "packageName": "klass.model.meta.domain"
+        "packageName": "klass.model.meta.domain",
+        "name": "PropertyModifier"
       },
       "resultType": {
-        "name": "DataTypeProperty",
-        "packageName": "klass.model.meta.domain"
+        "packageName": "klass.model.meta.domain",
+        "name": "DataTypeProperty"
       },
-      "owningAssociation": {
-        "name": "DataTypePropertyHasModifiers"
-      },
-      "associationEndModifiers": []
+      "associationEndModifiers": [],
+      "orderBys": []
     },
     {
       "name": "propertyModifiers",
@@ -27,17 +25,35 @@
       "direction": "target",
       "multiplicity": "0..*",
       "owningClass": {
-        "name": "DataTypeProperty",
-        "packageName": "klass.model.meta.domain"
+        "packageName": "klass.model.meta.domain",
+        "name": "DataTypeProperty"
       },
       "resultType": {
-        "name": "PropertyModifier",
-        "packageName": "klass.model.meta.domain"
+        "packageName": "klass.model.meta.domain",
+        "name": "PropertyModifier"
       },
-      "owningAssociation": {
-        "name": "DataTypePropertyHasModifiers"
-      },
-      "associationEndModifiers": []
+      "associationEndModifiers": [],
+      "orderBys": [
+        {
+          "orderByDirection": "ascending",
+          "thisMemberReferencePath": {
+            "id": 168,
+            "edgePointCriteria": null,
+            "klass": {
+              "name": "PropertyModifier",
+              "packageName": "klass.model.meta.domain"
+            },
+            "associationEnds": [],
+            "dataTypeProperty": {
+              "owningClassifier": {
+                "packageName": "klass.model.meta.domain",
+                "name": "PropertyModifier"
+              },
+              "name": "ordinal"
+            }
+          }
+        }
+      ]
     }
   ],
   "criteria": {

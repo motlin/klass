@@ -1,6 +1,6 @@
 {
-  "name": "DataTypePropertyHasModifiers",
   "packageName": "klass.model.meta.domain",
+  "name": "DataTypePropertyHasModifiers",
   "associationEnds": [
     {
       "name": "dataTypeProperty",

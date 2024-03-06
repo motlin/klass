@@ -1182,6 +1182,27 @@ service Classifier
         }
 }
 
+projection ThisMemberReferencePathProjection on ThisMemberReferencePath
+{
+    id               : "ExpressionValue id",
+    edgePointCriteria: EdgePointCriteriaProjection,
+    klass            :
+    {
+        name       : "NamedElement name",
+        packageName: "PackageableElement packageName",
+    },
+    associationEnds  : MemberReferencePathAssociationEndMappingProjection,
+    dataTypeProperty :
+    {
+        owningClassifier:
+        {
+            packageName: "PackageableElement packageName",
+            name       : "NamedElement name",
+        },
+        name            : "Property name",
+    },
+}
+
 projection AssociationEndProjection on AssociationEnd
 {
     name                   : "Association end name",
@@ -1190,23 +1211,42 @@ projection AssociationEndProjection on AssociationEnd
     multiplicity           : "Association end multiplicity",
     owningClass            :
     {
-        name       : "Association end owning class name",
         packageName: "Association end owning class package name",
+        name       : "Association end owning class name",
     },
     resultType             :
     {
-        name       : "Association end result class name",
         packageName: "Association end result class package name",
-    },
-    owningAssociation      :
-    {
-        name: "Association end owning association name",
+        name       : "Association end result class name",
     },
     associationEndModifiers:
     {
         keyword: "Association end modifier keyword",
         ordinal: "Association end modifier ordinal",
     },
+    orderBys:
+    {
+        orderByDirection: "AssociationEndOrderBy orderByDirection",
+        thisMemberReferencePath: ThisMemberReferencePathProjection,
+    },
+}
+
+projection MemberReferencePathAssociationEndMappingProjection on MemberReferencePathAssociationEndMapping
+{
+    associationEnd:
+    {
+        owningClass:
+        {
+            packageName: "PackageableElement packageName",
+            name       : "NamedElement name",
+        },
+        name            : "NamedElement name",
+    },
+}
+
+projection EdgePointCriteriaProjection on EdgePointCriteria
+{
+    id: "Criteria id",
 }
 
 projection MemberReferencePathSummaryProjection on MemberReferencePath
@@ -1340,8 +1380,8 @@ projection CriteriaSummaryProjection on Criteria
 
 projection AssociationProjection on Association
 {
-    name                   : "Association name",
     packageName            : "Association package name",
+    name                   : "Association name",
     ordinal                : "Association ordinal",
     associationEnds        : AssociationEndProjection,
     criteria               : CriteriaProjection,
@@ -1349,8 +1389,8 @@ projection AssociationProjection on Association
 
 projection AssociationSummaryProjection on Association
 {
-    name                   : "Association name",
     packageName            : "Association package name",
+    name                   : "Association name",
     associationEnds        : AssociationEndSummaryProjection,
     criteria               : CriteriaSummaryProjection,
 }
