@@ -130,6 +130,9 @@
             <property name="option" value="EOL" />
         </module>
 
+        <module name="UnnecessarySemicolonInTryWithResources" />
+        <module name="UnnecessarySemicolonInEnumeration" />
+
         <module name="Indentation">
             <property name="lineWrappingIndentation" value="8" />
         </module>
