@@ -55,9 +55,32 @@ class PropertiesRequired
     requiredDerived     : String derived;
 }
 
+projection UserProjection on User
+{
+    userId    : "User userId",
+    systemFrom: "User systemFrom",
+    systemTo  : "User systemTo",
+    firstName : "User firstName",
+    lastName  : "User lastName",
+    email     : "User email",
+}
+
+projection PropertiesRequiredVersionProjection on PropertiesRequiredVersion
+{
+    systemFrom   : "systemFrom",
+    systemTo     : "systemTo",
+    createdOn    : "createdOn",
+    number       : "number",
+    createdBy    : UserProjection,
+    lastUpdatedBy: UserProjection,
+}
+
 projection PropertiesRequiredProjection on PropertiesRequired
 {
     propertiesRequiredId: "propertiesRequiredId",
+    systemFrom   : "systemFrom",
+    systemTo     : "systemTo",
+    createdOn    : "createdOn",
     requiredString      : "requiredString",
     requiredInteger     : "requiredInteger",
     requiredLong        : "requiredLong",
@@ -67,6 +90,9 @@ projection PropertiesRequiredProjection on PropertiesRequired
     requiredInstant     : "requiredInstant",
     requiredLocalDate   : "requiredLocalDate",
     requiredDerived     : "requiredDerived",
+    version      : PropertiesRequiredVersionProjection,
+    createdBy    : UserProjection,
+    lastUpdatedBy: UserProjection,
 }
 
 service PropertiesRequired
@@ -106,9 +132,22 @@ class PropertiesOptional
     optionalDerived     : String? derived;
 }
 
+projection PropertiesOptionalVersionProjection on PropertiesOptionalVersion
+{
+    systemFrom   : "systemFrom",
+    systemTo     : "systemTo",
+    createdOn    : "createdOn",
+    number       : "number",
+    createdBy    : UserProjection,
+    lastUpdatedBy: UserProjection,
+}
+
 projection PropertiesOptionalProjection on PropertiesOptional
 {
     propertiesOptionalId: "propertiesOptionalId",
+    systemFrom   : "systemFrom",
+    systemTo     : "systemTo",
+    createdOn    : "createdOn",
     optionalString      : "optionalString",
     optionalInteger     : "optionalInteger",
     optionalLong        : "optionalLong",
@@ -118,6 +157,9 @@ projection PropertiesOptionalProjection on PropertiesOptional
     optionalInstant     : "optionalInstant",
     optionalLocalDate   : "optionalLocalDate",
     optionalDerived     : "optionalDerived",
+    version      : PropertiesOptionalVersionProjection,
+    createdBy    : UserProjection,
+    lastUpdatedBy: UserProjection,
 }
 
 service PropertiesOptional
@@ -224,27 +266,18 @@ service EveryTypeKeyProperty
             criteria    : all;
             projection  : EveryTypeKeyPropertyProjection;
         }
-    /everyTypeKeyProperty
-        /{keyString   : String[1..1]}
-        /{keyInteger  : Integer[1..1]}
-        /{keyLong     : Long[1..1]}
-        /{keyDouble   : Double[1..1]}
-        /{keyFloat    : Float[1..1]}
-        /{keyBoolean  : Boolean[1..1]}
-        /{keyInstant  : Instant[1..1]}
-        /{keyLocalDate: LocalDate[1..1]}
+    /everyTypeKeyProperty/{keyString: String[1..1]}/{keyInteger: Integer[1..1]}/{keyLong: Long[1..1]}/{keyDouble: Double[1..1]}/{keyFloat: Float[1..1]}/{keyBoolean: Boolean[1..1]}/{keyInstant: Instant[1..1]}/{keyLocalDate: LocalDate[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    :
-                          this.keyString == keyString
-                       && this.keyInteger == keyInteger
-                       && this.keyLong == keyLong
-                       && this.keyDouble == keyDouble
-                       && this.keyFloat == keyFloat
-                       && this.keyBoolean == keyBoolean
-                       && this.keyInstant == keyInstant
-                       && this.keyLocalDate == keyLocalDate;
+            criteria    : this.keyString == keyString
+                    && this.keyInteger == keyInteger
+                    && this.keyLong == keyLong
+                    && this.keyDouble == keyDouble
+                    && this.keyFloat == keyFloat
+                    && this.keyBoolean == keyBoolean
+                    && this.keyInstant == keyInstant
+                    && this.keyLocalDate == keyLocalDate;
             projection  : EveryTypeKeyPropertyProjection;
         }
         POST
