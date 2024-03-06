@@ -1,11 +1,7 @@
-package cool.klass.model.meta.domain;
+package cool.klass.model.meta.domain.api;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.PackageableElement;
-
-// TODO: Delete this interface
 public interface TopLevelElement extends Element
 {
     @Nonnull
@@ -13,6 +9,8 @@ public interface TopLevelElement extends Element
 
     @Nonnull
     String getPackageName();
+
+    void visit(TopLevelElementVisitor visitor);
 
     interface TopLevelElementBuilder
     {

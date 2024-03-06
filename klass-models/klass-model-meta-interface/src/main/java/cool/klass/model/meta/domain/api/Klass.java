@@ -14,6 +14,12 @@ import org.eclipse.collections.impl.factory.Lists;
 public interface Klass extends Classifier
 {
     @Override
+    default void visit(TopLevelElementVisitor visitor)
+    {
+        visitor.visitKlass(this);
+    }
+
+    @Override
     default ImmutableList<ClassifierModifier> getInheritedModifiers()
     {
         ImmutableList<ClassifierModifier> superClassProperties = this.getSuperClass()

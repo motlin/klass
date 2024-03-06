@@ -5,7 +5,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.meta.domain.TopLevelElement.TopLevelElementBuilder;
+import cool.klass.model.meta.domain.api.TopLevelElement.TopLevelElementBuilder;
 
 public interface AntlrTopLevelElement extends IAntlrElement
 {

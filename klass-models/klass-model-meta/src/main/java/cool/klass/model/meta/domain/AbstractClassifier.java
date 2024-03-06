@@ -22,7 +22,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public abstract class AbstractClassifier
         extends AbstractPackageableElement
-        implements TopLevelElement, Classifier
+        implements Classifier
 {
     private ImmutableList<DataTypeProperty>        dataTypeProperties;
     private ImmutableList<ClassifierModifier>      classifierModifiers;

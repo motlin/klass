@@ -13,7 +13,7 @@ import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class EnumerationImpl extends AbstractPackageableElement implements TopLevelElement, Enumeration
+public final class EnumerationImpl extends AbstractPackageableElement implements Enumeration
 {
     private ImmutableList<EnumerationLiteral> enumerationLiterals;
 

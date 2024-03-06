@@ -18,7 +18,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public final class AssociationImpl
         extends AbstractPackageableElement
-        implements TopLevelElement, Association
+        implements Association
 {
     @Nonnull
     private final AbstractCriteria criteria;

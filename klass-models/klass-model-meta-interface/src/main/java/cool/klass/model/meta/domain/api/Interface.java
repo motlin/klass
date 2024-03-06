@@ -8,6 +8,12 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public interface Interface extends Classifier
 {
+    @Override
+    default void visit(TopLevelElementVisitor visitor)
+    {
+        visitor.visitInterface(this);
+    }
+
     // TODO: Replace with an implementation that preserves order
     @Override
     @Nonnull

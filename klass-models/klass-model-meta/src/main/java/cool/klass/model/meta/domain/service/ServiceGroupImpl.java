@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.AbstractPackageableElement;
 import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
-import cool.klass.model.meta.domain.TopLevelElement;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.service.url.Url;
@@ -20,7 +19,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public final class ServiceGroupImpl
         extends AbstractPackageableElement
-        implements TopLevelElement, ServiceGroup
+        implements ServiceGroup
 {
     @Nonnull
     private final KlassImpl klass;

@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
-import cool.klass.model.meta.domain.TopLevelElement;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
@@ -17,7 +16,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class ProjectionImpl
         extends AbstractProjectionParent
-        implements TopLevelElement, Projection
+        implements Projection
 {
     @Nonnull
     private final String             packageName;

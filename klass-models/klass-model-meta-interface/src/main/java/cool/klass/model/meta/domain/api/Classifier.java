@@ -11,7 +11,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.set.MutableSet;
 
 public interface Classifier
-        extends Type, PackageableElement, ModifierOwner
+        extends Type, PackageableElement, ModifierOwner, TopLevelElement
 {
     @Nonnull
     ImmutableList<Interface> getInterfaces();
