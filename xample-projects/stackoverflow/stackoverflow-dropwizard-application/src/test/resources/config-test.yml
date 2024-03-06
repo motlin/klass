@@ -23,4 +23,4 @@ logging:
     - type: console
       # In production, always use UTC. In unit tests, system is more convenient
       timeZone: system
-      logFormat: "%highlight(%-5level) [%cyan(%date{HH:mm:ss})] %green(%logger): %message%n%red(%rootException)"
+      logFormat: "%highlight(%-5level) %cyan(%date{HH:mm:ss}) [%magenta(%thread)] %green(%logger): %message%n%red(%rootException)"
