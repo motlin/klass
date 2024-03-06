@@ -345,6 +345,15 @@ public final class DomainModelImpl
             MapIterable<Token, TokenCategory> tokenCategoriesFromLexer  = this.getTokenCategoriesFromLexer(sourceCodes);
             MapIterable<Token, TokenCategory> tokenCategoriesFromParser = this.getTokenCategoriesFromParser(sourceCodes);
 
+            ImmutableList<Token> duplicateTokens = tokenCategoriesFromLexer
+                    .keysView()
+                    .select(tokenCategoriesFromParser::containsKey)
+                    .toImmutableList();
+            if (duplicateTokens.notEmpty())
+            {
+                throw new AssertionError(duplicateTokens);
+            }
+
             DomainModelDeclarations domainModelDeclarations = this.getDomainModelDeclarations(topLevelElements);
             DomainModelReferences domainModelReferences = this.getDomainModelReferences(topLevelElements);
 
