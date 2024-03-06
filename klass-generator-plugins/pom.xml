@@ -49,6 +49,7 @@
         <module>klass-generator-meta-constants-plugin</module>
         <module>klass-generator-react-prop-type-plugin</module>
         <module>klass-generator-reladomo-code-plugin</module>
+        <module>klass-generator-reladomo-concrete-class-plugin</module>
         <module>klass-generator-reladomo-database-plugin</module>
         <module>klass-generator-reladomo-merge-hooks-plugin</module>
         <module>klass-generator-reladomo-plugin</module>
