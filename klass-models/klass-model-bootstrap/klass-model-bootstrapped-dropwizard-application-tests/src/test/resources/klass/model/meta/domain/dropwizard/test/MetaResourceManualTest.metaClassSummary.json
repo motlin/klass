@@ -2,15 +2,11 @@
   "name": "Classifier",
   "packageName": "klass.model.meta.domain",
   "ordinal": 7,
-  "superInterfaces": [
-    {
-      "superInterface": {
-        "name": "PackageableElement"
-      }
-    }
-  ],
+  "superInterfaces": [],
   "classifierModifiers": [],
   "dataTypeProperties": [],
   "abstractClass": true,
-  "superClass": null
+  "superClass": {
+    "name": "PackageableElement"
+  }
 }

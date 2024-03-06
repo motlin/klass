@@ -52,34 +52,6 @@
     ]
   },
   {
-    "name": "PackageableElement",
-    "packageName": "klass.model.meta.domain",
-    "superInterfaces": [
-      {
-        "superInterface": {
-          "name": "NamedElement"
-        }
-      }
-    ],
-    "classifierModifiers": [],
-    "dataTypeProperties": [
-      {
-        "__typename": "klass.model.meta.domain.PrimitiveProperty",
-        "name": "packageName",
-        "primitiveType": "String",
-        "minValidation": null,
-        "maxValidation": null,
-        "optional": false,
-        "ordinal": 1,
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 100000
-        }
-      }
-    ]
-  },
-  {
     "name": "NumericPropertyValidation",
     "packageName": "klass.model.meta.domain",
     "superInterfaces": [

@@ -20,13 +20,13 @@ public class MetaResourceManualTest
     @Test
     public void metaInterface()
     {
-        this.assertUrlReturns("metaInterface", "/meta/interface/PackageableElement");
+        this.assertUrlReturns("metaInterface", "/meta/interface/NamedElement");
     }
 
     @Test
     public void metaInterfaceSummary()
     {
-        this.assertUrlReturns("metaInterfaceSummary", "/meta/interface/PackageableElement/summary");
+        this.assertUrlReturns("metaInterfaceSummary", "/meta/interface/NamedElement/summary");
     }
 
     @Test

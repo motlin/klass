@@ -54,9 +54,10 @@
     ]
   },
   {
-    "__typename": "klass.model.meta.domain.Interface",
+    "__typename": "klass.model.meta.domain.Klass",
     "name": "PackageableElement",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -86,14 +87,10 @@
     "__typename": "klass.model.meta.domain.Klass",
     "name": "Enumeration",
     "packageName": "klass.model.meta.domain",
-    "superClass": null,
-    "superInterfaces": [
-      {
-        "superInterface": {
-          "name": "PackageableElement"
-        }
-      }
-    ],
+    "superClass": {
+      "name": "PackageableElement"
+    },
+    "superInterfaces": [],
     "classifierModifiers": [],
     "dataTypeProperties": []
   },
@@ -150,14 +147,10 @@
     "__typename": "klass.model.meta.domain.Klass",
     "name": "Classifier",
     "packageName": "klass.model.meta.domain",
-    "superClass": null,
-    "superInterfaces": [
-      {
-        "superInterface": {
-          "name": "PackageableElement"
-        }
-      }
-    ],
+    "superClass": {
+      "name": "PackageableElement"
+    },
+    "superInterfaces": [],
     "classifierModifiers": [],
     "dataTypeProperties": []
   },
@@ -1133,14 +1126,10 @@
     "__typename": "klass.model.meta.domain.Klass",
     "name": "Association",
     "packageName": "klass.model.meta.domain",
-    "superClass": null,
-    "superInterfaces": [
-      {
-        "superInterface": {
-          "name": "PackageableElement"
-        }
-      }
-    ],
+    "superClass": {
+      "name": "PackageableElement"
+    },
+    "superInterfaces": [],
     "classifierModifiers": [],
     "dataTypeProperties": [
       {
@@ -1834,14 +1823,10 @@
     "__typename": "klass.model.meta.domain.Klass",
     "name": "NamedProjection",
     "packageName": "klass.model.meta.domain",
-    "superClass": null,
-    "superInterfaces": [
-      {
-        "superInterface": {
-          "name": "PackageableElement"
-        }
-      }
-    ],
+    "superClass": {
+      "name": "PackageableElement"
+    },
+    "superInterfaces": [],
     "classifierModifiers": [],
     "dataTypeProperties": [
       {
@@ -2009,14 +1994,10 @@
     "__typename": "klass.model.meta.domain.Klass",
     "name": "ServiceGroup",
     "packageName": "klass.model.meta.domain",
-    "superClass": null,
-    "superInterfaces": [
-      {
-        "superInterface": {
-          "name": "PackageableElement"
-        }
-      }
-    ],
+    "superClass": {
+      "name": "PackageableElement"
+    },
+    "superInterfaces": [],
     "classifierModifiers": [],
     "dataTypeProperties": [
       {

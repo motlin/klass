@@ -16,6 +16,15 @@ projection PackageableElementProjection on PackageableElement
     name: "NamedElement name",
     ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
+    Enumeration.enumerationLiterals: EnumerationLiteralProjection,
+    Classifier.superInterfaces: ClassifierInterfaceMappingProjection,
+    Classifier.classifierModifiers: ClassifierModifierProjection,
+    Classifier.dataTypeProperties: DataTypePropertyProjection,
+    Association.associationEnds: AssociationEndProjection,
+    Association.criteria: CriteriaProjection,
+    NamedProjection.rootProjection: RootProjectionProjection,
+    ServiceGroup.owningClass: KlassProjection,
+    ServiceGroup.urls: UrlProjection,
 }
 
 projection EnumerationProjection on Enumeration

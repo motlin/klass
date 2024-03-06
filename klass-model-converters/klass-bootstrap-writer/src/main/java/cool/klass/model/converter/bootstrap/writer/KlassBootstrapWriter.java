@@ -74,7 +74,6 @@ import klass.model.meta.domain.MinPropertyValidationList;
 import klass.model.meta.domain.NamedElementAbstract;
 import klass.model.meta.domain.NamedProjection;
 import klass.model.meta.domain.NamedProjectionFinder;
-import klass.model.meta.domain.PackageableElementAbstract;
 import klass.model.meta.domain.PrimitiveParameter;
 import klass.model.meta.domain.PrimitivePropertyFinder;
 import klass.model.meta.domain.PrimitivePropertyList;
@@ -147,6 +146,11 @@ public class KlassBootstrapWriter
     private void bootstrapMetaModelInTransaction()
     {
         // BOOTSTRAP_FINDERS.each(this::deleteAll);
+
+        this.domainModel
+        .getTopLevelElements()
+                .collect(this::handlePackageableElement, new klass.model.meta.domain.PackageableElementList())
+                .insertAll();
 
         this.domainModel
                 .getEnumerations()
@@ -406,10 +410,18 @@ public class KlassBootstrapWriter
     }
     */
 
+    private klass.model.meta.domain.PackageableElement handlePackageableElement(@Nonnull PackageableElement packageableElement)
+    {
+        var bootstrappedPackageableElement = new klass.model.meta.domain.PackageableElement();
+        KlassBootstrapWriter.handleNamedElement(bootstrappedPackageableElement, packageableElement);
+        bootstrappedPackageableElement.setPackageName(packageableElement.getPackageName());
+        return bootstrappedPackageableElement;
+    }
+
     private klass.model.meta.domain.Enumeration handleEnumeration(@Nonnull Enumeration enumeration)
     {
         var bootstrappedEnumeration = new klass.model.meta.domain.Enumeration();
-        KlassBootstrapWriter.handlePackageableElement(bootstrappedEnumeration, enumeration);
+        bootstrappedEnumeration.setName(enumeration.getName());
         return bootstrappedEnumeration;
     }
 
@@ -425,9 +437,7 @@ public class KlassBootstrapWriter
     private klass.model.meta.domain.Classifier handleClassifier(@Nonnull Classifier classifier)
     {
         var bootstrappedClassifier = new klass.model.meta.domain.Classifier();
-        bootstrappedClassifier.setPackageName(classifier.getPackageName());
         bootstrappedClassifier.setName(classifier.getName());
-        bootstrappedClassifier.setOrdinal(classifier.getOrdinal());
         return bootstrappedClassifier;
     }
 
@@ -612,7 +622,7 @@ public class KlassBootstrapWriter
     {
         var bootstrappedCriteria    = criteriaByCriteria.get(association.getCriteria());
         var bootstrappedAssociation = new klass.model.meta.domain.Association();
-        KlassBootstrapWriter.handlePackageableElement(bootstrappedAssociation, association);
+        bootstrappedAssociation.setName(association.getName());
         bootstrappedAssociation.setCriteria(bootstrappedCriteria);
         return bootstrappedAssociation;
     }
@@ -829,8 +839,8 @@ public class KlassBootstrapWriter
             @Nonnull MutableMap<Projection, klass.model.meta.domain.ProjectionElement> rootProjectionByProjection)
     {
         var bootstrappedRootProjection = rootProjectionByProjection.get(projection);
-        var bootstrappedProjection     = new klass.model.meta.domain.NamedProjection();
-        handlePackageableElement(bootstrappedProjection, projection);
+        var bootstrappedProjection = new klass.model.meta.domain.NamedProjection();
+        bootstrappedProjection.setName(projection.getName());
         bootstrappedProjection.setProjectionId(bootstrappedRootProjection.getId());
         return bootstrappedProjection;
     }
@@ -838,7 +848,7 @@ public class KlassBootstrapWriter
     private klass.model.meta.domain.ServiceGroup handleServiceGroup(@Nonnull ServiceGroup serviceGroup)
     {
         klass.model.meta.domain.ServiceGroup bootstrappedServiceGroup = new klass.model.meta.domain.ServiceGroup();
-        KlassBootstrapWriter.handlePackageableElement(bootstrappedServiceGroup, serviceGroup);
+        bootstrappedServiceGroup.setName(serviceGroup.getName());
         bootstrappedServiceGroup.setClassName(serviceGroup.getKlass().getName());
         return bootstrappedServiceGroup;
     }
@@ -984,13 +994,5 @@ public class KlassBootstrapWriter
     {
         bootstrappedNamedElement.setName(namedElement.getName());
         bootstrappedNamedElement.setOrdinal(namedElement.getOrdinal());
-    }
-
-    public static void handlePackageableElement(
-            @Nonnull PackageableElementAbstract bootstrappedPackageableElement,
-            @Nonnull PackageableElement packageableElement)
-    {
-        KlassBootstrapWriter.handleNamedElement(bootstrappedPackageableElement, packageableElement);
-        bootstrappedPackageableElement.setPackageName(packageableElement.getPackageName());
     }
 }

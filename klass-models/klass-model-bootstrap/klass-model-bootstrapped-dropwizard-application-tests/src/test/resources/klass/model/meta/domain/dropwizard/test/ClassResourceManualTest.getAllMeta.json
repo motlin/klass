@@ -1,19 +1,46 @@
 [
   {
-    "name": "Enumeration",
+    "name": "PackageableElement",
     "packageName": "klass.model.meta.domain",
-    "ordinal": 4,
+    "ordinal": 3,
     "superInterfaces": [
       {
         "superInterface": {
-          "name": "PackageableElement"
+          "name": "NamedElement"
         }
       }
     ],
     "classifierModifiers": [],
+    "dataTypeProperties": [
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "packageName",
+        "primitiveType": "String",
+        "minValidation": null,
+        "maxValidation": null,
+        "optional": false,
+        "ordinal": 1,
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 100000
+        }
+      }
+    ],
+    "abstractClass": true,
+    "superClass": null
+  },
+  {
+    "name": "Enumeration",
+    "packageName": "klass.model.meta.domain",
+    "ordinal": 4,
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "dataTypeProperties": [],
     "abstractClass": false,
-    "superClass": null
+    "superClass": {
+      "name": "PackageableElement"
+    }
   },
   {
     "name": "EnumerationLiteral",
@@ -69,17 +96,13 @@
     "name": "Classifier",
     "packageName": "klass.model.meta.domain",
     "ordinal": 7,
-    "superInterfaces": [
-      {
-        "superInterface": {
-          "name": "PackageableElement"
-        }
-      }
-    ],
+    "superInterfaces": [],
     "classifierModifiers": [],
     "dataTypeProperties": [],
     "abstractClass": true,
-    "superClass": null
+    "superClass": {
+      "name": "PackageableElement"
+    }
   },
   {
     "name": "Interface",
@@ -1015,13 +1038,7 @@
     "name": "Association",
     "packageName": "klass.model.meta.domain",
     "ordinal": 52,
-    "superInterfaces": [
-      {
-        "superInterface": {
-          "name": "PackageableElement"
-        }
-      }
-    ],
+    "superInterfaces": [],
     "classifierModifiers": [],
     "dataTypeProperties": [
       {
@@ -1043,7 +1060,9 @@
       }
     ],
     "abstractClass": false,
-    "superClass": null
+    "superClass": {
+      "name": "PackageableElement"
+    }
   },
   {
     "name": "AssociationEnd",
@@ -1728,13 +1747,7 @@
     "name": "NamedProjection",
     "packageName": "klass.model.meta.domain",
     "ordinal": 86,
-    "superInterfaces": [
-      {
-        "superInterface": {
-          "name": "PackageableElement"
-        }
-      }
-    ],
+    "superInterfaces": [],
     "classifierModifiers": [],
     "dataTypeProperties": [
       {
@@ -1756,7 +1769,9 @@
       }
     ],
     "abstractClass": false,
-    "superClass": null
+    "superClass": {
+      "name": "PackageableElement"
+    }
   },
   {
     "name": "ProjectionWithAssociationEnd",
@@ -1908,13 +1923,7 @@
     "name": "ServiceGroup",
     "packageName": "klass.model.meta.domain",
     "ordinal": 97,
-    "superInterfaces": [
-      {
-        "superInterface": {
-          "name": "PackageableElement"
-        }
-      }
-    ],
+    "superInterfaces": [],
     "classifierModifiers": [],
     "dataTypeProperties": [
       {
@@ -1938,7 +1947,9 @@
       }
     ],
     "abstractClass": false,
-    "superClass": null
+    "superClass": {
+      "name": "PackageableElement"
+    }
   },
   {
     "name": "Url",

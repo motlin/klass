@@ -11,14 +11,17 @@ interface NamedElement
     ordinal: Integer;
 }
 
-interface PackageableElement implements NamedElement
+class PackageableElement
+    abstract
+    implements NamedElement
 {
     packageName: String maximumLength(100000);
 
     // fullyQualifiedName: String = packageName + "." + name;
 }
 
-class Enumeration implements PackageableElement
+class Enumeration
+    extends PackageableElement
 {
 }
 
@@ -38,7 +41,7 @@ association EnumerationHasLiterals
 // TODO: Ordinals should have a syntax and be inferred using macros
 class Classifier
     abstract
-    implements PackageableElement
+    extends PackageableElement
 {
 }
 
@@ -360,7 +363,8 @@ enumeration AssociationEndDirection
     TARGET("target"),
 }
 
-class Association implements PackageableElement
+class Association
+    extends PackageableElement
 {
     criteriaId: Long private;
 
@@ -634,7 +638,7 @@ class RootProjection
 }
 
 class NamedProjection
-    implements PackageableElement
+    extends PackageableElement
 {
     projectionId: Long private;
 }
@@ -725,7 +729,7 @@ association ProjectionProjectionReferenceHasProjection
 }
 
 class ServiceGroup
-    implements PackageableElement
+    extends PackageableElement
 {
     className                     : String private maximumLength(256);
 }
