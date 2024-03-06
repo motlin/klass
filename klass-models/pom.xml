@@ -24,6 +24,7 @@
         <module>klass-model-meta-json-pojo</module>
         <module>klass-model-meta-json</module>
         <module>klass-model-meta-schema-json</module>
+        <module>klass-model-reladomo-projection</module>
         <module>klass-model-meta</module>
         <module>klass-model-source-code-meta-interface</module>
     </modules>
