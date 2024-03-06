@@ -1,5 +1,8 @@
 package cool.klass.model.converter.compiler.phase;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
@@ -15,11 +18,12 @@ import org.eclipse.collections.api.map.MapIterable;
 public class EnumerationsPhase extends AbstractCompilerPhase
 {
     private final AntlrDomainModel domainModelState;
+    @Nullable
     private       AntlrEnumeration enumerationState;
 
     public EnumerationsPhase(
-            CompilerErrorHolder compilerErrorHolder,
-            MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
             AntlrDomainModel domainModelState)
     {
         super(compilerErrorHolder, compilationUnitsByContext);
@@ -27,7 +31,7 @@ public class EnumerationsPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
+    public void enterEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
     {
         IdentifierContext identifier = ctx.identifier();
         this.enumerationState = new AntlrEnumeration(
@@ -47,7 +51,7 @@ public class EnumerationsPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterEnumerationLiteral(EnumerationLiteralContext ctx)
+    public void enterEnumerationLiteral(@Nonnull EnumerationLiteralContext ctx)
     {
         String literalName = ctx.identifier().getText();
 

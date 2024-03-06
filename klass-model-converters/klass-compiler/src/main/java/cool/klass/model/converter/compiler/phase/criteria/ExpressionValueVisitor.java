@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase.criteria;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrAssociationEnd;
@@ -32,14 +34,16 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         this.domainModelState = domainModelState;
     }
 
+    @Nonnull
     @Override
     public AntlrExpressionValue visitTerminal(TerminalNode node)
     {
         throw new AssertionError();
     }
 
+    @Nonnull
     @Override
-    public AntlrExpressionValue visitThisMemberReference(ThisMemberReferenceContext ctx)
+    public AntlrExpressionValue visitThisMemberReference(@Nonnull ThisMemberReferenceContext ctx)
     {
         MemberReferenceContext memberReferenceContext = ctx.memberReference();
 
@@ -54,8 +58,9 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         return new AntlrThisMemberValue(ctx, this.compilationUnit, false, classState, dataTypePropertyState);
     }
 
+    @Nonnull
     @Override
-    public AntlrTypeMemberValue visitTypeMemberReference(TypeMemberReferenceContext ctx)
+    public AntlrTypeMemberValue visitTypeMemberReference(@Nonnull TypeMemberReferenceContext ctx)
     {
         ClassReferenceContext  classReferenceContext  = ctx.classReference();
         MemberReferenceContext memberReferenceContext = ctx.memberReference();

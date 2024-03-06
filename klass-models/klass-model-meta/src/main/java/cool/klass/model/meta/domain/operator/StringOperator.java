@@ -1,10 +1,12 @@
 package cool.klass.model.meta.domain.operator;
 
+import javax.annotation.Nonnull;
+
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class StringOperator extends Operator
 {
-    private StringOperator(ParserRuleContext elementContext, String operatorText)
+    private StringOperator(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
     {
         super(elementContext, operatorText);
     }
@@ -17,11 +19,12 @@ public final class StringOperator extends Operator
 
     public static class StringOperatorBuilder extends OperatorBuilder
     {
-        public StringOperatorBuilder(ParserRuleContext elementContext, String operatorText)
+        public StringOperatorBuilder(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
         {
             super(elementContext, operatorText);
         }
 
+        @Nonnull
         @Override
         public StringOperator build()
         {

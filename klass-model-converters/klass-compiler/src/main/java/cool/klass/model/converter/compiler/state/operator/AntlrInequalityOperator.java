@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.state.operator;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.domain.operator.InequalityOperator.InequalityOperatorBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -7,7 +9,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public class AntlrInequalityOperator extends AntlrOperator
 {
     public AntlrInequalityOperator(
-            ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
             String operatorText)
@@ -15,6 +17,7 @@ public class AntlrInequalityOperator extends AntlrOperator
         super(elementContext, compilationUnit, inferred, operatorText);
     }
 
+    @Nonnull
     @Override
     public InequalityOperatorBuilder build()
     {

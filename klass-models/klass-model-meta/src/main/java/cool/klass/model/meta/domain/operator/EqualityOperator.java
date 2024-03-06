@@ -1,10 +1,12 @@
 package cool.klass.model.meta.domain.operator;
 
+import javax.annotation.Nonnull;
+
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class EqualityOperator extends Operator
 {
-    private EqualityOperator(ParserRuleContext elementContext, String operatorText)
+    private EqualityOperator(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
     {
         super(elementContext, operatorText);
     }
@@ -17,11 +19,12 @@ public final class EqualityOperator extends Operator
 
     public static class EqualityOperatorBuilder extends OperatorBuilder
     {
-        public EqualityOperatorBuilder(ParserRuleContext elementContext, String operatorText)
+        public EqualityOperatorBuilder(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
         {
             super(elementContext, operatorText);
         }
 
+        @Nonnull
         @Override
         public EqualityOperator build()
         {

@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.AssociationEnd.AssociationEndBuilder;
 import cool.klass.model.meta.domain.DataTypeProperty.DataTypePropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -11,10 +13,10 @@ public final class Klass extends Type
     private ImmutableList<AssociationEnd>      associationEnds;
 
     private Klass(
-            ParserRuleContext elementContext,
-            ParserRuleContext nameContext,
-            String name,
-            String packageName)
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            @Nonnull String packageName)
     {
         super(elementContext, nameContext, name, packageName);
     }
@@ -46,10 +48,10 @@ public final class Klass extends Type
         private Klass                                        klass;
 
         public KlassBuilder(
-                ParserRuleContext elementContext,
-                ParserRuleContext nameContext,
-                String name,
-                String packageName)
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ParserRuleContext nameContext,
+                @Nonnull String name,
+                @Nonnull String packageName)
         {
             super(elementContext, nameContext, name, packageName);
         }

@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.error;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentContext;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentListContext;
@@ -97,13 +99,13 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
-    public void enterCompilationUnit(CompilationUnitContext ctx)
+    public void enterCompilationUnit(@Nonnull CompilationUnitContext ctx)
     {
         this.addTextInclusive(ctx.getStart(), ctx.packageDeclaration().getStop());
     }
 
     @Override
-    public void enterClassDeclaration(ClassDeclarationContext ctx)
+    public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
         this.addTextInclusive(ctx.getStart(), ctx.classBody().getStart());
     }
@@ -115,7 +117,7 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
-    public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
+    public void enterEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
     {
         this.addTextInclusive(ctx.getStart(), ctx.enumerationBody().getStart());
     }
@@ -127,7 +129,7 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
-    public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
+    public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
         this.addTextInclusive(ctx.getStart(), ctx.associationBody().getStart());
     }
@@ -139,7 +141,7 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
-    public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
+    public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
         this.addTextInclusive(ctx.getStart(), ctx.projectionBody().getStart());
     }

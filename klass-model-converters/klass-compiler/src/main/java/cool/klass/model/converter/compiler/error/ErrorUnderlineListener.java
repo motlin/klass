@@ -2,6 +2,8 @@ package cool.klass.model.converter.compiler.error;
 
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentContext;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentListContext;
@@ -180,13 +182,13 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
-    public void enterEnumerationLiteral(EnumerationLiteralContext ctx)
+    public void enterEnumerationLiteral(@Nonnull EnumerationLiteralContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override
-    public void enterEnumerationPrettyName(EnumerationPrettyNameContext ctx)
+    public void enterEnumerationPrettyName(@Nonnull EnumerationPrettyNameContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
@@ -364,13 +366,13 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
-    public void enterPrimitiveProperty(PrimitivePropertyContext ctx)
+    public void enterPrimitiveProperty(@Nonnull PrimitivePropertyContext ctx)
     {
         this.handleEscapedIdentifier(ctx.escapedIdentifier());
     }
 
     @Override
-    public void enterEnumerationProperty(EnumerationPropertyContext ctx)
+    public void enterEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
     {
         this.handleEscapedIdentifier(ctx.escapedIdentifier());
     }
@@ -446,7 +448,7 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
-    public void enterClassModifier(ClassModifierContext ctx)
+    public void enterClassModifier(@Nonnull ClassModifierContext ctx)
     {
         ClassDeclarationContext classDeclarationContext = (ClassDeclarationContext) ctx.parent;
 
@@ -475,7 +477,7 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
-    public void enterPropertyModifier(PropertyModifierContext ctx)
+    public void enterPropertyModifier(@Nonnull PropertyModifierContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
@@ -593,19 +595,19 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
-    public void enterClassReference(ClassReferenceContext ctx)
+    public void enterClassReference(@Nonnull ClassReferenceContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override
-    public void enterEnumerationReference(EnumerationReferenceContext ctx)
+    public void enterEnumerationReference(@Nonnull EnumerationReferenceContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override
-    public void enterProjectionReference(ProjectionReferenceContext ctx)
+    public void enterProjectionReference(@Nonnull ProjectionReferenceContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
@@ -667,7 +669,7 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
-    public void enterIdentifier(IdentifierContext ctx)
+    public void enterIdentifier(@Nonnull IdentifierContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
@@ -714,7 +716,7 @@ public class ErrorUnderlineListener extends BaseErrorListener
                 + ".visitErrorNode() not implemented yet");
     }
 
-    protected void handleEscapedIdentifier(EscapedIdentifierContext escapedIdentifierContext)
+    protected void handleEscapedIdentifier(@Nonnull EscapedIdentifierContext escapedIdentifierContext)
     {
         IdentifierContext identifier = escapedIdentifierContext.identifier();
         if (identifier != null)
@@ -732,7 +734,7 @@ public class ErrorUnderlineListener extends BaseErrorListener
         throw new AssertionError();
     }
 
-    protected void addUnderlinedToken(Token offendingToken)
+    protected void addUnderlinedToken(@Nonnull Token offendingToken)
     {
         int    line      = offendingToken.getLine();
         String errorLine = this.compilationUnit.getLines()[line - 1];
@@ -760,8 +762,9 @@ public class ErrorUnderlineListener extends BaseErrorListener
         return stringBuilder.toString();
     }
 
+    @Nonnull
     @Override
-    protected Interval getIntervalMinusOne(Token startToken, Token onePastStopToken)
+    protected Interval getIntervalMinusOne(@Nonnull Token startToken, @Nonnull Token onePastStopToken)
     {
         int   startIndex    = startToken.getStartIndex();
         int   endTokenIndex = onePastStopToken.getTokenIndex();

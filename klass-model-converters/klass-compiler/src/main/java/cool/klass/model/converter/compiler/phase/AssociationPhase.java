@@ -1,5 +1,8 @@
 package cool.klass.model.converter.compiler.phase;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.phase.criteria.CriteriaVisitor;
@@ -27,11 +30,12 @@ public class AssociationPhase extends AbstractCompilerPhase
 {
     private final AntlrDomainModel domainModelState;
 
+    @Nullable
     private AntlrAssociation associationState;
 
     public AssociationPhase(
-            CompilerErrorHolder compilerErrorHolder,
-            MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
             AntlrDomainModel domainModelState)
     {
         super(compilerErrorHolder, compilationUnitsByContext);
@@ -39,7 +43,7 @@ public class AssociationPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
+    public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
         IdentifierContext identifier = ctx.identifier();
         this.associationState = new AntlrAssociation(
@@ -59,7 +63,7 @@ public class AssociationPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterAssociationEnd(AssociationEndContext ctx)
+    public void enterAssociationEnd(@Nonnull AssociationEndContext ctx)
     {
         IdentifierContext     identifier            = ctx.identifier();
         ClassTypeContext      classTypeContext      = ctx.classType();
@@ -91,7 +95,7 @@ public class AssociationPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterRelationship(RelationshipContext ctx)
+    public void enterRelationship(@Nonnull RelationshipContext ctx)
     {
         KlassVisitor<AntlrCriteria> visitor = new CriteriaVisitor(
                 this.currentCompilationUnit,

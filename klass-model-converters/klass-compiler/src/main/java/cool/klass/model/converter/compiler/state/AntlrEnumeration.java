@@ -3,6 +3,9 @@ package cool.klass.model.converter.compiler.state;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
@@ -18,6 +21,7 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrEnumeration extends AntlrPackageableElement
 {
+    @Nullable
     public static final AntlrEnumeration AMBIGUOUS = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             null,
@@ -25,6 +29,7 @@ public class AntlrEnumeration extends AntlrPackageableElement
             new ParserRuleContext(),
             "ambiguous enumeration",
             null);
+    @Nullable
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             null,
@@ -40,17 +45,17 @@ public class AntlrEnumeration extends AntlrPackageableElement
     private EnumerationBuilder enumerationBuilder;
 
     public AntlrEnumeration(
-            EnumerationDeclarationContext elementContext,
+            @Nonnull EnumerationDeclarationContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            ParserRuleContext nameContext,
-            String name,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
             String packageName)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, packageName);
     }
 
-    public void enterEnumerationLiteral(AntlrEnumerationLiteral antlrEnumerationLiteral)
+    public void enterEnumerationLiteral(@Nonnull AntlrEnumerationLiteral antlrEnumerationLiteral)
     {
         this.enumerationLiteralStates.add(antlrEnumerationLiteral);
         this.enumerationLiteralsByName.compute(
@@ -81,6 +86,7 @@ public class AntlrEnumeration extends AntlrPackageableElement
         return this.enumerationBuilder;
     }
 
+    @Nonnull
     @Override
     public EnumerationDeclarationContext getElementContext()
     {
@@ -92,7 +98,7 @@ public class AntlrEnumeration extends AntlrPackageableElement
         return this.enumerationBuilder;
     }
 
-    public void reportDuplicateTopLevelName(CompilerErrorHolder compilerErrorHolder)
+    public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.name);
         compilerErrorHolder.add(this.compilationUnit, message, this.nameContext);

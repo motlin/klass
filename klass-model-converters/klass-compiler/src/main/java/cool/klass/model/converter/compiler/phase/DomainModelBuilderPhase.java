@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
@@ -9,8 +11,8 @@ import org.eclipse.collections.api.map.MapIterable;
 public class DomainModelBuilderPhase extends AbstractCompilerPhase
 {
     public DomainModelBuilderPhase(
-            CompilerErrorHolder compilerErrorHolder,
-            MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
             DomainModelBuilder domainModelBuilder)
     {
         super(compilerErrorHolder, compilationUnitsByContext);

@@ -2,6 +2,9 @@ package cool.klass.model.converter.compiler.phase;
 
 import java.util.LinkedHashMap;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.meta.grammar.KlassBaseListener;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
@@ -13,20 +16,29 @@ import org.eclipse.collections.impl.map.mutable.MapAdapter;
 
 public class DeclarationsByNamePhase extends KlassBaseListener
 {
+    @Nullable
     public static final ParserRuleContext             AMBIGUOUS_DECLARATION             =
             new ParserRuleContext(null, -1);
+    @Nullable
     public static final EnumerationDeclarationContext AMBIGUOUS_ENUMERATION_DECLARATION =
             new EnumerationDeclarationContext(null, -1);
+    @Nullable
     public static final ClassDeclarationContext       AMBIGUOUS_CLASS_DECLARATION       =
             new ClassDeclarationContext(null, -1);
+    @Nullable
     public static final AssociationDeclarationContext AMBIGUOUS_ASSOCIATION_DECLARATION =
             new AssociationDeclarationContext(null, -1);
+    @Nullable
     public static final ProjectionDeclarationContext  AMBIGUOUS_PROJECTION_DECLARATION  =
             new ProjectionDeclarationContext(null, -1);
 
+    @Nullable
     public static final EnumerationDeclarationContext NO_SUCH_ENUMERATION = new EnumerationDeclarationContext(null, -1);
+    @Nullable
     public static final ClassDeclarationContext       NO_SUCH_CLASS       = new ClassDeclarationContext(null, -1);
+    @Nullable
     public static final AssociationDeclarationContext NO_SUCH_ASSOCIATION = new AssociationDeclarationContext(null, -1);
+    @Nullable
     public static final ProjectionDeclarationContext  NO_SUCH_PROJECTION  = new ProjectionDeclarationContext(null, -1);
 
     private final MutableMap<String, ParserRuleContext> declarationsByName = MapAdapter.adapt(new LinkedHashMap<>());
@@ -41,7 +53,7 @@ public class DeclarationsByNamePhase extends KlassBaseListener
             MapAdapter.adapt(new LinkedHashMap<>());
 
     @Override
-    public void enterClassDeclaration(ClassDeclarationContext ctx)
+    public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
         this.declarationsByName.compute(
                 ctx.identifier().getText(),
@@ -56,7 +68,7 @@ public class DeclarationsByNamePhase extends KlassBaseListener
     }
 
     @Override
-    public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
+    public void enterEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
     {
         this.declarationsByName.compute(
                 ctx.identifier().getText(),
@@ -71,7 +83,7 @@ public class DeclarationsByNamePhase extends KlassBaseListener
     }
 
     @Override
-    public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
+    public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
         this.declarationsByName.compute(
                 ctx.identifier().getText(),
@@ -86,7 +98,7 @@ public class DeclarationsByNamePhase extends KlassBaseListener
     }
 
     @Override
-    public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
+    public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
         this.declarationsByName.compute(
                 ctx.identifier().getText(),

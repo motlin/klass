@@ -2,23 +2,27 @@ package cool.klass.model.meta.domain;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.Type.TypeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class TypedElement<T extends Type> extends NamedElement
 {
+    @Nonnull
     protected final T type;
 
     protected TypedElement(
-            ParserRuleContext elementContext,
-            ParserRuleContext nameContext,
-            String name,
-            T type)
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            @Nonnull T type)
     {
         super(elementContext, nameContext, name);
         this.type = Objects.requireNonNull(type);
     }
 
+    @Nonnull
     public T getType()
     {
         return this.type;
@@ -26,13 +30,14 @@ public abstract class TypedElement<T extends Type> extends NamedElement
 
     public abstract static class TypedElementBuilder<T extends Type, TB extends TypeBuilder<T>> extends NamedElementBuilder
     {
+        @Nonnull
         protected final TB typeBuilder;
 
         protected TypedElementBuilder(
-                ParserRuleContext elementContext,
-                ParserRuleContext nameContext,
-                String name,
-                TB typeBuilder)
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ParserRuleContext nameContext,
+                @Nonnull String name,
+                @Nonnull TB typeBuilder)
         {
             super(elementContext, nameContext, name);
             this.typeBuilder = Objects.requireNonNull(typeBuilder);

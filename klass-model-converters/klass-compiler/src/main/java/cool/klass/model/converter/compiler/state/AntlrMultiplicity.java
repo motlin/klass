@@ -1,5 +1,8 @@
 package cool.klass.model.converter.compiler.state;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.domain.Multiplicity;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityBodyContext;
@@ -8,9 +11,13 @@ import org.antlr.v4.runtime.Token;
 
 public class AntlrMultiplicity extends AntlrElement
 {
+    @Nullable
     private final Multiplicity multiplicity;
 
-    public AntlrMultiplicity(MultiplicityContext context, CompilationUnit compilationUnit, boolean inferred)
+    public AntlrMultiplicity(
+            @Nonnull MultiplicityContext context,
+            @Nullable CompilationUnit compilationUnit,
+            boolean inferred)
     {
         super(context, compilationUnit, inferred);
         this.multiplicity = this.getMultiplicity(context);
@@ -44,12 +51,14 @@ public class AntlrMultiplicity extends AntlrElement
         return null;
     }
 
+    @Nonnull
     @Override
     public MultiplicityContext getElementContext()
     {
         return (MultiplicityContext) super.getElementContext();
     }
 
+    @Nullable
     public Multiplicity getMultiplicity()
     {
         return this.multiplicity;

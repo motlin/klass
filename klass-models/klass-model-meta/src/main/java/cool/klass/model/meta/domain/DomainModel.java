@@ -2,6 +2,8 @@ package cool.klass.model.meta.domain;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.Association.AssociationBuilder;
 import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
@@ -40,14 +42,17 @@ public final class DomainModel
 
     public static final class DomainModelBuilder
     {
+        @Nonnull
         private final ImmutableList<EnumerationBuilder> enumerationBuilders;
+        @Nonnull
         private final ImmutableList<KlassBuilder>       klassBuilders;
+        @Nonnull
         private final ImmutableList<AssociationBuilder> associationBuilders;
 
         public DomainModelBuilder(
-                ImmutableList<EnumerationBuilder> enumerationBuilders,
-                ImmutableList<KlassBuilder> klassBuilders,
-                ImmutableList<AssociationBuilder> associationBuilders)
+                @Nonnull ImmutableList<EnumerationBuilder> enumerationBuilders,
+                @Nonnull ImmutableList<KlassBuilder> klassBuilders,
+                @Nonnull ImmutableList<AssociationBuilder> associationBuilders)
         {
             this.enumerationBuilders = Objects.requireNonNull(enumerationBuilders);
             this.klassBuilders = Objects.requireNonNull(klassBuilders);

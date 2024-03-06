@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -8,10 +10,10 @@ public final class EnumerationLiteral extends TypedElement<Enumeration>
     private final String prettyName;
 
     private EnumerationLiteral(
-            ParserRuleContext elementContext,
-            ParserRuleContext nameContext,
-            String name,
-            Enumeration enumeration,
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            @Nonnull Enumeration enumeration,
             String prettyName)
     {
         super(elementContext, nameContext, name, enumeration);
@@ -31,9 +33,9 @@ public final class EnumerationLiteral extends TypedElement<Enumeration>
         private EnumerationLiteral enumerationLiteral;
 
         public EnumerationLiteralBuilder(
-                ParserRuleContext elementContext,
-                ParserRuleContext nameContext,
-                String name,
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ParserRuleContext nameContext,
+                @Nonnull String name,
                 String prettyName,
                 EnumerationBuilder enumerationBuilder)
         {

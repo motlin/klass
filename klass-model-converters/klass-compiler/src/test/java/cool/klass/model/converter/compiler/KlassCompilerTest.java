@@ -3,6 +3,8 @@ package cool.klass.model.converter.compiler;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.DomainModel;
@@ -26,7 +28,7 @@ public class KlassCompilerTest
     private final CompilerErrorHolder compilerErrorHolder = new CompilerErrorHolder();
     private final KlassCompiler       compiler            = new KlassCompiler(this.compilerErrorHolder);
 
-    protected Set<String> getResourceNames(String packageName)
+    protected Set<String> getResourceNames(@Nonnull String packageName)
     {
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .setUrls(ClasspathHelper.forPackage(DOT_PATTERN.matcher(packageName).replaceAll("/")))
@@ -673,7 +675,7 @@ public class KlassCompilerTest
         this.assertCompilerErrors(sourceCodeText, error1, error2, error3, error4, error5, error6);
     }
 
-    public void assertCompilerErrors(String sourceCodeText, String... expectedErrors)
+    public void assertCompilerErrors(@Nonnull String sourceCodeText, String... expectedErrors)
     {
         CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
         DomainModel     domainModel     = this.compiler.compile(compilationUnit);

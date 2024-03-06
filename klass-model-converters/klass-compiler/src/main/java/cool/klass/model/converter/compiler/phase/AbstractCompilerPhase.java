@@ -2,6 +2,9 @@ package cool.klass.model.converter.compiler.phase;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.grammar.KlassBaseListener;
@@ -21,23 +24,35 @@ import org.eclipse.collections.api.map.MapIterable;
 
 public abstract class AbstractCompilerPhase extends KlassBaseListener
 {
+    @Nonnull
     protected final MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext;
+    @Nonnull
     protected final CompilerErrorHolder                                  compilerErrorHolder;
 
+    @Nullable
     protected String                         packageName;
+    @Nullable
     protected CompilationUnit                currentCompilationUnit;
+    @Nullable
     protected ClassDeclarationContext        classDeclarationContext;
+    @Nullable
     protected AssociationDeclarationContext  associationDeclarationContext;
+    @Nullable
     protected ServiceGroupDeclarationContext serviceGroupDeclarationContext;
+    @Nullable
     protected ParameterizedPropertyContext   parameterizedPropertyContext;
+    @Nullable
     protected EnumerationDeclarationContext  enumerationDeclarationContext;
+    @Nullable
     protected ProjectionDeclarationContext   projectionDeclarationContext;
+    @Nullable
     protected UrlDeclarationContext          urlDeclarationContext;
+    @Nullable
     protected ServiceDeclarationContext      serviceDeclarationContext;
 
     protected AbstractCompilerPhase(
-            CompilerErrorHolder compilerErrorHolder,
-            MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext)
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext)
     {
         this.compilerErrorHolder = Objects.requireNonNull(compilerErrorHolder);
         this.compilationUnitsByContext = Objects.requireNonNull(compilationUnitsByContext);
@@ -57,7 +72,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterPackageDeclaration(PackageDeclarationContext ctx)
+    public void enterPackageDeclaration(@Nonnull PackageDeclarationContext ctx)
     {
         PackageNameContext packageNameContext = ctx.packageName();
         this.packageName = packageNameContext.getText();
@@ -160,8 +175,8 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     }
 
     public void error(
-            String message,
-            ParserRuleContext offendingParserRuleContext,
+            @Nonnull String message,
+            @Nonnull ParserRuleContext offendingParserRuleContext,
             ParserRuleContext... parserRuleContexts)
     {
         this.compilerErrorHolder.add(

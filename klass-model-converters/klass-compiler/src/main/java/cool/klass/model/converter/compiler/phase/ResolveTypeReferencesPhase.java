@@ -2,6 +2,8 @@ package cool.klass.model.converter.compiler.phase;
 
 import java.util.LinkedHashMap;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.grammar.KlassBaseListener;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
@@ -30,7 +32,7 @@ public class ResolveTypeReferencesPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterClassReference(ClassReferenceContext ctx)
+    public void enterClassReference(@Nonnull ClassReferenceContext ctx)
     {
         IdentifierContext       identifier              = ctx.identifier();
         String                  className               = identifier.getText();
@@ -39,7 +41,7 @@ public class ResolveTypeReferencesPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterEnumerationReference(EnumerationReferenceContext ctx)
+    public void enterEnumerationReference(@Nonnull EnumerationReferenceContext ctx)
     {
         IdentifierContext identifier      = ctx.identifier();
         String            enumerationName = identifier.getText();
@@ -49,7 +51,7 @@ public class ResolveTypeReferencesPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterProjectionReference(ProjectionReferenceContext ctx)
+    public void enterProjectionReference(@Nonnull ProjectionReferenceContext ctx)
     {
         IdentifierContext identifier     = ctx.identifier();
         String            projectionName = identifier.getText();

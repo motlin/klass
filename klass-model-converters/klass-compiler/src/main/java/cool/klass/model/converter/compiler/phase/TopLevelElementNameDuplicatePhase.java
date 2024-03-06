@@ -2,6 +2,8 @@ package cool.klass.model.converter.compiler.phase;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
@@ -14,42 +16,43 @@ import org.eclipse.collections.api.map.MapIterable;
 
 public class TopLevelElementNameDuplicatePhase extends AbstractCompilerPhase
 {
+    @Nonnull
     private final TopLevelElementNameCountPhase compilerPhase;
 
     public TopLevelElementNameDuplicatePhase(
-            MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
-            CompilerErrorHolder compilerErrorHolder,
-            TopLevelElementNameCountPhase compilerPhase)
+            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull TopLevelElementNameCountPhase compilerPhase)
     {
         super(compilerErrorHolder, compilationUnitsByContext);
         this.compilerPhase = Objects.requireNonNull(compilerPhase);
     }
 
     @Override
-    public void enterClassDeclaration(ClassDeclarationContext ctx)
+    public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
         this.logDuplicateTopLevelNames(ctx.identifier());
     }
 
     @Override
-    public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
+    public void enterEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
     {
         this.logDuplicateTopLevelNames(ctx.identifier());
     }
 
     @Override
-    public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
+    public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
         this.logDuplicateTopLevelNames(ctx.identifier());
     }
 
     @Override
-    public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
+    public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
         this.logDuplicateTopLevelNames(ctx.identifier());
     }
 
-    protected void logDuplicateTopLevelNames(IdentifierContext identifier)
+    protected void logDuplicateTopLevelNames(@Nonnull IdentifierContext identifier)
     {
         String topLevelItemName = identifier.getText();
         int occurrences = this.compilerPhase.occurrencesOf(topLevelItemName);

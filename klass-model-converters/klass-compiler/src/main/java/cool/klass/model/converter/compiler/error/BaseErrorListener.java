@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.error;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassBaseListener;
 import org.antlr.v4.runtime.Token;
@@ -17,19 +19,20 @@ public class BaseErrorListener extends KlassBaseListener
         this.contextualStrings = contextualStrings;
     }
 
-    protected void addTextInclusive(Token start, Token stop)
+    protected void addTextInclusive(@Nonnull Token start, @Nonnull Token stop)
     {
         String text = this.getTextInclusive(start, stop);
         this.contextualStrings.add(text);
     }
 
-    protected String getTextInclusive(Token startToken, Token stopToken)
+    protected String getTextInclusive(@Nonnull Token startToken, @Nonnull Token stopToken)
     {
         Interval interval = new Interval(startToken.getStartIndex(), stopToken.getStopIndex());
         return this.compilationUnit.getCharStream().getText(interval);
     }
 
-    protected Interval getIntervalMinusOne(Token startToken, Token onePastStopToken)
+    @Nonnull
+    protected Interval getIntervalMinusOne(@Nonnull Token startToken, @Nonnull Token onePastStopToken)
     {
         int startIndex = startToken.getStartIndex();
         int endTokenIndex = onePastStopToken.getTokenIndex();

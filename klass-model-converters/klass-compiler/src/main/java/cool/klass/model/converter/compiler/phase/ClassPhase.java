@@ -1,5 +1,8 @@
 package cool.klass.model.converter.compiler.phase;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.EscapedIdentifierVisitor;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
@@ -28,11 +31,12 @@ public class ClassPhase extends AbstractCompilerPhase
 {
     private final AntlrDomainModel domainModelState;
 
+    @Nullable
     private AntlrClass classState;
 
     public ClassPhase(
-            CompilerErrorHolder compilerErrorHolder,
-            MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
             AntlrDomainModel domainModelState)
     {
         super(compilerErrorHolder, compilationUnitsByContext);
@@ -40,7 +44,7 @@ public class ClassPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterClassDeclaration(ClassDeclarationContext ctx)
+    public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
         this.classState = new AntlrClass(
                 ctx,
@@ -59,7 +63,7 @@ public class ClassPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterPrimitiveProperty(PrimitivePropertyContext ctx)
+    public void enterPrimitiveProperty(@Nonnull PrimitivePropertyContext ctx)
     {
         EscapedIdentifierContext escapedIdentifierContext = ctx.escapedIdentifier();
         PrimitiveTypeContext     primitiveTypeContext     = ctx.primitiveType();
@@ -90,7 +94,7 @@ public class ClassPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterEnumerationProperty(EnumerationPropertyContext ctx)
+    public void enterEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
     {
         EscapedIdentifierContext    escapedIdentifierContext    = ctx.escapedIdentifier();
         EnumerationReferenceContext enumerationReferenceContext = ctx.enumerationReference();

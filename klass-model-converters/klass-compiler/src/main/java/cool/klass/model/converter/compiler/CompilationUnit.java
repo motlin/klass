@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.grammar.KlassLexer;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
@@ -19,16 +21,20 @@ public final class CompilationUnit
 {
     private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\r?\\n");
 
+    @Nonnull
     private final String[]               lines;
+    @Nonnull
     private final CharStream             charStream;
+    @Nonnull
     private final TokenStream            tokenStream;
+    @Nonnull
     private final CompilationUnitContext compilationUnitContext;
 
     private CompilationUnit(
-            String[] lines,
-            CharStream charStream,
-            TokenStream tokenStream,
-            CompilationUnitContext compilationUnitContext)
+            @Nonnull String[] lines,
+            @Nonnull CharStream charStream,
+            @Nonnull TokenStream tokenStream,
+            @Nonnull CompilationUnitContext compilationUnitContext)
     {
         this.lines = Objects.requireNonNull(lines);
         this.charStream = Objects.requireNonNull(charStream);
@@ -42,6 +48,7 @@ public final class CompilationUnit
         return CompilationUnit.createFromText(classpathLocation, sourceCodeText);
     }
 
+    @Nonnull
     private static String slurp(String classpathLocation)
     {
         InputStream inputStream = KlassCompiler.class.getClassLoader().getResourceAsStream(classpathLocation);
@@ -49,7 +56,7 @@ public final class CompilationUnit
         return CompilationUnit.slurp(inputStream);
     }
 
-    public static CompilationUnit createFromText(String sourceName, String sourceCodeText)
+    public static CompilationUnit createFromText(String sourceName, @Nonnull String sourceCodeText)
     {
         String[]               lines                  = NEWLINE_PATTERN.split(sourceCodeText);
         ANTLRErrorListener     errorListener          = new ThrowingErrorListener(sourceName, lines);
@@ -64,7 +71,8 @@ public final class CompilationUnit
                 compilationUnitContext);
     }
 
-    private static String slurp(InputStream inputStream)
+    @Nonnull
+    private static String slurp(@Nonnull InputStream inputStream)
     {
         try (Scanner scanner = new Scanner(inputStream).useDelimiter("\\A"))
         {
@@ -74,14 +82,15 @@ public final class CompilationUnit
 
     private static CommonTokenStream getTokenStream(
             CodePointCharStream charStream,
-            ANTLRErrorListener errorListener)
+            @Nonnull ANTLRErrorListener errorListener)
     {
         KlassLexer lexer = new KlassLexer(charStream);
         lexer.addErrorListener(errorListener);
         return new CommonTokenStream(lexer);
     }
 
-    private static KlassParser getParser(ANTLRErrorListener errorListener, CommonTokenStream tokenStream)
+    @Nonnull
+    private static KlassParser getParser(@Nonnull ANTLRErrorListener errorListener, CommonTokenStream tokenStream)
     {
         KlassParser parser = new KlassParser(tokenStream);
         parser.removeErrorListeners();
@@ -89,21 +98,25 @@ public final class CompilationUnit
         return parser;
     }
 
+    @Nonnull
     public String[] getLines()
     {
         return this.lines;
     }
 
+    @Nonnull
     public CharStream getCharStream()
     {
         return this.charStream;
     }
 
+    @Nonnull
     public TokenStream getTokenStream()
     {
         return this.tokenStream;
     }
 
+    @Nonnull
     public CompilationUnitContext getCompilationUnitContext()
     {
         return this.compilationUnitContext;

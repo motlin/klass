@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
@@ -18,8 +20,8 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
     private final AntlrDomainModel domainModelState;
 
     public ClassTemporalPropertyInferencePhase(
-            CompilerErrorHolder compilerErrorHolder,
-            MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
             AntlrDomainModel domainModelState)
     {
         super(compilerErrorHolder, compilationUnitsByContext);
@@ -27,7 +29,7 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterClassModifier(ClassModifierContext ctx)
+    public void enterClassModifier(@Nonnull ClassModifierContext ctx)
     {
         AntlrClass classState = this.domainModelState.getClassByContext(this.classDeclarationContext);
 
@@ -54,9 +56,9 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
     }
 
     private void addTemporalProperties(
-            AntlrClass classState,
-            ClassModifierContext ctx,
-            String prefix)
+            @Nonnull AntlrClass classState,
+            @Nonnull ClassModifierContext ctx,
+            @Nonnull String prefix)
     {
         AntlrPrimitiveProperty temporalProperty = this.property(
                 classState,
@@ -81,8 +83,8 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
 
     private AntlrPrimitiveProperty property(
             AntlrClass classState,
-            ClassModifierContext ctx,
-            String name,
+            @Nonnull ClassModifierContext ctx,
+            @Nonnull String name,
             PrimitiveType primitiveType)
     {
         return new AntlrPrimitiveProperty(

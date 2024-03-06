@@ -3,6 +3,8 @@ package cool.klass.generator.reladomo.plugin;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
@@ -21,6 +23,7 @@ public abstract class AbstractGenerateReladomoMojo extends AbstractMojo
     @Parameter(property = "rootPackageName", required = true, readonly = true)
     private String rootPackageName;
 
+    @Nullable
     protected DomainModel getDomainModel() throws MojoExecutionException
     {
         Reflections reflections = new Reflections(new ConfigurationBuilder().setScanners(new ResourcesScanner())

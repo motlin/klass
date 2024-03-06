@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.error;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -11,9 +13,9 @@ public class CompilerErrorHolder
     private final MutableList<CompilerError> compilerErrors = Lists.mutable.empty();
 
     public void add(
-            CompilationUnit compilationUnit,
-            String message,
-            ParserRuleContext offendingParserRuleContext,
+            @Nonnull CompilationUnit compilationUnit,
+            @Nonnull String message,
+            @Nonnull ParserRuleContext offendingParserRuleContext,
             ParserRuleContext... parserRuleContexts)
     {
         CompilerError compilerError =

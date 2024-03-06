@@ -2,6 +2,8 @@ package cool.klass.model.meta.domain.value;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.DataTypeProperty;
 import cool.klass.model.meta.domain.DataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.Klass;
@@ -10,24 +12,28 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class MemberExpressionValue extends ExpressionValue
 {
+    @Nonnull
     private final Klass               klass;
+    @Nonnull
     private final DataTypeProperty<?> property;
 
     protected MemberExpressionValue(
-            ParserRuleContext elementContext,
-            Klass klass,
-            DataTypeProperty<?> property)
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull Klass klass,
+            @Nonnull DataTypeProperty<?> property)
     {
         super(elementContext);
         this.klass = Objects.requireNonNull(klass);
         this.property = Objects.requireNonNull(property);
     }
 
+    @Nonnull
     public Klass getKlass()
     {
         return this.klass;
     }
 
+    @Nonnull
     public DataTypeProperty<?> getProperty()
     {
         return this.property;
@@ -35,13 +41,15 @@ public abstract class MemberExpressionValue extends ExpressionValue
 
     public abstract static class MemberExpressionValueBuilder extends ExpressionValueBuilder
     {
+        @Nonnull
         protected final KlassBuilder                  klassBuilder;
+        @Nonnull
         protected final DataTypePropertyBuilder<?, ?> propertyBuilder;
 
         protected MemberExpressionValueBuilder(
-                ParserRuleContext elementContext,
-                KlassBuilder klassBuilder,
-                DataTypePropertyBuilder<?, ?> propertyBuilder)
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull KlassBuilder klassBuilder,
+                @Nonnull DataTypePropertyBuilder<?, ?> propertyBuilder)
         {
             super(elementContext);
             this.klassBuilder = Objects.requireNonNull(klassBuilder);

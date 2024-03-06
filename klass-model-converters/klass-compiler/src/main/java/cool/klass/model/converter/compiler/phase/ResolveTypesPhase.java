@@ -2,6 +2,8 @@ package cool.klass.model.converter.compiler.phase;
 
 import java.util.LinkedHashMap;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.grammar.KlassBaseListener;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
@@ -48,7 +50,7 @@ public class ResolveTypesPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterClassServiceModifier(ClassServiceModifierContext ctx)
+    public void enterClassServiceModifier(@Nonnull ClassServiceModifierContext ctx)
     {
         ProjectionReferenceContext   reference   = ctx.projectionReference();
         ProjectionDeclarationContext declaration = this.resolveTypeReferencesPhase.getProjectionByReference(reference);
@@ -56,7 +58,7 @@ public class ResolveTypesPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterAssociationEnd(AssociationEndContext ctx)
+    public void enterAssociationEnd(@Nonnull AssociationEndContext ctx)
     {
         ClassReferenceContext   reference   = ctx.classType().classReference();
         ClassDeclarationContext declaration = this.resolveTypeReferencesPhase.getClassByReference(reference);
@@ -64,7 +66,7 @@ public class ResolveTypesPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
+    public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
         ClassReferenceContext   reference   = ctx.classReference();
         ClassDeclarationContext declaration = this.resolveTypeReferencesPhase.getClassByReference(reference);
@@ -72,7 +74,7 @@ public class ResolveTypesPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
+    public void enterServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
     {
         ClassReferenceContext   reference   = ctx.classReference();
         ClassDeclarationContext declaration = this.resolveTypeReferencesPhase.getClassByReference(reference);
@@ -80,7 +82,7 @@ public class ResolveTypesPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterServiceProjectionDispatch(ServiceProjectionDispatchContext ctx)
+    public void enterServiceProjectionDispatch(@Nonnull ServiceProjectionDispatchContext ctx)
     {
         ProjectionReferenceContext   reference   = ctx.projectionReference();
         ProjectionDeclarationContext declaration = this.resolveTypeReferencesPhase.getProjectionByReference(reference);
@@ -88,7 +90,7 @@ public class ResolveTypesPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterEnumerationProperty(EnumerationPropertyContext ctx)
+    public void enterEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
     {
         EnumerationReferenceContext   reference   = ctx.enumerationReference();
         EnumerationDeclarationContext declaration = this.resolveTypeReferencesPhase.getEnumerationByReference(reference);
@@ -96,7 +98,7 @@ public class ResolveTypesPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
+    public void enterParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
     {
         ClassReferenceContext   reference   = ctx.classType().classReference();
         ClassDeclarationContext declaration = this.resolveTypeReferencesPhase.getClassByReference(reference);
@@ -104,7 +106,7 @@ public class ResolveTypesPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterParameterDeclaration(ParameterDeclarationContext ctx)
+    public void enterParameterDeclaration(@Nonnull ParameterDeclarationContext ctx)
     {
         DataTypeDeclarationContext  dataTypeDeclarationContext = ctx.dataTypeDeclaration();
         DataTypeContext             dataTypeContext            = dataTypeDeclarationContext.dataType();

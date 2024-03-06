@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import cool.klass.model.meta.domain.PrimitiveType.PrimitiveTypeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -7,11 +9,11 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
 {
     private PrimitiveProperty(
-            ParserRuleContext elementContext,
-            ParserRuleContext nameContext,
-            String name,
-            PrimitiveType primitiveType,
-            Klass owningKlass,
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            @Nonnull PrimitiveType primitiveType,
+            @Nonnull Klass owningKlass,
             boolean isKey,
             boolean isOptional)
     {
@@ -48,11 +50,11 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
         private PrimitiveProperty primitiveProperty;
 
         public PrimitivePropertyBuilder(
-                ParserRuleContext elementContext,
-                ParserRuleContext nameContext,
-                String name,
-                PrimitiveTypeBuilder primitiveTypeBuilder,
-                KlassBuilder owningKlassBuilder,
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ParserRuleContext nameContext,
+                @Nonnull String name,
+                @Nonnull PrimitiveTypeBuilder primitiveTypeBuilder,
+                @Nonnull KlassBuilder owningKlassBuilder,
                 boolean isKey,
                 boolean isOptional)
         {

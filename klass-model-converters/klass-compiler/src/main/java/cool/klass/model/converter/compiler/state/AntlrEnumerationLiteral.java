@@ -1,5 +1,8 @@
 package cool.klass.model.converter.compiler.state;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.EnumerationLiteral.EnumerationLiteralBuilder;
@@ -8,6 +11,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrEnumerationLiteral extends AntlrNamedElement
 {
+    @Nullable
     public static final AntlrEnumerationLiteral AMBIGUOUS = new AntlrEnumerationLiteral(
             new ParserRuleContext(),
             null,
@@ -16,6 +20,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
             new ParserRuleContext(),
             null,
             null);
+    @Nullable
     public static final AntlrEnumerationLiteral NOT_FOUND = new AntlrEnumerationLiteral(
             new ParserRuleContext(),
             null,
@@ -31,11 +36,11 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
     private EnumerationLiteralBuilder enumerationLiteralBuilder;
 
     public AntlrEnumerationLiteral(
-            ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            String name,
-            ParserRuleContext nameContext,
+            @Nonnull String name,
+            @Nonnull ParserRuleContext nameContext,
             String prettyName,
             AntlrEnumeration owningEnumeration)
     {
@@ -65,13 +70,14 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
         return this.enumerationLiteralBuilder;
     }
 
+    @Nonnull
     @Override
     public EnumerationLiteralContext getElementContext()
     {
         return (EnumerationLiteralContext) super.getElementContext();
     }
 
-    public void reportDuplicateName(CompilerErrorHolder compilerErrorHolder)
+    public void reportDuplicateName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_ENM: Duplicate enumeration literal: '%s'.", this.name);
         compilerErrorHolder.add(
@@ -81,7 +87,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
                 this.owningEnumeration.getElementContext());
     }
 
-    public void reportDuplicatePrettyName(CompilerErrorHolder compilerErrorHolder)
+    public void reportDuplicatePrettyName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_LIT: Duplicate enumeration pretty name: '%s'.", this.prettyName);
         compilerErrorHolder.add(

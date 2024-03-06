@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
@@ -24,8 +26,8 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
     private final ResolveTypesPhase resolveTypesPhase;
 
     public ResolveTypeErrorsPhase(
-            CompilerErrorHolder compilerErrorHolder,
-            MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
             ResolveTypesPhase resolveTypesPhase)
     {
         super(compilerErrorHolder, compilationUnitsByContext);
@@ -33,7 +35,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterClassServiceModifier(ClassServiceModifierContext ctx)
+    public void enterClassServiceModifier(@Nonnull ClassServiceModifierContext ctx)
     {
         ProjectionDeclarationContext declaration = this.resolveTypesPhase.getType(ctx);
         if (declaration == DeclarationsByNamePhase.NO_SUCH_PROJECTION)
@@ -49,7 +51,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterAssociationEnd(AssociationEndContext ctx)
+    public void enterAssociationEnd(@Nonnull AssociationEndContext ctx)
     {
         ClassDeclarationContext declaration = this.resolveTypesPhase.getType(ctx);
         if (declaration == DeclarationsByNamePhase.NO_SUCH_CLASS)
@@ -64,7 +66,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterServiceProjectionDispatch(ServiceProjectionDispatchContext ctx)
+    public void enterServiceProjectionDispatch(@Nonnull ServiceProjectionDispatchContext ctx)
     {
         ProjectionDeclarationContext declaration = this.resolveTypesPhase.getType(ctx);
         if (declaration == DeclarationsByNamePhase.NO_SUCH_PROJECTION)
@@ -80,7 +82,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterEnumerationProperty(EnumerationPropertyContext ctx)
+    public void enterEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
     {
         EnumerationDeclarationContext declaration = this.resolveTypesPhase.getType(ctx);
         if (declaration == DeclarationsByNamePhase.NO_SUCH_ENUMERATION)
@@ -95,7 +97,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterParameterDeclaration(ParameterDeclarationContext ctx)
+    public void enterParameterDeclaration(@Nonnull ParameterDeclarationContext ctx)
     {
         EnumerationDeclarationContext declaration = this.resolveTypesPhase.getType(ctx);
         if (declaration == DeclarationsByNamePhase.NO_SUCH_ENUMERATION)
@@ -112,7 +114,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
+    public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
         ClassDeclarationContext declaration = this.resolveTypesPhase.getType(ctx);
         if (declaration == DeclarationsByNamePhase.NO_SUCH_CLASS)
@@ -126,7 +128,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
+    public void enterServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
     {
         super.enterServiceGroupDeclaration(ctx);
 
@@ -142,7 +144,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
+    public void enterParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
     {
         ClassDeclarationContext declaration = this.resolveTypesPhase.getType(ctx);
         if (declaration == DeclarationsByNamePhase.NO_SUCH_CLASS)

@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.grammar.KlassBaseListener;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
@@ -22,25 +24,25 @@ public class TopLevelElementNameCountPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
+    public void enterEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
     {
         this.topLevelItemNames.add(ctx.identifier().getText());
     }
 
     @Override
-    public void enterClassDeclaration(ClassDeclarationContext ctx)
+    public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
         this.topLevelItemNames.add(ctx.identifier().getText());
     }
 
     @Override
-    public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
+    public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
         this.topLevelItemNames.add(ctx.identifier().getText());
     }
 
     @Override
-    public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
+    public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
         this.topLevelItemNames.add(ctx.identifier().getText());
     }

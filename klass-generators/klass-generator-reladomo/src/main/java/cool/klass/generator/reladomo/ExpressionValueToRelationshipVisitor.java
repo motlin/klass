@@ -1,5 +1,7 @@
 package cool.klass.generator.reladomo;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.value.ExpressionValueVisitor;
 import cool.klass.model.meta.domain.value.ThisMemberExpressionValue;
 import cool.klass.model.meta.domain.value.TypeMemberExpressionValue;
@@ -14,7 +16,7 @@ public class ExpressionValueToRelationshipVisitor implements ExpressionValueVisi
     }
 
     @Override
-    public void visitTypeMember(TypeMemberExpressionValue typeMemberExpressionValue)
+    public void visitTypeMember(@Nonnull TypeMemberExpressionValue typeMemberExpressionValue)
     {
         this.stringBuilder.append(typeMemberExpressionValue.getKlass().getName());
         this.stringBuilder.append('.');
@@ -22,7 +24,7 @@ public class ExpressionValueToRelationshipVisitor implements ExpressionValueVisi
     }
 
     @Override
-    public void visitThisMember(ThisMemberExpressionValue thisMemberExpressionValue)
+    public void visitThisMember(@Nonnull ThisMemberExpressionValue thisMemberExpressionValue)
     {
         this.stringBuilder.append("this.");
         this.stringBuilder.append(thisMemberExpressionValue.getProperty().getName());

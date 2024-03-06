@@ -2,6 +2,8 @@ package cool.klass.model.meta.domain;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.Association.AssociationBuilder;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -9,18 +11,20 @@ import org.antlr.v4.runtime.ParserRuleContext;
 // TODO: Super class for reference-type-property?
 public final class AssociationEnd extends Property<Klass>
 {
+    @Nonnull
     private final Association  owningAssociation;
+    @Nonnull
     private final Multiplicity multiplicity;
     private final boolean      owned;
 
     private AssociationEnd(
-            ParserRuleContext elementContext,
-            ParserRuleContext nameContext,
-            String name,
-            Klass type,
-            Klass owningKlass,
-            Association owningAssociation,
-            Multiplicity multiplicity,
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            @Nonnull Klass type,
+            @Nonnull Klass owningKlass,
+            @Nonnull Association owningAssociation,
+            @Nonnull Multiplicity multiplicity,
             boolean owned)
     {
         super(elementContext, nameContext, name, type, owningKlass);
@@ -29,6 +33,7 @@ public final class AssociationEnd extends Property<Klass>
         this.owned = owned;
     }
 
+    @Nonnull
     public Multiplicity getMultiplicity()
     {
         return this.multiplicity;
@@ -55,6 +60,7 @@ public final class AssociationEnd extends Property<Klass>
         throw new AssertionError();
     }
 
+    @Nonnull
     public Association getOwningAssociation()
     {
         return this.owningAssociation;
@@ -62,20 +68,22 @@ public final class AssociationEnd extends Property<Klass>
 
     public static class AssociationEndBuilder extends PropertyBuilder<Klass, KlassBuilder>
     {
+        @Nonnull
         private final AssociationBuilder owningAssociation;
+        @Nonnull
         private final Multiplicity       multiplicity;
         private final boolean            isOwned;
 
         private AssociationEnd associationEnd;
 
         public AssociationEndBuilder(
-                ParserRuleContext elementContext,
-                ParserRuleContext nameContext,
-                String name,
-                KlassBuilder type,
-                KlassBuilder owningKlassBuilder,
-                AssociationBuilder owningAssociation,
-                Multiplicity multiplicity,
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ParserRuleContext nameContext,
+                @Nonnull String name,
+                @Nonnull KlassBuilder type,
+                @Nonnull KlassBuilder owningKlassBuilder,
+                @Nonnull AssociationBuilder owningAssociation,
+                @Nonnull Multiplicity multiplicity,
                 boolean isOwned)
         {
             super(elementContext, nameContext, name, type, owningKlassBuilder);

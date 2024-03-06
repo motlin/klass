@@ -2,6 +2,8 @@ package cool.klass.model.converter.compiler.error;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassListener;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -12,16 +14,19 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public class CompilerError implements Comparable<CompilerError>
 {
+    @Nonnull
     private final CompilationUnit                  compilationUnit;
+    @Nonnull
     private final String                           message;
+    @Nonnull
     private final ParserRuleContext                offendingParserRuleContext;
     private final ImmutableList<ParserRuleContext> parserRuleContexts;
     private final Token                            offendingToken;
 
     public CompilerError(
-            CompilationUnit compilationUnit,
-            String message,
-            ParserRuleContext offendingParserRuleContext,
+            @Nonnull CompilationUnit compilationUnit,
+            @Nonnull String message,
+            @Nonnull ParserRuleContext offendingParserRuleContext,
             ParserRuleContext... parserRuleContexts)
     {
         this.compilationUnit = Objects.requireNonNull(compilationUnit);
@@ -31,6 +36,7 @@ public class CompilerError implements Comparable<CompilerError>
         this.offendingToken = this.offendingParserRuleContext.getStart();
     }
 
+    @Nonnull
     @Override
     public String toString()
     {
@@ -91,7 +97,7 @@ public class CompilerError implements Comparable<CompilerError>
     }
 
     @Override
-    public int compareTo(CompilerError other)
+    public int compareTo(@Nonnull CompilerError other)
     {
         int sourceNameCompareTo = this.getSourceName().compareTo(other.getSourceName());
         if (sourceNameCompareTo != 0)

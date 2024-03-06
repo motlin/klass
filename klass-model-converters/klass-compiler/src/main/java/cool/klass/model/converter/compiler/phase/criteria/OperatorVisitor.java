@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase.criteria;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.operator.AntlrEqualityOperator;
 import cool.klass.model.converter.compiler.state.operator.AntlrInOperator;
@@ -22,32 +24,37 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
         this.compilationUnit = compilationUnit;
     }
 
+    @Nonnull
     @Override
     public AntlrOperator visitTerminal(TerminalNode node)
     {
         throw new AssertionError();
     }
 
+    @Nonnull
     @Override
-    public AntlrEqualityOperator visitEqualityOperator(EqualityOperatorContext ctx)
+    public AntlrEqualityOperator visitEqualityOperator(@Nonnull EqualityOperatorContext ctx)
     {
         return new AntlrEqualityOperator(ctx, this.compilationUnit, false, ctx.getText());
     }
 
+    @Nonnull
     @Override
-    public AntlrInequalityOperator visitInequalityOperator(InequalityOperatorContext ctx)
+    public AntlrInequalityOperator visitInequalityOperator(@Nonnull InequalityOperatorContext ctx)
     {
         return new AntlrInequalityOperator(ctx, this.compilationUnit, false, ctx.getText());
     }
 
+    @Nonnull
     @Override
-    public AntlrInOperator visitInOperator(InOperatorContext ctx)
+    public AntlrInOperator visitInOperator(@Nonnull InOperatorContext ctx)
     {
         return new AntlrInOperator(ctx, this.compilationUnit, false, ctx.getText());
     }
 
+    @Nonnull
     @Override
-    public AntlrStringOperator visitStringOperator(StringOperatorContext ctx)
+    public AntlrStringOperator visitStringOperator(@Nonnull StringOperatorContext ctx)
     {
         return new AntlrStringOperator(ctx, this.compilationUnit, false, ctx.getText());
     }

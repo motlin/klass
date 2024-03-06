@@ -1,5 +1,8 @@
 package cool.klass.model.converter.compiler.state;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
@@ -14,6 +17,7 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrAssociation extends AntlrPackageableElement
 {
+    @Nullable
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
             new AssociationDeclarationContext(null, -1),
             null,
@@ -28,11 +32,11 @@ public class AntlrAssociation extends AntlrPackageableElement
     private AssociationBuilder associationBuilder;
 
     public AntlrAssociation(
-            AssociationDeclarationContext elementContext,
+            @Nonnull AssociationDeclarationContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            ParserRuleContext nameContext,
-            String name,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
             String packageName)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, packageName);
@@ -98,13 +102,13 @@ public class AntlrAssociation extends AntlrPackageableElement
         return this.associationBuilder;
     }
 
-    public void reportDuplicateTopLevelName(CompilerErrorHolder compilerErrorHolder)
+    public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.name);
         compilerErrorHolder.add(this.compilationUnit, message, this.nameContext);
     }
 
-    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         int numAssociationEnds = this.associationEndStates.size();
         if (numAssociationEnds != 2)
@@ -127,6 +131,7 @@ public class AntlrAssociation extends AntlrPackageableElement
         // TODO: Check that both ends aren't owned
     }
 
+    @Nonnull
     @Override
     public AssociationDeclarationContext getElementContext()
     {

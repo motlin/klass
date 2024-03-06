@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.state;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.Element;
@@ -17,36 +19,40 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
             "ambiguous property",
             Element.NO_CONTEXT)
     {
+        @Nonnull
         @Override
         public PropertyBuilder<Type, ?> build()
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".build() not implemented");
         }
 
+        @Nonnull
         @Override
         protected AntlrClass getOwningClassState()
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                    + ".getOwningClassState() not implemented yet");
+                    + ".getOwningClassState() not implemented yet");
         }
     };
 
     protected AntlrProperty(
-            ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            String name,
-            ParserRuleContext nameContext)
+            @Nonnull String name,
+            @Nonnull ParserRuleContext nameContext)
     {
         super(elementContext, compilationUnit, inferred, name, nameContext);
     }
 
+    @Nonnull
     @Override
     public ParserRuleContext getNameContext()
     {
         return this.nameContext;
     }
 
+    @Nonnull
     @Override
     public String getName()
     {
@@ -55,7 +61,7 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
 
     public abstract PropertyBuilder<T, ?> build();
 
-    public void reportDuplicateMemberName(CompilerErrorHolder compilerErrorHolder)
+    public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_MEM: Duplicate member: '%s'.", this.name);
 

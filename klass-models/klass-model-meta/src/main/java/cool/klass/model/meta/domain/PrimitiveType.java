@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.visitor.PrimitiveTypeVisitor;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -115,7 +117,7 @@ public abstract class PrimitiveType extends DataType
 
     private static final ImmutableMap<String, PrimitiveType> BY_NAME = PRIMITIVE_TYPES.groupByUniqueKey(NamedElement::getName);
 
-    private PrimitiveType(String name)
+    private PrimitiveType(@Nonnull String name)
     {
         super(NO_CONTEXT, NO_CONTEXT, name, "klass.meta");
     }
@@ -125,6 +127,7 @@ public abstract class PrimitiveType extends DataType
         return BY_NAME.get(name);
     }
 
+    @Nonnull
     @Override
     public String toString()
     {
@@ -153,7 +156,7 @@ public abstract class PrimitiveType extends DataType
         private final PrimitiveType primitiveType;
 
         public PrimitiveTypeBuilder(
-                ParserRuleContext elementContext,
+                @Nonnull ParserRuleContext elementContext,
                 PrimitiveType primitiveType)
         {
             super(elementContext, elementContext, elementContext.getText(), "klass.meta");

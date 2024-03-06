@@ -2,6 +2,9 @@ package cool.klass.model.converter.compiler.state;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.domain.Element;
 import cool.klass.model.meta.domain.PrimitiveProperty.PrimitivePropertyBuilder;
@@ -14,6 +17,7 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
 {
+    @Nullable
     public static final AntlrPrimitiveProperty AMBIGUOUS = new AntlrPrimitiveProperty(
             new PrimitivePropertyContext(null, -1),
             null,
@@ -30,13 +34,13 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
     private PrimitivePropertyBuilder primitivePropertyBuilder;
 
     public AntlrPrimitiveProperty(
-            ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            String name,
-            ParserRuleContext nameContext,
+            @Nonnull String name,
+            @Nonnull ParserRuleContext nameContext,
             boolean isOptional,
-            ImmutableList<AntlrPropertyModifier> modifiers,
+            @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
             AntlrClass owningClassState,
             PrimitiveTypeBuilder primitiveTypeBuilder)
     {
@@ -69,6 +73,8 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
         return this.primitivePropertyBuilder;
     }
 
+    @Nonnull
+    @Override
     public PrimitivePropertyBuilder getPropertyBuilder()
     {
         return Objects.requireNonNull(this.primitivePropertyBuilder);

@@ -1,10 +1,12 @@
 package cool.klass.model.meta.domain.operator;
 
+import javax.annotation.Nonnull;
+
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class InequalityOperator extends Operator
 {
-    private InequalityOperator(ParserRuleContext elementContext, String operatorText)
+    private InequalityOperator(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
     {
         super(elementContext, operatorText);
     }
@@ -17,11 +19,12 @@ public final class InequalityOperator extends Operator
 
     public static class InequalityOperatorBuilder extends OperatorBuilder
     {
-        public InequalityOperatorBuilder(ParserRuleContext elementContext, String operatorText)
+        public InequalityOperatorBuilder(@Nonnull ParserRuleContext elementContext, @Nonnull String operatorText)
         {
             super(elementContext, operatorText);
         }
 
+        @Nonnull
         @Override
         public InequalityOperator build()
         {

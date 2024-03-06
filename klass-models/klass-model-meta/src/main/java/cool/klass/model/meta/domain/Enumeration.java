@@ -2,6 +2,8 @@ package cool.klass.model.meta.domain;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.EnumerationLiteral.EnumerationLiteralBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -11,10 +13,10 @@ public final class Enumeration extends DataType
     private ImmutableList<EnumerationLiteral> enumerationLiterals;
 
     private Enumeration(
-            ParserRuleContext elementContext,
-            ParserRuleContext nameContext,
-            String name,
-            String packageName)
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            @Nonnull String packageName)
     {
         super(elementContext, nameContext, name, packageName);
     }
@@ -35,10 +37,10 @@ public final class Enumeration extends DataType
         private Enumeration                              enumeration;
 
         public EnumerationBuilder(
-                ParserRuleContext elementContext,
-                ParserRuleContext nameContext,
-                String name,
-                String packageName)
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ParserRuleContext nameContext,
+                @Nonnull String name,
+                @Nonnull String packageName)
         {
             super(elementContext, nameContext, name, packageName);
         }
@@ -63,6 +65,7 @@ public final class Enumeration extends DataType
             return this.enumeration;
         }
 
+        @Nonnull
         public Enumeration getEnumeration()
         {
             return Objects.requireNonNull(this.enumeration);

@@ -2,6 +2,8 @@ package cool.klass.model.converter.compiler.phase;
 
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
@@ -16,8 +18,8 @@ public class NamePatternPhase extends AbstractCompilerPhase
     private static final   Pattern CONSTANT_NAME_PATTERN = Pattern.compile("^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$");
 
     public NamePatternPhase(
-            CompilerErrorHolder compilerErrorHolder,
-            MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext)
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext)
     {
         super(compilerErrorHolder, compilationUnitsByContext);
     }

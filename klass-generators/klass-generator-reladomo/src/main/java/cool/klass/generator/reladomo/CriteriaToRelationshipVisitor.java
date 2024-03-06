@@ -1,5 +1,7 @@
 package cool.klass.generator.reladomo;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.criteria.AndCriteria;
 import cool.klass.model.meta.domain.criteria.BinaryCriteria;
 import cool.klass.model.meta.domain.criteria.CriteriaVisitor;
@@ -16,7 +18,7 @@ public class CriteriaToRelationshipVisitor implements CriteriaVisitor
     }
 
     @Override
-    public void visitAnd(AndCriteria andCriteria)
+    public void visitAnd(@Nonnull AndCriteria andCriteria)
     {
         andCriteria.getLeft().visit(this);
         this.stringBuilder.append(" and ");
@@ -24,7 +26,7 @@ public class CriteriaToRelationshipVisitor implements CriteriaVisitor
     }
 
     @Override
-    public void visitOr(OrCriteria orCriteria)
+    public void visitOr(@Nonnull OrCriteria orCriteria)
     {
         orCriteria.getLeft().visit(this);
         this.stringBuilder.append(" or ");
@@ -32,7 +34,7 @@ public class CriteriaToRelationshipVisitor implements CriteriaVisitor
     }
 
     @Override
-    public void visitOperator(OperatorCriteria operatorCriteria)
+    public void visitOperator(@Nonnull OperatorCriteria operatorCriteria)
     {
         operatorCriteria.getSourceValue().visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder));
         operatorCriteria.getOperator().visit(new OperatorToRelationshipVisitor(this.stringBuilder));

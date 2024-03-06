@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.state.operator;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.meta.domain.operator.Operator.OperatorBuilder;
@@ -10,7 +12,7 @@ public abstract class AntlrOperator extends AntlrElement
     protected final String operatorText;
 
     protected AntlrOperator(
-            ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
             String operatorText)
@@ -19,5 +21,6 @@ public abstract class AntlrOperator extends AntlrElement
         this.operatorText = operatorText;
     }
 
+    @Nonnull
     public abstract OperatorBuilder build();
 }

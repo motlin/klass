@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.grammar.KlassParser.EscapedIdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.KeywordValidAsIdentifierContext;
@@ -27,7 +29,7 @@ public final class EscapedIdentifierVisitor
         throw new AssertionError(escapedIdentifierContext);
     }
 
-    public static String getName(EscapedIdentifierContext escapedIdentifierContext)
+    public static String getName(@Nonnull EscapedIdentifierContext escapedIdentifierContext)
     {
         return EscapedIdentifierVisitor.getNameContext(escapedIdentifierContext).getText();
     }

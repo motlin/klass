@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase.criteria;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
@@ -43,14 +45,16 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
         this.domainModelState = domainModelState;
     }
 
+    @Nonnull
     @Override
-    public AntlrCriteria visitCriteriaExpressionAnd(CriteriaExpressionAndContext ctx)
+    public AntlrCriteria visitCriteriaExpressionAnd(@Nonnull CriteriaExpressionAndContext ctx)
     {
         AntlrCriteria left  = this.visit(ctx.left);
         AntlrCriteria right = this.visit(ctx.right);
         return new AndAntlrCriteria(ctx, this.compilationUnit, false, left, right);
     }
 
+    @Nonnull
     @Override
     public AntlrCriteria visitCriteriaNative(CriteriaNativeContext ctx)
     {
@@ -58,6 +62,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 + ".visitCriteriaNative() not implemented yet");
     }
 
+    @Nonnull
     @Override
     public AntlrCriteria visitCriteriaExpressionGroup(CriteriaExpressionGroupContext ctx)
     {
@@ -65,8 +70,9 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 + ".visitCriteriaExpressionGroup() not implemented yet");
     }
 
+    @Nonnull
     @Override
-    public OperatorCriteria visitCriteriaOperator(CriteriaOperatorContext ctx)
+    public OperatorCriteria visitCriteriaOperator(@Nonnull CriteriaOperatorContext ctx)
     {
         KlassVisitor<AntlrOperator> operatorVisitor = new OperatorVisitor(this.compilationUnit);
         AntlrOperator               operator        = operatorVisitor.visitOperator(ctx.operator());
@@ -82,14 +88,16 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
         return new OperatorCriteria(ctx, this.compilationUnit, false, operator, sourceValue, targetValue);
     }
 
+    @Nonnull
     @Override
-    public AntlrCriteria visitCriteriaExpressionOr(CriteriaExpressionOrContext ctx)
+    public AntlrCriteria visitCriteriaExpressionOr(@Nonnull CriteriaExpressionOrContext ctx)
     {
         AntlrCriteria left  = this.visit(ctx.left);
         AntlrCriteria right = this.visit(ctx.right);
         return new OrAntlrCriteria(ctx, this.compilationUnit, false, left, right);
     }
 
+    @Nonnull
     @Override
     public AntlrCriteria visitLiteralList(LiteralListContext ctx)
     {
@@ -97,6 +105,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 + ".visitLiteralList() not implemented yet");
     }
 
+    @Nonnull
     @Override
     public AntlrCriteria visitNativeLiteral(NativeLiteralContext ctx)
     {
@@ -104,6 +113,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 + ".visitNativeLiteral() not implemented yet");
     }
 
+    @Nonnull
     @Override
     public AntlrCriteria visitEqualityOperator(EqualityOperatorContext ctx)
     {
@@ -111,6 +121,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 + ".visitEqualityOperator() not implemented yet");
     }
 
+    @Nonnull
     @Override
     public AntlrCriteria visitInequalityOperator(InequalityOperatorContext ctx)
     {
@@ -118,6 +129,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 + ".visitInequalityOperator() not implemented yet");
     }
 
+    @Nonnull
     @Override
     public AntlrCriteria visitInOperator(InOperatorContext ctx)
     {
@@ -125,6 +137,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 + ".visitInOperator() not implemented yet");
     }
 
+    @Nonnull
     @Override
     public AntlrCriteria visitStringOperator(StringOperatorContext ctx)
     {
@@ -132,6 +145,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 + ".visitStringOperator() not implemented yet");
     }
 
+    @Nonnull
     @Override
     public AntlrCriteria visitVariableReference(VariableReferenceContext ctx)
     {
@@ -139,6 +153,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 + ".visitVariableReference() not implemented yet");
     }
 
+    @Nonnull
     @Override
     public AntlrCriteria visitTypeMemberReference(TypeMemberReferenceContext ctx)
     {
@@ -146,6 +161,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 + ".visitTypeMemberReference() not implemented yet");
     }
 
+    @Nonnull
     @Override
     public AntlrCriteria visitLiteral(LiteralContext ctx)
     {
@@ -153,6 +169,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 + ".visitLiteral() not implemented yet");
     }
 
+    @Nonnull
     @Override
     public AntlrCriteria visitTerminal(TerminalNode node)
     {

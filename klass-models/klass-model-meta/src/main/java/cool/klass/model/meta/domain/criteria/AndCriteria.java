@@ -1,19 +1,21 @@
 package cool.klass.model.meta.domain.criteria;
 
+import javax.annotation.Nonnull;
+
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class AndCriteria extends BinaryCriteria
 {
     private AndCriteria(
-            ParserRuleContext elementContext,
-            Criteria left,
-            Criteria right)
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull Criteria left,
+            @Nonnull Criteria right)
     {
         super(elementContext, left, right);
     }
 
     @Override
-    public void visit(CriteriaVisitor visitor)
+    public void visit(@Nonnull CriteriaVisitor visitor)
     {
         visitor.visitAnd(this);
     }
@@ -21,13 +23,14 @@ public final class AndCriteria extends BinaryCriteria
     public static final class AndCriteriaBuilder extends BinaryCriteriaBuilder
     {
         public AndCriteriaBuilder(
-                ParserRuleContext elementContext,
-                CriteriaBuilder left,
-                CriteriaBuilder right)
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull CriteriaBuilder left,
+                @Nonnull CriteriaBuilder right)
         {
             super(elementContext, left, right);
         }
 
+        @Nonnull
         @Override
         public AndCriteria build()
         {

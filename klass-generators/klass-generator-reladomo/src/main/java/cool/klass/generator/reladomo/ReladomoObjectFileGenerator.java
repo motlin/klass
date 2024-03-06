@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.base.CaseFormat;
 import com.gs.fw.common.mithra.generator.metamodel.AsOfAttributeType;
 import com.gs.fw.common.mithra.generator.metamodel.AttributeType;
@@ -32,7 +34,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         super(domainModel);
     }
 
-    public void writeObjectFiles(Path outputPath) throws IOException
+    public void writeObjectFiles(@Nonnull Path outputPath) throws IOException
     {
         for (Klass klass : this.domainModel.getKlasses())
         {
@@ -40,7 +42,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         }
     }
 
-    private void writeObjectFile(Path outputPath, Klass klass) throws IOException
+    private void writeObjectFile(Path outputPath, @Nonnull Klass klass) throws IOException
     {
         MithraGeneratorMarshaller mithraGeneratorMarshaller = new MithraGeneratorMarshaller();
         mithraGeneratorMarshaller.setIndent(true);
@@ -55,6 +57,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         this.printStringToFile(fullPath, xmlString);
     }
 
+    @Nonnull
     private MithraObject convertToMithraObject(Klass klass)
     {
         MithraObject mithraObject = new MithraObject();
@@ -94,6 +97,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
                 .castToList();
     }
 
+    @Nonnull
     private RelationshipType convertRelationship(AssociationEnd associationEnd)
     {
         AssociationEnd   opposite         = associationEnd.getOpposite();
@@ -152,6 +156,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         return cardinalityType.with(attributeValue, cardinalityType);
     }
 
+    @Nonnull
     private AsOfAttributeType convertToAsOfAttributeType(DataTypeProperty<?> dataTypeProperty)
     {
         String propertyName   = dataTypeProperty.getName();
@@ -193,6 +198,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         return asOfAttributeType;
     }
 
+    @Nonnull
     private AttributeType convertToAttributeType(DataTypeProperty<?> dataTypeProperty)
     {
         AttributeType attributeType = new AttributeType();
@@ -207,7 +213,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         return attributeType;
     }
 
-    private void handleType(AttributeType attributeType, DataTypeProperty<?> dataTypeProperty)
+    private void handleType(@Nonnull AttributeType attributeType, DataTypeProperty<?> dataTypeProperty)
     {
         if (dataTypeProperty instanceof EnumerationProperty)
         {

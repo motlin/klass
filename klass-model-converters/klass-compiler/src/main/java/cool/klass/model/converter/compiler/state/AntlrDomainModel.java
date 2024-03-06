@@ -2,6 +2,8 @@ package cool.klass.model.converter.compiler.state;
 
 import java.util.LinkedHashMap;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.Association.AssociationBuilder;
 import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
@@ -34,7 +36,7 @@ public class AntlrDomainModel
     private final MutableOrderedMap<String, AntlrClass>       classesByName      = OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<String, AntlrAssociation> associationsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    public void enterEnumerationDeclaration(AntlrEnumeration enumerationState)
+    public void enterEnumerationDeclaration(@Nonnull AntlrEnumeration enumerationState)
     {
         this.enumerationStates.add(enumerationState);
         this.enumerationsByName.compute(
@@ -52,7 +54,7 @@ public class AntlrDomainModel
         }
     }
 
-    public void enterClassDeclaration(AntlrClass classState)
+    public void enterClassDeclaration(@Nonnull AntlrClass classState)
     {
         this.classStates.add(classState);
         this.classesByName.compute(
@@ -68,7 +70,7 @@ public class AntlrDomainModel
         }
     }
 
-    public void enterAssociationDeclaration(AntlrAssociation associationState)
+    public void enterAssociationDeclaration(@Nonnull AntlrAssociation associationState)
     {
         this.associationStates.add(associationState);
         this.associationsByName.compute(
@@ -106,7 +108,7 @@ public class AntlrDomainModel
         return this.classesByContext.get(context);
     }
 
-    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         ImmutableList<String> topLevelNames = this.getTopLevelNames();
 
@@ -152,6 +154,7 @@ public class AntlrDomainModel
         return topLevelNames.toImmutable();
     }
 
+    @Nonnull
     public DomainModelBuilder build()
     {
         ImmutableList<EnumerationBuilder> enumerationBuilders = this.enumerationStates.collect(AntlrEnumeration::build).toImmutable();

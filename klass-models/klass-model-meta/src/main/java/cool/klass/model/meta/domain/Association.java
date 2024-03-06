@@ -2,6 +2,8 @@ package cool.klass.model.meta.domain;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.AssociationEnd.AssociationEndBuilder;
 import cool.klass.model.meta.domain.criteria.Criteria;
 import cool.klass.model.meta.domain.criteria.Criteria.CriteriaBuilder;
@@ -17,10 +19,10 @@ public final class Association extends PackageableElement
     private AssociationEnd                targetAssociationEnd;
 
     private Association(
-            ParserRuleContext elementContext,
-            ParserRuleContext nameContext,
-            String name,
-            String packageName,
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            @Nonnull String packageName,
             Criteria criteria)
     {
         super(elementContext, nameContext, name, packageName);
@@ -60,23 +62,24 @@ public final class Association extends PackageableElement
 
     public static class AssociationBuilder extends PackageableElementBuilder
     {
+        @Nonnull
         private final CriteriaBuilder criteriaBuilder;
 
         private ImmutableList<AssociationEndBuilder> associationEndBuilders;
         private Association                          association;
 
         public AssociationBuilder(
-                ParserRuleContext elementContext,
-                ParserRuleContext nameContext,
-                String name,
-                String packageName,
-                CriteriaBuilder criteriaBuilder)
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ParserRuleContext nameContext,
+                @Nonnull String name,
+                @Nonnull String packageName,
+                @Nonnull CriteriaBuilder criteriaBuilder)
         {
             super(elementContext, nameContext, name, packageName);
             this.criteriaBuilder = Objects.requireNonNull(criteriaBuilder);
         }
 
-        public void setAssociationEndBuilders(ImmutableList<AssociationEndBuilder> associationEndBuilders)
+        public void setAssociationEndBuilders(@Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders)
         {
             this.associationEndBuilders = Objects.requireNonNull(associationEndBuilders);
         }
@@ -101,6 +104,7 @@ public final class Association extends PackageableElement
             return this.association;
         }
 
+        @Nonnull
         public Association getAssociation()
         {
             return Objects.requireNonNull(this.association);

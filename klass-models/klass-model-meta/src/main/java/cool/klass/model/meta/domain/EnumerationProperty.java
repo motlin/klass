@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -7,11 +9,11 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public final class EnumerationProperty extends DataTypeProperty<Enumeration>
 {
     private EnumerationProperty(
-            ParserRuleContext elementContext,
-            ParserRuleContext nameContext,
-            String name,
-            Enumeration enumeration,
-            Klass owningKlass,
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            @Nonnull Enumeration enumeration,
+            @Nonnull Klass owningKlass,
             boolean isKey,
             boolean isOptional)
     {
@@ -48,11 +50,11 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
         private EnumerationProperty enumerationProperty;
 
         public EnumerationPropertyBuilder(
-                ParserRuleContext elementContext,
-                ParserRuleContext nameContext,
-                String name,
-                EnumerationBuilder enumerationBuilder,
-                KlassBuilder owningKlassBuilder,
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ParserRuleContext nameContext,
+                @Nonnull String name,
+                @Nonnull EnumerationBuilder enumerationBuilder,
+                @Nonnull KlassBuilder owningKlassBuilder,
                 boolean isKey,
                 boolean isOptional)
         {

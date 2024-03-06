@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain;
 
+import javax.annotation.Nonnull;
+
 import org.antlr.v4.runtime.ParserRuleContext;
 
 /**
@@ -8,10 +10,10 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public abstract class DataType extends Type
 {
     protected DataType(
-            ParserRuleContext elementContext,
-            ParserRuleContext nameContext,
-            String name,
-            String packageName)
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            @Nonnull String packageName)
     {
         super(elementContext, nameContext, name, packageName);
     }
@@ -19,10 +21,10 @@ public abstract class DataType extends Type
     public abstract static class DataTypeBuilder<T extends DataType> extends TypeBuilder<T>
     {
         protected DataTypeBuilder(
-                ParserRuleContext elementContext,
-                ParserRuleContext nameContext,
-                String name,
-                String packageName)
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ParserRuleContext nameContext,
+                @Nonnull String name,
+                @Nonnull String packageName)
         {
             super(elementContext, nameContext, name, packageName);
         }

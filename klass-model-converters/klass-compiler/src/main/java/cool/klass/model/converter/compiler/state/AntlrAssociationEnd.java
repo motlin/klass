@@ -2,6 +2,8 @@ package cool.klass.model.converter.compiler.state;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.Association.AssociationBuilder;
@@ -25,8 +27,10 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
             null,
             Lists.immutable.empty());
 
+    @Nonnull
     private final AntlrClass                                 type;
     private final AntlrMultiplicity                          antlrMultiplicity;
+    @Nonnull
     private final ImmutableList<AntlrAssociationEndModifier> modifiers;
 
     private AntlrClass            owningClassState;
@@ -35,14 +39,14 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
     private AssociationEndBuilder associationEndBuilder;
 
     public AntlrAssociationEnd(
-            AssociationEndContext elementContext,
+            @Nonnull AssociationEndContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            String name,
-            ParserRuleContext nameContext,
-            AntlrClass type,
+            @Nonnull String name,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull AntlrClass type,
             AntlrMultiplicity antlrMultiplicity,
-            ImmutableList<AntlrAssociationEndModifier> modifiers)
+            @Nonnull ImmutableList<AntlrAssociationEndModifier> modifiers)
     {
         super(elementContext, compilationUnit, inferred, name, nameContext);
         this.type = Objects.requireNonNull(type);
@@ -50,6 +54,7 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
         this.modifiers = Objects.requireNonNull(modifiers);
     }
 
+    @Nonnull
     public AntlrClass getType()
     {
         return this.type;
@@ -60,6 +65,7 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
         return this.antlrMultiplicity;
     }
 
+    @Nonnull
     public ImmutableList<AntlrAssociationEndModifier> getModifiers()
     {
         return this.modifiers;
@@ -70,7 +76,7 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
         return this.opposite;
     }
 
-    public void setOpposite(AntlrAssociationEnd opposite)
+    public void setOpposite(@Nonnull AntlrAssociationEnd opposite)
     {
         this.opposite = Objects.requireNonNull(opposite);
     }
@@ -100,7 +106,7 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
         return this.owningClassState;
     }
 
-    public void setOwningClassState(AntlrClass owningClassState)
+    public void setOwningClassState(@Nonnull AntlrClass owningClassState)
     {
         this.owningClassState = Objects.requireNonNull(owningClassState);
     }
@@ -110,17 +116,19 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
         return this.modifiers.anySatisfy(AntlrAssociationEndModifier::isOwned);
     }
 
+    @Nonnull
     public AssociationBuilder getAssociationBuilder()
     {
         return Objects.requireNonNull(this.associationBuilder);
     }
 
+    @Nonnull
     public AssociationEndBuilder getAssociationEndBuilder()
     {
         return Objects.requireNonNull(this.associationEndBuilder);
     }
 
-    public void setOwningAssociation(AssociationBuilder associationBuilder)
+    public void setOwningAssociation(@Nonnull AssociationBuilder associationBuilder)
     {
         this.associationBuilder = Objects.requireNonNull(associationBuilder);
     }

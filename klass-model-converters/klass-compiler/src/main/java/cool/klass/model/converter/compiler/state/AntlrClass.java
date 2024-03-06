@@ -2,6 +2,9 @@ package cool.klass.model.converter.compiler.state;
 
 import java.util.LinkedHashMap;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.AssociationEnd.AssociationEndBuilder;
@@ -18,6 +21,7 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrClass extends AntlrPackageableElement
 {
+    @Nullable
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             null,
@@ -25,6 +29,7 @@ public class AntlrClass extends AntlrPackageableElement
             new ParserRuleContext(),
             "ambiguous class",
             null);
+    @Nullable
     public static final AntlrClass NOT_FOUND = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             null,
@@ -43,11 +48,11 @@ public class AntlrClass extends AntlrPackageableElement
     private KlassBuilder klassBuilder;
 
     public AntlrClass(
-            ClassDeclarationContext elementContext,
+            @Nonnull ClassDeclarationContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            ParserRuleContext nameContext,
-            String name,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
             String packageName)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, packageName);
@@ -58,7 +63,7 @@ public class AntlrClass extends AntlrPackageableElement
         return this.dataTypePropertyStates;
     }
 
-    public void enterDataTypeProperty(AntlrDataTypeProperty<?> antlrDataTypeProperty)
+    public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
     {
         this.dataTypePropertyStates.add(antlrDataTypeProperty);
         this.dataTypePropertiesByName.compute(
@@ -68,7 +73,7 @@ public class AntlrClass extends AntlrPackageableElement
                         : AntlrPrimitiveProperty.AMBIGUOUS);
     }
 
-    public void enterAssociationEnd(AntlrAssociationEnd antlrAssociationEnd)
+    public void enterAssociationEnd(@Nonnull AntlrAssociationEnd antlrAssociationEnd)
     {
         this.associationEndStates.add(antlrAssociationEnd);
         this.associationEndsByName.compute(
@@ -118,13 +123,13 @@ public class AntlrClass extends AntlrPackageableElement
         return this.klassBuilder;
     }
 
-    public void reportDuplicateTopLevelName(CompilerErrorHolder compilerErrorHolder)
+    public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.name);
         compilerErrorHolder.add(this.compilationUnit, message, this.nameContext);
     }
 
-    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
 
@@ -170,6 +175,7 @@ public class AntlrClass extends AntlrPackageableElement
         return topLevelNames.toImmutable();
     }
 
+    @Nonnull
     @Override
     public ClassDeclarationContext getElementContext()
     {

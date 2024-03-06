@@ -2,6 +2,8 @@ package cool.klass.model.converter.compiler.state;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.DataType;
@@ -12,17 +14,18 @@ import org.eclipse.collections.api.list.ImmutableList;
 public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrProperty<T>
 {
     protected final boolean                              isOptional;
+    @Nonnull
     protected final ImmutableList<AntlrPropertyModifier> modifiers;
     protected final AntlrClass                           owningClassState;
 
     protected AntlrDataTypeProperty(
-            ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            String name,
-            ParserRuleContext nameContext,
+            @Nonnull String name,
+            @Nonnull ParserRuleContext nameContext,
             boolean isOptional,
-            ImmutableList<AntlrPropertyModifier> modifiers,
+            @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
             AntlrClass owningClassState)
     {
         super(elementContext, compilationUnit, inferred, name, nameContext);
@@ -41,6 +44,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     @Override
     public abstract DataTypePropertyBuilder<T, ?> build();
 
+    @Nonnull
     public abstract DataTypePropertyBuilder<T, ?> getPropertyBuilder();
 
     @Override

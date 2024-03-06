@@ -2,6 +2,9 @@ package cool.klass.model.converter.compiler.state;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.domain.Enumeration;
 import cool.klass.model.meta.domain.EnumerationProperty.EnumerationPropertyBuilder;
@@ -12,6 +15,7 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
 {
+    @Nullable
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
             new EnumerationPropertyContext(null, -1),
             null,
@@ -24,20 +28,21 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
             AntlrEnumeration.NOT_FOUND);
 
     // TODO: Check that it's not NOT_FOUND
+    @Nonnull
     private final AntlrEnumeration antlrEnumeration;
 
     private EnumerationPropertyBuilder enumerationPropertyBuilder;
 
     public AntlrEnumerationProperty(
-            EnumerationPropertyContext elementContext,
+            @Nonnull EnumerationPropertyContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            ParserRuleContext nameContext,
-            String name,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
             boolean isOptional,
-            ImmutableList<AntlrPropertyModifier> modifiers,
+            @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
             AntlrClass owningClassState,
-            AntlrEnumeration antlrEnumeration)
+            @Nonnull AntlrEnumeration antlrEnumeration)
     {
         super(elementContext, compilationUnit, inferred, name, nameContext, isOptional, modifiers, owningClassState);
         // TODO: is this nullable?
@@ -69,6 +74,8 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
         return this.enumerationPropertyBuilder;
     }
 
+    @Nonnull
+    @Override
     public EnumerationPropertyBuilder getPropertyBuilder()
     {
         return Objects.requireNonNull(this.enumerationPropertyBuilder);

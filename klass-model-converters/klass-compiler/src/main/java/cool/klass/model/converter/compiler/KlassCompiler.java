@@ -3,6 +3,9 @@ package cool.klass.model.converter.compiler;
 import java.util.IdentityHashMap;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.phase.AssociationPhase;
 import cool.klass.model.converter.compiler.phase.ClassPhase;
@@ -35,7 +38,8 @@ public class KlassCompiler
         this.compilerErrorHolder = compilerErrorHolder;
     }
 
-    public DomainModel compile(Set<String> classpathLocations)
+    @Nullable
+    public DomainModel compile(@Nonnull Set<String> classpathLocations)
     {
         MutableSet<CompilationUnit> compilationUnits =
                 SetAdapter.adapt(classpathLocations).collect(CompilationUnit::createFromClasspathLocation);
@@ -43,12 +47,14 @@ public class KlassCompiler
         return this.compile(compilationUnits);
     }
 
+    @Nullable
     public DomainModel compile(CompilationUnit... compilationUnits)
     {
         return this.compile(Sets.mutable.with(compilationUnits));
     }
 
-    public DomainModel compile(MutableSet<CompilationUnit> compilationUnits)
+    @Nullable
+    public DomainModel compile(@Nonnull MutableSet<CompilationUnit> compilationUnits)
     {
         MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext =
                 compilationUnits.groupByUniqueKey(
@@ -112,7 +118,7 @@ public class KlassCompiler
 
     protected void executeCompilerPhase(
             KlassListener compilerPhase,
-            MutableSet<CompilationUnit> compilationUnits)
+            @Nonnull MutableSet<CompilationUnit> compilationUnits)
     {
         ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
         for (CompilationUnit compilationUnit : compilationUnits)

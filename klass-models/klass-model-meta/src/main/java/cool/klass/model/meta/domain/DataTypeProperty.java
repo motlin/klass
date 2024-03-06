@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.DataType.DataTypeBuilder;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -11,11 +13,11 @@ public abstract class DataTypeProperty<T extends DataType> extends Property<T>
     private final boolean optional;
 
     protected DataTypeProperty(
-            ParserRuleContext elementContext,
-            ParserRuleContext nameContext,
-            String name,
-            T dataType,
-            Klass owningKlass,
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            @Nonnull T dataType,
+            @Nonnull Klass owningKlass,
             boolean isKey,
             boolean isOptional)
     {
@@ -46,11 +48,11 @@ public abstract class DataTypeProperty<T extends DataType> extends Property<T>
         protected final boolean isOptional;
 
         protected DataTypePropertyBuilder(
-                ParserRuleContext elementContext,
-                ParserRuleContext nameContext,
-                String name,
-                TB typeBuilder,
-                KlassBuilder owningKlassBuilder,
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ParserRuleContext nameContext,
+                @Nonnull String name,
+                @Nonnull TB typeBuilder,
+                @Nonnull KlassBuilder owningKlassBuilder,
                 boolean isKey,
                 boolean isOptional)
         {

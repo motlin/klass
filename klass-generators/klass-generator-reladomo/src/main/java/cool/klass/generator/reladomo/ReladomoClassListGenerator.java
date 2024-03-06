@@ -3,6 +3,8 @@ package cool.klass.generator.reladomo;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import javax.annotation.Nonnull;
+
 import com.gs.fw.common.mithra.generator.metamodel.Mithra;
 import com.gs.fw.common.mithra.generator.metamodel.MithraGeneratorMarshaller;
 import com.gs.fw.common.mithra.generator.metamodel.MithraObjectResourceType;
@@ -17,7 +19,7 @@ public class ReladomoClassListGenerator extends AbstractReladomoGenerator
         super(domainModel);
     }
 
-    public void writeClassListFile(Path path) throws IOException
+    public void writeClassListFile(@Nonnull Path path) throws IOException
     {
         MithraGeneratorMarshaller mithraGeneratorMarshaller = new MithraGeneratorMarshaller();
         mithraGeneratorMarshaller.setIndent(true);
@@ -31,6 +33,7 @@ public class ReladomoClassListGenerator extends AbstractReladomoGenerator
         this.printStringToFile(path, xmlString);
     }
 
+    @Nonnull
     private Mithra generateObjectResources()
     {
         ImmutableList<MithraObjectResourceType> mithraObjectResources = this.domainModel
@@ -43,6 +46,7 @@ public class ReladomoClassListGenerator extends AbstractReladomoGenerator
         return mithra;
     }
 
+    @Nonnull
     private MithraObjectResourceType getMithraObjectResource(String className)
     {
         MithraObjectResourceType mithraObjectResource = new MithraObjectResourceType();
