@@ -49,7 +49,7 @@ public abstract class AntlrExpressionValue extends AntlrElement
 
     public abstract ImmutableList<AntlrType> getPossibleTypes();
 
-    public void resolveServiceVariables(OrderedMap<String, AntlrParameter<?>> formalParametersByName)
+    public void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName)
     {
         // Intentionally blank
     }

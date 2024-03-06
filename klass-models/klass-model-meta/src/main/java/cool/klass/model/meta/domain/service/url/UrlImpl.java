@@ -9,7 +9,7 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.parameter.Parameter;
 import cool.klass.model.meta.domain.api.service.Service;
 import cool.klass.model.meta.domain.api.service.url.Url;
-import cool.klass.model.meta.domain.parameter.AbstractParameter.AbstractParameterBuilder;
+import cool.klass.model.meta.domain.parameter.ParameterImpl.ParameterBuilder;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
 import cool.klass.model.meta.domain.service.ServiceImpl.ServiceBuilder;
@@ -119,11 +119,11 @@ public final class UrlImpl extends AbstractElement implements Url
         @Nonnull
         private final ServiceGroupBuilder serviceGroupBuilder;
 
-        private ImmutableList<ElementBuilder<?>>           pathSegmentBuilders;
-        private ImmutableList<AbstractParameterBuilder<?>> parameterBuilders;
-        private ImmutableList<AbstractParameterBuilder<?>> queryParameterBuilders;
-        private ImmutableList<AbstractParameterBuilder<?>> pathParameterBuilders;
-        private ImmutableList<ServiceBuilder>              services;
+        private ImmutableList<ElementBuilder<?>> pathSegmentBuilders;
+        private ImmutableList<ParameterBuilder>  parameterBuilders;
+        private ImmutableList<ParameterBuilder>  queryParameterBuilders;
+        private ImmutableList<ParameterBuilder>  pathParameterBuilders;
+        private ImmutableList<ServiceBuilder>    serviceBuilders;
 
         public UrlBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -139,24 +139,24 @@ public final class UrlImpl extends AbstractElement implements Url
             this.pathSegmentBuilders = Objects.requireNonNull(pathSegmentBuilders);
         }
 
-        public void setParameterBuilders(@Nonnull ImmutableList<AbstractParameterBuilder<?>> parameterBuilders)
+        public void setParameterBuilders(@Nonnull ImmutableList<ParameterBuilder> parameterBuilders)
         {
             this.parameterBuilders = Objects.requireNonNull(parameterBuilders);
         }
 
-        public void setQueryParameterBuilders(@Nonnull ImmutableList<AbstractParameterBuilder<?>> queryParameterBuilders)
+        public void setQueryParameterBuilders(@Nonnull ImmutableList<ParameterBuilder> queryParameterBuilders)
         {
             this.queryParameterBuilders = Objects.requireNonNull(queryParameterBuilders);
         }
 
-        public void setPathParameterBuilders(@Nonnull ImmutableList<AbstractParameterBuilder<?>> pathParameterBuilders)
+        public void setPathParameterBuilders(@Nonnull ImmutableList<ParameterBuilder> pathParameterBuilders)
         {
             this.pathParameterBuilders = Objects.requireNonNull(pathParameterBuilders);
         }
 
-        public void setServices(@Nonnull ImmutableList<ServiceBuilder> services)
+        public void setServiceBuilders(@Nonnull ImmutableList<ServiceBuilder> serviceBuilders)
         {
-            this.services = Objects.requireNonNull(services);
+            this.serviceBuilders = Objects.requireNonNull(serviceBuilders);
         }
 
         @Override
@@ -170,11 +170,11 @@ public final class UrlImpl extends AbstractElement implements Url
         protected void buildChildren()
         {
             this.element.setUrlPathSegments(this.pathSegmentBuilders.collect(ElementBuilder::build));
-            this.element.setQueryParameters(this.queryParameterBuilders.collect(AbstractParameterBuilder::build));
-            this.element.setPathParameters(this.pathParameterBuilders.collect(AbstractParameterBuilder::getElement));
-            this.element.setParameters(this.parameterBuilders.collect(AbstractParameterBuilder::getElement));
+            this.element.setQueryParameters(this.queryParameterBuilders.collect(ParameterBuilder::build));
+            this.element.setPathParameters(this.pathParameterBuilders.collect(ParameterBuilder::getElement));
+            this.element.setParameters(this.parameterBuilders.collect(ParameterBuilder::getElement));
 
-            ImmutableList<Service> services = this.services.collect(ServiceBuilder::build);
+            ImmutableList<Service> services = this.serviceBuilders.collect(ServiceBuilder::build);
             this.element.setServices(services);
         }
     }

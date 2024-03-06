@@ -10,9 +10,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
-import cool.klass.model.converter.compiler.state.parameter.AntlrEnumerationParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
-import cool.klass.model.converter.compiler.state.parameter.AntlrPrimitiveParameter;
 import cool.klass.model.meta.domain.value.VariableReferenceImpl.VariableReferenceBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -25,7 +23,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
     private final String variableName;
 
     @Nullable
-    private AntlrParameter<?> antlrParameter;
+    private AntlrParameter antlrParameter;
 
     public AntlrVariableReference(
             @Nonnull ParserRuleContext elementContext,
@@ -52,14 +50,13 @@ public class AntlrVariableReference extends AntlrExpressionValue
     public void reportErrors(
             @Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        if (this.antlrParameter == AntlrEnumerationParameter.NOT_FOUND)
+        if (this.antlrParameter == AntlrParameter.NOT_FOUND)
         {
             String message = String.format("ERR_VAR_REF: Cannot find parameter '%s'.", this.elementContext.getText());
             compilerErrorHolder.add(message, this);
             return;
         }
-        if (this.antlrParameter == AntlrPrimitiveParameter.AMBIGUOUS
-                || this.antlrParameter == AntlrEnumerationParameter.AMBIGUOUS)
+        if (this.antlrParameter == AntlrParameter.AMBIGUOUS)
         {
             throw new AssertionError();
         }
@@ -78,10 +75,10 @@ public class AntlrVariableReference extends AntlrExpressionValue
     }
 
     @Override
-    public void resolveServiceVariables(@Nonnull OrderedMap<String, AntlrParameter<?>> formalParametersByName)
+    public void resolveServiceVariables(@Nonnull OrderedMap<String, AntlrParameter> formalParametersByName)
     {
         this.antlrParameter = formalParametersByName.getIfAbsentValue(
                 this.variableName,
-                AntlrEnumerationParameter.NOT_FOUND);
+                AntlrParameter.NOT_FOUND);
     }
 }

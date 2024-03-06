@@ -8,16 +8,14 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.phase.criteria.CriteriaVisitor;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
-import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
+import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
-import cool.klass.model.converter.compiler.state.parameter.AntlrEnumerationParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterModifier;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
-import cool.klass.model.converter.compiler.state.parameter.AntlrPrimitiveParameter;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
@@ -150,30 +148,11 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
             return;
         }
 
-        IdentifierContext    identifier           = ctx.identifier();
         PrimitiveTypeContext primitiveTypeContext = ctx.primitiveType();
-        MultiplicityContext  multiplicityContext  = ctx.multiplicity();
+        PrimitiveType        primitiveType        = PrimitiveType.byPrettyName(primitiveTypeContext.getText());
+        AntlrType            primitiveTypeState   = AntlrPrimitiveType.valueOf(primitiveType);
 
-        PrimitiveType      primitiveType      = PrimitiveType.byPrettyName(primitiveTypeContext.getText());
-        AntlrPrimitiveType primitiveTypeState = AntlrPrimitiveType.valueOf(primitiveType);
-
-        AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
-                multiplicityContext,
-                this.currentCompilationUnit,
-                false);
-
-        AntlrPrimitiveParameter primitiveParameterState = new AntlrPrimitiveParameter(
-                ctx,
-                this.currentCompilationUnit,
-                false,
-                identifier,
-                identifier.getText(),
-                this.parameterOwnerState.getNumParameters() + 1,
-                primitiveTypeState,
-                multiplicityState,
-                this.parameterOwnerState);
-        this.parameterState = primitiveParameterState;
-        this.parameterOwnerState.enterPrimitiveParameterDeclaration(primitiveParameterState);
+        this.enterParameterDeclaration(ctx, primitiveTypeState, ctx.identifier(), ctx.multiplicity());
     }
 
     @Override
@@ -190,37 +169,17 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
             return;
         }
 
-        IdentifierContext           identifier                  = ctx.identifier();
         EnumerationReferenceContext enumerationReferenceContext = ctx.enumerationReference();
-        MultiplicityContext         multiplicityContext         = ctx.multiplicity();
+        AntlrType enumerationState = this.domainModelState.getEnumerationByName(
+                enumerationReferenceContext.getText());
 
-        AntlrEnumeration enumerationState = this.domainModelState.getEnumerationByName(enumerationReferenceContext.getText());
-
-        AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
-                multiplicityContext,
-                this.currentCompilationUnit,
-                false);
-
-        AntlrEnumerationParameter enumerationParameterState = new AntlrEnumerationParameter(
-                ctx,
-                this.currentCompilationUnit,
-                false,
-                identifier,
-                identifier.getText(),
-                this.parameterOwnerState.getNumParameters() + 1,
-                enumerationState,
-                multiplicityState,
-                this.parameterOwnerState);
-        this.parameterState = enumerationParameterState;
-
-        this.parameterOwnerState.enterEnumerationParameterDeclaration(enumerationParameterState);
+        this.enterParameterDeclaration(ctx, enumerationState, ctx.identifier(), ctx.multiplicity());
     }
 
     @Override
     public void exitEnumerationParameterDeclaration(EnumerationParameterDeclarationContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitEnumerationParameterDeclaration() not implemented yet");
+        this.parameterState = null;
     }
 
     @Override
@@ -249,5 +208,29 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
                 ctx.getText(),
                 ordinal);
         this.parameterState.enterParameterModifier(parameterModifierState);
+    }
+
+    private void enterParameterDeclaration(
+            @Nonnull ParserRuleContext ctx,
+            AntlrType typeState,
+            IdentifierContext identifierContext, MultiplicityContext multiplicityContext)
+    {
+        AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
+                multiplicityContext,
+                this.currentCompilationUnit,
+                false);
+
+        AntlrParameter parameterState = new AntlrParameter(
+                ctx,
+                this.currentCompilationUnit,
+                false,
+                identifierContext,
+                identifierContext.getText(),
+                this.parameterOwnerState.getNumParameters() + 1,
+                typeState,
+                multiplicityState,
+                (IAntlrElement) this.parameterOwnerState);
+        this.parameterState = parameterState;
+        this.parameterOwnerState.enterParameterDeclaration(parameterState);
     }
 }

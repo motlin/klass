@@ -104,7 +104,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void resolveServiceVariables(OrderedMap<String, AntlrParameter<?>> formalParametersByName)
+    public void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName)
     {
         this.sourceValue.resolveServiceVariables(formalParametersByName);
         this.targetValue.resolveServiceVariables(formalParametersByName);

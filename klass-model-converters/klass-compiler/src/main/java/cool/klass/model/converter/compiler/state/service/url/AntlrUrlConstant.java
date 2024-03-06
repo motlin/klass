@@ -8,13 +8,12 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.state.AntlrBuildableElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.service.url.UrlConstantImpl.UrlConstantBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrUrlConstant extends AntlrNamedElement implements AntlrBuildableElement
+public class AntlrUrlConstant extends AntlrNamedElement implements IAntlrElement
 {
     public AntlrUrlConstant(
             @Nonnull ParserRuleContext elementContext,

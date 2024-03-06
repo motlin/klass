@@ -6,9 +6,5 @@ public interface AntlrParameterOwner
 {
     int getNumParameters();
 
-    void enterParameterDeclaration(@Nonnull AntlrParameter<?> parameterState);
-
-    void enterPrimitiveParameterDeclaration(@Nonnull AntlrPrimitiveParameter primitiveParameterState);
-
-    void enterEnumerationParameterDeclaration(@Nonnull AntlrEnumerationParameter enumerationParameterState);
+    void enterParameterDeclaration(@Nonnull AntlrParameter parameterState);
 }

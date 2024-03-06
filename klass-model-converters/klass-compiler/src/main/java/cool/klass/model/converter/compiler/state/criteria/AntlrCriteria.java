@@ -52,7 +52,7 @@ public abstract class AntlrCriteria extends AntlrElement
             CompilerErrorHolder compilerErrorHolder,
             ImmutableList<ParserRuleContext> parserRuleContexts);
 
-    public abstract void resolveServiceVariables(OrderedMap<String, AntlrParameter<?>> formalParametersByName);
+    public abstract void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName);
 
     public abstract void resolveTypes();
 }

@@ -87,6 +87,12 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
         return this.primitiveType;
     }
 
+    @Override
+    public PrimitiveType getElementBuilder()
+    {
+        return this.primitiveType;
+    }
+
     public boolean isTemporal()
     {
         return this == TEMPORAL_INSTANT || this == TEMPORAL_RANGE;

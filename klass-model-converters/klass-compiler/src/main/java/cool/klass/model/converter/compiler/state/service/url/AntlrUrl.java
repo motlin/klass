@@ -12,17 +12,14 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
-import cool.klass.model.converter.compiler.state.parameter.AntlrEnumerationParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
-import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
-import cool.klass.model.converter.compiler.state.parameter.AntlrPrimitiveParameter;
 import cool.klass.model.converter.compiler.state.property.ParameterHolder;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
 import cool.klass.model.converter.compiler.state.service.AntlrVerb;
 import cool.klass.model.meta.domain.AbstractElement.ElementBuilder;
 import cool.klass.model.meta.domain.api.service.Verb;
-import cool.klass.model.meta.domain.parameter.AbstractParameter.AbstractParameterBuilder;
+import cool.klass.model.meta.domain.parameter.ParameterImpl.ParameterBuilder;
 import cool.klass.model.meta.domain.service.ServiceImpl.ServiceBuilder;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
@@ -36,27 +33,32 @@ import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrUrl extends AntlrElement implements AntlrParameterOwner
+public class AntlrUrl extends AntlrElement
 {
     @Nonnull
-    public static final  AntlrUrl                                                   AMBIGUOUS         = new AntlrUrl(
+    public static final AntlrUrl AMBIGUOUS = new AntlrUrl(
             new ParserRuleContext(),
             null,
             true,
             AntlrServiceGroup.AMBIGUOUS);
-    private static final Object                                                     SENTINEL          = new Object();
-    private final        MutableList<IAntlrElement>                                 urlPathSegments   = Lists.mutable.empty();
-    private final        ParameterHolder                                            urlParameters     = new ParameterHolder();
-    private final        ParameterHolder                                            pathParameters    = new ParameterHolder();
-    private final        ParameterHolder                                            queryParameters   = new ParameterHolder();
-    private final        MutableList<AntlrService>                                  serviceStates     = Lists.mutable.empty();
-    private final        MutableOrderedMap<Verb, AntlrService>                      servicesByVerb    = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
-    private final        MutableOrderedMap<ServiceDeclarationContext, AntlrService> servicesByContext =
+
+    private static final Object SENTINEL = new Object();
+
+    private final MutableList<IAntlrElement> urlPathSegments = Lists.mutable.empty();
+
+    private final ParameterHolder urlParameters   = new ParameterHolder();
+    private final ParameterHolder pathParameters  = new ParameterHolder();
+    private final ParameterHolder queryParameters = new ParameterHolder();
+
+    private final MutableList<AntlrService>                                  serviceStates     = Lists.mutable.empty();
+    private final MutableOrderedMap<Verb, AntlrService>                      servicesByVerb    =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<ServiceDeclarationContext, AntlrService> servicesByContext =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
     @Nonnull
-    private final        AntlrServiceGroup                                          serviceGroup;
-    private              UrlBuilder                                                 urlBuilder;
+    private final AntlrServiceGroup serviceGroup;
+    private       UrlBuilder        urlBuilder;
 
     public AntlrUrl(
             @Nonnull ParserRuleContext elementContext,
@@ -112,14 +114,14 @@ public class AntlrUrl extends AntlrElement implements AntlrParameterOwner
         this.urlPathSegments.add(antlrUrlConstant);
     }
 
-    public void enterPathParameterDeclaration(@Nonnull AntlrParameter<?> pathParameterState)
+    public void enterPathParameterDeclaration(@Nonnull AntlrParameter pathParameterState)
     {
         this.urlPathSegments.add(pathParameterState);
         this.urlParameters.enterParameterDeclaration(pathParameterState);
         this.pathParameters.enterParameterDeclaration(pathParameterState);
     }
 
-    public void enterQueryParameterDeclaration(@Nonnull AntlrParameter<?> queryParameterState)
+    public void enterQueryParameterDeclaration(@Nonnull AntlrParameter queryParameterState)
     {
         this.urlParameters.enterParameterDeclaration(queryParameterState);
         this.queryParameters.enterParameterDeclaration(queryParameterState);
@@ -158,7 +160,7 @@ public class AntlrUrl extends AntlrElement implements AntlrParameterOwner
 
     private void reportParameterErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        for (AntlrParameter<?> parameterState : this.urlParameters.getParameterStates())
+        for (AntlrParameter parameterState : this.urlParameters.getParameterStates())
         {
             parameterState.reportNameErrors(compilerErrorHolder);
         }
@@ -218,7 +220,7 @@ public class AntlrUrl extends AntlrElement implements AntlrParameterOwner
     }
 
     @Nonnull
-    public OrderedMap<String, AntlrParameter<?>> getFormalParametersByName()
+    public OrderedMap<String, AntlrParameter> getFormalParametersByName()
     {
         return this.urlParameters.getParameterStatesByName();
     }
@@ -261,28 +263,28 @@ public class AntlrUrl extends AntlrElement implements AntlrParameterOwner
                 .toImmutable();
         this.urlBuilder.setPathSegments(pathSegments);
 
-        ImmutableList<AbstractParameterBuilder<?>> queryParameters = (ImmutableList<AbstractParameterBuilder<?>>) (ImmutableList<?>) this.queryParameters
+        ImmutableList<ParameterBuilder> queryParameterBuilders = this.queryParameters
                 .getParameterStates()
                 .collect(AntlrParameter::build)
                 .toImmutable();
-        this.urlBuilder.setQueryParameterBuilders(queryParameters);
+        this.urlBuilder.setQueryParameterBuilders(queryParameterBuilders);
 
-        ImmutableList<AbstractParameterBuilder<?>> pathParameters = (ImmutableList<AbstractParameterBuilder<?>>) (ImmutableList<?>) this.pathParameters
+        ImmutableList<ParameterBuilder> pathParameterBuilders = this.pathParameters
                 .getParameterStates()
                 .collect(AntlrParameter::getElementBuilder)
                 .toImmutable();
-        this.urlBuilder.setPathParameterBuilders(pathParameters);
+        this.urlBuilder.setPathParameterBuilders(pathParameterBuilders);
 
-        ImmutableList<AbstractParameterBuilder<?>> parameterBuilders = (ImmutableList<AbstractParameterBuilder<?>>) (ImmutableList<?>) this.urlParameters
+        ImmutableList<ParameterBuilder> parameterBuilders = this.urlParameters
                 .getParameterStates()
                 .collect(AntlrParameter::getElementBuilder)
                 .toImmutable();
         this.urlBuilder.setParameterBuilders(parameterBuilders);
 
-        ImmutableList<ServiceBuilder> services = this.serviceStates
+        ImmutableList<ServiceBuilder> serviceBuilders = this.serviceStates
                 .collect(AntlrService::build)
                 .toImmutable();
-        this.urlBuilder.setServices(services);
+        this.urlBuilder.setServiceBuilders(serviceBuilders);
 
         return this.urlBuilder;
     }
@@ -295,9 +297,9 @@ public class AntlrUrl extends AntlrElement implements AntlrParameterOwner
             return antlrUrlConstant.build();
         }
 
-        if (element instanceof AntlrParameter<?>)
+        if (element instanceof AntlrParameter)
         {
-            AntlrParameter<?> antlrParameter = (AntlrParameter<?>) element;
+            AntlrParameter antlrParameter = (AntlrParameter) element;
             return antlrParameter.build();
         }
 
@@ -308,33 +310,5 @@ public class AntlrUrl extends AntlrElement implements AntlrParameterOwner
     public UrlBuilder getUrlBuilder()
     {
         return Objects.requireNonNull(this.urlBuilder);
-    }
-
-    @Override
-    public int getNumParameters()
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getNumParameters() not implemented yet");
-    }
-
-    @Override
-    public void enterParameterDeclaration(@Nonnull AntlrParameter<?> parameterState)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterParameterDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void enterPrimitiveParameterDeclaration(@Nonnull AntlrPrimitiveParameter primitiveParameterState)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterPrimitiveParameterDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void enterEnumerationParameterDeclaration(@Nonnull AntlrEnumerationParameter enumerationParameterState)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterEnumerationParameterDeclaration() not implemented yet");
     }
 }

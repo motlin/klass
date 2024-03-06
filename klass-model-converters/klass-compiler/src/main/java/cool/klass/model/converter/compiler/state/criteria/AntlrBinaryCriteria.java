@@ -57,7 +57,7 @@ public abstract class AntlrBinaryCriteria extends AntlrCriteria
     }
 
     @Override
-    public final void resolveServiceVariables(OrderedMap<String, AntlrParameter<?>> formalParametersByName)
+    public final void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName)
     {
         this.left.resolveServiceVariables(formalParametersByName);
         this.right.resolveServiceVariables(formalParametersByName);

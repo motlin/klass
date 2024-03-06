@@ -13,10 +13,8 @@ import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
-import cool.klass.model.converter.compiler.state.parameter.AntlrEnumerationParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
-import cool.klass.model.converter.compiler.state.parameter.AntlrPrimitiveParameter;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.ParameterizedPropertyImpl.ParameterizedPropertyBuilder;
@@ -101,21 +99,24 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
     }
 
     @Override
-    public void enterParameterDeclaration(@Nonnull AntlrParameter<?> parameterState)
+    public void enterParameterDeclaration(@Nonnull AntlrParameter parameterState)
     {
         this.parameterHolder.enterParameterDeclaration(parameterState);
     }
 
-    @Override
-    public void enterPrimitiveParameterDeclaration(@Nonnull AntlrPrimitiveParameter primitiveParameterState)
+    @Nonnull
+    public AntlrCriteria getCriteria()
     {
-        this.parameterHolder.enterPrimitiveParameterDeclaration(primitiveParameterState);
+        return Objects.requireNonNull(this.criteriaState);
     }
 
-    @Override
-    public void enterEnumerationParameterDeclaration(@Nonnull AntlrEnumerationParameter enumerationParameterState)
+    public void setCriteria(@Nonnull AntlrCriteria criteria)
     {
-        this.parameterHolder.enterEnumerationParameterDeclaration(enumerationParameterState);
+        if (this.criteriaState != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.criteriaState = Objects.requireNonNull(criteria);
     }
 
     @Nonnull
@@ -148,12 +149,6 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
         return this.parameterizedPropertyBuilder;
     }
 
-    @Nonnull
-    public ParameterizedPropertyBuilder getParameterizedPropertyBuilder()
-    {
-        return Objects.requireNonNull(this.parameterizedPropertyBuilder);
-    }
-
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: Check that there are no duplicate modifiers
@@ -162,16 +157,5 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
         {
             this.orderByState.ifPresent(o -> o.reportErrors(compilerErrorHolder));
         }
-    }
-
-    @Nonnull
-    public AntlrCriteria getCriteria()
-    {
-        return this.criteriaState;
-    }
-
-    public void setCriteria(@Nonnull AntlrCriteria criteria)
-    {
-        this.criteriaState = criteria;
     }
 }

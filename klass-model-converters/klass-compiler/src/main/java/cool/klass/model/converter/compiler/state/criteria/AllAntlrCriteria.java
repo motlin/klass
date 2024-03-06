@@ -46,7 +46,7 @@ public class AllAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void resolveServiceVariables(OrderedMap<String, AntlrParameter<?>> formalParametersByName)
+    public void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName)
     {
         // Intentionally blank
     }
