@@ -234,7 +234,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         if (missingProperties.notEmpty())
         {
             String message = String.format(
-                    "ERR_PRJ_DTP: Expected write projection '%s' to contain all required properties but was missing %s.",
+                    "ERR_WRT_DTP: Expected write projection '%s' to contain all required properties but was missing %s.",
                     projection.getName(),
                     missingProperties.collect(AntlrProperty::getName).makeString());
 

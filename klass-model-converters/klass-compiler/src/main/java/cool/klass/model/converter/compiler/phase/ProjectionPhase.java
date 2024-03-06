@@ -53,6 +53,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
     {
         AntlrProjection antlrProjection = (AntlrProjection) this.elementStack.pop();
         this.compilerState.getDomainModelState().exitProjectionDeclaration(antlrProjection);
+
         super.exitProjectionDeclaration(ctx);
     }
 
@@ -60,6 +61,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
     public void enterProjectionPrimitiveMember(@Nonnull ProjectionPrimitiveMemberContext ctx)
     {
         super.enterProjectionPrimitiveMember(ctx);
+
         AntlrProjectionParent antlrProjectionParent = this.elementStack.peek();
 
         IdentifierContext nameContext      = ctx.identifier();
@@ -90,6 +92,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
     public void enterProjectionAssociationEnd(@Nonnull ProjectionAssociationEndContext ctx)
     {
         super.enterProjectionAssociationEnd(ctx);
+
         AntlrProjectionParent antlrProjectionParent = this.elementStack.peek();
 
         IdentifierContext nameContext = ctx.identifier();
@@ -106,7 +109,8 @@ public class ProjectionPhase extends AbstractCompilerPhase
                 name,
                 antlrProjectionParent.getNumChildren() + 1,
                 antlrAssociationEnd.getType(),
-                antlrProjectionParent, antlrAssociationEnd);
+                antlrProjectionParent,
+                antlrAssociationEnd);
 
         antlrProjectionParent.enterAntlrProjectionMember(antlrProjectionAssociationEnd);
 

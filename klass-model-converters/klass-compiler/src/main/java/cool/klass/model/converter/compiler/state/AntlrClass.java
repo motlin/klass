@@ -69,6 +69,7 @@ public class AntlrClass extends AntlrClassifier
                     + ".enterParameterizedProperty() not implemented yet");
         }
     };
+
     @Nonnull
     public static final AntlrClass NOT_FOUND = new AntlrClass(
             new ClassDeclarationContext(null, -1),

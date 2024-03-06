@@ -40,8 +40,8 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
             "not found projection",
             -1,
             AntlrClass.NOT_FOUND,
-            AntlrProjection.AMBIGUOUS,
-            AntlrAssociationEnd.AMBIGUOUS);
+            AntlrProjection.NOT_FOUND,
+            AntlrAssociationEnd.NOT_FOUND);
 
     @Nonnull
     private final AntlrProjectionParent antlrProjectionParent;
@@ -109,6 +109,17 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
+        if (this.antlrProjectionParent.getKlass() == AntlrClass.NOT_FOUND)
+        {
+            return;
+        }
+
+        if (this.associationEnd == AntlrAssociationEnd.NOT_FOUND)
+        {
+            String message = String.format("ERR_PAE_NFD: Not found: '%s'.", this.name);
+            compilerErrorHolder.add(message, this);
+        }
+
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
 
         for (AntlrProjectionElement projectionMember : this.children)

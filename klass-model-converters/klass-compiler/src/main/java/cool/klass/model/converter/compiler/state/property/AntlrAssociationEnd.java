@@ -49,8 +49,9 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
             AbstractElement.NO_CONTEXT,
             "not found association end",
             -1,
+            // TODO: Not found here, instead of ambiguous
             AntlrAssociation.AMBIGUOUS,
-            AntlrClass.AMBIGUOUS,
+            AntlrClass.NOT_FOUND,
             null);
 
     @Nonnull
