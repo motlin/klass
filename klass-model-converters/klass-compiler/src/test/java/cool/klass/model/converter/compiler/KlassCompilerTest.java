@@ -2956,12 +2956,6 @@ public class KlassCompilerTest
         }
     }
 
-    private DomainModel compile(@Nonnull String sourceCodeText)
-    {
-        CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
-        return this.compiler.compile(compilationUnit);
-    }
-
     @Test
     public void serviceProjectionType()
     {
