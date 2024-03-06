@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
@@ -39,25 +39,25 @@ public class AntlrParameterizedProperty
             AntlrClass.AMBIGUOUS);
 
     // @Nonnull
-    // private final ImmutableList<AntlrParameterizedPropertyModifier> parameterizedPropertyModifierStates;
+    // private final ImmutableList<AntlrParameterizedPropertyModifier> parameterizedPropertyModifiers;
     @Nonnull
-    private final AntlrClass owningClassState;
+    private final AntlrClass owningClass;
 
     private final ParameterHolder parameterHolder = new ParameterHolder();
 
     @Nullable
     private ParameterizedPropertyBuilder parameterizedPropertyBuilder;
-    private AntlrCriteria                criteriaState;
+    private AntlrCriteria                criteria;
 
     public AntlrParameterizedProperty(
             @Nonnull ParameterizedPropertyContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
-            @Nonnull AntlrClass owningClassState)
+            @Nonnull AntlrClass owningClass)
     {
         super(elementContext, compilationUnit, ordinal, nameContext);
-        this.owningClassState = Objects.requireNonNull(owningClassState);
+        this.owningClass = Objects.requireNonNull(owningClass);
     }
 
     @Nonnull
@@ -71,7 +71,7 @@ public class AntlrParameterizedProperty
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.of(this.owningClassState);
+        return Optional.of(this.owningClass);
     }
 
     @Override
@@ -81,9 +81,9 @@ public class AntlrParameterizedProperty
     }
 
     @Override
-    public void enterParameterDeclaration(@Nonnull AntlrParameter parameterState)
+    public void enterParameterDeclaration(@Nonnull AntlrParameter parameter)
     {
-        this.parameterHolder.enterParameterDeclaration(parameterState);
+        this.parameterHolder.enterParameterDeclaration(parameter);
     }
 
     @Override
@@ -95,16 +95,16 @@ public class AntlrParameterizedProperty
     @Nonnull
     public AntlrCriteria getCriteria()
     {
-        return Objects.requireNonNull(this.criteriaState);
+        return Objects.requireNonNull(this.criteria);
     }
 
     public void setCriteria(@Nonnull AntlrCriteria criteria)
     {
-        if (this.criteriaState != null)
+        if (this.criteria != null)
         {
             throw new IllegalStateException();
         }
-        this.criteriaState = Objects.requireNonNull(criteria);
+        this.criteria = Objects.requireNonNull(criteria);
     }
 
     @Nonnull
@@ -118,7 +118,7 @@ public class AntlrParameterizedProperty
 
         /*
         ImmutableList<ParameterizedPropertyModifierBuilder> parameterizedPropertyModifierBuilders =
-                this.parameterizedPropertyModifierStates.collect(AntlrParameterizedPropertyModifier::build);
+                this.parameterizedPropertyModifiers.collect(AntlrParameterizedPropertyModifier::build);
         */
 
         this.parameterizedPropertyBuilder = new ParameterizedPropertyBuilder(
@@ -128,11 +128,11 @@ public class AntlrParameterizedProperty
                 this.ordinal,
                 this.getNameContext(),
                 this.getType().getElementBuilder(),
-                this.owningClassState.getElementBuilder(),
-                this.multiplicityState.getMultiplicity());
+                this.owningClass.getElementBuilder(),
+                this.multiplicity.getMultiplicity());
 
-        Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);
-        this.parameterizedPropertyBuilder.setOrderByBuilder(orderByBuilder);
+        Optional<OrderByBuilder> orderByBuilder = this.orderBy.map(AntlrOrderBy::build);
+        this.parameterizedPropertyBuilder.setOrderBy(orderByBuilder);
 
         return this.parameterizedPropertyBuilder;
     }
@@ -152,27 +152,27 @@ public class AntlrParameterizedProperty
 
     @Nonnull
     @Override
-    public AntlrClass getOwningClassifierState()
+    public AntlrClass getOwningClassifier()
     {
-        return Objects.requireNonNull(this.owningClassState);
+        return Objects.requireNonNull(this.owningClass);
     }
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationState)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        super.reportErrors(compilerAnnotationState);
+        super.reportErrors(compilerAnnotationHolder);
 
-        if (this.orderByState != null)
+        if (this.orderBy != null)
         {
-            this.orderByState.ifPresent(o -> o.reportErrors(compilerAnnotationState));
+            this.orderBy.ifPresent(o -> o.reportErrors(compilerAnnotationHolder));
         }
 
-        this.reportTypeNotFound(compilerAnnotationState);
+        this.reportTypeNotFound(compilerAnnotationHolder);
     }
 
     @Override
-    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportNameErrors(compilerAnnotationHolder);
         this.parameterHolder.reportNameErrors(compilerAnnotationHolder);

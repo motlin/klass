@@ -30,40 +30,40 @@ public class RelationshipPhase
     {
         super.enterRelationship(ctx);
 
-        AntlrAssociation associationState = this.compilerState.getCompilerWalkState().getAssociationState();
+        AntlrAssociation association = this.compilerState.getCompilerWalk().getAssociation();
 
         AntlrRelationship relationship = new AntlrRelationship(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                associationState);
-        associationState.setRelationship(relationship);
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                association);
+        association.setRelationship(relationship);
 
         KlassVisitor<AntlrCriteria> visitor = new CriteriaVisitor(
                 this.compilerState,
                 relationship);
 
         CriteriaExpressionContext criteriaExpressionContext = ctx.criteriaExpression();
-        AntlrCriteria             criteriaState             = visitor.visit(criteriaExpressionContext);
-        relationship.setCriteria(criteriaState);
+        AntlrCriteria             criteria                  = visitor.visit(criteriaExpressionContext);
+        relationship.setCriteria(criteria);
 
-        MutableList<AntlrAssociationEnd> associationEndStates = associationState.getAssociationEndStates();
-        if (associationEndStates.size() != 2)
+        MutableList<AntlrAssociationEnd> associationEnds = association.getAssociationEnds();
+        if (associationEnds.size() != 2)
         {
             return;
         }
 
-        if (associationState.isManyToMany())
+        if (association.isManyToMany())
         {
             return;
         }
 
         boolean possibleJoinCriteria = this.hasPossibleJoinCriteria(
                 criteriaExpressionContext,
-                associationState.getTargetEnd().getType());
+                association.getTargetEnd().getType());
 
         if (possibleJoinCriteria)
         {
-            criteriaState.addForeignKeys();
+            criteria.addForeignKeys();
         }
     }
 
@@ -72,7 +72,7 @@ public class RelationshipPhase
             @Nonnull AntlrClass targetType)
     {
         PossibleJoinCriteriaListener listener = new PossibleJoinCriteriaListener(
-                this.compilerState.getDomainModelState(),
+                this.compilerState.getDomainModel(),
                 targetType);
         ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
         parseTreeWalker.walk(listener, criteriaExpressionContext);

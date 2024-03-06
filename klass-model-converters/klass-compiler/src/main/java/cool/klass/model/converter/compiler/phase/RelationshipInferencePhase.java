@@ -42,14 +42,14 @@ public class RelationshipInferencePhase
         RelationshipContext relationship = ctx.associationBody().relationship();
         if (relationship == null)
         {
-            AntlrAssociation associationState = this.compilerState.getCompilerWalkState().getAssociationState();
-            if (associationState.isManyToMany())
+            AntlrAssociation association = this.compilerState.getCompilerWalk().getAssociation();
+            if (association.isManyToMany())
             {
                 return;
             }
 
-            AntlrAssociationEnd sourceEnd = associationState.getSourceEnd();
-            AntlrAssociationEnd targetEnd = associationState.getTargetEnd();
+            AntlrAssociationEnd sourceEnd = association.getSourceEnd();
+            AntlrAssociationEnd targetEnd = association.getTargetEnd();
 
             if (targetEnd.isToOne() && sourceEnd.isToMany() || sourceEnd.isToOne() && sourceEnd.isOwned())
             {
@@ -61,7 +61,7 @@ public class RelationshipInferencePhase
             }
             else
             {
-                throw new IllegalStateException("Unhandled association end combination: " + associationState);
+                throw new IllegalStateException("Unhandled association end combination: " + association);
             }
         }
     }
@@ -71,7 +71,7 @@ public class RelationshipInferencePhase
         AntlrClass oppositeType = associationEnd.getOpposite().getType();
 
         String sourceCodeText = oppositeType
-                .getKeyProperties()
+                .getAllKeyProperties()
                 .collect(each -> "this.%s%s == %s.%s".formatted(
                         UPPER_TO_LOWER_CAMEL.convert(oppositeType.getName()),
                         LOWER_CAMEL_TO_UPPER_CAMEL.convert(each.getName()),
@@ -87,7 +87,7 @@ public class RelationshipInferencePhase
         AntlrClass oppositeType = associationEnd.getOpposite().getType();
 
         String sourceCodeText = oppositeType
-                .getKeyProperties()
+                .getAllKeyProperties()
                 .collect(each -> "this.%s == %s.%s%s".formatted(
                         each.getName(),
                         associationEnd.getType().getName(),
@@ -100,12 +100,12 @@ public class RelationshipInferencePhase
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
-        AntlrAssociation associationState = this.compilerState.getCompilerWalkState().getAssociationState();
+        AntlrAssociation association = this.compilerState.getCompilerWalk().getAssociation();
 
         ParseTreeListener compilerPhase = new RelationshipPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
-                associationState,
+                association,
                 this,
                 sourceCodeText,
                 KlassParser::relationship,

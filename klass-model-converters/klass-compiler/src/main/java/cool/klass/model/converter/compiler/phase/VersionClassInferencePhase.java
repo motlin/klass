@@ -41,7 +41,7 @@ public class VersionClassInferencePhase
 
         String klassSourceCode = this.getSourceCode();
 
-        AntlrModifier classifierModifierState = this.compilerState.getCompilerWalkState().getClassifierModifierState();
+        AntlrModifier classifierModifierState = this.compilerState.getCompilerWalk().getClassifierModifier();
 
         ImmutableList<ParseTreeListener> compilerPhases = Lists.immutable.with(
                 new CompilationUnitPhase(this.compilerState),
@@ -60,22 +60,22 @@ public class VersionClassInferencePhase
     @Nonnull
     private String getSourceCode()
     {
-        AntlrClass classState = this.compilerState.getCompilerWalkState().getClassState();
-        String propertySourceCode = classState
-                .getDataTypeProperties()
+        AntlrClass klass = this.compilerState.getCompilerWalk().getKlass();
+        String propertySourceCode = klass
+                .getAllDataTypeProperties()
                 .select(property -> property.isKey() || property.isValid() || property.isSystem() || property.isAudit())
                 .collect(this::getSourceCode)
                 .collect(each -> String.format("    %s\n", each))
                 .makeString("");
 
-        AntlrModifier auditedModifier   = classState.getModifierByName("audited");
+        AntlrModifier auditedModifier   = klass.getModifierByName("audited");
         String        auditedSourceCode = auditedModifier == AntlrModifier.NOT_FOUND ? "" : " audited";
 
         // TODO: If main class is transient, version should also be transient, so copy classifier modifiers
         //language=Klass
-        return "package " + classState.getPackageName() + "\n"
+        return "package " + klass.getPackageName() + "\n"
                 + "\n"
-                + "class " + classState.getName() + "Version systemTemporal" + auditedSourceCode + "\n"
+                + "class " + klass.getName() + "Version systemTemporal" + auditedSourceCode + "\n"
                 + "{\n"
                 + propertySourceCode
                 + "    number: Integer version;\n"
@@ -91,7 +91,7 @@ public class VersionClassInferencePhase
                 ? ""
                 : modifiers.collect(AntlrModifier::getKeyword).makeString(" ", " ", "");
 
-        ListIterable<AbstractAntlrPropertyValidation> validations = dataTypeProperty.getValidationStates();
+        ListIterable<AbstractAntlrPropertyValidation> validations = dataTypeProperty.getValidations();
         String validationSourceCode = validations.isEmpty()
                 ? ""
                 : validations.makeString(" ", " ", "");

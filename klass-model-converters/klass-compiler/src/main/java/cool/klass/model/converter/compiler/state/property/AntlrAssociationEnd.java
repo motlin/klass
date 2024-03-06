@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.AnnotationSeverity;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
@@ -74,12 +74,12 @@ public class AntlrAssociationEnd
     //</editor-fold>
 
     @Nonnull
-    private final AntlrAssociation owningAssociationState;
+    private final AntlrAssociation owningAssociation;
 
-    private AntlrClass          owningClassState;
+    private AntlrClass          owningClass;
     private AntlrAssociationEnd opposite;
 
-    private AssociationEndBuilder associationEndBuilder;
+    private AssociationEndBuilder associationEnd;
 
     private final MutableOrderedMap<AntlrDataTypeProperty<?>, AntlrDataTypeProperty<?>> foreignKeys =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -89,59 +89,59 @@ public class AntlrAssociationEnd
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
-            @Nonnull AntlrAssociation owningAssociationState)
+            @Nonnull AntlrAssociation owningAssociation)
     {
         super(elementContext, compilationUnit, ordinal, nameContext);
-        this.owningAssociationState = Objects.requireNonNull(owningAssociationState);
+        this.owningAssociation = Objects.requireNonNull(owningAssociation);
     }
 
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.of(this.owningAssociationState);
+        return Optional.of(this.owningAssociation);
     }
 
     @Nonnull
     @Override
     public AssociationEndBuilder build()
     {
-        if (this.associationEndBuilder != null)
+        if (this.associationEnd != null)
         {
             throw new IllegalStateException();
         }
 
         // TODO: 🔗 Set association end's opposite
-        this.associationEndBuilder = new AssociationEndBuilder(
+        this.associationEnd = new AssociationEndBuilder(
                 this.getElementContext(),
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,
                 this.getNameContext(),
                 this.getType().getElementBuilder(),
-                this.owningClassState.getElementBuilder(),
-                this.owningAssociationState.getElementBuilder(),
-                this.multiplicityState.getMultiplicity());
+                this.owningClass.getElementBuilder(),
+                this.owningAssociation.getElementBuilder(),
+                this.multiplicity.getMultiplicity());
 
-        ImmutableList<ModifierBuilder> modifierBuilders = this.getModifiers()
+        ImmutableList<ModifierBuilder> modifiers = this.getModifiers()
                 .collect(AntlrModifier::build)
                 .toImmutable();
 
-        this.associationEndBuilder.setModifierBuilders(modifierBuilders);
+        this.associationEnd.setModifiers(modifiers);
 
-        Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);
-        this.associationEndBuilder.setOrderByBuilder(orderByBuilder);
+        Optional<OrderByBuilder> orderBy = this.orderBy.map(AntlrOrderBy::build);
+        this.associationEnd.setOrderBy(orderBy);
 
-        return this.associationEndBuilder;
+        return this.associationEnd;
     }
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportErrors(compilerAnnotationHolder);
 
-        this.orderByState.ifPresent(o -> o.reportErrors(compilerAnnotationHolder));
+        this.orderBy.ifPresent(o -> o.reportErrors(compilerAnnotationHolder));
 
         this.reportInvalidMultiplicity(compilerAnnotationHolder);
         this.reportVersionEndUnowned(compilerAnnotationHolder);
@@ -152,37 +152,37 @@ public class AntlrAssociationEnd
         this.reportForwardReference(compilerAnnotationHolder);
     }
 
-    private void reportVersionEndUnowned(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportVersionEndUnowned(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.isVersion() && !this.isOwned())
         {
             String message = String.format(
                     "Expected version association end '%s.%s' to be owned.",
-                    this.getOwningClassifierState().getName(),
+                    this.getOwningClassifier().getName(),
                     this.getName());
             compilerAnnotationHolder.add("ERR_VER_OWN", message, this, this.nameContext);
         }
     }
 
-    private void reportNonVersionEnd(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportNonVersionEnd(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.isVersion() && !this.getType().isVersion())
         {
             String message = String.format(
                     "Expected version association end '%s.%s' to have version type, but %s has no version property.",
-                    this.getOwningClassifierState().getName(),
+                    this.getOwningClassifier().getName(),
                     this.getName(),
                     this.getType().getName());
             compilerAnnotationHolder.add("ERR_VER_END", message, this, this.nameContext);
         }
-        if (!this.getOwningClassifierState().isUser()
+        if (!this.getOwningClassifier().isUser()
                 && !this.isVersion() && this.getType().isVersion()
                 && !this.opposite.isCreatedBy()
                 && !this.opposite.isLastUpdatedBy())
         {
             String message = String.format(
                     "Association end '%s.%s' has version type %s, but is missing the version modifier.",
-                    this.getOwningClassifierState().getName(),
+                    this.getOwningClassifier().getName(),
                     this.getName(),
                     this.getType().getName());
             compilerAnnotationHolder.add(
@@ -193,14 +193,14 @@ public class AntlrAssociationEnd
         }
     }
 
-    private void reportNonUserAuditEnd(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportNonUserAuditEnd(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.isCreatedBy() && !this.getType().isUser())
         {
             AntlrModifier modifier = this.getModifiers().detect(AntlrModifier::isCreatedBy);
             String message = String.format(
                     "Expected createdBy association end '%s.%s' to have user type, but was %s.",
-                    this.getOwningClassifierState().getName(),
+                    this.getOwningClassifier().getName(),
                     this.getName(),
                     this.getType().getName());
             compilerAnnotationHolder.add(
@@ -215,7 +215,7 @@ public class AntlrAssociationEnd
             AntlrModifier modifier = this.getModifiers().detect(AntlrModifier::isLastUpdatedBy);
             String message = String.format(
                     "Expected lastUpdatedBy association end '%s.%s' to have user type, but was %s.",
-                    this.getOwningClassifierState().getName(),
+                    this.getOwningClassifier().getName(),
                     this.getName(),
                     this.getType().getName());
 
@@ -229,35 +229,35 @@ public class AntlrAssociationEnd
     }
 
     public void reportDuplicateOppositeWithModifier(
-            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
+            @Nonnull CompilerAnnotationHolder compilerAnnotationHolder,
             @Nonnull AntlrClassifier classifier,
-            @Nonnull String modifier,
+            @Nonnull String modifierString,
             @Nonnull AnnotationSeverity severity)
     {
-        AntlrModifier modifierState = this.getModifiers().detectWith(AntlrModifier::is, modifier);
+        AntlrModifier modifier = this.getModifiers().detectWith(AntlrModifier::is, modifierString);
         String message = String.format(
                 "Multiple %s association ends point at '%s'.",
-                modifier,
+                modifierString,
                 classifier.getName());
-        compilerAnnotationHolder.add("ERR_DUP_END", message, modifierState, severity);
+        compilerAnnotationHolder.add("ERR_DUP_END", message, modifier, severity);
     }
 
-    private void reportPluralName(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportPluralName(CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (this.multiplicityState.isToMany())
+        if (this.multiplicity.isToMany())
         {
-            if (this.classReferenceState.getElementContext().identifier().getText().toLowerCase().endsWith(this.getName().toLowerCase()))
+            if (this.classReference.getElementContext().identifier().getText().toLowerCase().endsWith(this.getName().toLowerCase()))
             {
                 String message = "Expected to-many association end '%s.%s' to have a plural name, but name exactly matched type association end type '%s'.".formatted(
-                        this.getOwningClassifierState().getName(),
+                        this.getOwningClassifier().getName(),
                         this.getName(),
-                        this.classReferenceState.getElementContext().identifier().getText());
+                        this.classReference.getElementContext().identifier().getText());
                 compilerAnnotationHolder.add("ERR_ASS_PLU", message, this, this.nameContext);
             }
         }
     }
 
-    private void reportDeclarationOrderTypes(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportDeclarationOrderTypes(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (!this.isToOneRequired())
         {
@@ -280,7 +280,7 @@ public class AntlrAssociationEnd
         {
             String message = String.format(
                     "Association '%s' establishes that type '%s' requires type '%s', so it ought to be declared later in the source file. '%s' is declared on line %d and '%s' is declared on line %d in source file '%s'.",
-                    this.owningAssociationState.getName(),
+                    this.owningAssociation.getName(),
                     this.opposite.getType().getName(),
                     this.getType().getName(),
                     this.opposite.getType().getName(),
@@ -296,15 +296,15 @@ public class AntlrAssociationEnd
         }
     }
 
-    private void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportForwardReference(CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (!this.owningAssociationState.isForwardReference(this.getType()))
+        if (!this.owningAssociation.isForwardReference(this.getType()))
         {
             return;
         }
         String message = String.format(
                 "Association end '%s.%s' is declared on line %d and has a forward reference to type '%s' which is declared later in the source file '%s' on line %d.",
-                this.getOwningClassifierState().getName(),
+                this.getOwningClassifier().getName(),
                 this.getName(),
                 this.getElementContext().getStart().getLine(),
                 this.getType().getName(),
@@ -320,18 +320,18 @@ public class AntlrAssociationEnd
 
     @Nonnull
     @Override
-    public AntlrClass getOwningClassifierState()
+    public AntlrClass getOwningClassifier()
     {
-        return Objects.requireNonNull(this.owningClassState);
+        return Objects.requireNonNull(this.owningClass);
     }
 
-    public void setOwningClassState(@Nonnull AntlrClass owningClassState)
+    public void setOwningClass(@Nonnull AntlrClass owningClass)
     {
-        if (this.owningClassState != null)
+        if (this.owningClass != null)
         {
             throw new IllegalStateException();
         }
-        this.owningClassState = Objects.requireNonNull(owningClassState);
+        this.owningClass = Objects.requireNonNull(owningClass);
     }
 
     public boolean isVersioned()
@@ -348,7 +348,7 @@ public class AntlrAssociationEnd
     @Nonnull
     public AssociationEndBuilder getElementBuilder()
     {
-        return Objects.requireNonNull(this.associationEndBuilder);
+        return Objects.requireNonNull(this.associationEnd);
     }
 
     @Nonnull
@@ -375,12 +375,12 @@ public class AntlrAssociationEnd
 
     public boolean isSourceEnd()
     {
-        return this == this.owningAssociationState.getSourceEnd();
+        return this == this.owningAssociation.getSourceEnd();
     }
 
     public boolean isTargetEnd()
     {
-        return this == this.owningAssociationState.getTargetEnd();
+        return this == this.owningAssociation.getTargetEnd();
     }
 
     public AntlrAssociationEnd getOpposite()

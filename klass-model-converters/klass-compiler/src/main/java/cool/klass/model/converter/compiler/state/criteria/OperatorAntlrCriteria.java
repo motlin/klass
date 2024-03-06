@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrType;
@@ -110,7 +110,7 @@ public class OperatorAntlrCriteria
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         this.sourceValue.reportErrors(compilerAnnotationHolder);
         this.targetValue.reportErrors(compilerAnnotationHolder);
@@ -158,11 +158,11 @@ public class OperatorAntlrCriteria
         AntlrAssociationEnd sourceEnd = association.getSourceEnd();
         AntlrAssociationEnd targetEnd = association.getTargetEnd();
 
-        AntlrThisMemberReferencePath thisMemberReferencePathState = this.getThisMemberReferencePathState();
-        AntlrTypeMemberReferencePath typeMemberReferencePathState = this.getTypeMemberReferencePathState();
+        AntlrThisMemberReferencePath thisMemberReferencePath = this.getThisMemberReferencePath();
+        AntlrTypeMemberReferencePath typeMemberReferencePath = this.getTypeMemberReferencePath();
 
-        AntlrDataTypeProperty<?> thisDataTypePropertyState = thisMemberReferencePathState.getDataTypeProperty();
-        AntlrDataTypeProperty<?> typeDataTypePropertyState = typeMemberReferencePathState.getDataTypeProperty();
+        AntlrDataTypeProperty<?> thisDataTypeProperty = thisMemberReferencePath.getDataTypeProperty();
+        AntlrDataTypeProperty<?> typeDataTypeProperty = typeMemberReferencePath.getDataTypeProperty();
 
         if (sourceEnd.isToMany() && targetEnd.isToMany())
         {
@@ -171,15 +171,15 @@ public class OperatorAntlrCriteria
 
         AntlrAssociationEnd endWithForeignKeys = this.getEndWithForeignKeys(
                 association,
-                thisDataTypePropertyState,
-                typeDataTypePropertyState);
+                thisDataTypeProperty,
+                typeDataTypeProperty);
 
         if (endWithForeignKeys == null)
         {
             return;
         }
 
-        AntlrClass typeWithForeignKeys = endWithForeignKeys.getOwningClassifierState();
+        AntlrClass typeWithForeignKeys = endWithForeignKeys.getOwningClassifier();
         if (typeWithForeignKeys == AntlrClass.NOT_FOUND || typeWithForeignKeys == AntlrClass.AMBIGUOUS)
         {
             return;
@@ -193,11 +193,11 @@ public class OperatorAntlrCriteria
         boolean isTargetEnd = endWithForeignKeys.isTargetEnd();
 
         AntlrDataTypeProperty<?> foreignKeyProperty = isTargetEnd
-                ? thisDataTypePropertyState
-                : typeDataTypePropertyState;
+                ? thisDataTypeProperty
+                : typeDataTypeProperty;
         AntlrDataTypeProperty<?> keyProperty        = isTargetEnd
-                ? typeDataTypePropertyState
-                : thisDataTypePropertyState;
+                ? typeDataTypeProperty
+                : thisDataTypeProperty;
         if (foreignKeyProperty.isKey() && !keyProperty.isKey())
         {
             // This can happen for non-key but unique properties
@@ -219,8 +219,8 @@ public class OperatorAntlrCriteria
     @Nullable
     private AntlrAssociationEnd getEndWithForeignKeys(
             @Nonnull AntlrAssociation association,
-            @Nonnull AntlrDataTypeProperty<?> thisDataTypePropertyState,
-            @Nonnull AntlrDataTypeProperty<?> typeDataTypePropertyState)
+            @Nonnull AntlrDataTypeProperty<?> thisDataTypeProperty,
+            @Nonnull AntlrDataTypeProperty<?> typeDataTypeProperty)
     {
         AntlrAssociationEnd sourceEnd = association.getSourceEnd();
         AntlrAssociationEnd targetEnd = association.getTargetEnd();
@@ -254,13 +254,13 @@ public class OperatorAntlrCriteria
         // }
 
         // TODO: These two conditions don't make sense here, because we're only considering one pair of joined properties among several &&-clauses
-        if (thisDataTypePropertyState.isKey() && !typeDataTypePropertyState.isKey())
+        if (thisDataTypeProperty.isKey() && !typeDataTypeProperty.isKey())
         {
             return sourceEnd;
         }
 
         // TODO: These two conditions don't make sense here, because we're only considering one pair of joined properties among several &&-clauses
-        if (typeDataTypePropertyState.isKey() && !thisDataTypePropertyState.isKey())
+        if (typeDataTypeProperty.isKey() && !thisDataTypeProperty.isKey())
         {
             return targetEnd;
         }
@@ -281,7 +281,7 @@ public class OperatorAntlrCriteria
     }
 
     @Nonnull
-    private AntlrThisMemberReferencePath getThisMemberReferencePathState()
+    private AntlrThisMemberReferencePath getThisMemberReferencePath()
     {
         if (this.sourceValue instanceof AntlrThisMemberReferencePath)
         {
@@ -297,7 +297,7 @@ public class OperatorAntlrCriteria
     }
 
     @Nonnull
-    private AntlrTypeMemberReferencePath getTypeMemberReferencePathState()
+    private AntlrTypeMemberReferencePath getTypeMemberReferencePath()
     {
         if (this.sourceValue instanceof AntlrTypeMemberReferencePath)
         {

@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
@@ -18,30 +18,30 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 public final class ParameterHolder
         implements AntlrParameterOwner
 {
-    private final MutableList<AntlrParameter>                          parameterStates          = Lists.mutable.empty();
-    private final MutableOrderedMap<String, AntlrParameter>            parameterStatesByName    =
+    private final MutableList<AntlrParameter>                          parameters          = Lists.mutable.empty();
+    private final MutableOrderedMap<String, AntlrParameter>            parametersByName    =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    private final MutableOrderedMap<ParserRuleContext, AntlrParameter> parameterStatesByContext =
+    private final MutableOrderedMap<ParserRuleContext, AntlrParameter> parametersByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     @Override
     public int getNumParameters()
     {
-        return this.parameterStates.size();
+        return this.parameters.size();
     }
 
     @Override
-    public void enterParameterDeclaration(@Nonnull AntlrParameter parameterState)
+    public void enterParameterDeclaration(@Nonnull AntlrParameter parameter)
     {
-        this.parameterStates.add(parameterState);
-        this.parameterStatesByName.compute(
-                parameterState.getName(),
+        this.parameters.add(parameter);
+        this.parametersByName.compute(
+                parameter.getName(),
                 (name, builder) -> builder == null
-                        ? parameterState
+                        ? parameter
                         : AntlrParameter.AMBIGUOUS);
-        AntlrParameter duplicate = this.parameterStatesByContext.put(
-                parameterState.getElementContext(),
-                parameterState);
+        AntlrParameter duplicate = this.parametersByContext.put(
+                parameter.getElementContext(),
+                parameter);
         if (duplicate != null)
         {
             throw new AssertionError();
@@ -51,23 +51,23 @@ public final class ParameterHolder
     @Override
     public AntlrParameter getParameterByContext(@Nonnull ParameterDeclarationContext ctx)
     {
-        return this.parameterStatesByContext.get(ctx);
+        return this.parametersByContext.get(ctx);
     }
 
-    public MutableList<AntlrParameter> getParameterStates()
+    public MutableList<AntlrParameter> getParameters()
     {
-        return this.parameterStates.asUnmodifiable();
+        return this.parameters.asUnmodifiable();
     }
 
     @Nonnull
-    public MutableOrderedMap<String, AntlrParameter> getParameterStatesByName()
+    public MutableOrderedMap<String, AntlrParameter> getParametersByName()
     {
         // TODO: Override MutableOrderedMap.asUnmodifiable
-        return this.parameterStatesByName;
+        return this.parametersByName;
     }
 
-    public void reportNameErrors(CompilerAnnotationState compilerAnnotationHolder)
+    public void reportNameErrors(CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        this.parameterStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
+        this.parameters.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
     }
 }

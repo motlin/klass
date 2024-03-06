@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
@@ -44,7 +44,7 @@ public class AntlrProjectionDataTypeProperty
     @Nonnull
     private final AntlrProjectionParent    antlrProjectionParent;
     @Nonnull
-    private final AntlrClassifier          classifierState;
+    private final AntlrClassifier          classifier;
     @Nonnull
     private final AntlrDataTypeProperty<?> dataTypeProperty;
 
@@ -58,14 +58,14 @@ public class AntlrProjectionDataTypeProperty
             @Nonnull HeaderContext headerContext,
             @Nonnull String headerText,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
-            @Nonnull AntlrClassifier classifierState,
+            @Nonnull AntlrClassifier classifier,
             @Nonnull AntlrDataTypeProperty<?> dataTypeProperty)
     {
         super(elementContext, compilationUnit, ordinal, nameContext);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.headerText            = Objects.requireNonNull(headerText);
         this.headerContext         = Objects.requireNonNull(headerContext);
-        this.classifierState       = Objects.requireNonNull(classifierState);
+        this.classifier            = Objects.requireNonNull(classifier);
         this.dataTypeProperty      = Objects.requireNonNull(dataTypeProperty);
     }
 
@@ -92,7 +92,7 @@ public class AntlrProjectionDataTypeProperty
                 this.headerContext,
                 this.headerText,
                 this.antlrProjectionParent.getElementBuilder(),
-                this.classifierState.getElementBuilder(),
+                this.classifier.getElementBuilder(),
                 this.dataTypeProperty.getElementBuilder());
         return this.projectionDataTypePropertyBuilder;
     }
@@ -144,7 +144,7 @@ public class AntlrProjectionDataTypeProperty
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.headerText.trim().isEmpty())
         {
@@ -185,19 +185,19 @@ public class AntlrProjectionDataTypeProperty
         this.reportForwardReference(compilerAnnotationHolder);
     }
 
-    private void reportPrivateProperty(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportPrivateProperty(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.dataTypeProperty.isPrivate())
         {
             String message = String.format(
                     "Projection includes private property '%s.%s'.",
-                    this.dataTypeProperty.getOwningClassifierState().getName(),
+                    this.dataTypeProperty.getOwningClassifier().getName(),
                     this.getName());
             compilerAnnotationHolder.add("ERR_PRJ_PRV", message, this);
         }
     }
 
-    private void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportForwardReference(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (!this.isForwardReference(this.dataTypeProperty))
         {
@@ -219,14 +219,14 @@ public class AntlrProjectionDataTypeProperty
     }
 
     @Override
-    public void reportDuplicateMemberName(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportDuplicateMemberName(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         String message = String.format("Duplicate member: '%s'.", this.getName());
         compilerAnnotationHolder.add("ERR_DUP_PRJ", message, this);
     }
 
     @Override
-    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         // Intentionally blank. Reference to a named element that gets its name checked.
     }

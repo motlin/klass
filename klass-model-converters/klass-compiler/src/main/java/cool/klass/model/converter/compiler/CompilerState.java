@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.annotation.AbstractCompilerAnnotation;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.converter.compiler.phase.AbstractCompilerPhase;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
@@ -48,17 +48,17 @@ import org.eclipse.collections.impl.factory.OrderedMaps;
 public class CompilerState
 {
     @Nonnull
-    private final CompilerInputState      compilerInputState;
-    private final CompilerAnnotationState compilerAnnotationHolder = new CompilerAnnotationState();
-    private final AntlrDomainModel        domainModelState         = new AntlrDomainModel();
-    private       CompilerWalkState       compilerWalkState        = new CompilerWalkState(this.domainModelState);
+    private final CompilerInputState       compilerInput;
+    private final CompilerAnnotationHolder compilerAnnotationHolder = new CompilerAnnotationHolder();
+    private final AntlrDomainModel         domainModel              = new AntlrDomainModel();
+    private       CompilerWalkState       compilerWalk             = new CompilerWalkState(this.domainModel);
 
-    private final MutableOrderedMap<CompilationUnit, CompilerWalkState> macroCompilerWalkStates =
+    private final MutableOrderedMap<CompilationUnit, CompilerWalkState> macroCompilerWalks =
             OrderedMaps.adapt(new LinkedHashMap<>());
 
     public CompilerState(@Nonnull ImmutableList<CompilationUnit> compilationUnits)
     {
-        this.compilerInputState = new CompilerInputState(compilationUnits);
+        this.compilerInput = new CompilerInputState(compilationUnits);
     }
 
     public void runNonRootCompilerMacro(
@@ -71,24 +71,24 @@ public class CompilerState
         Objects.requireNonNull(macroElement);
 
         CompilationUnit compilationUnit = CompilationUnit.getMacroCompilationUnit(
-                this.compilerInputState.getCompilationUnits().size(),
+                this.compilerInput.getCompilationUnits().size(),
                 macroElement,
                 macroExpansionCompilerPhase,
                 sourceCodeText,
                 parserRule);
 
-        CompilerWalkState oldCompilerWalkState = this.compilerWalkState;
-        CompilerWalkState newCompilerWalkState = oldCompilerWalkState.withCompilationUnit(compilationUnit);
-        this.macroCompilerWalkStates.put(compilationUnit, newCompilerWalkState);
+        CompilerWalkState oldCompilerWalk = this.compilerWalk;
+        CompilerWalkState newCompilerWalk = oldCompilerWalk.withCompilationUnit(compilationUnit);
+        this.macroCompilerWalks.put(compilationUnit, newCompilerWalk);
 
-        this.compilerWalkState = newCompilerWalkState;
+        this.compilerWalk = newCompilerWalk;
         try
         {
-            this.compilerInputState.runCompilerMacro(compilationUnit, Lists.immutable.with(listeners));
+            this.compilerInput.runCompilerMacro(compilationUnit, Lists.immutable.with(listeners));
         }
         finally
         {
-            this.compilerWalkState = oldCompilerWalkState;
+            this.compilerWalk = oldCompilerWalk;
         }
     }
 
@@ -100,7 +100,7 @@ public class CompilerState
             @Nonnull ImmutableList<ParseTreeListener> listeners)
     {
         CompilationUnit compilationUnit = CompilationUnit.getMacroCompilationUnit(
-                this.compilerInputState.getCompilationUnits().size(),
+                this.compilerInput.getCompilationUnits().size(),
                 macroElement,
                 macroExpansionCompilerPhase,
                 sourceCodeText,
@@ -113,22 +113,22 @@ public class CompilerState
             @Nonnull ImmutableList<ParseTreeListener> listeners,
             @Nonnull CompilationUnit compilationUnit)
     {
-        CompilerWalkState oldCompilerWalkState = this.compilerWalkState;
+        CompilerWalkState oldCompilerWalk = this.compilerWalk;
         try
         {
-            this.compilerWalkState = new CompilerWalkState(this.domainModelState);
+            this.compilerWalk = new CompilerWalkState(this.domainModel);
 
-            this.compilerInputState.runCompilerMacro(compilationUnit, listeners);
+            this.compilerInput.runCompilerMacro(compilationUnit, listeners);
         }
         finally
         {
-            this.compilerWalkState = oldCompilerWalkState;
+            this.compilerWalk = oldCompilerWalk;
         }
     }
 
     public void reportErrors()
     {
-        this.domainModelState.reportErrors(this.compilerAnnotationHolder);
+        this.domainModel.reportErrors(this.compilerAnnotationHolder);
     }
 
     @Nonnull
@@ -152,57 +152,57 @@ public class CompilerState
             throw new AssertionError(this.compilerAnnotationHolder.getCompilerAnnotations().makeString("\n"));
         }
 
-        ImmutableList<CompilationUnit> compilationUnits   = this.compilerInputState.getCompilationUnits().toImmutable();
-        DomainModelBuilder             domainModelBuilder = this.domainModelState.build(compilationUnits);
+        ImmutableList<CompilationUnit> compilationUnits   = this.compilerInput.getCompilationUnits().toImmutable();
+        DomainModelBuilder             domainModelBuilder = this.domainModel.build(compilationUnits);
         return domainModelBuilder.build();
     }
 
     @Nonnull
-    public AntlrDomainModel getDomainModelState()
+    public AntlrDomainModel getDomainModel()
     {
-        return this.domainModelState;
+        return this.domainModel;
     }
 
     @Nonnull
-    public CompilerInputState getCompilerInputState()
+    public CompilerInputState getCompilerInput()
     {
-        return this.compilerInputState;
+        return this.compilerInput;
     }
 
     @Nonnull
-    public CompilerAnnotationState getCompilerAnnotationHolder()
+    public CompilerAnnotationHolder getCompilerAnnotationHolder()
     {
         return this.compilerAnnotationHolder;
     }
 
-    public CompilerWalkState getCompilerWalkState()
+    public CompilerWalkState getCompilerWalk()
     {
-        return this.compilerWalkState;
+        return this.compilerWalk;
     }
 
     public void withCompilationUnit(CompilationUnit compilationUnit, @Nonnull Runnable runnable)
     {
-        this.compilerWalkState.assertEmpty();
+        this.compilerWalk.assertEmpty();
 
-        CompilerWalkState compilerWalkState = this.macroCompilerWalkStates.get(compilationUnit);
+        CompilerWalkState compilerWalk = this.macroCompilerWalks.get(compilationUnit);
 
-        if (compilerWalkState == null)
+        if (compilerWalk == null)
         {
             runnable.run();
-            this.compilerWalkState.assertEmpty();
+            this.compilerWalk.assertEmpty();
             return;
         }
 
         try
         {
-            CompilerWalkState copy = compilerWalkState.withCompilationUnit(compilationUnit);
-            this.compilerWalkState = copy;
+            CompilerWalkState copy = compilerWalk.withCompilationUnit(compilationUnit);
+            this.compilerWalk = copy;
             runnable.run();
-            this.compilerWalkState.assertEquals(copy);
+            this.compilerWalk.assertEquals(copy);
         }
         finally
         {
-            this.compilerWalkState = new CompilerWalkState(this.domainModelState);
+            this.compilerWalk = new CompilerWalkState(this.domainModel);
         }
     }
 
@@ -218,7 +218,7 @@ public class CompilerState
         }
 
         Integer topLevelElementOrdinalByContext =
-                this.domainModelState.getTopLevelElementOrdinalByContext(topLevelDeclarationContext);
+                this.domainModel.getTopLevelElementOrdinalByContext(topLevelDeclarationContext);
         Objects.requireNonNull(topLevelElementOrdinalByContext);
         return topLevelElementOrdinalByContext;
     }
@@ -237,10 +237,11 @@ public class CompilerState
         {
             super.enterCompilationUnit(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterCompilationUnit(ctx);
+            CompilerState.this.compilerWalk.asListener().enterCompilationUnit(ctx);
 
-            CompilationUnit currentCompilationUnit = CompilerState.this.compilerInputState.getCompilationUnitByContext(ctx);
-            CompilerState.this.compilerWalkState.enterCompilationUnit(currentCompilationUnit);
+            CompilationUnit currentCompilationUnit = CompilerState.this.compilerInput.getCompilationUnitByContext(
+                    ctx);
+            CompilerState.this.compilerWalk.enterCompilationUnit(currentCompilationUnit);
         }
 
         @Override
@@ -248,9 +249,9 @@ public class CompilerState
         {
             super.exitCompilationUnit(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitCompilationUnit(ctx);
+            CompilerState.this.compilerWalk.asListener().exitCompilationUnit(ctx);
 
-            CompilerState.this.compilerWalkState.exitCompilationUnit();
+            CompilerState.this.compilerWalk.exitCompilationUnit();
         }
 
         @Override
@@ -258,7 +259,7 @@ public class CompilerState
         {
             super.enterPackageDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterPackageDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().enterPackageDeclaration(ctx);
         }
 
         @Override
@@ -266,7 +267,7 @@ public class CompilerState
         {
             super.enterTopLevelDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterTopLevelDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().enterTopLevelDeclaration(ctx);
         }
 
         @Override
@@ -274,7 +275,7 @@ public class CompilerState
         {
             super.exitTopLevelDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitTopLevelDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().exitTopLevelDeclaration(ctx);
         }
 
         @Override
@@ -282,7 +283,7 @@ public class CompilerState
         {
             super.enterInterfaceDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterInterfaceDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().enterInterfaceDeclaration(ctx);
         }
 
         @Override
@@ -290,7 +291,7 @@ public class CompilerState
         {
             super.exitInterfaceDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitInterfaceDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().exitInterfaceDeclaration(ctx);
         }
 
         @Override
@@ -298,7 +299,7 @@ public class CompilerState
         {
             super.enterClassDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterClassDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().enterClassDeclaration(ctx);
         }
 
         @Override
@@ -306,7 +307,7 @@ public class CompilerState
         {
             super.exitClassDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitClassDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().exitClassDeclaration(ctx);
         }
 
         @Override
@@ -314,7 +315,7 @@ public class CompilerState
         {
             super.enterEnumerationDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterEnumerationDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().enterEnumerationDeclaration(ctx);
         }
 
         @Override
@@ -322,7 +323,7 @@ public class CompilerState
         {
             super.exitEnumerationDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitEnumerationDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().exitEnumerationDeclaration(ctx);
         }
 
         @Override
@@ -330,7 +331,7 @@ public class CompilerState
         {
             super.enterAssociationDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterAssociationDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().enterAssociationDeclaration(ctx);
         }
 
         @Override
@@ -338,7 +339,7 @@ public class CompilerState
         {
             super.exitAssociationDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitAssociationDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().exitAssociationDeclaration(ctx);
         }
 
         @Override
@@ -346,7 +347,7 @@ public class CompilerState
         {
             super.enterAssociationEnd(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterAssociationEnd(ctx);
+            CompilerState.this.compilerWalk.asListener().enterAssociationEnd(ctx);
         }
 
         @Override
@@ -354,7 +355,7 @@ public class CompilerState
         {
             super.exitAssociationEnd(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitAssociationEnd(ctx);
+            CompilerState.this.compilerWalk.asListener().exitAssociationEnd(ctx);
         }
 
         @Override
@@ -362,7 +363,7 @@ public class CompilerState
         {
             super.enterAssociationEndSignature(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterAssociationEndSignature(ctx);
+            CompilerState.this.compilerWalk.asListener().enterAssociationEndSignature(ctx);
         }
 
         @Override
@@ -370,7 +371,7 @@ public class CompilerState
         {
             super.exitAssociationEndSignature(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitAssociationEndSignature(ctx);
+            CompilerState.this.compilerWalk.asListener().exitAssociationEndSignature(ctx);
         }
 
         @Override
@@ -378,7 +379,7 @@ public class CompilerState
         {
             super.enterRelationship(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterRelationship(ctx);
+            CompilerState.this.compilerWalk.asListener().enterRelationship(ctx);
         }
 
         @Override
@@ -386,7 +387,7 @@ public class CompilerState
         {
             super.exitRelationship(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitRelationship(ctx);
+            CompilerState.this.compilerWalk.asListener().exitRelationship(ctx);
         }
 
         @Override
@@ -394,7 +395,7 @@ public class CompilerState
         {
             super.enterProjectionDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterProjectionDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().enterProjectionDeclaration(ctx);
         }
 
         @Override
@@ -402,7 +403,7 @@ public class CompilerState
         {
             super.exitProjectionDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitProjectionDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().exitProjectionDeclaration(ctx);
         }
 
         @Override
@@ -410,7 +411,7 @@ public class CompilerState
         {
             super.enterServiceGroupDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterServiceGroupDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().enterServiceGroupDeclaration(ctx);
         }
 
         @Override
@@ -418,7 +419,7 @@ public class CompilerState
         {
             super.exitServiceGroupDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitServiceGroupDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().exitServiceGroupDeclaration(ctx);
         }
 
         @Override
@@ -426,7 +427,7 @@ public class CompilerState
         {
             super.enterUrlDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterUrlDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().enterUrlDeclaration(ctx);
         }
 
         @Override
@@ -434,7 +435,7 @@ public class CompilerState
         {
             super.exitUrlDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitUrlDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().exitUrlDeclaration(ctx);
         }
 
         @Override
@@ -442,7 +443,7 @@ public class CompilerState
         {
             super.enterServiceDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterServiceDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().enterServiceDeclaration(ctx);
         }
 
         @Override
@@ -450,7 +451,7 @@ public class CompilerState
         {
             super.exitServiceDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitServiceDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().exitServiceDeclaration(ctx);
         }
 
         @Override
@@ -458,7 +459,7 @@ public class CompilerState
         {
             super.enterParameterizedProperty(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterParameterizedProperty(ctx);
+            CompilerState.this.compilerWalk.asListener().enterParameterizedProperty(ctx);
         }
 
         @Override
@@ -466,7 +467,7 @@ public class CompilerState
         {
             super.exitParameterizedProperty(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitParameterizedProperty(ctx);
+            CompilerState.this.compilerWalk.asListener().exitParameterizedProperty(ctx);
         }
 
         @Override
@@ -474,7 +475,7 @@ public class CompilerState
         {
             super.enterClassifierModifier(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterClassifierModifier(ctx);
+            CompilerState.this.compilerWalk.asListener().enterClassifierModifier(ctx);
         }
 
         @Override
@@ -482,7 +483,7 @@ public class CompilerState
         {
             super.exitClassifierModifier(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitClassifierModifier(ctx);
+            CompilerState.this.compilerWalk.asListener().exitClassifierModifier(ctx);
         }
 
         @Override
@@ -490,13 +491,13 @@ public class CompilerState
         {
             super.enterServiceOrderByDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterServiceOrderByDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().enterServiceOrderByDeclaration(ctx);
         }
 
         @Override
         public void exitServiceOrderByDeclaration(ServiceOrderByDeclarationContext ctx)
         {
-            CompilerState.this.compilerWalkState.asListener().exitServiceOrderByDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().exitServiceOrderByDeclaration(ctx);
 
             super.exitServiceOrderByDeclaration(ctx);
         }
@@ -506,13 +507,13 @@ public class CompilerState
         {
             super.enterOrderByDeclaration(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterOrderByDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().enterOrderByDeclaration(ctx);
         }
 
         @Override
         public void exitOrderByDeclaration(OrderByDeclarationContext ctx)
         {
-            CompilerState.this.compilerWalkState.asListener().exitOrderByDeclaration(ctx);
+            CompilerState.this.compilerWalk.asListener().exitOrderByDeclaration(ctx);
 
             super.exitOrderByDeclaration(ctx);
         }
@@ -522,13 +523,13 @@ public class CompilerState
         {
             super.enterOrderByMemberReferencePath(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterOrderByMemberReferencePath(ctx);
+            CompilerState.this.compilerWalk.asListener().enterOrderByMemberReferencePath(ctx);
         }
 
         @Override
         public void exitOrderByMemberReferencePath(OrderByMemberReferencePathContext ctx)
         {
-            CompilerState.this.compilerWalkState.asListener().exitOrderByMemberReferencePath(ctx);
+            CompilerState.this.compilerWalk.asListener().exitOrderByMemberReferencePath(ctx);
 
             super.exitOrderByMemberReferencePath(ctx);
         }
@@ -538,13 +539,13 @@ public class CompilerState
         {
             super.enterOrderByDirection(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterOrderByDirection(ctx);
+            CompilerState.this.compilerWalk.asListener().enterOrderByDirection(ctx);
         }
 
         @Override
         public void exitOrderByDirection(OrderByDirectionContext ctx)
         {
-            CompilerState.this.compilerWalkState.asListener().exitOrderByDirection(ctx);
+            CompilerState.this.compilerWalk.asListener().exitOrderByDirection(ctx);
 
             super.exitOrderByDirection(ctx);
         }

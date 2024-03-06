@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrCompilationUnit;
@@ -147,7 +147,7 @@ public class AntlrProjection
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportErrors(compilerAnnotationHolder);
 
@@ -176,7 +176,7 @@ public class AntlrProjection
         }
     }
 
-    protected void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
+    protected void reportForwardReference(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.isForwardReference(this.classifier))
         {

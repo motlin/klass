@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
@@ -52,13 +52,13 @@ public final class AntlrParameter
     @Nonnull
     private final IAntlrElement parameterOwner;
     @Nonnull
-    private final AntlrType     typeState;
+    private final AntlrType     type;
 
     // TODO: Factor modifiers into type checking
     private final MutableList<AntlrModifier> modifiers = Lists.mutable.empty();
 
     @Nullable
-    private AntlrMultiplicity multiplicityState;
+    private AntlrMultiplicity multiplicity;
 
     @Nullable
     private ParameterBuilder elementBuilder;
@@ -68,11 +68,11 @@ public final class AntlrParameter
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
-            @Nonnull AntlrType typeState,
+            @Nonnull AntlrType type,
             @Nonnull IAntlrElement parameterOwner)
     {
         super(elementContext, compilationUnit, ordinal, nameContext);
-        this.typeState      = Objects.requireNonNull(typeState);
+        this.type           = Objects.requireNonNull(type);
         this.parameterOwner = Objects.requireNonNull(parameterOwner);
     }
 
@@ -101,30 +101,30 @@ public final class AntlrParameter
     }
 
     @Override
-    public void enterMultiplicity(@Nonnull AntlrMultiplicity multiplicityState)
+    public void enterMultiplicity(@Nonnull AntlrMultiplicity multiplicity)
     {
-        if (this.multiplicityState != null)
+        if (this.multiplicity != null)
         {
             throw new IllegalStateException();
         }
-        this.multiplicityState = Objects.requireNonNull(multiplicityState);
+        this.multiplicity = Objects.requireNonNull(multiplicity);
     }
 
-    public void enterModifier(AntlrModifier modifierState)
+    public void enterModifier(AntlrModifier modifier)
     {
-        this.modifiers.add(modifierState);
+        this.modifiers.add(modifier);
     }
 
     //<editor-fold desc="Report Compiler Errors">
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         this.reportNameErrors(compilerAnnotationHolder);
         this.reportTypeErrors(compilerAnnotationHolder);
     }
 
-    private void reportTypeErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportTypeErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (this.typeState != AntlrEnumeration.NOT_FOUND)
+        if (this.type != AntlrEnumeration.NOT_FOUND)
         {
             return;
         }
@@ -137,7 +137,7 @@ public final class AntlrParameter
         compilerAnnotationHolder.add("ERR_ENM_PAR", message, this, offendingToken);
     }
 
-    public void reportDuplicateParameterName(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportDuplicateParameterName(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         String message = String.format("Duplicate parameter: '%s'.", this.getName());
         compilerAnnotationHolder.add("ERR_DUP_PAR", message, this);
@@ -147,7 +147,7 @@ public final class AntlrParameter
     @Nonnull
     public AntlrType getType()
     {
-        return this.typeState;
+        return this.type;
     }
 
     @Nonnull
@@ -164,8 +164,8 @@ public final class AntlrParameter
                 this.ordinal,
                 this.getNameContext(),
                 // TODO: Fuller interface hierarchy with AntlrType, AntlrDataType, etc.
-                (DataTypeGetter) this.typeState.getElementBuilder(),
-                this.multiplicityState.getMultiplicity());
+                (DataTypeGetter) this.type.getElementBuilder(),
+                this.multiplicity.getMultiplicity());
         return this.elementBuilder;
     }
 

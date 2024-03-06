@@ -12,7 +12,8 @@ import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.eclipse.collections.api.map.OrderedMap;
 
 // Phase must run after inferring additional parameters like version, in ServicePhase
-public class VariableResolutionPhase extends AbstractCompilerPhase
+public class VariableResolutionPhase
+        extends AbstractCompilerPhase
 {
     public VariableResolutionPhase(@Nonnull CompilerState compilerState)
     {
@@ -24,14 +25,14 @@ public class VariableResolutionPhase extends AbstractCompilerPhase
     {
         super.enterUrlDeclaration(ctx);
 
-        AntlrUrl urlState = this.compilerState.getCompilerWalkState().getUrlState();
+        AntlrUrl url = this.compilerState.getCompilerWalk().getUrl();
 
-        OrderedMap<String, AntlrParameter> formalParametersByName = urlState.getFormalParametersByName();
-        for (AntlrService serviceState : urlState.getServiceStates())
+        OrderedMap<String, AntlrParameter> formalParametersByName = url.getFormalParametersByName();
+        for (AntlrService service : url.getServices())
         {
-            for (AntlrServiceCriteria serviceCriteriaState : serviceState.getServiceCriteriaStates())
+            for (AntlrServiceCriteria serviceCriteria : service.getServiceCriterias())
             {
-                AntlrCriteria criteria = serviceCriteriaState.getCriteria();
+                AntlrCriteria criteria = serviceCriteria.getCriteria();
                 criteria.resolveServiceVariables(formalParametersByName);
                 // TODO: ❓ Type inference here?
                 criteria.resolveTypes();

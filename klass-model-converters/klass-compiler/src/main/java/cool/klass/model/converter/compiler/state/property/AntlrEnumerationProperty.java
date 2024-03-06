@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.meta.domain.EnumerationImpl;
@@ -60,7 +60,7 @@ public class AntlrEnumerationProperty
 
     // TODO: Check that it's not NOT_FOUND
     @Nonnull
-    private final AntlrEnumeration enumerationState;
+    private final AntlrEnumeration enumeration;
 
     private EnumerationPropertyBuilder elementBuilder;
 
@@ -69,25 +69,25 @@ public class AntlrEnumerationProperty
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
-            @Nonnull AntlrClassifier owningClassifierState,
+            @Nonnull AntlrClassifier owningClassifier,
             boolean isOptional,
-            @Nonnull AntlrEnumeration enumerationState)
+            @Nonnull AntlrEnumeration enumeration)
     {
         super(
                 elementContext,
                 compilationUnit,
                 ordinal,
                 nameContext,
-                owningClassifierState,
+                owningClassifier,
                 isOptional);
-        this.enumerationState = Objects.requireNonNull(enumerationState);
+        this.enumeration = Objects.requireNonNull(enumeration);
     }
 
     @Nonnull
     @Override
     public AntlrEnumeration getType()
     {
-        return this.enumerationState;
+        return this.enumeration;
     }
 
     @Override
@@ -111,8 +111,8 @@ public class AntlrEnumerationProperty
                 this.getSourceCodeBuilder(),
                 this.ordinal,
                 this.getNameContext(),
-                this.enumerationState.getElementBuilder(),
-                this.owningClassifierState.getElementBuilder(),
+                this.enumeration.getElementBuilder(),
+                this.owningClassifier.getElementBuilder(),
                 this.isOptional);
 
         ImmutableList<ModifierBuilder> modifierBuilders = this.getModifiers()
@@ -140,7 +140,7 @@ public class AntlrEnumerationProperty
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportErrors(compilerAnnotationHolder);
 
@@ -148,9 +148,9 @@ public class AntlrEnumerationProperty
         this.reportForwardReference(compilerAnnotationHolder);
     }
 
-    private void reportTypeNotFound(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportTypeNotFound(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (this.enumerationState != AntlrEnumeration.NOT_FOUND)
+        if (this.enumeration != AntlrEnumeration.NOT_FOUND)
         {
             return;
         }
@@ -162,9 +162,9 @@ public class AntlrEnumerationProperty
         compilerAnnotationHolder.add("ERR_ENM_PRP", message, this, offendingToken);
     }
 
-    private void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportForwardReference(CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (!this.isForwardReference(this.enumerationState))
+        if (!this.isForwardReference(this.enumeration))
         {
             return;
         }
@@ -173,9 +173,9 @@ public class AntlrEnumerationProperty
                 "Enumeration property '%s' is declared on line %d and has a forward reference to enumeration '%s' which is declared later in the source file '%s' on line %d.",
                 this,
                 this.getElementContext().getStart().getLine(),
-                this.enumerationState.getName(),
+                this.enumeration.getName(),
                 this.getCompilationUnit().get().getSourceName(),
-                this.enumerationState.getElementContext().getStart().getLine());
+                this.enumeration.getElementContext().getStart().getLine());
         compilerAnnotationHolder.add(
                 "ERR_FWD_REF",
                 message,
@@ -184,7 +184,7 @@ public class AntlrEnumerationProperty
     }
 
     @Override
-    protected void reportInvalidIdProperties(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    protected void reportInvalidIdProperties(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         ListIterable<AntlrModifier> idModifiers = this.getModifiersByName("id");
         for (AntlrModifier idModifier : idModifiers)

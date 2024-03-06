@@ -27,13 +27,13 @@ public class CompilationUnitPhase
 
         this.compilationUnitState = new AntlrCompilationUnit(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()));
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()));
     }
 
     @Override
     public void exitCompilationUnit(@Nonnull CompilationUnitContext ctx)
     {
-        this.compilerState.getDomainModelState().exitCompilationUnit(this.compilationUnitState);
+        this.compilerState.getDomainModel().exitCompilationUnit(this.compilationUnitState);
         this.compilationUnitState = null;
         super.exitCompilationUnit(ctx);
     }
@@ -43,13 +43,13 @@ public class CompilationUnitPhase
     {
         super.enterPackageDeclaration(ctx);
 
-        AntlrPackage packageState = new AntlrPackage(
+        AntlrPackage pkg = new AntlrPackage(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 -1,
                 ctx.packageName(),
                 this.compilationUnitState);
 
-        this.compilationUnitState.enterPackageDeclaration(packageState);
+        this.compilationUnitState.enterPackageDeclaration(pkg);
     }
 }

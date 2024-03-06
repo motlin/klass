@@ -10,7 +10,7 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.AnnotationSeverity;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
@@ -32,7 +32,7 @@ public abstract class AntlrProperty
         extends AntlrIdentifierElement
 {
     @Nonnull
-    private final MutableList<AntlrModifier>                            modifierStates     = Lists.mutable.empty();
+    private final MutableList<AntlrModifier>                            modifiers          = Lists.mutable.empty();
     private final MutableOrderedMap<String, MutableList<AntlrModifier>> modifiersByName    =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<ParserRuleContext, AntlrModifier>   modifiersByContext =
@@ -64,7 +64,7 @@ public abstract class AntlrProperty
     public abstract PropertyBuilder<?, ?, ?> getElementBuilder();
 
     @Nonnull
-    public abstract AntlrClassifier getOwningClassifierState();
+    public abstract AntlrClassifier getOwningClassifier();
 
     public boolean isVersion()
     {
@@ -93,24 +93,24 @@ public abstract class AntlrProperty
 
     public int getNumModifiers()
     {
-        return this.modifierStates.size();
+        return this.modifiers.size();
     }
 
     @Nonnull
     public ListIterable<AntlrModifier> getModifiers()
     {
-        return this.modifierStates.asUnmodifiable();
+        return this.modifiers.asUnmodifiable();
     }
 
-    public void enterModifier(@Nonnull AntlrModifier modifierState)
+    public void enterModifier(@Nonnull AntlrModifier modifier)
     {
-        Objects.requireNonNull(modifierState);
-        this.modifierStates.add(modifierState);
-        this.modifiersByName.getIfAbsentPut(modifierState.getKeyword(), Lists.mutable::empty).add(modifierState);
+        Objects.requireNonNull(modifier);
+        this.modifiers.add(modifier);
+        this.modifiersByName.getIfAbsentPut(modifier.getKeyword(), Lists.mutable::empty).add(modifier);
 
         AntlrModifier duplicate = this.modifiersByContext.put(
-                modifierState.getElementContext(),
-                modifierState);
+                modifier.getElementContext(),
+                modifier);
         if (duplicate != null)
         {
             throw new AssertionError();
@@ -125,14 +125,14 @@ public abstract class AntlrProperty
 
     //<editor-fold desc="Report Compiler Errors">
     @OverridingMethodsMustInvokeSuper
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         this.reportDuplicateModifiers(compilerAnnotationHolder);
         this.reportDuplicateAuditModifiers(compilerAnnotationHolder);
         this.reportInvalidAuditProperties(compilerAnnotationHolder);
     }
 
-    private void reportDuplicateModifiers(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportDuplicateModifiers(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         MutableBag<String> duplicateModifiers = this.getModifiers()
                 .asLazy()
@@ -152,7 +152,7 @@ public abstract class AntlrProperty
         }
     }
 
-    protected void reportDuplicateAuditModifiers(CompilerAnnotationState compilerAnnotationHolder)
+    protected void reportDuplicateAuditModifiers(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.isCreatedBy() && this.isLastUpdatedBy())
         {
@@ -172,7 +172,7 @@ public abstract class AntlrProperty
     }
 
     @OverridingMethodsMustInvokeSuper
-    protected void reportInvalidAuditProperties(CompilerAnnotationState compilerAnnotationHolder)
+    protected void reportInvalidAuditProperties(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.isCreatedBy() && this.isLastUpdatedBy())
         {
@@ -213,58 +213,58 @@ public abstract class AntlrProperty
         }
     }
 
-    public final void reportDuplicateMemberName(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public final void reportDuplicateMemberName(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         String message = String.format(
                 "Duplicate member: '%s.%s'.",
-                this.getOwningClassifierState().getName(),
+                this.getOwningClassifier().getName(),
                 this.getName());
 
         compilerAnnotationHolder.add("ERR_DUP_PRP", message, this);
     }
 
     @OverridingMethodsMustInvokeSuper
-    public void reportAuditErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportAuditErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        this.reportAuditErrors(compilerAnnotationHolder, this.modifierStates, this);
+        this.reportAuditErrors(compilerAnnotationHolder, this.modifiers, this);
     }
 
     public void reportDuplicatePropertyWithModifiers(
-            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
+            @Nonnull CompilerAnnotationHolder compilerAnnotationHolder,
             ImmutableList<String> modifierStrings)
     {
-        ImmutableList<AntlrModifier> modifierStates = modifierStrings.flatCollect(this::getModifiersByName);
+        ImmutableList<AntlrModifier> modifiers = modifierStrings.flatCollect(this::getModifiersByName);
 
         String message = String.format(
                 "Multiple properties on '%s' with modifiers %s.",
-                this.getOwningClassifierState().getName(),
+                this.getOwningClassifier().getName(),
                 modifierStrings);
 
         compilerAnnotationHolder.add(
                 "ERR_PRP_MOD",
                 message,
                 this,
-                modifierStates.collect(AntlrElement::getElementContext));
+                modifiers.collect(AntlrElement::getElementContext));
     }
 
-    public void reportUnreferencedPrivateProperty(CompilerAnnotationState compilerAnnotationState)
+    public void reportUnreferencedPrivateProperty(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         boolean isAudit  = this.isCreatedBy() || this.isLastUpdatedBy();
         String  prefix   = isAudit ? "Audit" : "Private";
         var     severity = isAudit ? AnnotationSeverity.ERROR : AnnotationSeverity.WARNING;
-        this.reportUnreferencedPrivateProperty(compilerAnnotationState, prefix, severity);
+        this.reportUnreferencedPrivateProperty(compilerAnnotationHolder, prefix, severity);
     }
 
     private void reportUnreferencedPrivateProperty(
-            CompilerAnnotationState compilerAnnotationState,
+            CompilerAnnotationHolder compilerAnnotationHolder,
             String prefix,
             AnnotationSeverity severity)
     {
         String message = "%s property '%s.%s' is not referenced in any criteria.".formatted(
                 prefix,
-                this.getOwningClassifierState().getName(),
+                this.getOwningClassifier().getName(),
                 this.getName());
-        compilerAnnotationState.add("ERR_PRP_REF", message, this, severity);
+        compilerAnnotationHolder.add("ERR_PRP_REF", message, this, severity);
     }
     //</editor-fold>
 
@@ -279,7 +279,7 @@ public abstract class AntlrProperty
     {
         return String.format(
                 "%s.%s",
-                this.getOwningClassifierState().getName(),
+                this.getOwningClassifier().getName(),
                 this.getShortString());
     }
 

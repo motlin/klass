@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
@@ -35,7 +35,7 @@ public class AntlrProjectionProjectionReference
     @Nonnull
     private final AntlrReferenceProperty<?> referenceProperty;
     @Nonnull
-    private final AntlrProjection           referencedProjectionState;
+    private final AntlrProjection           referencedProjection;
 
     private ProjectionProjectionReferenceBuilder projectionProjectionReferenceBuilder;
 
@@ -48,14 +48,14 @@ public class AntlrProjectionProjectionReference
             @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull AntlrClassifier classifierState,
             @Nonnull AntlrReferenceProperty<?> referenceProperty,
-            @Nonnull AntlrProjection referencedProjectionState)
+            @Nonnull AntlrProjection referencedProjection)
     {
         super(elementContext, compilationUnit, ordinal, nameContext);
-        this.classifier                = Objects.requireNonNull(classifier);
-        this.antlrProjectionParent     = Objects.requireNonNull(antlrProjectionParent);
-        this.classifierState           = Objects.requireNonNull(classifierState);
-        this.referenceProperty         = Objects.requireNonNull(referenceProperty);
-        this.referencedProjectionState = Objects.requireNonNull(referencedProjectionState);
+        this.classifier            = Objects.requireNonNull(classifier);
+        this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
+        this.classifierState       = Objects.requireNonNull(classifierState);
+        this.referenceProperty     = Objects.requireNonNull(referenceProperty);
+        this.referencedProjection  = Objects.requireNonNull(referencedProjection);
     }
 
     @Nonnull
@@ -102,7 +102,7 @@ public class AntlrProjectionProjectionReference
     @Override
     public void build2()
     {
-        ProjectionBuilder referencedProjectionBuilder = this.referencedProjectionState.getElementBuilder();
+        ProjectionBuilder referencedProjectionBuilder = this.referencedProjection.getElementBuilder();
         this.projectionProjectionReferenceBuilder.setReferencedProjectionBuilder(referencedProjectionBuilder);
     }
 
@@ -121,14 +121,14 @@ public class AntlrProjectionProjectionReference
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportDuplicateMemberName(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportDuplicateMemberName(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         String message = String.format("Duplicate member: '%s'.", this.getName());
         compilerAnnotationHolder.add("ERR_DUP_PRJ", message, this);
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         AntlrClassifier parentClassifier = this.antlrProjectionParent.getClassifier();
         if (parentClassifier == AntlrClass.NOT_FOUND
@@ -139,7 +139,7 @@ public class AntlrProjectionProjectionReference
             return;
         }
 
-        if (this.referencedProjectionState == AntlrProjection.AMBIGUOUS)
+        if (this.referencedProjection == AntlrProjection.AMBIGUOUS)
         {
             return;
         }
@@ -159,8 +159,8 @@ public class AntlrProjectionProjectionReference
             else
             {
                 String message = "Projection reference '%s' requires a reference property with type '%s', but found a data type property '%s.%s' with type '%s'.".formatted(
-                        this.referencedProjectionState.getName(),
-                        this.referencedProjectionState.getClassifier().getName(),
+                        this.referencedProjection.getName(),
+                        this.referencedProjection.getClassifier().getName(),
                         parentClassifier.getName(),
                         this.getName(),
                         dataTypeProperty.getTypeName());
@@ -174,7 +174,7 @@ public class AntlrProjectionProjectionReference
             String message = String.format("Ambiguous: '%s'.", this);
             compilerAnnotationHolder.add("ERR_PPR_AMB", message, this);
         }
-        else if (this.referencedProjectionState == AntlrProjection.NOT_FOUND)
+        else if (this.referencedProjection == AntlrProjection.NOT_FOUND)
         {
             String message = String.format(
                     "Not found: '%s'.",
@@ -188,10 +188,10 @@ public class AntlrProjectionProjectionReference
         }
     }
 
-    private void reportTypeMismatch(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportTypeMismatch(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (this.classifier == this.referencedProjectionState.getClassifier()
-                || this.classifier.isSubClassOf(this.referencedProjectionState.getClassifier()))
+        if (this.classifier == this.referencedProjection.getClassifier()
+                || this.classifier.isSubClassOf(this.referencedProjection.getClassifier()))
         {
             return;
         }
@@ -200,15 +200,15 @@ public class AntlrProjectionProjectionReference
                 "Type mismatch: '%s' has type '%s' but '%s' has type '%s'.",
                 this.getName(),
                 this.classifier.getName(),
-                this.referencedProjectionState.getName(),
-                this.referencedProjectionState.getClassifier().getName());
+                this.referencedProjection.getName(),
+                this.referencedProjection.getClassifier().getName());
         compilerAnnotationHolder.add("ERR_PRR_KLS", message, this);
     }
 
-    private void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportForwardReference(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (!this.referenceProperty.isToOneRequired()
-                || !this.isForwardReference(this.referencedProjectionState))
+                || !this.isForwardReference(this.referencedProjection))
         {
             return;
         }
@@ -223,9 +223,9 @@ public class AntlrProjectionProjectionReference
                 "Projection property '%s' is declared on line %d and has a forward reference to projection '%s' which is declared later in the source file '%s' on line %d.",
                 this.getName(),
                 this.getElementContext().getStart().getLine(),
-                this.referencedProjectionState.getName(),
+                this.referencedProjection.getName(),
                 this.getCompilationUnit().get().getSourceName(),
-                this.referencedProjectionState.getElementContext().getStart().getLine());
+                this.referencedProjection.getElementContext().getStart().getLine());
         compilerAnnotationHolder.add(
                 "ERR_FWD_REF",
                 message,
@@ -234,7 +234,7 @@ public class AntlrProjectionProjectionReference
     }
 
     @Override
-    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         // Intentionally blank. Reference to a named element that gets its name checked.
     }

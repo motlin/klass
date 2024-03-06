@@ -42,13 +42,13 @@ public class PropertyPhase
         extends AbstractCompilerPhase
 {
     @Nullable
-    private AntlrDataTypeProperty<?>      dataTypePropertyState;
+    private AntlrDataTypeProperty<?>      dataTypeProperty;
     @Nullable
-    private AntlrAssociationEndSignature  associationEndSignatureState;
+    private AntlrAssociationEndSignature  associationEndSignature;
     @Nullable
-    private AntlrClassifierReferenceOwner classifierReferenceOwnerState;
+    private AntlrClassifierReferenceOwner classifierReferenceOwner;
     @Nullable
-    private AntlrMultiplicityOwner        multiplicityOwnerState;
+    private AntlrMultiplicityOwner        multiplicityOwner;
 
     public PropertyPhase(@Nonnull CompilerState compilerState)
     {
@@ -65,27 +65,27 @@ public class PropertyPhase
         PrimitiveType      primitiveType      = PrimitiveType.byPrettyName(primitiveTypeName);
         AntlrPrimitiveType primitiveTypeState = AntlrPrimitiveType.valueOf(primitiveType);
 
-        if (this.dataTypePropertyState != null)
+        if (this.dataTypeProperty != null)
         {
             throw new IllegalStateException();
         }
-        this.dataTypePropertyState = new AntlrPrimitiveProperty(
+        this.dataTypeProperty = new AntlrPrimitiveProperty(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.getClassifierState().getNumMembers() + 1,
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.getClassifier().getNumMembers() + 1,
                 ctx.identifier(),
-                this.getClassifierState(),
+                this.getClassifier(),
                 isOptional,
                 primitiveTypeState);
 
-        this.getClassifierState().enterDataTypeProperty(this.dataTypePropertyState);
+        this.getClassifier().enterDataTypeProperty(this.dataTypeProperty);
     }
 
     @Override
     public void exitPrimitiveProperty(@Nonnull PrimitivePropertyContext ctx)
     {
-        Objects.requireNonNull(this.dataTypePropertyState);
-        this.dataTypePropertyState = null;
+        Objects.requireNonNull(this.dataTypeProperty);
+        this.dataTypeProperty = null;
         super.exitPrimitiveProperty(ctx);
     }
 
@@ -94,32 +94,32 @@ public class PropertyPhase
     {
         super.enterEnumerationProperty(ctx);
 
-        boolean          isOptional       = ctx.optionalMarker() != null;
-        AntlrDomainModel domainModelState = this.compilerState.getDomainModelState();
-        String           enumerationName  = ctx.enumerationReference().getText();
-        AntlrEnumeration enumerationState = domainModelState.getEnumerationByName(enumerationName);
+        boolean          isOptional      = ctx.optionalMarker() != null;
+        AntlrDomainModel domainModel     = this.compilerState.getDomainModel();
+        String           enumerationName = ctx.enumerationReference().getText();
+        AntlrEnumeration enumeration     = domainModel.getEnumerationByName(enumerationName);
 
-        if (this.dataTypePropertyState != null)
+        if (this.dataTypeProperty != null)
         {
             throw new IllegalStateException();
         }
-        this.dataTypePropertyState = new AntlrEnumerationProperty(
+        this.dataTypeProperty = new AntlrEnumerationProperty(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.getClassifierState().getNumMembers() + 1,
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.getClassifier().getNumMembers() + 1,
                 ctx.identifier(),
-                this.getClassifierState(),
+                this.getClassifier(),
                 isOptional,
-                enumerationState);
+                enumeration);
 
-        this.getClassifierState().enterDataTypeProperty(this.dataTypePropertyState);
+        this.getClassifier().enterDataTypeProperty(this.dataTypeProperty);
     }
 
     @Override
     public void exitEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
     {
-        Objects.requireNonNull(this.dataTypePropertyState);
-        this.dataTypePropertyState = null;
+        Objects.requireNonNull(this.dataTypeProperty);
+        this.dataTypeProperty = null;
 
         super.exitEnumerationProperty(ctx);
     }
@@ -131,12 +131,12 @@ public class PropertyPhase
 
         IntegerLiteralContext integerLiteralContext = ctx.integerValidationParameter().integerLiteral();
         int                   length                = this.getIntegerFromLiteral(integerLiteralContext);
-        AntlrMinLengthPropertyValidation minLengthValidationState = new AntlrMinLengthPropertyValidation(
+        AntlrMinLengthPropertyValidation minLengthValidation = new AntlrMinLengthPropertyValidation(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.dataTypePropertyState,
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.dataTypeProperty,
                 length);
-        this.dataTypePropertyState.addMinLengthValidationState(minLengthValidationState);
+        this.dataTypeProperty.addMinLengthValidation(minLengthValidation);
     }
 
     @Override
@@ -146,12 +146,12 @@ public class PropertyPhase
 
         IntegerLiteralContext integerLiteralContext = ctx.integerValidationParameter().integerLiteral();
         int                   length                = this.getIntegerFromLiteral(integerLiteralContext);
-        AntlrMaxLengthPropertyValidation maxLengthValidationState = new AntlrMaxLengthPropertyValidation(
+        AntlrMaxLengthPropertyValidation maxLengthValidation = new AntlrMaxLengthPropertyValidation(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.dataTypePropertyState,
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.dataTypeProperty,
                 length);
-        this.dataTypePropertyState.addMaxLengthValidationState(maxLengthValidationState);
+        this.dataTypeProperty.addMaxLengthValidation(maxLengthValidation);
     }
 
     @Override
@@ -161,12 +161,12 @@ public class PropertyPhase
 
         IntegerLiteralContext integerLiteralContext = ctx.integerValidationParameter().integerLiteral();
         int                   minimum               = this.getIntegerFromLiteral(integerLiteralContext);
-        AntlrMinPropertyValidation minValidationState = new AntlrMinPropertyValidation(
+        AntlrMinPropertyValidation minValidation = new AntlrMinPropertyValidation(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.dataTypePropertyState,
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.dataTypeProperty,
                 minimum);
-        this.dataTypePropertyState.addMinValidationState(minValidationState);
+        this.dataTypeProperty.addMinValidation(minValidation);
     }
 
     @Override
@@ -176,12 +176,12 @@ public class PropertyPhase
 
         IntegerLiteralContext integerLiteralContext = ctx.integerValidationParameter().integerLiteral();
         int                   maximum               = this.getIntegerFromLiteral(integerLiteralContext);
-        AntlrMaxPropertyValidation maxValidationState = new AntlrMaxPropertyValidation(
+        AntlrMaxPropertyValidation maxValidation = new AntlrMaxPropertyValidation(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.dataTypePropertyState,
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.dataTypeProperty,
                 maximum);
-        this.dataTypePropertyState.addMaxValidationState(maxValidationState);
+        this.dataTypeProperty.addMaxValidation(maxValidation);
     }
 
     private int getIntegerFromLiteral(@Nonnull IntegerLiteralContext integerLiteralContext)
@@ -194,12 +194,12 @@ public class PropertyPhase
     @Override
     public void enterDataTypePropertyModifier(DataTypePropertyModifierContext ctx)
     {
-        AntlrModifier modifierState = new AntlrModifier(
+        AntlrModifier modifier = new AntlrModifier(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.dataTypePropertyState.getNumModifiers() + 1,
-                this.dataTypePropertyState);
-        this.dataTypePropertyState.enterModifier(modifierState);
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.dataTypeProperty.getNumModifiers() + 1,
+                this.dataTypeProperty);
+        this.dataTypeProperty.enterModifier(modifier);
     }
 
     @Override
@@ -207,37 +207,37 @@ public class PropertyPhase
     {
         super.enterAssociationEndSignature(ctx);
 
-        if (this.associationEndSignatureState != null)
+        if (this.associationEndSignature != null)
         {
             throw new IllegalStateException();
         }
-        if (this.classifierReferenceOwnerState != null)
+        if (this.classifierReferenceOwner != null)
         {
             throw new IllegalStateException();
         }
-        if (this.multiplicityOwnerState != null)
+        if (this.multiplicityOwner != null)
         {
             throw new IllegalStateException();
         }
 
-        this.associationEndSignatureState  = new AntlrAssociationEndSignature(
+        this.associationEndSignature  = new AntlrAssociationEndSignature(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.getClassifierState().getNumMembers() + 1,
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.getClassifier().getNumMembers() + 1,
                 ctx.identifier(),
-                this.getClassifierState());
-        this.classifierReferenceOwnerState = this.associationEndSignatureState;
-        this.multiplicityOwnerState        = this.associationEndSignatureState;
-        this.getClassifierState().enterAssociationEndSignature(this.associationEndSignatureState);
+                this.getClassifier());
+        this.classifierReferenceOwner = this.associationEndSignature;
+        this.multiplicityOwner        = this.associationEndSignature;
+        this.getClassifier().enterAssociationEndSignature(this.associationEndSignature);
     }
 
     @Override
     public void exitAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
     {
-        Objects.requireNonNull(this.associationEndSignatureState);
-        this.associationEndSignatureState  = null;
-        this.classifierReferenceOwnerState = null;
-        this.multiplicityOwnerState        = null;
+        Objects.requireNonNull(this.associationEndSignature);
+        this.associationEndSignature  = null;
+        this.classifierReferenceOwner = null;
+        this.multiplicityOwner        = null;
         super.exitAssociationEndSignature(ctx);
     }
 
@@ -246,23 +246,23 @@ public class PropertyPhase
     {
         super.enterAssociationEndModifier(ctx);
 
-        if (this.associationEndSignatureState == null)
+        if (this.associationEndSignature == null)
         {
             return;
         }
 
         AntlrModifier antlrAssociationEndModifier = new AntlrModifier(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.associationEndSignatureState.getNumModifiers() + 1,
-                this.associationEndSignatureState);
-        this.associationEndSignatureState.enterModifier(antlrAssociationEndModifier);
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.associationEndSignature.getNumModifiers() + 1,
+                this.associationEndSignature);
+        this.associationEndSignature.enterModifier(antlrAssociationEndModifier);
     }
 
     @Nullable
-    private AntlrClassifier getClassifierState()
+    private AntlrClassifier getClassifier()
     {
-        return this.compilerState.getCompilerWalkState().getClassifierState();
+        return this.compilerState.getCompilerWalk().getClassifier();
     }
 
     @Override
@@ -270,21 +270,21 @@ public class PropertyPhase
     {
         super.enterClassifierReference(ctx);
 
-        if (this.classifierReferenceOwnerState == null)
+        if (this.classifierReferenceOwner == null)
         {
             return;
         }
 
-        String           classifierName   = ctx.identifier().getText();
-        AntlrDomainModel domainModelState = this.compilerState.getDomainModelState();
-        AntlrClassifier  classifierState  = domainModelState.getClassifierByName(classifierName);
-        AntlrClassifierReference classifierReferenceState = new AntlrClassifierReference(
+        String           classifierName = ctx.identifier().getText();
+        AntlrDomainModel domainModel    = this.compilerState.getDomainModel();
+        AntlrClassifier  classifier     = domainModel.getClassifierByName(classifierName);
+        AntlrClassifierReference classifierReference = new AntlrClassifierReference(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.classifierReferenceOwnerState,
-                classifierState);
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.classifierReferenceOwner,
+                classifier);
 
-        this.classifierReferenceOwnerState.enterClassifierReference(classifierReferenceState);
+        this.classifierReferenceOwner.enterClassifierReference(classifierReference);
     }
 
     @Override
@@ -292,16 +292,16 @@ public class PropertyPhase
     {
         super.enterMultiplicity(ctx);
 
-        if (this.multiplicityOwnerState == null)
+        if (this.multiplicityOwner == null)
         {
             return;
         }
 
-        AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
+        AntlrMultiplicity multiplicity = new AntlrMultiplicity(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.multiplicityOwnerState);
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.multiplicityOwner);
 
-        this.associationEndSignatureState.enterMultiplicity(multiplicityState);
+        this.associationEndSignature.enterMultiplicity(multiplicity);
     }
 }

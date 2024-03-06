@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.criteria.OrCriteriaImpl.OrCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionOrContext;
@@ -56,7 +56,7 @@ public class AntlrOrCriteria
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         // TODO: Error if both clauses are identical, or if any left true subclause is a subclause of the right
         // Java | Probable bugs | Constant conditions & exceptions

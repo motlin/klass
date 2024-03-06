@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -50,7 +50,7 @@ public class AntlrUrl
     private final ParameterHolder pathParameters  = new ParameterHolder();
     private final ParameterHolder queryParameters = new ParameterHolder();
 
-    private final MutableList<AntlrService>                                  serviceStates     = Lists.mutable.empty();
+    private final MutableList<AntlrService>                                  services          = Lists.mutable.empty();
     private final MutableOrderedMap<Verb, AntlrService>                      servicesByVerb    =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<ServiceDeclarationContext, AntlrService> servicesByContext =
@@ -94,9 +94,9 @@ public class AntlrUrl
         return this.serviceGroup;
     }
 
-    public MutableList<AntlrService> getServiceStates()
+    public MutableList<AntlrService> getServices()
     {
-        return this.serviceStates.asUnmodifiable();
+        return this.services.asUnmodifiable();
     }
 
     public AntlrService getServiceByContext(ServiceDeclarationContext ctx)
@@ -119,24 +119,24 @@ public class AntlrUrl
         this.urlPathSegments.add(antlrUrlConstant);
     }
 
-    public void enterPathParameterDeclaration(@Nonnull AntlrParameter pathParameterState)
+    public void enterPathParameterDeclaration(@Nonnull AntlrParameter pathParameter)
     {
-        this.urlPathSegments.add(pathParameterState);
-        this.urlParameters.enterParameterDeclaration(pathParameterState);
-        this.pathParameters.enterParameterDeclaration(pathParameterState);
+        this.urlPathSegments.add(pathParameter);
+        this.urlParameters.enterParameterDeclaration(pathParameter);
+        this.pathParameters.enterParameterDeclaration(pathParameter);
     }
 
-    public void enterQueryParameterDeclaration(@Nonnull AntlrParameter queryParameterState)
+    public void enterQueryParameterDeclaration(@Nonnull AntlrParameter queryParameter)
     {
-        this.urlParameters.enterParameterDeclaration(queryParameterState);
-        this.queryParameters.enterParameterDeclaration(queryParameterState);
+        this.urlParameters.enterParameterDeclaration(queryParameter);
+        this.queryParameters.enterParameterDeclaration(queryParameter);
     }
 
     public void exitServiceDeclaration(@Nonnull AntlrService antlrService)
     {
-        this.serviceStates.add(antlrService);
+        this.services.add(antlrService);
         this.servicesByVerb.compute(
-                antlrService.getVerbState().getVerb(),
+                antlrService.getVerb().getVerb(),
                 (name, builder) -> builder == null
                         ? antlrService
                         : AntlrService.AMBIGUOUS);
@@ -151,46 +151,46 @@ public class AntlrUrl
     }
 
     //<editor-fold desc="Report Compiler Errors">
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         this.reportDuplicateParameterErrors(compilerAnnotationHolder);
         this.reportDuplicateVerbErrors(compilerAnnotationHolder);
         this.reportNoVerbs(compilerAnnotationHolder);
 
-        this.urlParameters.getParameterStates().forEachWith(AntlrParameter::reportErrors, compilerAnnotationHolder);
-        this.serviceStates.forEachWith(AntlrService::reportErrors, compilerAnnotationHolder);
+        this.urlParameters.getParameters().forEachWith(AntlrParameter::reportErrors, compilerAnnotationHolder);
+        this.services.forEachWith(AntlrService::reportErrors, compilerAnnotationHolder);
     }
 
-    private void reportDuplicateParameterErrors(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportDuplicateParameterErrors(CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        ImmutableBag<String> duplicateNames = this.urlParameters.getParameterStates()
+        ImmutableBag<String> duplicateNames = this.urlParameters.getParameters()
                 .collect(AntlrNamedElement::getName)
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();
 
-        this.urlParameters.getParameterStates()
+        this.urlParameters.getParameters()
                 .select(each -> duplicateNames.contains(each.getName()))
                 .forEachWith(AntlrParameter::reportDuplicateParameterName, compilerAnnotationHolder);
     }
 
-    private void reportDuplicateVerbErrors(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportDuplicateVerbErrors(CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        ImmutableBag<Verb> duplicateVerbs = this.serviceStates
-                .collect(AntlrService::getVerbState)
+        ImmutableBag<Verb> duplicateVerbs = this.services
+                .collect(AntlrService::getVerb)
                 .collect(AntlrVerb::getVerb)
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();
 
-        this.serviceStates
-                .select(each -> duplicateVerbs.contains(each.getVerbState().getVerb()))
+        this.services
+                .select(each -> duplicateVerbs.contains(each.getVerb().getVerb()))
                 .forEachWith(AntlrService::reportDuplicateVerb, compilerAnnotationHolder);
     }
 
-    private void reportNoVerbs(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportNoVerbs(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (this.serviceStates.isEmpty())
+        if (this.services.isEmpty())
         {
             String message = String.format(
                     "Service url should declare at least one verb: '%s'.",
@@ -211,7 +211,7 @@ public class AntlrUrl
     @Nonnull
     public OrderedMap<String, AntlrParameter> getFormalParametersByName()
     {
-        return this.urlParameters.getParameterStatesByName();
+        return this.urlParameters.getParametersByName();
     }
 
     public ImmutableList<Object> getNormalizedPathSegments()
@@ -253,24 +253,24 @@ public class AntlrUrl
         this.elementBuilder.setPathSegmentBuilders(pathSegments);
 
         ImmutableList<ParameterBuilder> queryParameterBuilders = this.queryParameters
-                .getParameterStates()
+                .getParameters()
                 .collect(AntlrParameter::build)
                 .toImmutable();
         this.elementBuilder.setQueryParameterBuilders(queryParameterBuilders);
 
         ImmutableList<ParameterBuilder> pathParameterBuilders = this.pathParameters
-                .getParameterStates()
+                .getParameters()
                 .collect(AntlrParameter::getElementBuilder)
                 .toImmutable();
         this.elementBuilder.setPathParameterBuilders(pathParameterBuilders);
 
         ImmutableList<ParameterBuilder> parameterBuilders = this.urlParameters
-                .getParameterStates()
+                .getParameters()
                 .collect(AntlrParameter::getElementBuilder)
                 .toImmutable();
         this.elementBuilder.setParameterBuilders(parameterBuilders);
 
-        ImmutableList<ServiceBuilder> serviceBuilders = this.serviceStates
+        ImmutableList<ServiceBuilder> serviceBuilders = this.services
                 .collect(AntlrService::build)
                 .toImmutable();
         this.elementBuilder.setServiceBuilders(serviceBuilders);

@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -106,7 +106,7 @@ public abstract class AntlrNamedElement
     }
 
     // TODO: 💡 Some name errors should really just be warnings. Rename CompilerError to CompilerAnnotation and implement severity.
-    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         this.reportKeywordCollision(compilerAnnotationHolder);
 
@@ -123,7 +123,7 @@ public abstract class AntlrNamedElement
     protected abstract Pattern getNamePattern();
 
     // TODO: ⬇ Potentially refine a smaller list of keywords that clash with associations/projections/services and a separate name pattern
-    protected void reportKeywordCollision(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    protected void reportKeywordCollision(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (JAVA_KEYWORDS.contains(this.getName()))
         {

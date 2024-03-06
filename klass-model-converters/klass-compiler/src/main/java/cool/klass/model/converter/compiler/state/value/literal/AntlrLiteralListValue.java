@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
@@ -19,7 +19,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 public class AntlrLiteralListValue
         extends AbstractAntlrLiteralValue
 {
-    private ImmutableList<AbstractAntlrLiteralValue> literalStates;
+    private ImmutableList<AbstractAntlrLiteralValue> literals;
     private LiteralListValueBuilder                  elementBuilder;
 
     public AntlrLiteralListValue(
@@ -30,13 +30,13 @@ public class AntlrLiteralListValue
         super(elementContext, compilationUnit, expressionValueOwner);
     }
 
-    public void setLiteralStates(ImmutableList<AbstractAntlrLiteralValue> literalStates)
+    public void setLiterals(ImmutableList<AbstractAntlrLiteralValue> literals)
     {
-        if (this.literalStates != null)
+        if (this.literals != null)
         {
             throw new IllegalStateException();
         }
-        this.literalStates = Objects.requireNonNull(literalStates);
+        this.literals = Objects.requireNonNull(literals);
     }
 
     @Nonnull
@@ -53,7 +53,7 @@ public class AntlrLiteralListValue
                 this.getSourceCodeBuilder(),
                 this.getInferredType().getTypeGetter());
 
-        ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders = this.literalStates
+        ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders = this.literals
                 .<AbstractLiteralValueBuilder<?>>collect(AbstractAntlrLiteralValue::build)
                 .toImmutable();
         this.elementBuilder.setLiteralValueBuilders(literalValueBuilders);
@@ -69,7 +69,7 @@ public class AntlrLiteralListValue
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.getPossibleTypes().isEmpty())
         {
@@ -83,10 +83,10 @@ public class AntlrLiteralListValue
     @Override
     public ImmutableList<AntlrType> getPossibleTypes()
     {
-        return this.literalStates
+        return this.literals
                 .flatCollect(AntlrExpressionValue::getPossibleTypes)
                 .toBag()
-                .selectByOccurrences(occurrences -> occurrences == this.literalStates.size())
+                .selectByOccurrences(occurrences -> occurrences == this.literals.size())
                 .toList()
                 .distinct()
                 .toImmutable();

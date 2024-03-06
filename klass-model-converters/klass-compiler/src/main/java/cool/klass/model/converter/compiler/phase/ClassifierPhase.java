@@ -20,11 +20,11 @@ public class ClassifierPhase
         extends AbstractCompilerPhase
 {
     @Nullable
-    private AntlrClassifier classifierState;
+    private AntlrClassifier classifier;
     @Nullable
-    private AntlrInterface  interfaceState;
+    private AntlrInterface iface;
     @Nullable
-    private AntlrClass      classState;
+    private AntlrClass     klass;
 
     public ClassifierPhase(@Nonnull CompilerState compilerState)
     {
@@ -37,21 +37,21 @@ public class ClassifierPhase
         super.enterInterfaceDeclaration(ctx);
 
         IdentifierContext identifier = ctx.interfaceHeader().identifier();
-        this.interfaceState  = new AntlrInterface(
+        this.iface      = new AntlrInterface(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.compilerState.getOrdinal(ctx),
                 identifier,
-                this.compilerState.getCompilerWalkState().getCompilationUnitState());
-        this.classifierState = this.interfaceState;
+                this.compilerState.getCompilerWalk().getCompilationUnit());
+        this.classifier = this.iface;
     }
 
     @Override
     public void exitInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
     {
-        this.compilerState.getDomainModelState().exitInterfaceDeclaration(this.interfaceState);
-        this.interfaceState  = null;
-        this.classifierState = null;
+        this.compilerState.getDomainModel().exitInterfaceDeclaration(this.iface);
+        this.iface      = null;
+        this.classifier = null;
         super.exitInterfaceDeclaration(ctx);
     }
 
@@ -62,22 +62,22 @@ public class ClassifierPhase
 
         String classOrUserKeyword = ctx.classHeader().classOrUser().getText();
 
-        this.classState      = new AntlrClass(
+        this.klass      = new AntlrClass(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.compilerState.getOrdinal(ctx),
                 ctx.classHeader().identifier(),
-                this.compilerState.getCompilerWalkState().getCompilationUnitState(),
+                this.compilerState.getCompilerWalk().getCompilationUnit(),
                 classOrUserKeyword.equals("user"));
-        this.classifierState = this.classState;
+        this.classifier = this.klass;
     }
 
     @Override
     public void exitClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
-        this.compilerState.getDomainModelState().exitClassDeclaration(this.classState);
-        this.classState      = null;
-        this.classifierState = null;
+        this.compilerState.getDomainModel().exitClassDeclaration(this.klass);
+        this.klass      = null;
+        this.classifier = null;
         super.exitClassDeclaration(ctx);
     }
 
@@ -85,7 +85,7 @@ public class ClassifierPhase
     public void enterAbstractDeclaration(@Nonnull AbstractDeclarationContext ctx)
     {
         super.enterAbstractDeclaration(ctx);
-        this.classState.setAbstract(true);
+        this.klass.setAbstract(true);
     }
 
     @Override
@@ -93,14 +93,14 @@ public class ClassifierPhase
     {
         super.enterClassifierModifier(ctx);
 
-        int ordinal = this.classifierState.getNumClassifierModifiers();
+        int ordinal = this.classifier.getNumClassifierModifiers();
 
-        AntlrModifier modifierState = new AntlrModifier(
+        AntlrModifier modifier = new AntlrModifier(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 ordinal + 1,
-                this.classifierState);
+                this.classifier);
 
-        this.classifierState.enterModifier(modifierState);
+        this.classifier.enterModifier(modifier);
     }
 }

@@ -38,9 +38,9 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
             return;
         }
 
-        AntlrClass classState = this.compilerState.getCompilerWalkState().getClassState();
-        ImmutableList<AntlrDataTypeProperty<?>> keyProperties = classState
-                .getDataTypeProperties()
+        AntlrClass klass = this.compilerState.getCompilerWalk().getKlass();
+        ImmutableList<AntlrDataTypeProperty<?>> keyProperties = klass
+                .getAllDataTypeProperties()
                 .select(AntlrDataTypeProperty::isKey);
 
         if (keyProperties.isEmpty())
@@ -49,7 +49,7 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
         }
 
         AntlrModifier classifierModifierState =
-                this.compilerState.getCompilerWalkState().getClassifierModifierState();
+                this.compilerState.getCompilerWalk().getClassifierModifier();
         String                  klassSourceCode         = this.getSourceCode(keyProperties);
 
         ImmutableList<ParseTreeListener> compilerPhases = Lists.immutable.with(
@@ -68,8 +68,8 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
     @Nonnull
     private String getSourceCode(@Nonnull ImmutableList<AntlrDataTypeProperty<?>> keyProperties)
     {
-        AntlrClass classState = this.compilerState.getCompilerWalkState().getClassState();
-        String     className  = classState.getName();
+        AntlrClass klass = this.compilerState.getCompilerWalk().getKlass();
+        String     className  = klass.getName();
 
         String relationshipKeyClauses = keyProperties
                 .collect(AntlrProperty::getName)
@@ -80,7 +80,7 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
 
         //language=Klass
         return ""
-                + "package " + classState.getPackageName() + "\n"
+                + "package " + klass.getPackageName() + "\n"
                 + "\n"
                 + "association " + className + "HasVersion\n"
                 + "{\n"

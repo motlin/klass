@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
@@ -75,10 +75,10 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
 
         @Nonnull
         @Override
-        public AntlrClassifier getOwningClassifierState()
+        public AntlrClassifier getOwningClassifier()
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getOwningClassifierState() not implemented yet");
+                    + ".getOwningClassifier() not implemented yet");
         }
 
         @Nonnull
@@ -143,10 +143,10 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
 
         @Nonnull
         @Override
-        public AntlrClassifier getOwningClassifierState()
+        public AntlrClassifier getOwningClassifier()
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getOwningClassifierState() not implemented yet");
+                    + ".getOwningClassifier() not implemented yet");
         }
 
         @Override
@@ -159,9 +159,9 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
     //</editor-fold>
 
     @Nonnull
-    protected Optional<AntlrOrderBy> orderByState = Optional.empty();
+    protected Optional<AntlrOrderBy> orderBy = Optional.empty();
 
-    protected AntlrMultiplicity multiplicityState;
+    protected AntlrMultiplicity multiplicity;
 
     protected AntlrReferenceProperty(
             @Nonnull ParserRuleContext elementContext,
@@ -182,27 +182,27 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
 
     public AntlrMultiplicity getMultiplicity()
     {
-        return this.multiplicityState;
+        return this.multiplicity;
     }
 
     public boolean isToOne()
     {
-        return this.multiplicityState != null && this.multiplicityState.isToOne();
+        return this.multiplicity != null && this.multiplicity.isToOne();
     }
 
     public boolean isToMany()
     {
-        return this.multiplicityState != null && this.multiplicityState.isToMany();
+        return this.multiplicity != null && this.multiplicity.isToMany();
     }
 
     public boolean isToOneOptional()
     {
-        return this.multiplicityState != null && this.multiplicityState.getMultiplicity() == Multiplicity.ZERO_TO_ONE;
+        return this.multiplicity != null && this.multiplicity.getMultiplicity() == Multiplicity.ZERO_TO_ONE;
     }
 
     public boolean isToOneRequired()
     {
-        return this.multiplicityState != null && this.multiplicityState.getMultiplicity() == Multiplicity.ONE_TO_ONE;
+        return this.multiplicity != null && this.multiplicity.getMultiplicity() == Multiplicity.ONE_TO_ONE;
     }
 
     public boolean isOwned()
@@ -210,9 +210,9 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         return this.getModifiers().anySatisfy(AntlrModifier::isOwned);
     }
 
-    protected void reportInvalidMultiplicity(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    protected void reportInvalidMultiplicity(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (this.multiplicityState.getMultiplicity() == null)
+        if (this.multiplicity.getMultiplicity() == null)
         {
             String multiplicityChoices = ArrayAdapter.adapt(Multiplicity.values())
                     .collect(Multiplicity::getPrettyName)
@@ -222,12 +222,12 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
             String message = String.format(
                     "Reference property '%s: %s[%s..%s]' has invalid multiplicity. Expected one of %s.",
                     this.getName(),
-                    this.getOwningClassifierState().getName(),
-                    this.multiplicityState.getLowerBoundText(),
-                    this.multiplicityState.getUpperBoundText(),
+                    this.getOwningClassifier().getName(),
+                    this.multiplicity.getLowerBoundText(),
+                    this.multiplicity.getUpperBoundText(),
                     multiplicityChoices);
 
-            compilerAnnotationHolder.add("ERR_ASO_MUL", message, this.multiplicityState);
+            compilerAnnotationHolder.add("ERR_ASO_MUL", message, this.multiplicity);
         }
     }
 
@@ -236,43 +236,43 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
     public abstract ReferencePropertyBuilder<?, ?, ?> getElementBuilder();
 
     @Override
-    public void enterMultiplicity(@Nonnull AntlrMultiplicity multiplicityState)
+    public void enterMultiplicity(@Nonnull AntlrMultiplicity multiplicity)
     {
-        if (this.multiplicityState != null)
+        if (this.multiplicity != null)
         {
             throw new AssertionError();
         }
 
-        this.multiplicityState = Objects.requireNonNull(multiplicityState);
+        this.multiplicity = Objects.requireNonNull(multiplicity);
     }
 
     @Override
-    public void enterOrderByDeclaration(@Nonnull AntlrOrderBy orderByState)
+    public void enterOrderByDeclaration(@Nonnull AntlrOrderBy orderBy)
     {
-        if (this.orderByState.isPresent())
+        if (this.orderBy.isPresent())
         {
             throw new IllegalStateException();
         }
-        this.orderByState = Optional.of(orderByState);
+        this.orderBy = Optional.of(orderBy);
     }
 
     @Override
     @Nonnull
-    public Optional<AntlrOrderBy> getOrderByState()
+    public Optional<AntlrOrderBy> getOrderBy()
     {
-        return this.orderByState;
+        return this.orderBy;
     }
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportErrors(compilerAnnotationHolder);
 
         this.reportToOneOrderBy(compilerAnnotationHolder);
     }
 
-    public void reportTypeNotFound(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportTypeNotFound(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.getType() != AntlrClass.NOT_FOUND)
         {
@@ -286,14 +286,14 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         compilerAnnotationHolder.add("ERR_REF_TYP", message, this, offendingToken);
     }
 
-    public void reportToOneOrderBy(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportToOneOrderBy(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (!this.isToOne())
         {
             return;
         }
 
-        if (this.orderByState.isEmpty())
+        if (this.orderBy.isEmpty())
         {
             return;
         }
@@ -301,9 +301,9 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         String message = String.format(
                 "Reference property '%s.%s' is to-one but has an order-by clause. Order by clauses are only valid for "
                         + "to-many properties.",
-                this.getOwningClassifierState().getName(),
+                this.getOwningClassifier().getName(),
                 this.getName());
-        compilerAnnotationHolder.add("ERR_REF_ORD", message, this.orderByState.get());
+        compilerAnnotationHolder.add("ERR_REF_ORD", message, this.orderBy.get());
     }
     //</editor-fold>
 

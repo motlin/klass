@@ -68,13 +68,13 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     {
         AntlrLiteralListValue literalListValue = new AntlrLiteralListValue(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.expressionValueOwner);
 
-        ImmutableList<AbstractAntlrLiteralValue> literalStates = ListAdapter.adapt(ctx.literal())
+        ImmutableList<AbstractAntlrLiteralValue> literals = ListAdapter.adapt(ctx.literal())
                 .collectWith(this::getAntlrLiteralValue, literalListValue)
                 .toImmutable();
-        literalListValue.setLiteralStates(literalStates);
+        literalListValue.setLiterals(literals);
 
         return literalListValue;
     }
@@ -99,9 +99,9 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         {
             case "user" -> new AntlrUserLiteral(
                     ctx,
-                    Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                    Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                     this.expressionValueOwner,
-                    this.compilerState.getDomainModelState().getUserClassState());
+                    this.compilerState.getDomainModel().getUserClass());
             default -> throw new AssertionError(keyword);
         };
     }
@@ -114,7 +114,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         String            variableName = identifier.getText();
         return new AntlrVariableReference(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 variableName,
                 this.expressionValueOwner);
     }
@@ -125,26 +125,26 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     {
         MemberReferenceContext memberReferenceContext = ctx.memberReference();
 
-        AntlrClass                       currentClassState    = (AntlrClass) this.thisReference;
-        MutableList<AntlrAssociationEnd> associationEndStates = Lists.mutable.empty();
+        AntlrClass                       currentClass    = (AntlrClass) this.thisReference;
+        MutableList<AntlrAssociationEnd> associationEnds = Lists.mutable.empty();
         for (AssociationEndReferenceContext associationEndReferenceContext : ctx.associationEndReference())
         {
             // TODO: Or parameterizedPropertyName?
-            String              associationEndName  = associationEndReferenceContext.identifier().getText();
-            AntlrAssociationEnd associationEndState = currentClassState.getAssociationEndByName(associationEndName);
-            associationEndStates.add(associationEndState);
-            currentClassState = associationEndState.getType();
+            String              associationEndName = associationEndReferenceContext.identifier().getText();
+            AntlrAssociationEnd associationEnd     = currentClass.getAssociationEndByName(associationEndName);
+            associationEnds.add(associationEnd);
+            currentClass = associationEnd.getType();
         }
 
-        String                   memberName            = memberReferenceContext.identifier().getText();
-        AntlrDataTypeProperty<?> dataTypePropertyState = currentClassState.getDataTypePropertyByName(memberName);
+        String                   memberName       = memberReferenceContext.identifier().getText();
+        AntlrDataTypeProperty<?> dataTypeProperty = currentClass.getDataTypePropertyByName(memberName);
 
         return new AntlrThisMemberReferencePath(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 (AntlrClass) this.thisReference,
-                associationEndStates.toImmutable(),
-                dataTypePropertyState,
+                associationEnds.toImmutable(),
+                dataTypeProperty,
                 this.expressionValueOwner);
     }
 
@@ -152,31 +152,31 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     @Override
     public AntlrTypeMemberReferencePath visitTypeMemberReferencePath(@Nonnull TypeMemberReferencePathContext ctx)
     {
-        String     className  = ctx.classReference().identifier().getText();
-        AntlrClass classState = this.compilerState.getDomainModelState().getClassByName(className);
+        String     className = ctx.classReference().identifier().getText();
+        AntlrClass klass     = this.compilerState.getDomainModel().getClassByName(className);
 
         MemberReferenceContext memberReferenceContext = ctx.memberReference();
 
-        AntlrClass                       currentClassState    = classState;
-        MutableList<AntlrAssociationEnd> associationEndStates = Lists.mutable.empty();
+        AntlrClass                       currentClass    = klass;
+        MutableList<AntlrAssociationEnd> associationEnds = Lists.mutable.empty();
         for (AssociationEndReferenceContext associationEndReferenceContext : ctx.associationEndReference())
         {
             // TODO: Or parameterizedPropertyName?
-            String              associationEndName  = associationEndReferenceContext.identifier().getText();
-            AntlrAssociationEnd associationEndState = currentClassState.getAssociationEndByName(associationEndName);
-            associationEndStates.add(associationEndState);
-            currentClassState = associationEndState.getType();
+            String              associationEndName = associationEndReferenceContext.identifier().getText();
+            AntlrAssociationEnd associationEnd     = currentClass.getAssociationEndByName(associationEndName);
+            associationEnds.add(associationEnd);
+            currentClass = associationEnd.getType();
         }
 
-        String                   memberName            = memberReferenceContext.identifier().getText();
-        AntlrDataTypeProperty<?> dataTypePropertyState = currentClassState.getDataTypePropertyByName(memberName);
+        String                   memberName       = memberReferenceContext.identifier().getText();
+        AntlrDataTypeProperty<?> dataTypeProperty = currentClass.getDataTypePropertyByName(memberName);
 
         return new AntlrTypeMemberReferencePath(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                classState,
-                associationEndStates.toImmutable(),
-                dataTypePropertyState,
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                klass,
+                associationEnds.toImmutable(),
+                dataTypeProperty,
                 this.expressionValueOwner);
     }
 

@@ -17,7 +17,7 @@ import org.antlr.v4.runtime.RuleContext;
 public class EnumerationsPhase extends AbstractCompilerPhase
 {
     @Nullable
-    private AntlrEnumeration enumerationState;
+    private AntlrEnumeration enumeration;
 
     public EnumerationsPhase(@Nonnull CompilerState compilerState)
     {
@@ -30,19 +30,19 @@ public class EnumerationsPhase extends AbstractCompilerPhase
         super.enterEnumerationDeclaration(ctx);
 
         IdentifierContext identifier = ctx.identifier();
-        this.enumerationState = new AntlrEnumeration(
+        this.enumeration = new AntlrEnumeration(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.compilerState.getOrdinal(ctx),
                 identifier,
-                this.compilerState.getCompilerWalkState().getCompilationUnitState());
+                this.compilerState.getCompilerWalk().getCompilationUnit());
     }
 
     @Override
     public void exitEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
     {
-        this.compilerState.getDomainModelState().exitEnumerationDeclaration(this.enumerationState);
-        this.enumerationState = null;
+        this.compilerState.getDomainModel().exitEnumerationDeclaration(this.enumeration);
+        this.enumeration = null;
         super.exitEnumerationDeclaration(ctx);
     }
 
@@ -57,14 +57,14 @@ public class EnumerationsPhase extends AbstractCompilerPhase
                 .map(RuleContext::getText)
                 .map(this::trimQuotes);
 
-        AntlrEnumerationLiteral enumerationLiteralState = new AntlrEnumerationLiteral(
+        AntlrEnumerationLiteral enumerationLiteral = new AntlrEnumerationLiteral(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.enumerationState.getNumLiterals() + 1,
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.enumeration.getNumLiterals() + 1,
                 ctx.identifier(),
                 prettyName,
-                this.enumerationState);
-        this.enumerationState.enterEnumerationLiteral(enumerationLiteralState);
+                this.enumeration);
+        this.enumeration.enterEnumerationLiteral(enumerationLiteral);
     }
 
     @Nonnull

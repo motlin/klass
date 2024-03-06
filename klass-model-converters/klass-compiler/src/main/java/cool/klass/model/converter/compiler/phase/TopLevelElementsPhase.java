@@ -17,6 +17,6 @@ public class TopLevelElementsPhase
     public void enterTopLevelDeclaration(@Nonnull TopLevelDeclarationContext ctx)
     {
         super.enterTopLevelDeclaration(ctx);
-        this.compilerState.getDomainModelState().enterTopLevelDeclaration(ctx);
+        this.compilerState.getDomainModel().enterTopLevelDeclaration(ctx);
     }
 }

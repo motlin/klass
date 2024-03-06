@@ -30,26 +30,26 @@ public class OrderByDirectionInferencePhase
     {
         super.enterOrderByMemberReferencePath(ctx);
 
-        AntlrOrderByMemberReferencePath orderByMemberReferencePathState =
-                this.compilerState.getCompilerWalkState().getOrderByMemberReferencePathState();
+        AntlrOrderByMemberReferencePath orderByMemberReferencePath =
+                this.compilerState.getCompilerWalk().getOrderByMemberReferencePath();
 
-        if (orderByMemberReferencePathState.getOrderByDirectionState() != null)
+        if (orderByMemberReferencePath.getOrderByDirection() != null)
         {
             return;
         }
 
         String sourceCodeText = "ascending";
-        this.runCompilerMacro(orderByMemberReferencePathState, sourceCodeText);
+        this.runCompilerMacro(orderByMemberReferencePath, sourceCodeText);
     }
 
     private void runCompilerMacro(
-            @Nonnull AntlrOrderByMemberReferencePath orderByMemberReferencePathState,
+            @Nonnull AntlrOrderByMemberReferencePath orderByMemberReferencePath,
             @Nonnull String sourceCodeText)
     {
         ParseTreeListener compilerPhase = new OrderByDirectionPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
-                orderByMemberReferencePathState,
+                orderByMemberReferencePath,
                 this,
                 sourceCodeText,
                 KlassParser::orderByDirection,

@@ -19,10 +19,10 @@ public class AntlrMinLengthPropertyValidation
     public AntlrMinLengthPropertyValidation(
             @Nonnull MinLengthValidationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull AntlrDataTypeProperty<?> owningPropertyState,
+            @Nonnull AntlrDataTypeProperty<?> owningProperty,
             int number)
     {
-        super(elementContext, compilationUnit, owningPropertyState, number);
+        super(elementContext, compilationUnit, owningProperty, number);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class AntlrMinLengthPropertyValidation
                 (MinLengthValidationContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.owningPropertyState.getElementBuilder(),
+                this.owningProperty.getElementBuilder(),
                 this.number);
         return this.elementBuilder;
     }

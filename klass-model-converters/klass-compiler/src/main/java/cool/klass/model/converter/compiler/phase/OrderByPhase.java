@@ -21,7 +21,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public class OrderByPhase extends AbstractCompilerPhase
 {
     @Nullable
-    private AntlrOrderBy orderByState;
+    private AntlrOrderBy                     orderBy;
     private ServiceOrderByDeclarationContext serviceOrderByDeclarationContext;
 
     public OrderByPhase(@Nonnull CompilerState compilerState)
@@ -47,7 +47,7 @@ public class OrderByPhase extends AbstractCompilerPhase
     {
         super.enterOrderByDeclaration(ctx);
 
-        if (this.compilerState.getCompilerWalkState().getOrderByOwnerState() == null)
+        if (this.compilerState.getCompilerWalk().getOrderByOwner() == null)
         {
             return;
         }
@@ -55,20 +55,20 @@ public class OrderByPhase extends AbstractCompilerPhase
         ParserRuleContext orderByContext = this.serviceOrderByDeclarationContext == null
                 ? ctx
                 : this.serviceOrderByDeclarationContext;
-        this.orderByState = new AntlrOrderBy(
+        this.orderBy = new AntlrOrderBy(
                 orderByContext,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.compilerState.getCompilerWalkState().getThisReference(),
-                this.compilerState.getCompilerWalkState().getOrderByOwnerState());
-        AntlrOrderByOwner orderByOwnerState = this.compilerState.getCompilerWalkState().getOrderByOwnerState();
-        orderByOwnerState.enterOrderByDeclaration(this.orderByState);
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.compilerState.getCompilerWalk().getThisReference(),
+                this.compilerState.getCompilerWalk().getOrderByOwner());
+        AntlrOrderByOwner orderByOwner = this.compilerState.getCompilerWalk().getOrderByOwner();
+        orderByOwner.enterOrderByDeclaration(this.orderBy);
     }
 
     @Override
     @OverridingMethodsMustInvokeSuper
     public void exitOrderByDeclaration(@Nonnull OrderByDeclarationContext ctx)
     {
-        this.orderByState = null;
+        this.orderBy = null;
         super.exitOrderByDeclaration(ctx);
     }
 
@@ -77,13 +77,13 @@ public class OrderByPhase extends AbstractCompilerPhase
     public void enterOrderByMemberReferencePath(@Nonnull OrderByMemberReferencePathContext ctx)
     {
         super.enterOrderByMemberReferencePath(ctx);
-        if (this.compilerState.getCompilerWalkState().getOrderByOwnerState() == null)
+        if (this.compilerState.getCompilerWalk().getOrderByOwner() == null)
         {
             return;
         }
 
-        AntlrOrderByMemberReferencePath orderByMemberReferencePathState = this.convertOrderByMemberReferencePath(ctx);
-        this.orderByState.enterOrderByMemberReferencePath(orderByMemberReferencePathState);
+        AntlrOrderByMemberReferencePath orderByMemberReferencePath = this.convertOrderByMemberReferencePath(ctx);
+        this.orderBy.enterOrderByMemberReferencePath(orderByMemberReferencePath);
     }
 
     @Nonnull
@@ -94,9 +94,9 @@ public class OrderByPhase extends AbstractCompilerPhase
 
         return new AntlrOrderByMemberReferencePath(
                 orderByMemberReferencePathContext,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.orderByState,
-                this.orderByState.getNumProperties(),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.orderBy,
+                this.orderBy.getNumProperties(),
                 thisMemberReferencePath);
     }
 
@@ -105,8 +105,8 @@ public class OrderByPhase extends AbstractCompilerPhase
     {
         ExpressionValueVisitor expressionValueVisitor = new ExpressionValueVisitor(
                 this.compilerState,
-                this.compilerState.getCompilerWalkState().getThisReference(),
-                this.orderByState);
+                this.compilerState.getCompilerWalk().getThisReference(),
+                this.orderBy);
 
         ThisMemberReferencePathContext thisMemberReferencePathContext =
                 orderByMemberReferencePathContext.thisMemberReferencePath();

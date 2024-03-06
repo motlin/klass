@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationBodyContext;
@@ -56,7 +56,7 @@ public class AntlrEnumeration
     };
     //</editor-fold>
 
-    private final MutableList<AntlrEnumerationLiteral>               enumerationLiteralStates  = Lists.mutable.empty();
+    private final MutableList<AntlrEnumerationLiteral>               enumerationLiteral        = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrEnumerationLiteral> enumerationLiteralsByName =
             OrderedMapAdapter.adapt(
                     new LinkedHashMap<>());
@@ -75,16 +75,16 @@ public class AntlrEnumeration
 
     public int getNumLiterals()
     {
-        return this.enumerationLiteralStates.size();
+        return this.enumerationLiteral.size();
     }
 
-    public void enterEnumerationLiteral(@Nonnull AntlrEnumerationLiteral enumerationLiteralState)
+    public void enterEnumerationLiteral(@Nonnull AntlrEnumerationLiteral enumerationLiteral)
     {
-        this.enumerationLiteralStates.add(enumerationLiteralState);
+        this.enumerationLiteral.add(enumerationLiteral);
         this.enumerationLiteralsByName.compute(
-                enumerationLiteralState.getName(),
+                enumerationLiteral.getName(),
                 (name, builder) -> builder == null
-                        ? enumerationLiteralState
+                        ? enumerationLiteral
                         : AntlrEnumerationLiteral.AMBIGUOUS);
     }
 
@@ -103,7 +103,7 @@ public class AntlrEnumeration
                 this.getElementContext().identifier(),
                 this.getPackageName());
 
-        ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders = this.enumerationLiteralStates
+        ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders = this.enumerationLiteral
                 .collect(AntlrEnumerationLiteral::build)
                 .toImmutable();
 
@@ -133,42 +133,42 @@ public class AntlrEnumeration
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportNameErrors(compilerAnnotationHolder);
-        this.enumerationLiteralStates.forEachWith(AntlrEnumerationLiteral::reportNameErrors, compilerAnnotationHolder);
+        this.enumerationLiteral.forEachWith(AntlrEnumerationLiteral::reportNameErrors, compilerAnnotationHolder);
     }
 
-    public void reportErrors(CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         this.logDuplicateLiteralNames(compilerAnnotationHolder);
         this.logDuplicatePrettyNames(compilerAnnotationHolder);
     }
     //</editor-fold>
 
-    public void logDuplicateLiteralNames(CompilerAnnotationState compilerAnnotationHolder)
+    public void logDuplicateLiteralNames(CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        MutableBag<String> duplicateNames = this.enumerationLiteralStates
+        MutableBag<String> duplicateNames = this.enumerationLiteral
                 .collect(AntlrNamedElement::getName)
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1);
 
-        this.enumerationLiteralStates
+        this.enumerationLiteral
                 .asLazy()
                 .select(enumerationLiteral -> duplicateNames.contains(enumerationLiteral.getName()))
                 .forEachWith(AntlrEnumerationLiteral::reportDuplicateName, compilerAnnotationHolder);
     }
 
-    public void logDuplicatePrettyNames(CompilerAnnotationState compilerAnnotationHolder)
+    public void logDuplicatePrettyNames(CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        MutableBag<String> duplicatePrettyNames = this.enumerationLiteralStates
+        MutableBag<String> duplicatePrettyNames = this.enumerationLiteral
                 .collect(AntlrEnumerationLiteral::getPrettyName)
                 .select(Optional::isPresent)
                 .collect(Optional::get)
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1);
 
-        this.enumerationLiteralStates
+        this.enumerationLiteral
                 .asLazy()
                 .select(each -> each.getPrettyName().isPresent())
                 .select(each -> duplicatePrettyNames.contains(each.getPrettyName().get()))

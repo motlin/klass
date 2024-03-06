@@ -33,15 +33,15 @@ public class ParameterizedPropertyPhase
         extends ReferencePropertyPhase
 {
     @Nullable
-    private AntlrParameterizedProperty parameterizedPropertyState;
+    private AntlrParameterizedProperty parameterizedProperty;
     @Nullable
-    private AntlrParameter             parameterState;
+    private AntlrParameter             parameter;
 
     // TODO: Make better use of these Owner interfaces in shared compiler phases
     @Nullable
-    private IAntlrElement       criteriaOwnerState;
+    private IAntlrElement       criteriaOwner;
     @Nullable
-    private AntlrParameterOwner parameterOwnerState;
+    private AntlrParameterOwner parameterOwner;
 
     public ParameterizedPropertyPhase(@Nonnull CompilerState compilerState)
     {
@@ -53,65 +53,65 @@ public class ParameterizedPropertyPhase
     {
         super.enterParameterizedProperty(ctx);
 
-        if (this.parameterizedPropertyState != null)
+        if (this.parameterizedProperty != null)
         {
             throw new IllegalStateException();
         }
-        if (this.parameterOwnerState != null)
+        if (this.parameterOwner != null)
         {
             throw new IllegalStateException();
         }
-        if (this.criteriaOwnerState != null)
+        if (this.criteriaOwner != null)
         {
             throw new IllegalStateException();
         }
-        if (this.classReferenceOwnerState != null)
+        if (this.classReferenceOwner != null)
         {
             throw new IllegalStateException();
         }
-        if (this.multiplicityOwnerState != null)
+        if (this.multiplicityOwner != null)
         {
             throw new IllegalStateException();
         }
 
         // TODO: Parameterized Property modifiers
 
-        AntlrClass thisReference = (AntlrClass) this.compilerState.getCompilerWalkState().getThisReference();
+        AntlrClass thisReference = (AntlrClass) this.compilerState.getCompilerWalk().getThisReference();
 
-        this.parameterizedPropertyState = new AntlrParameterizedProperty(
+        this.parameterizedProperty = new AntlrParameterizedProperty(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 thisReference.getNumMembers() + 1,
                 ctx.identifier(),
                 thisReference);
 
-        thisReference.enterParameterizedProperty(this.parameterizedPropertyState);
+        thisReference.enterParameterizedProperty(this.parameterizedProperty);
 
-        this.parameterOwnerState      = this.parameterizedPropertyState;
-        this.criteriaOwnerState       = this.parameterizedPropertyState;
-        this.classReferenceOwnerState = this.parameterizedPropertyState;
-        this.multiplicityOwnerState   = this.parameterizedPropertyState;
+        this.parameterOwner      = this.parameterizedProperty;
+        this.criteriaOwner       = this.parameterizedProperty;
+        this.classReferenceOwner = this.parameterizedProperty;
+        this.multiplicityOwner   = this.parameterizedProperty;
 
         this.handleClassReference(ctx.classReference());
         this.handleMultiplicity(ctx.multiplicity());
 
         KlassVisitor<AntlrCriteria> visitor = new CriteriaVisitor(
                 this.compilerState,
-                this.parameterizedPropertyState);
+                this.parameterizedProperty);
 
         CriteriaExpressionContext criteriaExpressionContext = ctx.criteriaExpression();
-        AntlrCriteria             criteriaState             = visitor.visit(criteriaExpressionContext);
-        this.parameterizedPropertyState.setCriteria(criteriaState);
+        AntlrCriteria             criteria                  = visitor.visit(criteriaExpressionContext);
+        this.parameterizedProperty.setCriteria(criteria);
     }
 
     @Override
     public void exitParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
     {
-        this.parameterizedPropertyState = null;
-        this.parameterOwnerState        = null;
-        this.criteriaOwnerState         = null;
-        this.classReferenceOwnerState   = null;
-        this.multiplicityOwnerState     = null;
+        this.parameterizedProperty = null;
+        this.parameterOwner        = null;
+        this.criteriaOwner         = null;
+        this.classReferenceOwner   = null;
+        this.multiplicityOwner     = null;
 
         super.exitParameterizedProperty(ctx);
     }
@@ -122,16 +122,16 @@ public class ParameterizedPropertyPhase
     {
         super.enterRelationship(ctx);
 
-        if (this.parameterizedPropertyState == null)
+        if (this.parameterizedProperty == null)
         {
             return;
         }
 
         KlassVisitor<AntlrCriteria> visitor = new CriteriaVisitor(
                 this.compilerState,
-                this.criteriaOwnerState);
-        AntlrCriteria criteriaState = visitor.visit(ctx.criteriaExpression());
-        this.parameterizedPropertyState.setCriteria(criteriaState);
+                this.criteriaOwner);
+        AntlrCriteria criteria = visitor.visit(ctx.criteriaExpression());
+        this.parameterizedProperty.setCriteria(criteria);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class ParameterizedPropertyPhase
     {
         super.enterPrimitiveParameterDeclaration(ctx);
 
-        if (this.parameterizedPropertyState == null)
+        if (this.parameterizedProperty == null)
         {
             return;
         }
@@ -154,8 +154,8 @@ public class ParameterizedPropertyPhase
     @Override
     public void exitPrimitiveParameterDeclaration(@Nonnull PrimitiveParameterDeclarationContext ctx)
     {
-        this.parameterState         = null;
-        this.multiplicityOwnerState = null;
+        this.parameter         = null;
+        this.multiplicityOwner = null;
 
         super.exitPrimitiveParameterDeclaration(ctx);
     }
@@ -165,23 +165,22 @@ public class ParameterizedPropertyPhase
     {
         super.enterEnumerationParameterDeclaration(ctx);
 
-        if (this.parameterizedPropertyState == null)
+        if (this.parameterizedProperty == null)
         {
             return;
         }
 
-        String enumerationName = ctx.enumerationReference().getText();
-        AntlrEnumeration enumerationState =
-                this.compilerState.getDomainModelState().getEnumerationByName(enumerationName);
+        String           enumerationName = ctx.enumerationReference().getText();
+        AntlrEnumeration enumeration     = this.compilerState.getDomainModel().getEnumerationByName(enumerationName);
 
-        this.enterParameterDeclaration(ctx, enumerationState, ctx.identifier());
+        this.enterParameterDeclaration(ctx, enumeration, ctx.identifier());
     }
 
     @Override
     public void exitEnumerationParameterDeclaration(@Nonnull EnumerationParameterDeclarationContext ctx)
     {
-        this.parameterState         = null;
-        this.multiplicityOwnerState = null;
+        this.parameter         = null;
+        this.multiplicityOwner = null;
 
         super.exitEnumerationParameterDeclaration(ctx);
     }
@@ -204,18 +203,18 @@ public class ParameterizedPropertyPhase
     public void enterParameterModifier(@Nonnull ParameterModifierContext ctx)
     {
         super.enterParameterModifier(ctx);
-        if (this.parameterizedPropertyState == null && this.parameterState == null)
+        if (this.parameterizedProperty == null && this.parameter == null)
         {
             return;
         }
 
-        int ordinal = this.parameterState.getNumModifiers();
-        AntlrModifier modifierState = new AntlrModifier(
+        int ordinal = this.parameter.getNumModifiers();
+        AntlrModifier modifier = new AntlrModifier(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 ordinal,
-                this.parameterState);
-        this.parameterState.enterModifier(modifierState);
+                this.parameter);
+        this.parameter.enterModifier(modifier);
     }
 
     private void enterParameterDeclaration(
@@ -223,19 +222,19 @@ public class ParameterizedPropertyPhase
             @Nonnull AntlrType typeState,
             @Nonnull IdentifierContext identifierContext)
     {
-        if (this.parameterState != null)
+        if (this.parameter != null)
         {
             throw new IllegalStateException();
         }
 
-        this.parameterState         = new AntlrParameter(
+        this.parameter         = new AntlrParameter(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.parameterOwnerState.getNumParameters() + 1,
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.parameterOwner.getNumParameters() + 1,
                 identifierContext,
                 typeState,
-                (IAntlrElement) this.parameterOwnerState);
-        this.multiplicityOwnerState = this.parameterState;
-        this.parameterOwnerState.enterParameterDeclaration(this.parameterState);
+                (IAntlrElement) this.parameterOwner);
+        this.multiplicityOwner = this.parameter;
+        this.parameterOwner.enterParameterDeclaration(this.parameter);
     }
 }

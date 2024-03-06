@@ -186,10 +186,10 @@ public final class KlassImpl
         private final boolean isTransient;
 
         @Nullable
-        private ImmutableList<AssociationEndBuilder> declaredAssociationEndBuilders;
+        private ImmutableList<AssociationEndBuilder> declaredAssociationEnds;
 
-        private Optional<KlassBuilder>      superClassBuilder;
-        private ImmutableList<KlassBuilder> subClassBuilders;
+        private Optional<KlassBuilder>      superClass;
+        private ImmutableList<KlassBuilder> subClasses;
 
         public KlassBuilder(
                 @Nonnull ClassDeclarationContext elementContext,
@@ -208,13 +208,13 @@ public final class KlassImpl
             this.isTransient = isTransient;
         }
 
-        public void setAssociationEndBuilders(@Nonnull ImmutableList<AssociationEndBuilder> declaredAssociationEndBuilders)
+        public void setDeclaredAssociationEnds(@Nonnull ImmutableList<AssociationEndBuilder> declaredAssociationEnds)
         {
-            if (this.declaredAssociationEndBuilders != null)
+            if (this.declaredAssociationEnds != null)
             {
                 throw new IllegalStateException();
             }
-            this.declaredAssociationEndBuilders = Objects.requireNonNull(declaredAssociationEndBuilders);
+            this.declaredAssociationEnds = Objects.requireNonNull(declaredAssociationEnds);
         }
 
         @Override
@@ -233,22 +233,22 @@ public final class KlassImpl
                     this.isTransient);
         }
 
-        public void setSuperClassBuilder(@Nonnull Optional<KlassBuilder> superClassBuilder)
+        public void setSuperClass(@Nonnull Optional<KlassBuilder> superClass)
         {
-            if (this.superClassBuilder != null)
+            if (this.superClass != null)
             {
                 throw new IllegalStateException();
             }
-            this.superClassBuilder = Objects.requireNonNull(superClassBuilder);
+            this.superClass = Objects.requireNonNull(superClass);
         }
 
-        public void setSubClassBuilders(ImmutableList<KlassBuilder> subClassBuilders)
+        public void setSubClassBuilders(ImmutableList<KlassBuilder> subClasses)
         {
-            if (this.subClassBuilders != null)
+            if (this.subClasses != null)
             {
                 throw new IllegalStateException();
             }
-            this.subClassBuilders = Objects.requireNonNull(subClassBuilders);
+            this.subClasses = Objects.requireNonNull(subClasses);
         }
 
         @Override
@@ -256,14 +256,14 @@ public final class KlassImpl
         {
             super.build2();
 
-            ImmutableList<AssociationEnd> declaredAssociationEnds = this.declaredAssociationEndBuilders
+            ImmutableList<AssociationEnd> declaredAssociationEnds = this.declaredAssociationEnds
                     .<AssociationEnd>collect(AssociationEndBuilder::getElement)
                     .toImmutable();
             this.element.setDeclaredAssociationEnds(declaredAssociationEnds);
 
-            Optional<Klass> maybeSuperClass = this.superClassBuilder.map(ElementBuilder::getElement);
+            Optional<Klass> maybeSuperClass = this.superClass.map(ElementBuilder::getElement);
             this.element.setSuperClass(maybeSuperClass);
-            ImmutableList<Klass> subClasses = this.subClassBuilders.collect(ElementBuilder::getElement);
+            ImmutableList<Klass> subClasses = this.subClasses.collect(ElementBuilder::getElement);
             this.element.setSubClasses(subClasses);
 
             ImmutableList<AssociationEnd> associationEnds = maybeSuperClass
@@ -280,15 +280,15 @@ public final class KlassImpl
         @Override
         protected ImmutableList<DataTypeProperty> getDataTypeProperties()
         {
-            ImmutableList<DataTypeProperty> declaredDataTypeProperties = this.dataTypePropertyBuilders
+            ImmutableList<DataTypeProperty> declaredDataTypeProperties = this.declaredDataTypeProperties
                     .collect(property -> property.getElement());
 
-            ImmutableList<DataTypeProperty> interfaceProperties = this.interfaceBuilders
+            ImmutableList<DataTypeProperty> interfaceProperties = this.declaredInterfaces
                     .collect(ElementBuilder::getElement)
                     .flatCollect(Classifier::getDataTypeProperties)
                     .toImmutable();
 
-            ImmutableList<DataTypeProperty> superClassProperties = this.superClassBuilder
+            ImmutableList<DataTypeProperty> superClassProperties = this.superClass
                     .map(ElementBuilder::getElement)
                     .map(Classifier::getDataTypeProperties)
                     .orElseGet(Lists.immutable::empty);
@@ -308,14 +308,15 @@ public final class KlassImpl
         @Override
         protected ImmutableList<ReferenceProperty> getReferenceProperties()
         {
-            ImmutableList<ReferenceProperty> declaredReferenceProperties = this.declaredReferencePropertyBuilders
+            ImmutableList<ReferenceProperty> declaredReferenceProperties = this.declaredReferenceProperties
                     .collect(property -> property.getElement());
 
-            ImmutableList<ReferenceProperty> superClassProperties = this.superClassBuilder
+            ImmutableList<ReferenceProperty> superClassProperties = this.superClass
                     .map(KlassBuilder::getReferenceProperties)
                     .orElseGet(Lists.immutable::empty);
 
-            ImmutableList<ReferenceProperty> interfaceProperties = this.interfaceBuilders
+            ImmutableList<ReferenceProperty> interfaceProperties = this.declaredInterfaces
+
                     .collect(ElementBuilder::getElement)
                     .flatCollect(Classifier::getReferenceProperties)
                     .toImmutable();

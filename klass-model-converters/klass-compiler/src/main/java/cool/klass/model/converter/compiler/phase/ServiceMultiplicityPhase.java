@@ -23,13 +23,13 @@ public class ServiceMultiplicityPhase extends AbstractCompilerPhase
     {
         ServiceMultiplicityContext multiplicityContext = ctx.serviceMultiplicity();
 
-        AntlrServiceMultiplicity serviceMultiplicityState = new AntlrServiceMultiplicity(
+        AntlrServiceMultiplicity serviceMultiplicity = new AntlrServiceMultiplicity(
                 multiplicityContext,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.getServiceMultiplicity(multiplicityContext));
 
-        AntlrService serviceState = this.compilerState.getCompilerWalkState().getServiceState();
-        serviceState.enterServiceMultiplicityDeclaration(serviceMultiplicityState);
+        AntlrService service = this.compilerState.getCompilerWalk().getService();
+        service.enterServiceMultiplicityDeclaration(serviceMultiplicity);
     }
 
     @Nonnull

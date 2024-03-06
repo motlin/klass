@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.AntlrUtils;
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteriaVisitor;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
@@ -48,15 +48,15 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrDomainModel
 {
-    private final MutableList<AntlrCompilationUnit> compilationUnitStates = Lists.mutable.empty();
-    private final MutableList<AntlrEnumeration>     enumerationStates     = Lists.mutable.empty();
-    private final MutableList<AntlrClassifier>      classifierStates      = Lists.mutable.empty();
-    private final MutableList<AntlrInterface>       interfaceStates       = Lists.mutable.empty();
-    private final MutableList<AntlrClass>           classStates           = Lists.mutable.empty();
-    private final MutableList<AntlrClass>           userClassStates       = Lists.mutable.empty();
-    private final MutableList<AntlrAssociation>     associationStates     = Lists.mutable.empty();
-    private final MutableList<AntlrProjection>      projectionStates      = Lists.mutable.empty();
-    private final MutableList<AntlrServiceGroup>    serviceGroupStates    = Lists.mutable.empty();
+    private final MutableList<AntlrCompilationUnit> compilationUnits = Lists.mutable.empty();
+    private final MutableList<AntlrEnumeration>     enumerations     = Lists.mutable.empty();
+    private final MutableList<AntlrClassifier>      classifiers      = Lists.mutable.empty();
+    private final MutableList<AntlrInterface>       interfaces       = Lists.mutable.empty();
+    private final MutableList<AntlrClass>           klasses          = Lists.mutable.empty();
+    private final MutableList<AntlrClass>           userClasses      = Lists.mutable.empty();
+    private final MutableList<AntlrAssociation>     associations     = Lists.mutable.empty();
+    private final MutableList<AntlrProjection>      projections      = Lists.mutable.empty();
+    private final MutableList<AntlrServiceGroup>    serviceGroups    = Lists.mutable.empty();
 
     private final MutableOrderedMap<CompilationUnitContext, AntlrCompilationUnit> compilationUnitsByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -98,11 +98,11 @@ public class AntlrDomainModel
     private final MutableOrderedMap<AntlrClass, AntlrServiceGroup> serviceGroupsByClass =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    public Optional<AntlrClass> getUserClassState()
+    public Optional<AntlrClass> getUserClass()
     {
-        if (this.userClassStates.size() == 1)
+        if (this.userClasses.size() == 1)
         {
-            return this.userClassStates.getFirstOptional();
+            return this.userClasses.getFirstOptional();
         }
 
         return Optional.empty();
@@ -120,217 +120,217 @@ public class AntlrDomainModel
         }
     }
 
-    public void exitCompilationUnit(@Nonnull AntlrCompilationUnit compilationUnitState)
+    public void exitCompilationUnit(@Nonnull AntlrCompilationUnit compilationUnit)
     {
-        this.compilationUnitStates.add(compilationUnitState);
+        this.compilationUnits.add(compilationUnit);
         AntlrCompilationUnit duplicateCompilationUnit = this.compilationUnitsByContext.put(
-                compilationUnitState.getElementContext(),
-                compilationUnitState);
+                compilationUnit.getElementContext(),
+                compilationUnit);
         if (duplicateCompilationUnit != null)
         {
             throw new AssertionError();
         }
     }
 
-    public void exitEnumerationDeclaration(@Nonnull AntlrEnumeration enumerationState)
+    public void exitEnumerationDeclaration(@Nonnull AntlrEnumeration enumeration)
     {
-        this.enumerationStates.add(enumerationState);
+        this.enumerations.add(enumeration);
         this.enumerationsByName.compute(
-                enumerationState.getName(),
+                enumeration.getName(),
                 (name, builder) -> builder == null
-                        ? enumerationState
+                        ? enumeration
                         : AntlrEnumeration.AMBIGUOUS);
 
         AntlrEnumeration duplicateEnumeration = this.enumerationsByContext.put(
-                enumerationState.getElementContext(),
-                enumerationState);
+                enumeration.getElementContext(),
+                enumeration);
         if (duplicateEnumeration != null)
         {
             throw new AssertionError();
         }
 
         TopLevelDeclarationContext topLevelDeclarationContext = AntlrUtils.getParentOfType(
-                enumerationState.getElementContext(),
+                enumeration.getElementContext(),
                 TopLevelDeclarationContext.class);
         AntlrTopLevelElement duplicateTopLevelElement = this.topLevelElementsByContext.put(
                 topLevelDeclarationContext,
-                enumerationState);
+                enumeration);
         if (duplicateTopLevelElement != null)
         {
             throw new AssertionError();
         }
     }
 
-    public void exitInterfaceDeclaration(@Nonnull AntlrInterface interfaceState)
+    public void exitInterfaceDeclaration(@Nonnull AntlrInterface iface)
     {
-        this.classifierStates.add(interfaceState);
-        this.interfaceStates.add(interfaceState);
+        this.classifiers.add(iface);
+        this.interfaces.add(iface);
 
         this.classifiersByName.compute(
-                interfaceState.getName(),
+                iface.getName(),
                 (name, builder) -> builder == null
-                        ? interfaceState
+                        ? iface
                         : AntlrClassifier.AMBIGUOUS);
         this.interfacesByName.compute(
-                interfaceState.getName(),
+                iface.getName(),
                 (name, builder) -> builder == null
-                        ? interfaceState
+                        ? iface
                         : AntlrInterface.AMBIGUOUS);
 
         AntlrClassifier duplicateClassifier = this.classifiersByContext.put(
-                interfaceState.getElementContext(),
-                interfaceState);
+                iface.getElementContext(),
+                iface);
         if (duplicateClassifier != null)
         {
             throw new AssertionError();
         }
 
         AntlrInterface duplicateInterface = this.interfacesByContext.put(
-                interfaceState.getElementContext(),
-                interfaceState);
+                iface.getElementContext(),
+                iface);
         if (duplicateInterface != null)
         {
             throw new AssertionError();
         }
 
         TopLevelDeclarationContext topLevelDeclarationContext = AntlrUtils.getParentOfType(
-                interfaceState.getElementContext(),
+                iface.getElementContext(),
                 TopLevelDeclarationContext.class);
         AntlrTopLevelElement duplicateTopLevelElement = this.topLevelElementsByContext.put(
                 topLevelDeclarationContext,
-                interfaceState);
+                iface);
         if (duplicateTopLevelElement != null)
         {
             throw new AssertionError();
         }
     }
 
-    public void exitClassDeclaration(@Nonnull AntlrClass classState)
+    public void exitClassDeclaration(@Nonnull AntlrClass klass)
     {
-        this.classifierStates.add(classState);
-        this.classStates.add(classState);
+        this.classifiers.add(klass);
+        this.klasses.add(klass);
 
-        if (classState.isUser())
+        if (klass.isUser())
         {
-            this.userClassStates.add(classState);
+            this.userClasses.add(klass);
         }
 
         this.classifiersByName.compute(
-                classState.getName(),
+                klass.getName(),
                 (name, builder) -> builder == null
-                        ? classState
+                        ? klass
                         : AntlrClassifier.AMBIGUOUS);
         this.classesByName.compute(
-                classState.getName(),
+                klass.getName(),
                 (name, builder) -> builder == null
-                        ? classState
+                        ? klass
                         : AntlrClass.AMBIGUOUS);
 
-        AntlrClassifier duplicateClassifier = this.classifiersByContext.put(classState.getElementContext(), classState);
+        AntlrClassifier duplicateClassifier = this.classifiersByContext.put(klass.getElementContext(), klass);
         if (duplicateClassifier != null)
         {
             throw new AssertionError();
         }
 
-        AntlrClass duplicateClass = this.classesByContext.put(classState.getElementContext(), classState);
+        AntlrClass duplicateClass = this.classesByContext.put(klass.getElementContext(), klass);
         if (duplicateClass != null)
         {
             throw new AssertionError();
         }
 
         TopLevelDeclarationContext topLevelDeclarationContext = AntlrUtils.getParentOfType(
-                classState.getElementContext(),
+                klass.getElementContext(),
                 TopLevelDeclarationContext.class);
         AntlrTopLevelElement duplicateTopLevelElement = this.topLevelElementsByContext.put(
                 topLevelDeclarationContext,
-                classState);
+                klass);
         if (duplicateTopLevelElement != null)
         {
             throw new AssertionError();
         }
     }
 
-    public void exitAssociationDeclaration(@Nonnull AntlrAssociation associationState)
+    public void exitAssociationDeclaration(@Nonnull AntlrAssociation association)
     {
-        this.associationStates.add(associationState);
+        this.associations.add(association);
         this.associationsByName.compute(
-                associationState.getName(),
+                association.getName(),
                 (name, builder) -> builder == null
-                        ? associationState
+                        ? association
                         : AntlrAssociation.AMBIGUOUS);
 
         AntlrAssociation duplicateAssociation = this.associationsByContext.put(
-                associationState.getElementContext(),
-                associationState);
+                association.getElementContext(),
+                association);
         if (duplicateAssociation != null)
         {
             throw new AssertionError();
         }
 
         TopLevelDeclarationContext topLevelDeclarationContext = AntlrUtils.getParentOfType(
-                associationState.getElementContext(),
+                association.getElementContext(),
                 TopLevelDeclarationContext.class);
         AntlrTopLevelElement duplicateTopLevelElement = this.topLevelElementsByContext.put(
                 topLevelDeclarationContext,
-                associationState);
+                association);
         if (duplicateTopLevelElement != null)
         {
             throw new AssertionError();
         }
     }
 
-    public void exitProjectionDeclaration(@Nonnull AntlrProjection projectionState)
+    public void exitProjectionDeclaration(@Nonnull AntlrProjection projection)
     {
-        this.projectionStates.add(projectionState);
+        this.projections.add(projection);
         this.projectionsByName.compute(
-                projectionState.getName(),
+                projection.getName(),
                 (name, builder) -> builder == null
-                        ? projectionState
+                        ? projection
                         : AntlrProjection.AMBIGUOUS);
 
         AntlrProjection duplicateProjection = this.projectionsByContext.put(
-                projectionState.getElementContext(),
-                projectionState);
+                projection.getElementContext(),
+                projection);
         if (duplicateProjection != null)
         {
             throw new AssertionError();
         }
 
         TopLevelDeclarationContext topLevelDeclarationContext = AntlrUtils.getParentOfType(
-                projectionState.getElementContext(),
+                projection.getElementContext(),
                 TopLevelDeclarationContext.class);
         AntlrTopLevelElement duplicateTopLevelElement = this.topLevelElementsByContext.put(
                 topLevelDeclarationContext,
-                projectionState);
+                projection);
         if (duplicateTopLevelElement != null)
         {
             throw new AssertionError();
         }
     }
 
-    public void exitServiceGroupDeclaration(@Nonnull AntlrServiceGroup serviceGroupState)
+    public void exitServiceGroupDeclaration(@Nonnull AntlrServiceGroup serviceGroup)
     {
-        this.serviceGroupStates.add(serviceGroupState);
+        this.serviceGroups.add(serviceGroup);
         this.serviceGroupsByClass.compute(
-                serviceGroupState.getKlass(),
+                serviceGroup.getKlass(),
                 (name, builder) -> builder == null
-                        ? serviceGroupState
+                        ? serviceGroup
                         : AntlrServiceGroup.AMBIGUOUS);
 
         AntlrServiceGroup duplicateServiceGroup = this.serviceGroupsByContext.put(
-                serviceGroupState.getElementContext(),
-                serviceGroupState);
+                serviceGroup.getElementContext(),
+                serviceGroup);
         if (duplicateServiceGroup != null)
         {
             throw new AssertionError();
         }
 
         TopLevelDeclarationContext topLevelDeclarationContext = AntlrUtils.getParentOfType(
-                serviceGroupState.getElementContext(),
+                serviceGroup.getElementContext(),
                 TopLevelDeclarationContext.class);
         AntlrTopLevelElement duplicateTopLevelElement = this.topLevelElementsByContext.put(
                 topLevelDeclarationContext,
-                serviceGroupState);
+                serviceGroup);
         if (duplicateTopLevelElement != null)
         {
             throw new AssertionError();
@@ -413,66 +413,66 @@ public class AntlrDomainModel
     }
 
     //<editor-fold desc="Report Compiler Errors">
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationState)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        for (AntlrClass userClassState : this.userClassStates)
+        for (AntlrClass userClass : this.userClasses)
         {
-            if (this.userClassStates.size() > 1)
+            if (this.userClasses.size() > 1)
             {
-                userClassState.reportDuplicateUserClass(compilerAnnotationState);
+                userClass.reportDuplicateUserClass(compilerAnnotationHolder);
             }
         }
 
-        this.reportDuplicateTopLevelNames(compilerAnnotationState);
+        this.reportDuplicateTopLevelNames(compilerAnnotationHolder);
 
-        for (AntlrCompilationUnit compilationUnitState : this.compilationUnitStates)
+        for (AntlrCompilationUnit compilationUnitState : this.compilationUnits)
         {
-            compilationUnitState.reportNameErrors(compilerAnnotationState);
+            compilationUnitState.reportNameErrors(compilerAnnotationHolder);
         }
 
-        for (AntlrEnumeration enumerationState : this.enumerationStates)
+        for (AntlrEnumeration enumeration : this.enumerations)
         {
-            enumerationState.reportNameErrors(compilerAnnotationState);
-            enumerationState.reportErrors(compilerAnnotationState);
+            enumeration.reportNameErrors(compilerAnnotationHolder);
+            enumeration.reportErrors(compilerAnnotationHolder);
         }
 
-        for (AntlrClassifier classifierState : this.classifierStates)
+        for (AntlrClassifier classifier : this.classifiers)
         {
-            classifierState.reportNameErrors(compilerAnnotationState);
-            classifierState.reportErrors(compilerAnnotationState);
-            if (this.userClassStates.isEmpty())
+            classifier.reportNameErrors(compilerAnnotationHolder);
+            classifier.reportErrors(compilerAnnotationHolder);
+            if (this.userClasses.isEmpty())
             {
-                classifierState.reportAuditErrors(compilerAnnotationState);
+                classifier.reportAuditErrors(compilerAnnotationHolder);
             }
         }
 
-        for (AntlrAssociation associationState : this.associationStates)
+        for (AntlrAssociation association : this.associations)
         {
-            associationState.reportNameErrors(compilerAnnotationState);
-            associationState.reportErrors(compilerAnnotationState);
+            association.reportNameErrors(compilerAnnotationHolder);
+            association.reportErrors(compilerAnnotationHolder);
         }
 
-        for (AntlrProjection projectionState : this.projectionStates)
+        for (AntlrProjection projection : this.projections)
         {
-            projectionState.reportNameErrors(compilerAnnotationState);
-            projectionState.reportErrors(compilerAnnotationState);
+            projection.reportNameErrors(compilerAnnotationHolder);
+            projection.reportErrors(compilerAnnotationHolder);
         }
 
         ImmutableBag<AntlrClass> duplicateServiceGroupKlasses = this.getDuplicateServiceGroupClasses();
-        for (AntlrServiceGroup serviceGroupState : this.serviceGroupStates)
+        for (AntlrServiceGroup serviceGroup : this.serviceGroups)
         {
-            if (duplicateServiceGroupKlasses.contains(serviceGroupState.getKlass()))
+            if (duplicateServiceGroupKlasses.contains(serviceGroup.getKlass()))
             {
-                serviceGroupState.reportDuplicateServiceGroupClass(compilerAnnotationState);
+                serviceGroup.reportDuplicateServiceGroupClass(compilerAnnotationHolder);
             }
-            serviceGroupState.reportNameErrors(compilerAnnotationState);
-            serviceGroupState.reportErrors(compilerAnnotationState);
+            serviceGroup.reportNameErrors(compilerAnnotationHolder);
+            serviceGroup.reportErrors(compilerAnnotationHolder);
         }
 
-        this.reportUnreferencedPrivateProperties(compilerAnnotationState);
+        this.reportUnreferencedPrivateProperties(compilerAnnotationHolder);
     }
 
-    private void reportDuplicateTopLevelNames(@Nonnull CompilerAnnotationState compilerAnnotationState)
+    private void reportDuplicateTopLevelNames(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         ImmutableList<String> topLevelNames = this.getTopLevelNames();
 
@@ -483,23 +483,23 @@ public class AntlrDomainModel
 
         this.topLevelElementsByContext
                 .toSortedListBy(AntlrTopLevelElement::getOrdinal)
-                .select(topLevelElementState -> duplicateTopLevelNames.contains(topLevelElementState.getName()))
-                .forEachWith(AntlrTopLevelElement::reportDuplicateTopLevelName, compilerAnnotationState);
+                .select(topLevelElement -> duplicateTopLevelNames.contains(topLevelElement.getName()))
+                .forEachWith(AntlrTopLevelElement::reportDuplicateTopLevelName, compilerAnnotationHolder);
     }
 
     private ImmutableList<String> getTopLevelNames()
     {
         MutableList<String> topLevelNames = Lists.mutable.empty();
-        this.enumerationStates.collect(AntlrEnumeration::getName, topLevelNames);
-        this.classifierStates.collect(AntlrNamedElement::getName, topLevelNames);
-        this.associationStates.collect(AntlrAssociation::getName, topLevelNames);
-        this.projectionStates.collect(AntlrProjection::getName, topLevelNames);
+        this.enumerations.collect(AntlrEnumeration::getName, topLevelNames);
+        this.classifiers.collect(AntlrNamedElement::getName, topLevelNames);
+        this.associations.collect(AntlrAssociation::getName, topLevelNames);
+        this.projections.collect(AntlrProjection::getName, topLevelNames);
         return topLevelNames.toImmutable();
     }
 
     private ImmutableBag<AntlrClass> getDuplicateServiceGroupClasses()
     {
-        return this.serviceGroupStates
+        return this.serviceGroups
                 .collect(AntlrServiceGroup::getKlass)
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
@@ -508,23 +508,23 @@ public class AntlrDomainModel
                 .toImmutable();
     }
 
-    private void reportUnreferencedPrivateProperties(@Nonnull CompilerAnnotationState compilerAnnotationState)
+    private void reportUnreferencedPrivateProperties(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         var criteriaVisitor = new UnreferencedPrivatePropertiesCriteriaVisitor();
 
         this.visitCriteria(criteriaVisitor);
 
         this.reportUnreferencedPrivateProperty(
-                compilerAnnotationState,
+                compilerAnnotationHolder,
                 criteriaVisitor.getDataTypePropertiesReferencedByCriteria(),
                 criteriaVisitor.getAssociationEndsReferencedByCriteria());
     }
 
     private void visitCriteria(AntlrCriteriaVisitor criteriaVisitor)
     {
-        for (AntlrClassifier classifierState : this.classifierStates)
+        for (AntlrClassifier classifier : this.classifiers)
         {
-            for (AntlrProperty property : classifierState.getProperties())
+            for (AntlrProperty property : classifier.getAllProperties())
             {
                 if (property instanceof AntlrParameterizedProperty parameterizedProperty)
                 {
@@ -534,20 +534,20 @@ public class AntlrDomainModel
             }
         }
 
-        for (AntlrAssociation associationState : this.associationStates)
+        for (AntlrAssociation association : this.associations)
         {
-            associationState.getRelationship().getCriteria().visit(criteriaVisitor);
+            association.getRelationship().getCriteria().visit(criteriaVisitor);
         }
 
-        for (AntlrServiceGroup serviceGroupState : this.serviceGroupStates)
+        for (AntlrServiceGroup serviceGroup : this.serviceGroups)
         {
-            for (AntlrUrl urlState : serviceGroupState.getUrlStates())
+            for (AntlrUrl url : serviceGroup.getUrls())
             {
-                for (AntlrService serviceState : urlState.getServiceStates())
+                for (AntlrService service : url.getServices())
                 {
-                    for (AntlrServiceCriteria serviceCriteriaState : serviceState.getServiceCriteriaStates())
+                    for (AntlrServiceCriteria serviceCriteria : service.getServiceCriterias())
                     {
-                        serviceCriteriaState.getCriteria().visit(criteriaVisitor);
+                        serviceCriteria.getCriteria().visit(criteriaVisitor);
                     }
                 }
             }
@@ -555,33 +555,33 @@ public class AntlrDomainModel
     }
 
     private void reportUnreferencedPrivateProperty(
-            @Nonnull CompilerAnnotationState compilerAnnotationState,
+            @Nonnull CompilerAnnotationHolder compilerAnnotationHolder,
             @Nonnull Set<AntlrDataTypeProperty<?>> dataTypePropertiesReferencedByCriteria,
             @Nonnull Set<AntlrAssociationEnd> associationEndsReferencedByCriteria)
     {
-        for (AntlrClassifier classifierState : this.classifierStates)
+        for (AntlrClassifier classifier : this.classifiers)
         {
-            for (AntlrDataTypeProperty<?> dataTypeProperty : classifierState.getDataTypeProperties())
+            for (AntlrDataTypeProperty<?> dataTypeProperty : classifier.getAllDataTypeProperties())
             {
                 ImmutableList<AntlrDataTypeProperty<?>> overriddenProperties = dataTypeProperty.getOverriddenProperties();
                 if (dataTypeProperty.isPrivate()
                         && dataTypeProperty.getType() != AntlrPrimitiveType.TEMPORAL_RANGE
                         && overriddenProperties.noneSatisfy(dataTypePropertiesReferencedByCriteria::contains))
                 {
-                    dataTypeProperty.reportUnreferencedPrivateProperty(compilerAnnotationState);
+                    dataTypeProperty.reportUnreferencedPrivateProperty(compilerAnnotationHolder);
                 }
             }
         }
 
-        for (AntlrClass classState : this.classStates)
+        for (AntlrClass klass : this.klasses)
         {
-            for (AntlrAssociationEnd associationEndState : classState.getAssociationEndStates())
+            for (AntlrAssociationEnd associationEnds : klass.getDeclaredAssociationEnds())
             {
-                if (associationEndState.isPrivate()
-                        && !associationEndsReferencedByCriteria.contains(associationEndState)
-                        && !associationEndsReferencedByCriteria.contains(associationEndState.getOpposite()))
+                if (associationEnds.isPrivate()
+                        && !associationEndsReferencedByCriteria.contains(associationEnds)
+                        && !associationEndsReferencedByCriteria.contains(associationEnds.getOpposite()))
                 {
-                    associationEndState.reportUnreferencedPrivateProperty(compilerAnnotationState);
+                    associationEnds.reportUnreferencedPrivateProperty(compilerAnnotationHolder);
                 }
             }
         }
@@ -593,30 +593,30 @@ public class AntlrDomainModel
     {
         ImmutableList<SourceCodeBuilderImpl> sourceCodeBuilders = compilationUnits
                 .collect(CompilationUnit::build);
-        ImmutableList<EnumerationBuilder> enumerationBuilders = this.enumerationStates
+        ImmutableList<EnumerationBuilder> enumerationBuilders = this.enumerations
                 .collect(AntlrEnumeration::build)
                 .toImmutable();
-        ImmutableList<InterfaceBuilder> interfaceBuilders = this.interfaceStates
+        ImmutableList<InterfaceBuilder> interfaceBuilders = this.interfaces
                 .collect(AntlrInterface::build1)
                 .toImmutable();
-        ImmutableList<KlassBuilder> classBuilders = this.classStates
+        ImmutableList<KlassBuilder> classBuilders = this.klasses
                 .collect(AntlrClass::build1)
                 .toImmutable();
 
-        ImmutableList<ClassifierBuilder<?>> classifierBuilders = this.classifierStates.<ClassifierBuilder<?>>collect(
+        ImmutableList<ClassifierBuilder<?>> classifierBuilders = this.classifiers.<ClassifierBuilder<?>>collect(
                 AntlrClassifier::getElementBuilder).toImmutable();
 
-        ImmutableList<AssociationBuilder> associationBuilders = this.associationStates
+        ImmutableList<AssociationBuilder> associationBuilders = this.associations
                 .collect(AntlrAssociation::build)
                 .toImmutable();
-        this.interfaceStates.each(AntlrInterface::build2);
-        this.classStates.each(AntlrClass::build2);
+        this.interfaces.each(AntlrInterface::build2);
+        this.klasses.each(AntlrClass::build2);
 
-        ImmutableList<ProjectionBuilder> projectionBuilders = this.projectionStates
+        ImmutableList<ProjectionBuilder> projectionBuilders = this.projections
                 .collect(AntlrProjection::build)
                 .toImmutable();
-        this.projectionStates.each(AntlrProjection::build2);
-        ImmutableList<ServiceGroupBuilder> serviceGroupBuilders = this.serviceGroupStates
+        this.projections.each(AntlrProjection::build2);
+        ImmutableList<ServiceGroupBuilder> serviceGroupBuilders = this.serviceGroups
                 .collect(AntlrServiceGroup::build)
                 .toImmutable();
 

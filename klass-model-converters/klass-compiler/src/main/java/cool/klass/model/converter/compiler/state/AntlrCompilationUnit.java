@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import org.antlr.v4.runtime.Token;
@@ -24,7 +24,7 @@ public class AntlrCompilationUnit
             new CompilationUnitContext(NOT_FOUND_PARENT, -1),
             Optional.empty());
 
-    private AntlrPackage packageState;
+    private AntlrPackage pkg;
 
     public AntlrCompilationUnit(
             @Nonnull CompilationUnitContext elementContext,
@@ -60,28 +60,28 @@ public class AntlrCompilationUnit
         return Tuples.pair(context.getStart(), context.getStop());
     }
 
-    public void enterPackageDeclaration(AntlrPackage packageState)
+    public void enterPackageDeclaration(AntlrPackage pkg)
     {
-        if (this.packageState != null)
+        if (this.pkg != null)
         {
             throw new IllegalStateException();
         }
-        this.packageState = Objects.requireNonNull(packageState);
+        this.pkg = Objects.requireNonNull(pkg);
     }
 
     public AntlrPackage getPackage()
     {
-        return this.packageState;
+        return this.pkg;
     }
 
-    public void reportNameErrors(CompilerAnnotationState compilerAnnotationHolder)
+    public void reportNameErrors(CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        this.packageState.reportNameErrors(compilerAnnotationHolder);
+        this.pkg.reportNameErrors(compilerAnnotationHolder);
     }
 
     @Override
     public String toString()
     {
-        return this.packageState.toString();
+        return this.pkg.toString();
     }
 }

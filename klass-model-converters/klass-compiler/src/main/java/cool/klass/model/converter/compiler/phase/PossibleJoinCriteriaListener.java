@@ -22,7 +22,7 @@ import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferencePathContext;
 public class PossibleJoinCriteriaListener extends KlassBaseListener
 {
     @Nonnull
-    private final AntlrDomainModel domainModelState;
+    private final AntlrDomainModel domainModel;
     @Nonnull
     private final AntlrClass       targetType;
 
@@ -33,11 +33,11 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
     private boolean allReferencesResolve         = true;
 
     public PossibleJoinCriteriaListener(
-            @Nonnull AntlrDomainModel domainModelState,
+            @Nonnull AntlrDomainModel domainModel,
             @Nonnull AntlrClass targetType)
     {
-        this.domainModelState = Objects.requireNonNull(domainModelState);
-        this.targetType       = Objects.requireNonNull(targetType);
+        this.domainModel = Objects.requireNonNull(domainModel);
+        this.targetType  = Objects.requireNonNull(targetType);
     }
 
     public boolean hasForeignKeys()
@@ -108,7 +108,7 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
         ClassReferenceContext                classReferenceContext           = ctx.classReference();
         List<AssociationEndReferenceContext> associationEndReferenceContexts = ctx.associationEndReference();
 
-        AntlrClass klass = this.domainModelState.getClassByName(classReferenceContext.identifier().getText());
+        AntlrClass klass = this.domainModel.getClassByName(classReferenceContext.identifier().getText());
 
         if (!associationEndReferenceContexts.isEmpty())
         {

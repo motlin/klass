@@ -33,9 +33,9 @@ public class ClassTemporalPropertyInferencePhase
         String modifierText = ctx.getText();
 
         ImmutableList<AntlrDataTypeProperty<?>> dataTypeProperties = this.compilerState
-                .getCompilerWalkState()
-                .getClassState()
-                .getDataTypeProperties();
+                .getCompilerWalk()
+                .getKlass()
+                .getAllDataTypeProperties();
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("{\n");
@@ -84,7 +84,7 @@ public class ClassTemporalPropertyInferencePhase
             return;
         }
         AntlrModifier classifierModifierState =
-                this.compilerState.getCompilerWalkState().getClassifierModifierState();
+                this.compilerState.getCompilerWalk().getClassifierModifier();
         ParseTreeListener compilerPhase = new PropertyPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(

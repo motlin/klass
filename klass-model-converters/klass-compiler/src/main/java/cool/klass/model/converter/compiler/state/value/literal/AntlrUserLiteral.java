@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
@@ -22,7 +22,7 @@ public class AntlrUserLiteral
         extends AbstractAntlrLiteralValue
 {
     @Nonnull
-    private final Optional<AntlrClass> userClassState;
+    private final Optional<AntlrClass> userClass;
 
     private UserLiteralBuilder elementBuilder;
 
@@ -30,16 +30,16 @@ public class AntlrUserLiteral
             @Nonnull NativeLiteralContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull IAntlrElement expressionValueOwner,
-            @Nonnull Optional<AntlrClass> userClassState)
+            @Nonnull Optional<AntlrClass> userClass)
     {
         super(elementContext, compilationUnit, expressionValueOwner);
-        this.userClassState = Objects.requireNonNull(userClassState);
+        this.userClass = Objects.requireNonNull(userClass);
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (this.userClassState.isPresent())
+        if (this.userClass.isPresent())
         {
             return;
         }
@@ -57,7 +57,7 @@ public class AntlrUserLiteral
             throw new IllegalStateException();
         }
 
-        Optional<KlassBuilder> userElementBuilder = this.userClassState.map(AntlrClass::getElementBuilder);
+        Optional<KlassBuilder> userElementBuilder = this.userClass.map(AntlrClass::getElementBuilder);
         if (userElementBuilder.isEmpty())
         {
             throw new IllegalStateException();

@@ -43,7 +43,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
         long value = Long.parseLong(ctx.getText());
         return new AntlrIntegerLiteralValue(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 value,
                 this.expressionValueOwner);
     }
@@ -55,7 +55,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
         double value = Double.parseDouble(ctx.getText());
         return new AntlrFloatingPointLiteralValue(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 value,
                 this.expressionValueOwner);
     }
@@ -67,7 +67,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
         boolean value     = Boolean.parseBoolean(ctx.getText());
         return new AntlrBooleanLiteralValue(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 value,
                 this.expressionValueOwner);
     }
@@ -88,7 +88,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
         String text       = quotedText.substring(1, quotedText.length() - 1);
         return new AntlrStringLiteralValue(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 text,
                 this.expressionValueOwner);
     }
@@ -99,7 +99,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
     {
         return new AntlrNullLiteral(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.expressionValueOwner);
     }
 }

@@ -18,10 +18,10 @@ public class AntlrMaxPropertyValidation
     public AntlrMaxPropertyValidation(
             @Nonnull MaxValidationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull AntlrDataTypeProperty<?> owningPropertyState,
+            @Nonnull AntlrDataTypeProperty<?> owningProperty,
             int number)
     {
-        super(elementContext, compilationUnit, owningPropertyState, number);
+        super(elementContext, compilationUnit, owningProperty, number);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class AntlrMaxPropertyValidation
                 (MaxValidationContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.owningPropertyState.getElementBuilder(),
+                this.owningProperty.getElementBuilder(),
                 this.number);
         return this.elementBuilder;
     }

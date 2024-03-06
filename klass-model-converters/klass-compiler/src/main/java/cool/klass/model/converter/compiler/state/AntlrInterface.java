@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
@@ -69,11 +69,11 @@ public class AntlrInterface
     // TODO: Unified list of all members
 
     /*
-    private final MutableList<AntlrAssociationEnd>               associationEndStates  = Lists.mutable.empty();
+    private final MutableList<AntlrAssociationEnd>               associationEnds  = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrAssociationEnd> associationEndsByName =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    private final MutableList<AntlrParameterizedProperty>                                     parameterizedPropertyStates      = Lists.mutable.empty();
+    private final MutableList<AntlrParameterizedProperty>                                     parameterizedProperties          = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrParameterizedProperty>                       parameterizedPropertiesByName    =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<ParameterizedPropertyContext, AntlrParameterizedProperty> parameterizedPropertiesByContext =
@@ -95,8 +95,8 @@ public class AntlrInterface
     @Override
     public int getNumMembers()
     {
-        return this.getDataTypeProperties().size()
-                + this.associationEndSignatureStates.size();
+        return this.getAllDataTypeProperties().size()
+                + this.declaredAssociationEndSignatures.size();
     }
 
     public InterfaceBuilder build1()
@@ -114,16 +114,16 @@ public class AntlrInterface
                 this.getNameContext(),
                 this.getPackageName());
 
-        ImmutableList<ModifierBuilder> classifierModifierBuilders = this.modifierStates
+        ImmutableList<ModifierBuilder> declaredModifiers = this.declaredModifiers
                 .collect(AntlrModifier::build)
                 .toImmutable();
-        this.interfaceBuilder.setModifierBuilders(classifierModifierBuilders);
+        this.interfaceBuilder.setDeclaredModifiers(declaredModifiers);
 
-        ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders = this.dataTypePropertyStates
+        ImmutableList<DataTypePropertyBuilder<?, ?, ?>> declaredDataTypeProperties = this.declaredDataTypeProperties
                 .<DataTypePropertyBuilder<?, ?, ?>>collect(AntlrDataTypeProperty::build)
                 .toImmutable();
 
-        this.interfaceBuilder.setDataTypePropertyBuilders(dataTypePropertyBuilders);
+        this.interfaceBuilder.setDeclaredDataTypeProperties(declaredDataTypeProperties);
         return this.interfaceBuilder;
     }
 
@@ -137,13 +137,13 @@ public class AntlrInterface
     @Override
     public AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name)
     {
-        AntlrReferenceProperty<?> declaredProperty = this.referencePropertiesByName.get(name);
+        AntlrReferenceProperty<?> declaredProperty = this.declaredReferencePropertiesByName.get(name);
         if (declaredProperty != null)
         {
             return declaredProperty;
         }
 
-        return this.interfaceStates
+        return this.declaredInterfaces
                 .asLazy()
                 .collectWith(AntlrInterface::getReferencePropertyByName, name)
                 .detectIfNone(Objects::nonNull, () -> AntlrReferenceProperty.NOT_FOUND);
@@ -156,32 +156,32 @@ public class AntlrInterface
             throw new IllegalStateException();
         }
 
-        this.dataTypePropertyStates.each(AntlrDataTypeProperty::build2);
+        this.declaredDataTypeProperties.each(AntlrDataTypeProperty::build2);
 
-        ImmutableList<AssociationEndSignatureBuilder> associationEndSignatureBuilders = this.associationEndSignatureStates
+        ImmutableList<AssociationEndSignatureBuilder> declaredAssociationEndSignatures = this.declaredAssociationEndSignatures
                 .collect(AntlrAssociationEndSignature::build)
                 .toImmutable();
-        this.interfaceBuilder.setAssociationEndSignatureBuilders(associationEndSignatureBuilders);
+        this.interfaceBuilder.setDeclaredAssociationEndSignatures(declaredAssociationEndSignatures);
 
-        ImmutableList<ReferencePropertyBuilder<?, ?, ?>> referencePropertyBuilders = this.referencePropertyStates
+        ImmutableList<ReferencePropertyBuilder<?, ?, ?>> declaredReferenceProperties = this.declaredReferenceProperties
                 .<ReferencePropertyBuilder<?, ?, ?>>collect(AntlrReferenceProperty::getElementBuilder)
                 .toImmutable();
-        this.interfaceBuilder.setReferencePropertyBuilders(referencePropertyBuilders);
+        this.interfaceBuilder.setDeclaredReferenceProperties(declaredReferenceProperties);
 
-        ImmutableList<PropertyBuilder<?, ?, ?>> propertyBuilders = this.propertyStates
+        ImmutableList<PropertyBuilder<?, ?, ?>> declaredProperties = this.declaredProperties
                 .<PropertyBuilder<?, ?, ?>>collect(AntlrProperty::getElementBuilder)
                 .toImmutable();
-        this.interfaceBuilder.setPropertyBuilders(propertyBuilders);
+        this.interfaceBuilder.setDeclaredProperties(declaredProperties);
 
-        ImmutableList<InterfaceBuilder> interfaceBuilders = this.interfaceStates
+        ImmutableList<InterfaceBuilder> declaredInterfaces = this.declaredInterfaces
                 .collect(AntlrInterface::getElementBuilder)
                 .toImmutable();
-        this.interfaceBuilder.setInterfaceBuilders(interfaceBuilders);
+        this.interfaceBuilder.setDeclaredInterfaces(declaredInterfaces);
     }
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportNameErrors(compilerAnnotationHolder);
         this.reportKeywordCollision(compilerAnnotationHolder);
@@ -192,11 +192,11 @@ public class AntlrInterface
             compilerAnnotationHolder.add("ERR_REL_NME", message, this);
         }
 
-        this.dataTypePropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
+        this.declaredDataTypeProperties.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportErrors(compilerAnnotationHolder);
 
@@ -211,13 +211,13 @@ public class AntlrInterface
     {
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
 
-        for (AntlrParameterizedProperty parameterizedPropertyState : this.parameterizedPropertyStates)
+        for (AntlrParameterizedProperty parameterizedProperty : this.parameterizedProperties)
         {
-            if (duplicateMemberNames.contains(parameterizedPropertyState.getName()))
+            if (duplicateMemberNames.contains(parameterizedProperty.getName()))
             {
-                parameterizedPropertyState.reportDuplicateMemberName(compilerAnnotationHolder);
+                parameterizedProperty.reportDuplicateMemberName(compilerAnnotationHolder);
             }
-            parameterizedPropertyState.reportErrors(compilerAnnotationHolder);
+            parameterizedProperty.reportErrors(compilerAnnotationHolder);
         }
     }
 
@@ -225,21 +225,21 @@ public class AntlrInterface
     {
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
 
-        for (AntlrAssociationEnd associationEndState : this.associationEndStates)
+        for (AntlrAssociationEnd associationEnd : this.associationEnds)
         {
-            if (duplicateMemberNames.contains(associationEndState.getName()))
+            if (duplicateMemberNames.contains(associationEnd.getName()))
             {
-                associationEndState.reportDuplicateMemberName(compilerAnnotationHolder);
+                associationEnd.reportDuplicateMemberName(compilerAnnotationHolder);
             }
-            associationEndState.reportErrors(compilerAnnotationHolder);
+            associationEnd.reportErrors(compilerAnnotationHolder);
         }
     }
     */
 
-    private void reportTransientModifier(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportTransientModifier(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         // Only need to check declared modifiers
-        Optional<AntlrModifier> maybeTransientModifier = this.modifierStates.detectOptional(AntlrModifier::isTransient);
+        Optional<AntlrModifier> maybeTransientModifier = this.declaredModifiers.detectOptional(AntlrModifier::isTransient);
 
         if (maybeTransientModifier.isEmpty())
         {
@@ -254,13 +254,13 @@ public class AntlrInterface
     }
 
     @Override
-    protected void reportCircularInheritance(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    protected void reportCircularInheritance(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         boolean noCircularInheritance = true;
-        for (int i = 0; i < this.interfaceStates.size(); i++)
+        for (int i = 0; i < this.declaredInterfaces.size(); i++)
         {
-            AntlrInterface interfaceState = this.interfaceStates.get(i);
-            if (!interfaceState.extendsInterface(this, Sets.mutable.empty()))
+            AntlrInterface iface = this.declaredInterfaces.get(i);
+            if (!iface.extendsInterface(this, Sets.mutable.empty()))
             {
                 continue;
             }
@@ -280,10 +280,10 @@ public class AntlrInterface
     //</editor-fold>
 
     private boolean extendsInterface(
-            AntlrInterface interfaceState,
+            AntlrInterface iface,
             @Nonnull MutableSet<AntlrInterface> visitedInterfaces)
     {
-        if (this.interfaceStates.contains(interfaceState))
+        if (this.declaredInterfaces.contains(iface))
         {
             return true;
         }
@@ -294,8 +294,8 @@ public class AntlrInterface
         }
 
         visitedInterfaces.add(this);
-        return this.interfaceStates.anySatisfy(eachSuperInterface -> eachSuperInterface.extendsInterface(
-                interfaceState,
+        return this.declaredInterfaces.anySatisfy(eachSuperInterface -> eachSuperInterface.extendsInterface(
+                iface,
                 visitedInterfaces));
     }
 
@@ -306,9 +306,9 @@ public class AntlrInterface
     }
 
     @Override
-    protected boolean isInterfaceRedundant(int index, @Nonnull AntlrInterface interfaceState)
+    protected boolean isInterfaceRedundant(int index, @Nonnull AntlrInterface iface)
     {
-        return this.interfaceNotAtIndexImplements(index, interfaceState);
+        return this.interfaceNotAtIndexImplements(index, iface);
     }
 
     @Override
@@ -323,8 +323,8 @@ public class AntlrInterface
     private ImmutableList<String> getDeclaredMemberNames()
     {
         MutableList<String> topLevelNames = Lists.mutable.empty();
-        this.dataTypePropertyStates.collect(AntlrProperty::getName, topLevelNames);
-        this.associationEndSignatureStates.collect(AntlrProperty::getName, topLevelNames);
+        this.declaredDataTypeProperties.collect(AntlrProperty::getName, topLevelNames);
+        this.declaredAssociationEndSignatures.collect(AntlrProperty::getName, topLevelNames);
         return topLevelNames.toImmutable();
     }
 
@@ -358,9 +358,9 @@ public class AntlrInterface
     @Override
     public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
     {
-        if (this.dataTypePropertiesByName.containsKey(name))
+        if (this.declaredDataTypePropertiesByName.containsKey(name))
         {
-            return this.dataTypePropertiesByName.get(name);
+            return this.declaredDataTypePropertiesByName.get(name);
         }
 
         return this.getInterfaceDataTypePropertyByName(name);
@@ -368,9 +368,9 @@ public class AntlrInterface
 
     public AntlrModifier getModifierByName(String name)
     {
-        if (this.modifiersByName.containsKey(name))
+        if (this.declaredModifiersByName.containsKey(name))
         {
-            return this.modifiersByName.get(name);
+            return this.declaredModifiersByName.get(name);
         }
 
         return this.getInterfaceClassifierModifierByName(name);

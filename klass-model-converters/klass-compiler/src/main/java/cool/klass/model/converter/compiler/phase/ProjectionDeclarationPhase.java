@@ -16,7 +16,7 @@ public class ProjectionDeclarationPhase
         extends AbstractCompilerPhase
 {
     @Nullable
-    private AntlrProjection projectionState;
+    private AntlrProjection projection;
 
     public ProjectionDeclarationPhase(@Nonnull CompilerState compilerState)
     {
@@ -29,24 +29,24 @@ public class ProjectionDeclarationPhase
         super.enterProjectionDeclaration(ctx);
 
         String            classifierName = ctx.classifierReference().identifier().getText();
-        AntlrClassifier   classifier     = this.compilerState.getDomainModelState().getClassifierByName(classifierName);
+        AntlrClassifier   classifier     = this.compilerState.getDomainModel().getClassifierByName(classifierName);
         IdentifierContext nameContext    = ctx.identifier();
         CompilationUnit currentCompilationUnit =
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit();
-        this.projectionState = new AntlrProjection(
+                this.compilerState.getCompilerWalk().getCurrentCompilationUnit();
+        this.projection = new AntlrProjection(
                 ctx,
                 Optional.of(currentCompilationUnit),
                 this.compilerState.getOrdinal(ctx),
                 nameContext,
-                this.compilerState.getCompilerWalkState().getCompilationUnitState(),
+                this.compilerState.getCompilerWalk().getCompilationUnit(),
                 classifier,
-                this.compilerState.getCompilerWalkState().getPackageName());
+                this.compilerState.getCompilerWalk().getPackageName());
     }
 
     @Override
     public void exitProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
-        this.compilerState.getDomainModelState().exitProjectionDeclaration(this.projectionState);
+        this.compilerState.getDomainModel().exitProjectionDeclaration(this.projection);
 
         super.exitProjectionDeclaration(ctx);
     }

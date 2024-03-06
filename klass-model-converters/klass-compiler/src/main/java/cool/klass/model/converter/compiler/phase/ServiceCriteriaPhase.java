@@ -28,21 +28,21 @@ public class ServiceCriteriaPhase extends AbstractCompilerPhase
 
         String serviceCriteriaKeyword = serviceCriteriaKeywordContext.getText();
 
-        AntlrServiceCriteria serviceCriteriaState = new AntlrServiceCriteria(
+        AntlrServiceCriteria serviceCriteria = new AntlrServiceCriteria(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 serviceCriteriaKeyword,
-                this.compilerState.getCompilerWalkState().getServiceState());
+                this.compilerState.getCompilerWalk().getService());
 
         CriteriaExpressionContext criteriaExpressionContext = ctx.criteriaExpression();
 
         CriteriaVisitor criteriaVisitor = new CriteriaVisitor(
                 this.compilerState,
-                serviceCriteriaState);
+                serviceCriteria);
 
         AntlrCriteria antlrCriteria = criteriaVisitor.visit(criteriaExpressionContext);
-        serviceCriteriaState.setCriteria(antlrCriteria);
+        serviceCriteria.setCriteria(antlrCriteria);
 
-        this.compilerState.getCompilerWalkState().getServiceState().enterServiceCriteriaDeclaration(serviceCriteriaState);
+        this.compilerState.getCompilerWalk().getService().enterServiceCriteriaDeclaration(serviceCriteria);
     }
 }

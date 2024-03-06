@@ -21,14 +21,15 @@ import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContex
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.VerbContext;
 
-public class ServicePhase extends AbstractCompilerPhase
+public class ServicePhase
+        extends AbstractCompilerPhase
 {
     @Nullable
-    private AntlrServiceGroup serviceGroupState;
+    private AntlrServiceGroup serviceGroup;
     @Nullable
-    private AntlrUrl          urlState;
+    private AntlrUrl          url;
     @Nullable
-    private AntlrService      serviceState;
+    private AntlrService      service;
 
     public ServicePhase(@Nonnull CompilerState compilerState)
     {
@@ -43,20 +44,20 @@ public class ServicePhase extends AbstractCompilerPhase
         IdentifierContext classNameContext = ctx.classReference().identifier();
         String            className        = classNameContext.getText();
 
-        this.serviceGroupState = new AntlrServiceGroup(
+        this.serviceGroup = new AntlrServiceGroup(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.compilerState.getOrdinal(ctx),
                 classNameContext,
-                this.compilerState.getCompilerWalkState().getCompilationUnitState(),
-                this.compilerState.getDomainModelState().getClassByName(className));
+                this.compilerState.getCompilerWalk().getCompilationUnit(),
+                this.compilerState.getDomainModel().getClassByName(className));
     }
 
     @Override
     public void exitServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
     {
-        this.compilerState.getDomainModelState().exitServiceGroupDeclaration(this.serviceGroupState);
-        this.serviceGroupState = null;
+        this.compilerState.getDomainModel().exitServiceGroupDeclaration(this.serviceGroup);
+        this.serviceGroup = null;
         super.exitServiceGroupDeclaration(ctx);
     }
 
@@ -64,17 +65,17 @@ public class ServicePhase extends AbstractCompilerPhase
     public void enterUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
     {
         super.enterUrlDeclaration(ctx);
-        this.urlState = new AntlrUrl(
+        this.url = new AntlrUrl(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.serviceGroupState);
-        this.serviceGroupState.enterUrlDeclaration(this.urlState);
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.serviceGroup);
+        this.serviceGroup.enterUrlDeclaration(this.url);
     }
 
     @Override
     public void exitUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
     {
-        this.urlState = null;
+        this.url = null;
         super.exitUrlDeclaration(ctx);
     }
 
@@ -85,21 +86,21 @@ public class ServicePhase extends AbstractCompilerPhase
         VerbContext verb = ctx.verb();
         AntlrVerb antlrVerb = new AntlrVerb(
                 verb,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 Verb.valueOf(verb.getText()));
 
-        this.serviceState = new AntlrService(
+        this.service = new AntlrService(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.urlState,
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.url,
                 antlrVerb);
     }
 
     @Override
     public void exitServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
     {
-        this.urlState.exitServiceDeclaration(this.serviceState);
-        this.serviceState = null;
+        this.url.exitServiceDeclaration(this.service);
+        this.service = null;
         super.exitServiceDeclaration(ctx);
     }
 
@@ -110,7 +111,7 @@ public class ServicePhase extends AbstractCompilerPhase
         ProjectionReferenceContext projectionReferenceContext = ctx.projectionReference();
 
         String          projectionName = projectionReferenceContext.identifier().getText();
-        AntlrProjection projection     = this.compilerState.getDomainModelState().getProjectionByName(projectionName);
+        AntlrProjection projection     = this.compilerState.getDomainModel().getProjectionByName(projectionName);
 
         if (ctx.argumentList() != null && !ctx.argumentList().argument().isEmpty())
         {
@@ -119,10 +120,10 @@ public class ServicePhase extends AbstractCompilerPhase
 
         AntlrServiceProjectionDispatch projectionDispatch = new AntlrServiceProjectionDispatch(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.serviceState,
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.service,
                 projection);
 
-        this.serviceState.enterServiceProjectionDispatch(projectionDispatch);
+        this.service.enterServiceProjectionDispatch(projectionDispatch);
     }
 }

@@ -40,7 +40,7 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
     {
         return new AntlrEqualityOperator(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 ctx.getText());
     }
 
@@ -50,7 +50,7 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
     {
         return new AntlrInequalityOperator(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 ctx.getText());
     }
 
@@ -60,7 +60,7 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
     {
         return new AntlrInOperator(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 ctx.getText());
     }
 
@@ -70,7 +70,7 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
     {
         return new AntlrStringOperator(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 ctx.getText());
     }
 }

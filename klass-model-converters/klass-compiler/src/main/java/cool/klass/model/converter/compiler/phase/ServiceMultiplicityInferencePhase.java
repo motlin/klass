@@ -28,8 +28,8 @@ public class ServiceMultiplicityInferencePhase
     {
         super.enterServiceDeclaration(ctx);
 
-        AntlrService serviceState = this.compilerState.getCompilerWalkState().getServiceState();
-        if (serviceState.getServiceMultiplicityState() == null)
+        AntlrService service = this.compilerState.getCompilerWalk().getService();
+        if (service.getServiceMultiplicity() == null)
         {
             String sourceCodeText = "            multiplicity: one;\n";
             this.runCompilerMacro(sourceCodeText);
@@ -38,11 +38,11 @@ public class ServiceMultiplicityInferencePhase
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
-        AntlrService      serviceState  = this.compilerState.getCompilerWalkState().getServiceState();
+        AntlrService      service       = this.compilerState.getCompilerWalk().getService();
         ParseTreeListener compilerPhase = new ServiceMultiplicityPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
-                serviceState,
+                service,
                 this,
                 sourceCodeText,
                 KlassParser::serviceMultiplicityDeclaration,

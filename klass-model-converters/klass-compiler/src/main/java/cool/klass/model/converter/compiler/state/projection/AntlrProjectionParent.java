@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent;
@@ -81,7 +81,7 @@ public abstract class AntlrProjectionParent
                 .toImmutable();
     }
 
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
 

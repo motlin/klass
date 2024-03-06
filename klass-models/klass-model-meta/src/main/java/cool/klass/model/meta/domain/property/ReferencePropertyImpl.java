@@ -85,9 +85,9 @@ public abstract class ReferencePropertyImpl<T extends ClassifierWithSourceCode>
         protected final Multiplicity multiplicity;
 
         @Nonnull
-        private Optional<OrderByBuilder> orderByBuilder = Optional.empty();
+        private Optional<OrderByBuilder> orderBy = Optional.empty();
 
-        private ImmutableList<ModifierBuilder> modifierBuilders;
+        private ImmutableList<ModifierBuilder> modifier;
 
         protected ReferencePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -103,24 +103,24 @@ public abstract class ReferencePropertyImpl<T extends ClassifierWithSourceCode>
             this.multiplicity = Objects.requireNonNull(multiplicity);
         }
 
-        public void setOrderByBuilder(@Nonnull Optional<OrderByBuilder> orderByBuilder)
+        public void setOrderBy(@Nonnull Optional<OrderByBuilder> orderBy)
         {
-            this.orderByBuilder = Objects.requireNonNull(orderByBuilder);
+            this.orderBy = Objects.requireNonNull(orderBy);
         }
 
-        public void setModifierBuilders(ImmutableList<ModifierBuilder> modifierBuilders)
+        public void setModifiers(ImmutableList<ModifierBuilder> modifiers)
         {
-            this.modifierBuilders = modifierBuilders;
+            this.modifier = modifiers;
         }
 
         @Override
         protected final void buildChildren()
         {
             ImmutableList<Modifier> modifiers =
-                    this.modifierBuilders.collect(ModifierBuilder::build);
+                    this.modifier.collect(ModifierBuilder::build);
             this.element.setModifiers(modifiers);
 
-            Optional<OrderBy> orderBy = this.orderByBuilder.map(OrderByBuilder::build);
+            Optional<OrderBy> orderBy = this.orderBy.map(OrderByBuilder::build);
             this.element.setOrderBy(orderBy);
         }
     }

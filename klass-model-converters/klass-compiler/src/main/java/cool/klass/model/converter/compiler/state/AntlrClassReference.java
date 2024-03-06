@@ -25,19 +25,19 @@ public class AntlrClassReference
             AntlrClass.NOT_FOUND);
 
     @Nonnull
-    private final AntlrClassReferenceOwner classReferenceOwnerState;
+    private final AntlrClassReferenceOwner classReferenceOwner;
     @Nonnull
-    private final AntlrClass               classState;
+    private final AntlrClass               klass;
 
     public AntlrClassReference(
             @Nonnull ClassReferenceContext classReferenceContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull AntlrClassReferenceOwner classReferenceOwnerState,
-            @Nonnull AntlrClass classState)
+            @Nonnull AntlrClassReferenceOwner classReferenceOwner,
+            @Nonnull AntlrClass klass)
     {
         super(classReferenceContext, compilationUnit);
-        this.classReferenceOwnerState = Objects.requireNonNull(classReferenceOwnerState);
-        this.classState               = Objects.requireNonNull(classState);
+        this.classReferenceOwner = Objects.requireNonNull(classReferenceOwner);
+        this.klass               = Objects.requireNonNull(klass);
     }
 
     @Nonnull
@@ -51,12 +51,12 @@ public class AntlrClassReference
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.of(this.classReferenceOwnerState);
+        return Optional.of(this.classReferenceOwner);
     }
 
     @Nonnull
-    public AntlrClass getClassState()
+    public AntlrClass getKlass()
     {
-        return this.classState;
+        return this.klass;
     }
 }

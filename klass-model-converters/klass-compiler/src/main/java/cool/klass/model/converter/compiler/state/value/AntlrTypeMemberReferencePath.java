@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
@@ -32,17 +32,17 @@ public class AntlrTypeMemberReferencePath
     public AntlrTypeMemberReferencePath(
             @Nonnull TypeMemberReferencePathContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull AntlrClass classState,
-            @Nonnull ImmutableList<AntlrAssociationEnd> associationEndStates,
-            @Nonnull AntlrDataTypeProperty<?> dataTypePropertyState,
+            @Nonnull AntlrClass klass,
+            @Nonnull ImmutableList<AntlrAssociationEnd> associationEnds,
+            @Nonnull AntlrDataTypeProperty<?> dataTypeProperty,
             @Nonnull IAntlrElement expressionValueOwner)
     {
         super(
                 elementContext,
                 compilationUnit,
-                classState,
-                associationEndStates,
-                dataTypePropertyState,
+                klass,
+                associationEnds,
+                dataTypeProperty,
                 expressionValueOwner);
     }
 
@@ -54,16 +54,16 @@ public class AntlrTypeMemberReferencePath
         {
             throw new IllegalStateException();
         }
-        ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates
+        ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEnd
                 .collect(AntlrAssociationEnd::getElementBuilder);
 
         this.elementBuilder = new TypeMemberReferencePathBuilder(
                 (TypeMemberReferencePathContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.classState.getElementBuilder(),
+                this.klass.getElementBuilder(),
                 associationEndBuilders,
-                this.dataTypePropertyState.getElementBuilder());
+                this.dataTypeProperty.getElementBuilder());
         return this.elementBuilder;
     }
 
@@ -75,15 +75,15 @@ public class AntlrTypeMemberReferencePath
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (this.classState == AntlrClass.AMBIGUOUS)
+        if (this.klass == AntlrClass.AMBIGUOUS)
         {
             // Covered by ERR_DUP_TOP
             return;
         }
 
-        if (this.classState == AntlrClass.NOT_FOUND)
+        if (this.klass == AntlrClass.NOT_FOUND)
         {
             ClassReferenceContext offendingToken = this.getElementContext().classReference();
 
@@ -97,20 +97,20 @@ public class AntlrTypeMemberReferencePath
 
         List<AssociationEndReferenceContext> associationEndReferenceContexts =
                 this.getElementContext().associationEndReference();
-        AntlrClass currentClassState = this.reportErrorsAssociationEnds(
+        AntlrClass currentClass = this.reportErrorsAssociationEnds(
                 compilerAnnotationHolder,
                 associationEndReferenceContexts);
-        if (currentClassState == null)
+        if (currentClass == null)
         {
             return;
         }
 
-        if (this.dataTypePropertyState == AntlrEnumerationProperty.NOT_FOUND)
+        if (this.dataTypeProperty == AntlrEnumerationProperty.NOT_FOUND)
         {
             IdentifierContext identifier = this.getElementContext().memberReference().identifier();
             String message = String.format(
                     "Cannot find member '%s.%s'.",
-                    currentClassState.getName(),
+                    currentClass.getName(),
                     identifier.getText());
             compilerAnnotationHolder.add("ERR_TYP_MEM", message, this, identifier);
         }
@@ -120,7 +120,7 @@ public class AntlrTypeMemberReferencePath
     @Override
     public ImmutableList<AntlrType> getPossibleTypes()
     {
-        AntlrType type = this.dataTypePropertyState.getType();
+        AntlrType type = this.dataTypeProperty.getType();
         if (type == AntlrEnumeration.NOT_FOUND || type == AntlrEnumeration.AMBIGUOUS)
         {
             return Lists.immutable.empty();

@@ -5,7 +5,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -80,11 +80,11 @@ public interface IAntlrElement
     }
 
     default void reportAuditErrors(
-            CompilerAnnotationState compilerAnnotationHolder,
-            ListIterable<AntlrModifier> modifierStates,
+            CompilerAnnotationHolder compilerAnnotationHolder,
+            ListIterable<AntlrModifier> modifiers,
             IAntlrElement element)
     {
-        ImmutableList<AntlrModifier> offendingModifiers = modifierStates
+        ImmutableList<AntlrModifier> offendingModifiers = modifiers
                 .select(modifier -> modifier.isAudit() || modifier.isUser())
                 .toImmutable();
         if (offendingModifiers.isEmpty())

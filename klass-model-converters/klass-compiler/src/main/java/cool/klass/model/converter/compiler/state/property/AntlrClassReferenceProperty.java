@@ -16,7 +16,7 @@ public abstract class AntlrClassReferenceProperty
         extends AntlrReferenceProperty<AntlrClass>
         implements AntlrClassReferenceOwner
 {
-    protected AntlrClassReference classReferenceState;
+    protected AntlrClassReference classReference;
 
     protected AntlrClassReferenceProperty(
             @Nonnull ParserRuleContext elementContext,
@@ -28,20 +28,20 @@ public abstract class AntlrClassReferenceProperty
     }
 
     @Override
-    public void enterClassReference(@Nonnull AntlrClassReference classReferenceState)
+    public void enterClassReference(@Nonnull AntlrClassReference classReference)
     {
-        if (this.classReferenceState != null)
+        if (this.classReference != null)
         {
             throw new AssertionError();
         }
 
-        this.classReferenceState = Objects.requireNonNull(classReferenceState);
+        this.classReference = Objects.requireNonNull(classReference);
     }
 
     @Nonnull
     @Override
     public AntlrClass getType()
     {
-        return this.classReferenceState.getClassState();
+        return this.classReference.getKlass();
     }
 }

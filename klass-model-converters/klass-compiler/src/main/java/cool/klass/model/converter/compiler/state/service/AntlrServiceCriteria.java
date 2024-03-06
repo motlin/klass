@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
@@ -15,12 +15,13 @@ import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.tuple.Pair;
 
-public class AntlrServiceCriteria extends AntlrElement
+public class AntlrServiceCriteria
+        extends AntlrElement
 {
     @Nonnull
     private final String       serviceCriteriaKeyword;
     @Nonnull
-    private final AntlrService serviceState;
+    private final AntlrService service;
 
     private AntlrCriteria antlrCriteria;
 
@@ -28,18 +29,18 @@ public class AntlrServiceCriteria extends AntlrElement
             @Nonnull ServiceCriteriaDeclarationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull String serviceCriteriaKeyword,
-            @Nonnull AntlrService serviceState)
+            @Nonnull AntlrService service)
     {
         super(elementContext, compilationUnit);
         this.serviceCriteriaKeyword = Objects.requireNonNull(serviceCriteriaKeyword);
-        this.serviceState           = Objects.requireNonNull(serviceState);
+        this.service                = Objects.requireNonNull(service);
     }
 
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.of(this.serviceState);
+        return Optional.of(this.service);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class AntlrServiceCriteria extends AntlrElement
         this.antlrCriteria = Objects.requireNonNull(antlrCriteria);
     }
 
-    public void reportDuplicateKeyword(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportDuplicateKeyword(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         // TODO: Test coverage of duplicate service criteria
         String message = String.format("Duplicate service criteria: '%s'.", this.serviceCriteriaKeyword);
@@ -86,7 +87,7 @@ public class AntlrServiceCriteria extends AntlrElement
     }
 
     public void reportAllowedCriteriaTypes(
-            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
+            @Nonnull CompilerAnnotationHolder compilerAnnotationHolder,
             @Nonnull ImmutableList<String> allowedCriteriaTypes)
     {
         if (!allowedCriteriaTypes.contains(this.serviceCriteriaKeyword))
@@ -94,7 +95,7 @@ public class AntlrServiceCriteria extends AntlrElement
             String error = String.format(
                     "Criteria '%s' not allowed for verb '%s'. Must be one of %s.",
                     this.serviceCriteriaKeyword,
-                    this.serviceState.getVerbState().getVerb(),
+                    this.service.getVerb().getVerb(),
                     allowedCriteriaTypes);
             compilerAnnotationHolder.add(
                     "ERR_VRB_CRT",

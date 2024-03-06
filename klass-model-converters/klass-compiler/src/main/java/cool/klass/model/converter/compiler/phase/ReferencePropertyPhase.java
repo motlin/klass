@@ -19,9 +19,9 @@ public class ReferencePropertyPhase
         extends AbstractCompilerPhase
 {
     @Nullable
-    protected AntlrClassReferenceOwner classReferenceOwnerState;
+    protected AntlrClassReferenceOwner classReferenceOwner;
     @Nullable
-    protected AntlrMultiplicityOwner   multiplicityOwnerState;
+    protected AntlrMultiplicityOwner   multiplicityOwner;
 
     public ReferencePropertyPhase(CompilerState compilerState)
     {
@@ -30,36 +30,36 @@ public class ReferencePropertyPhase
 
     public void handleClassReference(@Nonnull ClassReferenceContext ctx)
     {
-        if (this.classReferenceOwnerState == null)
+        if (this.classReferenceOwner == null)
         {
             return;
         }
 
-        String           className        = ctx.identifier().getText();
-        AntlrDomainModel domainModelState = this.compilerState.getDomainModelState();
-        AntlrClass       classState       = domainModelState.getClassByName(className);
+        String           className   = ctx.identifier().getText();
+        AntlrDomainModel domainModel = this.compilerState.getDomainModel();
+        AntlrClass       klass       = domainModel.getClassByName(className);
 
-        AntlrClassReference classReferenceState = new AntlrClassReference(
+        AntlrClassReference classReference = new AntlrClassReference(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.classReferenceOwnerState,
-                classState);
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.classReferenceOwner,
+                klass);
 
-        this.classReferenceOwnerState.enterClassReference(classReferenceState);
+        this.classReferenceOwner.enterClassReference(classReference);
     }
 
     public void handleMultiplicity(@Nonnull MultiplicityContext ctx)
     {
-        if (this.multiplicityOwnerState == null)
+        if (this.multiplicityOwner == null)
         {
             return;
         }
 
-        AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
+        AntlrMultiplicity multiplicity = new AntlrMultiplicity(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.multiplicityOwnerState);
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.multiplicityOwner);
 
-        this.multiplicityOwnerState.enterMultiplicity(multiplicityState);
+        this.multiplicityOwner.enterMultiplicity(multiplicity);
     }
 }

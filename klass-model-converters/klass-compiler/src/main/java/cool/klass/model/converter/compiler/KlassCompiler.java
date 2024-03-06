@@ -7,7 +7,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 
 import com.google.common.base.Stopwatch;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.converter.compiler.phase.AssociationPhase;
 import cool.klass.model.converter.compiler.phase.AuditAssociationInferencePhase;
@@ -104,7 +104,7 @@ public class KlassCompiler
 
         // Compiler macros may add new compilation units within a compiler phase, so take an immutable copy
         ImmutableList<CompilationUnit> immutableCompilationUnits =
-                this.compilerState.getCompilerInputState().getCompilationUnits().toImmutable();
+                this.compilerState.getCompilerInput().getCompilationUnits().toImmutable();
 
         ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
         for (CompilationUnit compilationUnit : immutableCompilationUnits)
@@ -138,12 +138,12 @@ public class KlassCompiler
             }
         }
 
-        CompilerInputState                compilerInputState        = this.compilerState.getCompilerInputState();
+        CompilerInputState                compilerInputState        = this.compilerState.getCompilerInput();
         ImmutableList<CompilationUnit>    compilationUnits          = compilerInputState.getCompilationUnits().toImmutable();
         MapIterable<Token, TokenCategory> tokenCategoriesFromLexer  = this.getTokenCategoriesFromLexer(compilationUnits);
         MapIterable<Token, TokenCategory> tokenCategoriesFromParser = this.getTokenCategoriesFromParser(compilationUnits);
 
-        CompilerAnnotationState compilerAnnotationHolder = this.compilerState.getCompilerAnnotationHolder();
+        CompilerAnnotationHolder compilerAnnotationHolder = this.compilerState.getCompilerAnnotationHolder();
 
         // TODO: Make the ColorScheme configurable
         var ansiTokenColorizer = new AnsiTokenColorizer(

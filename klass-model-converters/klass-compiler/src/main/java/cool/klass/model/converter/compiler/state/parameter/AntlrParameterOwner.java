@@ -8,7 +8,7 @@ public interface AntlrParameterOwner
 {
     int getNumParameters();
 
-    void enterParameterDeclaration(@Nonnull AntlrParameter parameterState);
+    void enterParameterDeclaration(@Nonnull AntlrParameter parameter);
 
     AntlrParameter getParameterByContext(@Nonnull ParameterDeclarationContext ctx);
 }

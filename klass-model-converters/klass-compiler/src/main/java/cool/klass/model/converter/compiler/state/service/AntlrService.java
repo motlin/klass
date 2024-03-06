@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
@@ -17,7 +17,6 @@ import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.Verb;
-import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.service.ServiceImpl.ServiceBuilder;
 import cool.klass.model.meta.domain.service.ServiceProjectionDispatchImpl.ServiceProjectionDispatchBuilder;
@@ -57,40 +56,40 @@ public class AntlrService
                     .newWithKeyValue(Verb.DELETE, Lists.immutable.with("authorize", "criteria", "conflict"));
 
     @Nonnull
-    private final AntlrUrl  urlState;
+    private final AntlrUrl  url;
     @Nonnull
-    private final AntlrVerb verbState;
+    private final AntlrVerb verb;
 
-    private final MutableList<AntlrServiceCriteria> serviceCriteriaStates = Lists.mutable.empty();
+    private final MutableList<AntlrServiceCriteria> serviceCriterias = Lists.mutable.empty();
 
     private final MutableOrderedMap<ServiceCriteriaDeclarationContext, AntlrServiceCriteria> serviceCriteriaByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     @Nullable
-    private AntlrServiceMultiplicity serviceMultiplicityState;
+    private AntlrServiceMultiplicity serviceMultiplicity;
 
     @Nonnull
-    private Optional<AntlrServiceProjectionDispatch> serviceProjectionDispatchState = Optional.empty();
+    private Optional<AntlrServiceProjectionDispatch> serviceProjectionDispatch = Optional.empty();
     @Nonnull
-    private Optional<AntlrOrderBy>                   orderByState                   = Optional.empty();
+    private Optional<AntlrOrderBy>                   orderBy                   = Optional.empty();
     private ServiceBuilder                           elementBuilder;
 
     public AntlrService(
             @Nonnull ServiceDeclarationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull AntlrUrl urlState,
-            @Nonnull AntlrVerb verbState)
+            @Nonnull AntlrUrl url,
+            @Nonnull AntlrVerb verb)
     {
         super(elementContext, compilationUnit);
-        this.urlState  = Objects.requireNonNull(urlState);
-        this.verbState = Objects.requireNonNull(verbState);
+        this.url  = Objects.requireNonNull(url);
+        this.verb = Objects.requireNonNull(verb);
     }
 
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.of(this.urlState);
+        return Optional.of(this.url);
     }
 
     @Override
@@ -116,20 +115,20 @@ public class AntlrService
     }
 
     @Nonnull
-    public AntlrUrl getUrlState()
+    public AntlrUrl getUrl()
     {
-        return this.urlState;
+        return this.url;
     }
 
     @Nullable
-    public AntlrServiceMultiplicity getServiceMultiplicityState()
+    public AntlrServiceMultiplicity getServiceMultiplicity()
     {
-        return this.serviceMultiplicityState;
+        return this.serviceMultiplicity;
     }
 
-    public MutableList<AntlrServiceCriteria> getServiceCriteriaStates()
+    public MutableList<AntlrServiceCriteria> getServiceCriterias()
     {
-        return this.serviceCriteriaStates.asUnmodifiable();
+        return this.serviceCriterias.asUnmodifiable();
     }
 
     public AntlrServiceCriteria getServiceCriteriaByContext(ServiceCriteriaDeclarationContext ctx)
@@ -137,19 +136,19 @@ public class AntlrService
         return this.serviceCriteriaByContext.get(ctx);
     }
 
-    public void reportDuplicateVerb(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportDuplicateVerb(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        String message = String.format("Duplicate verb: '%s'.", this.verbState.getVerb());
+        String message = String.format("Duplicate verb: '%s'.", this.verb.getVerb());
 
-        compilerAnnotationHolder.add("ERR_DUP_VRB", message, this, this.verbState.getElementContext());
+        compilerAnnotationHolder.add("ERR_DUP_VRB", message, this, this.verb.getElementContext());
     }
 
-    public void enterServiceCriteriaDeclaration(@Nonnull AntlrServiceCriteria serviceCriteriaState)
+    public void enterServiceCriteriaDeclaration(@Nonnull AntlrServiceCriteria serviceCriteria)
     {
-        this.serviceCriteriaStates.add(serviceCriteriaState);
+        this.serviceCriterias.add(serviceCriteria);
         AntlrServiceCriteria duplicate = this.serviceCriteriaByContext.put(
-                serviceCriteriaState.getElementContext(),
-                serviceCriteriaState);
+                serviceCriteria.getElementContext(),
+                serviceCriteria);
         if (duplicate != null)
         {
             throw new AssertionError();
@@ -158,11 +157,11 @@ public class AntlrService
 
     public void enterServiceProjectionDispatch(@Nonnull AntlrServiceProjectionDispatch projectionDispatch)
     {
-        this.serviceProjectionDispatchState = Optional.of(projectionDispatch);
+        this.serviceProjectionDispatch = Optional.of(projectionDispatch);
     }
 
     //<editor-fold desc="Report Compiler Errors">
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         this.reportDuplicateKeywords(compilerAnnotationHolder);
 
@@ -170,101 +169,101 @@ public class AntlrService
 
         this.reportInvalidProjection(compilerAnnotationHolder);
 
-        Verb                  verb                 = this.verbState.getVerb();
+        Verb                  verb                 = this.verb.getVerb();
         ImmutableList<String> allowedCriteriaTypes = ALLOWED_CRITERIA_TYPES.get(verb);
 
-        for (AntlrServiceCriteria serviceCriteriaState : this.serviceCriteriaStates)
+        for (AntlrServiceCriteria serviceCriteria : this.serviceCriterias)
         {
             if (allowedCriteriaTypes == null)
             {
                 throw new AssertionError(verb);
             }
-            serviceCriteriaState.reportAllowedCriteriaTypes(compilerAnnotationHolder, allowedCriteriaTypes);
-            serviceCriteriaState.getCriteria().reportErrors(compilerAnnotationHolder);
+            serviceCriteria.reportAllowedCriteriaTypes(compilerAnnotationHolder, allowedCriteriaTypes);
+            serviceCriteria.getCriteria().reportErrors(compilerAnnotationHolder);
         }
 
-        this.orderByState.ifPresent(orderBy -> orderBy.reportErrors(compilerAnnotationHolder));
+        this.orderBy.ifPresent(orderBy -> orderBy.reportErrors(compilerAnnotationHolder));
     }
 
-    protected void reportDuplicateKeywords(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    protected void reportDuplicateKeywords(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        ImmutableBag<String> duplicateKeywords = this.serviceCriteriaStates
+        ImmutableBag<String> duplicateKeywords = this.serviceCriterias
                 .collect(AntlrServiceCriteria::getServiceCriteriaKeyword)
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();
 
-        this.serviceCriteriaStates
+        this.serviceCriterias
                 .select(each -> duplicateKeywords.contains(each.getServiceCriteriaKeyword()))
                 .forEachWith(AntlrServiceCriteria::reportDuplicateKeyword, compilerAnnotationHolder);
     }
 
-    private void reportInvalidProjection(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportInvalidProjection(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        Verb verb = this.verbState.getVerb();
+        Verb verb = this.verb.getVerb();
 
         if (verb == Verb.GET)
         {
-            this.serviceProjectionDispatchState.ifPresentOrElse(
+            this.serviceProjectionDispatch.ifPresentOrElse(
                     projectionDispatch -> projectionDispatch.reportErrors(compilerAnnotationHolder),
                     () -> this.reportMissingProjection(compilerAnnotationHolder));
         }
         else
         {
-            this.serviceProjectionDispatchState
+            this.serviceProjectionDispatch
                     .ifPresent(projectionDispatch -> this.reportPresentProjection(
                             projectionDispatch,
                             compilerAnnotationHolder));
         }
     }
 
-    private void reportMissingProjection(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportMissingProjection(CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        ParserRuleContext verbContext = this.verbState.getElementContext();
+        ParserRuleContext verbContext = this.verb.getElementContext();
 
         compilerAnnotationHolder.add("ERR_GET_PRJ", "GET services require a projection.", this, verbContext);
     }
 
     private void reportPresentProjection(
             AntlrServiceProjectionDispatch projectionDispatch,
-            CompilerAnnotationState compilerAnnotationHolder)
+            CompilerAnnotationHolder compilerAnnotationHolder)
     {
         ServiceProjectionDispatchContext elementContext = projectionDispatch.getElementContext();
 
         compilerAnnotationHolder.add(
                 "ERR_PUT_PRJ",
-                String.format("%s services must not have a projection.", this.verbState.getVerb().name()),
+                String.format("%s services must not have a projection.", this.verb.getVerb().name()),
                 projectionDispatch,
                 elementContext);
     }
     //</editor-fold>
 
     @Nonnull
-    public AntlrVerb getVerbState()
+    public AntlrVerb getVerb()
     {
-        return this.verbState;
+        return this.verb;
     }
 
-    public void enterServiceMultiplicityDeclaration(@Nonnull AntlrServiceMultiplicity serviceMultiplicityState)
+    public void enterServiceMultiplicityDeclaration(@Nonnull AntlrServiceMultiplicity serviceMultiplicity)
     {
-        this.serviceMultiplicityState = Objects.requireNonNull(serviceMultiplicityState);
+        this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
     }
 
     @Override
-    public void enterOrderByDeclaration(@Nonnull AntlrOrderBy orderByState)
+    public void enterOrderByDeclaration(@Nonnull AntlrOrderBy orderBy)
     {
-        if (this.orderByState.isPresent())
+        if (this.orderBy.isPresent())
         {
             throw new IllegalStateException();
         }
-        this.orderByState = Optional.of(orderByState);
+        this.orderBy = Optional.of(orderBy);
     }
 
     @Override
     @Nonnull
-    public Optional<AntlrOrderBy> getOrderByState()
+    public Optional<AntlrOrderBy> getOrderBy()
     {
-        return this.orderByState;
+        return this.orderBy;
     }
 
     public ServiceBuilder build()
@@ -274,9 +273,9 @@ public class AntlrService
             throw new IllegalStateException();
         }
 
-        UrlBuilder          urlBuilder          = this.urlState.getElementBuilder();
-        Verb                verb                = this.verbState.getVerb();
-        ServiceMultiplicity serviceMultiplicity = this.serviceMultiplicityState.getServiceMultiplicity();
+        UrlBuilder          urlBuilder          = this.url.getElementBuilder();
+        Verb                verb                = this.verb.getVerb();
+        ServiceMultiplicity serviceMultiplicity = this.serviceMultiplicity.getServiceMultiplicity();
         this.elementBuilder = new ServiceBuilder(
                 (ServiceDeclarationContext) this.elementContext,
                 this.getMacroElementBuilder(),
@@ -285,19 +284,18 @@ public class AntlrService
                 verb,
                 serviceMultiplicity);
 
-        for (AntlrServiceCriteria serviceCriteriaState : this.serviceCriteriaStates)
+        for (AntlrServiceCriteria serviceCriteria : this.serviceCriterias)
         {
-            String                     serviceCriteriaKeyword = serviceCriteriaState.getServiceCriteriaKeyword();
-            AntlrCriteria              criteriaState          = serviceCriteriaState.getCriteria();
-            AbstractCriteriaBuilder<?> criteriaBuilder        = criteriaState.build();
-            this.elementBuilder.addCriteriaBuilder(serviceCriteriaKeyword, criteriaBuilder);
+            String        serviceCriteriaKeyword = serviceCriteria.getServiceCriteriaKeyword();
+            AntlrCriteria criteria               = serviceCriteria.getCriteria();
+            this.elementBuilder.addCriteriaBuilder(serviceCriteriaKeyword, criteria.build());
         }
 
         Optional<ServiceProjectionDispatchBuilder> projectionDispatchBuilder =
-                this.serviceProjectionDispatchState.map(AntlrServiceProjectionDispatch::build);
+                this.serviceProjectionDispatch.map(AntlrServiceProjectionDispatch::build);
         this.elementBuilder.setProjectionDispatchBuilder(projectionDispatchBuilder);
 
-        Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);
+        Optional<OrderByBuilder> orderByBuilder = this.orderBy.map(AntlrOrderBy::build);
         this.elementBuilder.setOrderByBuilder(orderByBuilder);
 
         return this.elementBuilder;

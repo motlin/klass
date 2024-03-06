@@ -46,9 +46,9 @@ public class AuditPropertyInferencePhase
     private boolean hasAuditProperty(Predicate<AntlrDataTypeProperty> predicate)
     {
         return this.compilerState
-                .getCompilerWalkState()
-                .getClassState()
-                .getDataTypeProperties()
+                .getCompilerWalk()
+                .getKlass()
+                .getAllDataTypeProperties()
                 .asLazy()
                 .anySatisfy(predicate);
     }
@@ -58,7 +58,7 @@ public class AuditPropertyInferencePhase
     {
         return this.compilerState
                 .getCompilerWalkState()
-                .getClassState()
+                .getKlass()
                 .getProperties()
                 .selectInstancesOf(AntlrParameterizedProperty.class)
                 .asLazy()
@@ -68,19 +68,19 @@ public class AuditPropertyInferencePhase
 
     private void addAuditProperties()
     {
-        Optional<AntlrClass> maybeUserClass = this.compilerState.getDomainModelState().getUserClassState();
+        Optional<AntlrClass> maybeUserClass = this.compilerState.getDomainModel().getUserClass();
         if (maybeUserClass.isEmpty())
         {
             return;
         }
         AntlrClass userClass        = maybeUserClass.get();
-        int        userIdProperties = userClass.getDataTypeProperties().count(AntlrDataTypeProperty::isUserId);
+        int        userIdProperties = userClass.getAllDataTypeProperties().count(AntlrDataTypeProperty::isUserId);
         if (userIdProperties != 1)
         {
             return;
         }
         AntlrDataTypeProperty<?> userIdProperty = userClass
-                .getDataTypeProperties()
+                .getAllDataTypeProperties()
                 .detect(AntlrDataTypeProperty::isUserId);
 
         ListIterable<AntlrModifier> modifiers = userIdProperty.getModifiers()
@@ -91,8 +91,8 @@ public class AuditPropertyInferencePhase
         {
             throw new AssertionError(modifiers);
         }
-        ListIterable<AbstractAntlrPropertyValidation> validationStates = userIdProperty.getValidationStates();
-        String validationSourceCode = validationStates.isEmpty() ? "" : validationStates.makeString(" ", " ", "");
+        ListIterable<AbstractAntlrPropertyValidation> validations = userIdProperty.getValidations();
+        String validationSourceCode = validations.isEmpty() ? "" : validations.makeString(" ", " ", "");
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("{\n");
@@ -147,7 +147,7 @@ public class AuditPropertyInferencePhase
             return;
         }
         AntlrModifier classifierModifierState =
-                this.compilerState.getCompilerWalkState().getClassifierModifierState();
+                this.compilerState.getCompilerWalk().getClassifierModifier();
         ParseTreeListener compilerPhase = new PropertyPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(

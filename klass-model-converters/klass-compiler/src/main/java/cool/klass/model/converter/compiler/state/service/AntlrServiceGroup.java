@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrCompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrPackageableElement;
@@ -45,7 +45,7 @@ public class AntlrServiceGroup
     @Nonnull
     private final AntlrClass klass;
 
-    private final MutableList<AntlrUrl>                              urlStates     = Lists.mutable.empty();
+    private final MutableList<AntlrUrl>                              urls          = Lists.mutable.empty();
     private final MutableOrderedMap<UrlDeclarationContext, AntlrUrl> urlsByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
@@ -76,22 +76,22 @@ public class AntlrServiceGroup
         return this.urlsByContext.get(ctx);
     }
 
-    public void enterUrlDeclaration(@Nonnull AntlrUrl urlState)
+    public void enterUrlDeclaration(@Nonnull AntlrUrl url)
     {
         AntlrUrl duplicate = this.urlsByContext.put(
-                urlState.getElementContext(),
-                urlState);
+                url.getElementContext(),
+                url);
         if (duplicate != null)
         {
             throw new AssertionError();
         }
 
-        this.urlStates.add(urlState);
+        this.urls.add(url);
     }
 
-    public ListIterable<AntlrUrl> getUrlStates()
+    public ListIterable<AntlrUrl> getUrls()
     {
-        return this.urlStates.asUnmodifiable();
+        return this.urls.asUnmodifiable();
     }
 
     @Nonnull
@@ -102,15 +102,15 @@ public class AntlrServiceGroup
     }
 
     //<editor-fold desc="Report Compiler Errors">
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         this.reportNoUrls(compilerAnnotationHolder);
         this.reportDuplicateUrls(compilerAnnotationHolder);
         this.reportForwardReference(compilerAnnotationHolder);
 
-        for (AntlrUrl urlState : this.urlStates)
+        for (AntlrUrl url : this.urls)
         {
-            urlState.reportErrors(compilerAnnotationHolder);
+            url.reportErrors(compilerAnnotationHolder);
         }
 
         // TODO: Not here, but report if there are more than one service group for a class.
@@ -122,12 +122,12 @@ public class AntlrServiceGroup
     }
 
     @Override
-    public void reportDuplicateTopLevelName(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportDuplicateTopLevelName(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         // Deliberately empty
     }
 
-    private void reportTypeNotFound(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportTypeNotFound(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.klass != AntlrClass.NOT_FOUND)
         {
@@ -142,7 +142,7 @@ public class AntlrServiceGroup
                 reference);
     }
 
-    private void reportDuplicateUrls(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportDuplicateUrls(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         // TODO: reportDuplicateUrls
         HashBagWithHashingStrategy<AntlrUrl> antlrUrls =
@@ -155,9 +155,9 @@ public class AntlrServiceGroup
         }
     }
 
-    private void reportNoUrls(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportNoUrls(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (this.urlStates.isEmpty())
+        if (this.urls.isEmpty())
         {
             String message = String.format(
                     "Service group should declare at least one url: '%s'.",
@@ -167,7 +167,7 @@ public class AntlrServiceGroup
         }
     }
 
-    public void reportDuplicateServiceGroupClass(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportDuplicateServiceGroupClass(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         String message = String.format(
                 "Multiple service groups for class: '%s.%s'.",
@@ -176,7 +176,7 @@ public class AntlrServiceGroup
         compilerAnnotationHolder.add("ERR_DUP_SVC", message, this);
     }
 
-    private void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportForwardReference(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (!this.isForwardReference(this.klass))
         {
@@ -214,7 +214,7 @@ public class AntlrServiceGroup
                 this.getPackageName(),
                 this.klass.getElementBuilder());
 
-        ImmutableList<UrlBuilder> urlBuilders = this.urlStates
+        ImmutableList<UrlBuilder> urlBuilders = this.urls
                 .collect(AntlrUrl::build)
                 .toImmutable();
 

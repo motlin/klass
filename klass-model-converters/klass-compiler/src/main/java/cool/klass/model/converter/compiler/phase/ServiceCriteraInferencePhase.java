@@ -29,8 +29,8 @@ public class ServiceCriteraInferencePhase
     {
         super.enterServiceDeclaration(ctx);
 
-        AntlrService serviceState = this.compilerState.getCompilerWalkState().getServiceState();
-        if (serviceState.getServiceCriteriaStates().isEmpty() && serviceState.getVerbState().getVerb() == Verb.GET)
+        AntlrService service = this.compilerState.getCompilerWalk().getService();
+        if (service.getServiceCriterias().isEmpty() && service.getVerb().getVerb() == Verb.GET)
         {
             String sourceCodeText = "            criteria    : all;\n";
             this.runCompilerMacro(sourceCodeText);
@@ -39,11 +39,11 @@ public class ServiceCriteraInferencePhase
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
-        AntlrService      serviceState  = this.compilerState.getCompilerWalkState().getServiceState();
+        AntlrService      service       = this.compilerState.getCompilerWalk().getService();
         ParseTreeListener compilerPhase = new ServiceCriteriaPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
-                serviceState,
+                service,
                 this,
                 sourceCodeText,
                 KlassParser::serviceCriteriaDeclaration,

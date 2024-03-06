@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -31,10 +31,10 @@ public class AntlrOrderBy
     @Nonnull
     private final AntlrClassifier   thisContext;
     @Nonnull
-    private final AntlrOrderByOwner orderByOwnerState;
+    private final AntlrOrderByOwner orderByOwner;
 
     @Nonnull
-    private final MutableList<AntlrOrderByMemberReferencePath> orderByMemberReferencePathStates = Lists.mutable.empty();
+    private final MutableList<AntlrOrderByMemberReferencePath> orderByMemberReferencePaths = Lists.mutable.empty();
 
     @Nonnull
     private final MutableOrderedMap<ParserRuleContext, AntlrOrderByMemberReferencePath> orderByMemberReferencePathsByContext = OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -45,24 +45,24 @@ public class AntlrOrderBy
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrClassifier thisContext,
-            @Nonnull AntlrOrderByOwner orderByOwnerState)
+            @Nonnull AntlrOrderByOwner orderByOwner)
     {
         super(elementContext, compilationUnit);
-        this.thisContext       = Objects.requireNonNull(thisContext);
-        this.orderByOwnerState = Objects.requireNonNull(orderByOwnerState);
+        this.thisContext  = Objects.requireNonNull(thisContext);
+        this.orderByOwner = Objects.requireNonNull(orderByOwner);
     }
 
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.of(this.orderByOwnerState);
+        return Optional.of(this.orderByOwner);
     }
 
     @Override
     public boolean isContext()
     {
-        return this.orderByOwnerState instanceof AntlrService;
+        return this.orderByOwner instanceof AntlrService;
     }
 
     @Override
@@ -73,16 +73,16 @@ public class AntlrOrderBy
 
     public int getNumProperties()
     {
-        return this.orderByMemberReferencePathStates.size();
+        return this.orderByMemberReferencePaths.size();
     }
 
-    public void enterOrderByMemberReferencePath(AntlrOrderByMemberReferencePath orderByMemberReferencePathState)
+    public void enterOrderByMemberReferencePath(AntlrOrderByMemberReferencePath orderByMemberReferencePath)
     {
-        this.orderByMemberReferencePathStates.add(orderByMemberReferencePathState);
+        this.orderByMemberReferencePaths.add(orderByMemberReferencePath);
 
         AntlrOrderByMemberReferencePath duplicate = this.orderByMemberReferencePathsByContext.put(
-                orderByMemberReferencePathState.getElementContext(),
-                orderByMemberReferencePathState);
+                orderByMemberReferencePath.getElementContext(),
+                orderByMemberReferencePath);
         if (duplicate != null)
         {
             throw new AssertionError();
@@ -94,9 +94,9 @@ public class AntlrOrderBy
         return this.orderByMemberReferencePathsByContext.get(ctx);
     }
 
-    public void reportErrors(CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        this.orderByMemberReferencePathStates.forEachWith(
+        this.orderByMemberReferencePaths.forEachWith(
                 AntlrOrderByMemberReferencePath::reportErrors,
                 compilerAnnotationHolder);
     }
@@ -114,7 +114,7 @@ public class AntlrOrderBy
                 this.thisContext.getElementBuilder());
 
         ImmutableList<OrderByMemberReferencePathBuilder> orderByMemberReferencePathBuilders =
-                this.orderByMemberReferencePathStates
+                this.orderByMemberReferencePaths
                         .collect(AntlrOrderByMemberReferencePath::build)
                         .toImmutable();
         this.elementBuilder.setOrderByMemberReferencePathBuilders(orderByMemberReferencePathBuilders);

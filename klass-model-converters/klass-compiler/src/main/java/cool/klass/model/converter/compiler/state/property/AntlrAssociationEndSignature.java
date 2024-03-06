@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrClassifierReference;
 import cool.klass.model.converter.compiler.state.AntlrClassifierReferenceOwner;
@@ -31,28 +31,28 @@ public class AntlrAssociationEndSignature
             AntlrClassifier.AMBIGUOUS);
 
     @Nonnull
-    private final AntlrClassifier owningClassifierState;
+    private final AntlrClassifier owningClassifier;
 
     private AssociationEndSignatureBuilder associationEndSignatureBuilder;
 
-    private AntlrClassifierReference classifierReferenceState;
+    private AntlrClassifierReference classifierReference;
 
     public AntlrAssociationEndSignature(
             @Nonnull AssociationEndSignatureContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
-            @Nonnull AntlrClassifier owningClassifierState)
+            @Nonnull AntlrClassifier owningClassifier)
     {
         super(elementContext, compilationUnit, ordinal, nameContext);
-        this.owningClassifierState = Objects.requireNonNull(owningClassifierState);
+        this.owningClassifier = Objects.requireNonNull(owningClassifier);
     }
 
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.of(this.owningClassifierState);
+        return Optional.of(this.owningClassifier);
     }
 
     @Nonnull
@@ -72,29 +72,29 @@ public class AntlrAssociationEndSignature
                 this.ordinal,
                 this.getNameContext(),
                 this.getType().getElementBuilder(),
-                this.owningClassifierState.getElementBuilder(),
-                this.multiplicityState.getMultiplicity());
+                this.owningClassifier.getElementBuilder(),
+                this.multiplicity.getMultiplicity());
 
         ImmutableList<ModifierBuilder> modifierBuilders = this.getModifiers()
                 .collect(AntlrModifier::build)
                 .toImmutable();
 
-        this.associationEndSignatureBuilder.setModifierBuilders(modifierBuilders);
+        this.associationEndSignatureBuilder.setModifiers(modifierBuilders);
 
-        Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);
-        this.associationEndSignatureBuilder.setOrderByBuilder(orderByBuilder);
+        Optional<OrderByBuilder> orderByBuilder = this.orderBy.map(AntlrOrderBy::build);
+        this.associationEndSignatureBuilder.setOrderBy(orderByBuilder);
 
         return this.associationEndSignatureBuilder;
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportErrors(compilerAnnotationHolder);
 
-        if (this.orderByState != null)
+        if (this.orderBy != null)
         {
-            this.orderByState.ifPresent(o -> o.reportErrors(compilerAnnotationHolder));
+            this.orderBy.ifPresent(o -> o.reportErrors(compilerAnnotationHolder));
         }
 
         this.reportInvalidMultiplicity(compilerAnnotationHolder);
@@ -102,9 +102,9 @@ public class AntlrAssociationEndSignature
 
     @Nonnull
     @Override
-    public AntlrClassifier getOwningClassifierState()
+    public AntlrClassifier getOwningClassifier()
     {
-        return Objects.requireNonNull(this.owningClassifierState);
+        return Objects.requireNonNull(this.owningClassifier);
     }
 
     @Override
@@ -131,16 +131,16 @@ public class AntlrAssociationEndSignature
     @Override
     public AntlrClassifier getType()
     {
-        return this.classifierReferenceState.getClassifierState();
+        return this.classifierReference.getClassifier();
     }
 
     @Override
-    public void enterClassifierReference(@Nonnull AntlrClassifierReference classifierReferenceState)
+    public void enterClassifierReference(@Nonnull AntlrClassifierReference classifierReference)
     {
-        if (this.classifierReferenceState != null)
+        if (this.classifierReference != null)
         {
             throw new AssertionError();
         }
-        this.classifierReferenceState = Objects.requireNonNull(classifierReferenceState);
+        this.classifierReference = Objects.requireNonNull(classifierReference);
     }
 }

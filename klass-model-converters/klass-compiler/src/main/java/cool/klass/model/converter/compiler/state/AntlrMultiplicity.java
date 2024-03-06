@@ -21,12 +21,12 @@ public class AntlrMultiplicity
     private final Multiplicity multiplicity;
 
     @Nonnull
-    private final AntlrMultiplicityOwner multiplicityOwnerState;
+    private final AntlrMultiplicityOwner multiplicityOwner;
 
     public AntlrMultiplicity(
             @Nonnull MultiplicityContext context,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull AntlrMultiplicityOwner multiplicityOwnerState)
+            @Nonnull AntlrMultiplicityOwner multiplicityOwner)
     {
         super(context, compilationUnit);
 
@@ -35,14 +35,14 @@ public class AntlrMultiplicity
 
         this.multiplicity = this.findMultiplicity();
 
-        this.multiplicityOwnerState = Objects.requireNonNull(multiplicityOwnerState);
+        this.multiplicityOwner = Objects.requireNonNull(multiplicityOwner);
     }
 
     private AntlrMultiplicity()
     {
         super(new ParserRuleContext(), Optional.empty());
-        this.multiplicity           = Multiplicity.ONE_TO_ONE;
-        this.multiplicityOwnerState = null;
+        this.multiplicity      = Multiplicity.ONE_TO_ONE;
+        this.multiplicityOwner = null;
     }
 
     @Nullable
@@ -71,7 +71,7 @@ public class AntlrMultiplicity
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.ofNullable(this.multiplicityOwnerState);
+        return Optional.ofNullable(this.multiplicityOwner);
     }
 
     @Nonnull

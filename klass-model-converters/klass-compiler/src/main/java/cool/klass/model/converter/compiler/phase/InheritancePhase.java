@@ -29,11 +29,11 @@ public class InheritancePhase extends AbstractCompilerPhase
         ClassReferenceContext classReferenceContext = ctx.classReference();
         IdentifierContext     identifier            = classReferenceContext.identifier();
         String                className             = identifier.getText();
-        AntlrClass            superClassState       =
-                this.compilerState.getDomainModelState().getClassByName(className);
+        AntlrClass            superClass       =
+                this.compilerState.getDomainModel().getClassByName(className);
 
-        AntlrClass classState = this.compilerState.getCompilerWalkState().getClassState();
-        classState.enterExtendsDeclaration(superClassState);
+        AntlrClass klass = this.compilerState.getCompilerWalk().getKlass();
+        klass.enterExtendsDeclaration(superClass);
     }
 
     @Override
@@ -41,17 +41,16 @@ public class InheritancePhase extends AbstractCompilerPhase
     {
         super.enterImplementsDeclaration(ctx);
 
-        AntlrClassifier classifierState = this.compilerState.getCompilerWalkState().getClassifierState();
+        AntlrClassifier classifier = this.compilerState.getCompilerWalk().getClassifier();
 
         List<InterfaceReferenceContext> interfaceReferenceContexts = ctx.interfaceReference();
         for (InterfaceReferenceContext interfaceReferenceContext : interfaceReferenceContexts)
         {
-            IdentifierContext identifier     = interfaceReferenceContext.identifier();
-            String            interfaceName  = identifier.getText();
-            AntlrInterface    interfaceState =
-                    this.compilerState.getDomainModelState().getInterfaceByName(interfaceName);
+            IdentifierContext identifier    = interfaceReferenceContext.identifier();
+            String            interfaceName = identifier.getText();
+            AntlrInterface    iface         = this.compilerState.getDomainModel().getInterfaceByName(interfaceName);
 
-            classifierState.enterImplementsDeclaration(interfaceState);
+            classifier.enterImplementsDeclaration(iface);
         }
     }
 }

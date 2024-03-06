@@ -5,5 +5,5 @@ import javax.annotation.Nonnull;
 public interface AntlrClassifierReferenceOwner
         extends IAntlrElement
 {
-    void enterClassifierReference(@Nonnull AntlrClassifierReference classifierReferenceState);
+    void enterClassifierReference(@Nonnull AntlrClassifierReference classifierReference);
 }

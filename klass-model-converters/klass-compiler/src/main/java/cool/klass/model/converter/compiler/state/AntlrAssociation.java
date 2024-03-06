@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
@@ -36,7 +36,7 @@ public class AntlrAssociation
             AntlrCompilationUnit.AMBIGUOUS)
     {
         @Override
-        public void enterAssociationEnd(@Nonnull AntlrAssociationEnd associationEndState)
+        public void enterAssociationEnd(@Nonnull AntlrAssociationEnd associationEnd)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".enterAssociationEnd() not implemented yet");
@@ -53,7 +53,7 @@ public class AntlrAssociation
             AntlrCompilationUnit.NOT_FOUND)
     {
         @Override
-        public void enterAssociationEnd(@Nonnull AntlrAssociationEnd associationEndState)
+        public void enterAssociationEnd(@Nonnull AntlrAssociationEnd associationEnd)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".enterAssociationEnd() not implemented yet");
@@ -61,7 +61,7 @@ public class AntlrAssociation
     };
     //</editor-fold>
 
-    private final MutableList<AntlrAssociationEnd>                              associationEndStates     =
+    private final MutableList<AntlrAssociationEnd>                              associationEnds          =
             Lists.mutable.empty();
     private final MutableOrderedMap<AssociationEndContext, AntlrAssociationEnd> associationEndsByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -93,14 +93,14 @@ public class AntlrAssociation
         return this.getElementContext().associationBody();
     }
 
-    public MutableList<AntlrAssociationEnd> getAssociationEndStates()
+    public MutableList<AntlrAssociationEnd> getAssociationEnds()
     {
-        return this.associationEndStates.asUnmodifiable();
+        return this.associationEnds.asUnmodifiable();
     }
 
     public int getNumAssociationEnds()
     {
-        return this.associationEndStates.size();
+        return this.associationEnds.size();
     }
 
     public AntlrAssociationEnd getAssociationEndByContext(AssociationEndContext ctx)
@@ -108,22 +108,22 @@ public class AntlrAssociation
         return this.associationEndsByContext.get(ctx);
     }
 
-    public void enterAssociationEnd(@Nonnull AntlrAssociationEnd associationEndState)
+    public void enterAssociationEnd(@Nonnull AntlrAssociationEnd associationEnd)
     {
         AntlrAssociationEnd duplicate = this.associationEndsByContext.put(
-                associationEndState.getElementContext(),
-                associationEndState);
+                associationEnd.getElementContext(),
+                associationEnd);
         if (duplicate != null)
         {
             throw new AssertionError();
         }
 
-        this.associationEndStates.add(associationEndState);
+        this.associationEnds.add(associationEnd);
     }
 
     public void exitAssociationDeclaration()
     {
-        int numAssociationEnds = this.associationEndStates.size();
+        int numAssociationEnds = this.associationEnds.size();
         if (numAssociationEnds != 2)
         {
             throw new AssertionError(numAssociationEnds);
@@ -135,8 +135,8 @@ public class AntlrAssociation
         this.getSourceEnd().setOpposite(this.getTargetEnd());
         this.getTargetEnd().setOpposite(this.getSourceEnd());
 
-        this.getSourceEnd().setOwningClassState(targetType);
-        this.getTargetEnd().setOwningClassState(sourceType);
+        this.getSourceEnd().setOwningClass(targetType);
+        this.getTargetEnd().setOwningClass(sourceType);
 
         if (sourceType != AntlrClass.NOT_FOUND
                 && sourceType != AntlrClass.AMBIGUOUS)
@@ -158,7 +158,7 @@ public class AntlrAssociation
             throw new IllegalStateException();
         }
 
-        int numAssociationEnds = this.associationEndStates.size();
+        int numAssociationEnds = this.associationEnds.size();
         if (numAssociationEnds != 2)
         {
             throw new AssertionError(numAssociationEnds);
@@ -172,7 +172,7 @@ public class AntlrAssociation
                 this.getNameContext(),
                 this.getPackageName());
 
-        ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates
+        ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEnds
                 .collect(AntlrAssociationEnd::build)
                 .toImmutable();
 
@@ -191,9 +191,9 @@ public class AntlrAssociation
         return this.associationBuilder;
     }
 
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        int numAssociationEnds = this.associationEndStates.size();
+        int numAssociationEnds = this.associationEnds.size();
         if (numAssociationEnds != 2)
         {
             String message = String.format(
@@ -228,7 +228,7 @@ public class AntlrAssociation
         {
             String message = String.format(
                     "Association end '%s.%s' is owned, but is on the to-one end of a many-to-one association.",
-                    this.getTargetEnd().getOwningClassifierState().getName(),
+                    this.getTargetEnd().getOwningClassifier().getName(),
                     this.getTargetEnd().getName());
             AntlrModifier ownedModifier = this.getTargetEnd().getModifiers().detect(AntlrModifier::isOwned);
             compilerAnnotationHolder.add(
@@ -243,7 +243,7 @@ public class AntlrAssociation
         {
             String message = String.format(
                     "Association end '%s.%s' is owned, but is on the to-one end of a one-to-many association.",
-                    this.getSourceEnd().getOwningClassifierState().getName(),
+                    this.getSourceEnd().getOwningClassifier().getName(),
                     this.getSourceEnd().getName());
             AntlrModifier ownedModifier = this.getSourceEnd().getModifiers().detect(AntlrModifier::isOwned);
             compilerAnnotationHolder.add(
@@ -310,12 +310,12 @@ public class AntlrAssociation
 
     public AntlrAssociationEnd getSourceEnd()
     {
-        return this.associationEndStates.get(0);
+        return this.associationEnds.get(0);
     }
 
     public AntlrAssociationEnd getTargetEnd()
     {
-        return this.associationEndStates.get(1);
+        return this.associationEnds.get(1);
     }
 
     public boolean isManyToMany()

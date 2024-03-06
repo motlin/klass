@@ -347,12 +347,12 @@ public abstract class AbstractClassifier
             implements TypeGetter,
             TopLevelElementBuilderWithSourceCode
     {
-        protected ImmutableList<PropertyBuilder<?, ?, ?>>          propertyBuilders;
-        protected ImmutableList<DataTypePropertyBuilder<?, ?, ?>>  dataTypePropertyBuilders;
+        protected ImmutableList<PropertyBuilder<?, ?, ?>>         declaredProperties;
+        protected ImmutableList<DataTypePropertyBuilder<?, ?, ?>> declaredDataTypeProperties;
         protected ImmutableList<AssociationEndSignatureBuilder>    declaredAssociationEndSignatureBuilders;
-        protected ImmutableList<ReferencePropertyBuilder<?, ?, ?>> declaredReferencePropertyBuilders;
-        protected ImmutableList<ModifierBuilder>                   modifierBuilders;
-        protected ImmutableList<InterfaceBuilder>                  interfaceBuilders;
+        protected ImmutableList<ReferencePropertyBuilder<?, ?, ?>> declaredReferenceProperties;
+        protected ImmutableList<ModifierBuilder>  declaredModifiers;
+        protected ImmutableList<InterfaceBuilder> declaredInterfaces;
 
         protected ClassifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -365,66 +365,66 @@ public abstract class AbstractClassifier
             super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
         }
 
-        public void setDataTypePropertyBuilders(@Nonnull ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders)
+        public void setDeclaredDataTypeProperties(@Nonnull ImmutableList<DataTypePropertyBuilder<?, ?, ?>> declaredDataTypeProperties)
         {
-            if (this.dataTypePropertyBuilders != null)
+            if (this.declaredDataTypeProperties != null)
             {
                 throw new IllegalStateException();
             }
-            this.dataTypePropertyBuilders = Objects.requireNonNull(dataTypePropertyBuilders);
+            this.declaredDataTypeProperties = Objects.requireNonNull(declaredDataTypeProperties);
         }
 
-        public void setModifierBuilders(@Nonnull ImmutableList<ModifierBuilder> modifierBuilders)
+        public void setDeclaredModifiers(@Nonnull ImmutableList<ModifierBuilder> declaredModifiers)
         {
-            if (this.modifierBuilders != null)
+            if (this.declaredModifiers != null)
             {
                 throw new IllegalStateException();
             }
-            this.modifierBuilders = Objects.requireNonNull(modifierBuilders);
+            this.declaredModifiers = Objects.requireNonNull(declaredModifiers);
         }
 
-        public void setAssociationEndSignatureBuilders(@Nonnull ImmutableList<AssociationEndSignatureBuilder> declaredAssociationEndSignatureBuilders)
+        public void setDeclaredAssociationEndSignatures(@Nonnull ImmutableList<AssociationEndSignatureBuilder> declaredAssociationEndSignatures)
         {
             if (this.declaredAssociationEndSignatureBuilders != null)
             {
                 throw new IllegalStateException();
             }
-            this.declaredAssociationEndSignatureBuilders = Objects.requireNonNull(declaredAssociationEndSignatureBuilders);
+            this.declaredAssociationEndSignatureBuilders = Objects.requireNonNull(declaredAssociationEndSignatures);
         }
 
-        public void setReferencePropertyBuilders(@Nonnull ImmutableList<ReferencePropertyBuilder<?, ?, ?>> declaredReferencePropertyBuilders)
+        public void setDeclaredReferenceProperties(@Nonnull ImmutableList<ReferencePropertyBuilder<?, ?, ?>> declaredReferenceProperties)
         {
-            if (this.declaredReferencePropertyBuilders != null)
+            if (this.declaredReferenceProperties != null)
             {
                 throw new IllegalStateException();
             }
-            this.declaredReferencePropertyBuilders = Objects.requireNonNull(declaredReferencePropertyBuilders);
+            this.declaredReferenceProperties = Objects.requireNonNull(declaredReferenceProperties);
         }
 
-        public void setPropertyBuilders(@Nonnull ImmutableList<PropertyBuilder<?, ?, ?>> propertyBuilders)
+        public void setDeclaredProperties(@Nonnull ImmutableList<PropertyBuilder<?, ?, ?>> declaredProperties)
         {
-            if (this.propertyBuilders != null)
+            if (this.declaredProperties != null)
             {
                 throw new IllegalStateException();
             }
-            this.propertyBuilders = Objects.requireNonNull(propertyBuilders);
+            this.declaredProperties = Objects.requireNonNull(declaredProperties);
         }
 
         @Override
         protected void buildChildren()
         {
-            ImmutableList<Modifier> modifiers = this.modifierBuilders.collect(ModifierBuilder::build);
+            ImmutableList<Modifier> modifiers = this.declaredModifiers.collect(ModifierBuilder::build);
             this.element.setModifiers(modifiers);
 
-            ImmutableList<DataTypeProperty> dataTypeProperties = this.dataTypePropertyBuilders
+            ImmutableList<DataTypeProperty> dataTypeProperties = this.declaredDataTypeProperties
                     .<DataTypeProperty>collect(DataTypePropertyBuilder::build)
                     .toImmutable();
             this.element.setDeclaredDataTypeProperties(dataTypeProperties);
         }
 
-        public void setInterfaceBuilders(ImmutableList<InterfaceBuilder> interfaceBuilders)
+        public void setDeclaredInterfaces(ImmutableList<InterfaceBuilder> declaredInterfaces)
         {
-            this.interfaceBuilders = interfaceBuilders;
+            this.declaredInterfaces = declaredInterfaces;
         }
 
         public void build2()
@@ -434,8 +434,8 @@ public abstract class AbstractClassifier
                 throw new IllegalStateException();
             }
 
-            this.dataTypePropertyBuilders.each(DataTypePropertyBuilder::build2);
-            ImmutableList<Interface> superInterfaces = this.interfaceBuilders.collect(InterfaceBuilder::getType);
+            this.declaredDataTypeProperties.each(DataTypePropertyBuilder::build2);
+            ImmutableList<Interface> superInterfaces = this.declaredInterfaces.collect(InterfaceBuilder::getType);
             this.element.setInterfaces(superInterfaces);
 
             ImmutableList<AssociationEndSignature> declaredAssociationEndSignatures = this.declaredAssociationEndSignatureBuilders
@@ -443,12 +443,12 @@ public abstract class AbstractClassifier
                     .toImmutable();
             this.element.setDeclaredAssociationEndSignatures(declaredAssociationEndSignatures);
 
-            ImmutableList<ReferenceProperty> declaredReferenceProperties = this.declaredReferencePropertyBuilders
+            ImmutableList<ReferenceProperty> declaredReferenceProperties = this.declaredReferenceProperties
                     .<ReferenceProperty>collect(ReferencePropertyBuilder::getElement)
                     .toImmutable();
             this.element.setDeclaredReferenceProperties(declaredReferenceProperties);
 
-            ImmutableList<Property> properties = this.propertyBuilders
+            ImmutableList<Property> properties = this.declaredProperties
                     .<Property>collect(PropertyBuilder::getElement)
                     .toImmutable();
             this.element.setDeclaredProperties(properties);
@@ -520,10 +520,10 @@ public abstract class AbstractClassifier
 
         protected ImmutableList<DataTypeProperty> getDataTypeProperties()
         {
-            ImmutableList<DataTypeProperty> declaredDataTypeProperties = this.dataTypePropertyBuilders
+            ImmutableList<DataTypeProperty> declaredDataTypeProperties = this.declaredDataTypeProperties
                     .collect(property -> property.getElement());
 
-            ImmutableList<DataTypeProperty> interfaceProperties = this.interfaceBuilders
+            ImmutableList<DataTypeProperty> interfaceProperties = this.declaredInterfaces
                     .collect(ElementBuilder::getElement)
                     .flatCollect(Classifier::getDataTypeProperties)
                     .toImmutable();
@@ -541,10 +541,10 @@ public abstract class AbstractClassifier
 
         protected ImmutableList<ReferenceProperty> getReferenceProperties()
         {
-            ImmutableList<ReferenceProperty> declaredReferenceProperties = this.declaredReferencePropertyBuilders
+            ImmutableList<ReferenceProperty> declaredReferenceProperties = this.declaredReferenceProperties
                     .collect(property -> property.getElement());
 
-            ImmutableList<ReferenceProperty> interfaceProperties = this.interfaceBuilders
+            ImmutableList<ReferenceProperty> interfaceProperties = this.declaredInterfaces
                     .collect(ElementBuilder::getElement)
                     .flatCollect(Classifier::getReferenceProperties)
                     .toImmutable();

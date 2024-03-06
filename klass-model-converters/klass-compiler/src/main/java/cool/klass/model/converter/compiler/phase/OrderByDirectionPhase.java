@@ -25,14 +25,14 @@ public class OrderByDirectionPhase
     {
         super.enterOrderByDirection(ctx);
 
-        AntlrOrderByDirection orderByDirectionState = new AntlrOrderByDirection(
+        AntlrOrderByDirection orderByDirection = new AntlrOrderByDirection(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 OrderByDirectionPhase.getOrderByDirection(ctx));
 
-        AntlrOrderByMemberReferencePath orderByMemberReferencePathState =
-                this.compilerState.getCompilerWalkState().getOrderByMemberReferencePathState();
-        orderByMemberReferencePathState.enterOrderByDirection(orderByDirectionState);
+        AntlrOrderByMemberReferencePath orderByMemberReferencePath =
+                this.compilerState.getCompilerWalk().getOrderByMemberReferencePath();
+        orderByMemberReferencePath.enterOrderByDirection(orderByDirection);
     }
 
     @Nonnull

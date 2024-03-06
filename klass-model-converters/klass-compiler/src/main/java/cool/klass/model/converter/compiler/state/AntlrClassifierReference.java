@@ -12,31 +12,31 @@ public class AntlrClassifierReference
         extends AntlrElement
 {
     @Nonnull
-    private final AntlrClassifierReferenceOwner classifierReferenceOwnerState;
+    private final AntlrClassifierReferenceOwner classifierReferenceOwner;
     @Nonnull
-    private final AntlrClassifier               classifierState;
+    private final AntlrClassifier               classifier;
 
     public AntlrClassifierReference(
             @Nonnull ClassifierReferenceContext classifierReferenceContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull AntlrClassifierReferenceOwner classifierReferenceOwnerState,
-            @Nonnull AntlrClassifier classifierState)
+            @Nonnull AntlrClassifierReferenceOwner classifierReferenceOwner,
+            @Nonnull AntlrClassifier classifier)
     {
         super(classifierReferenceContext, compilationUnit);
-        this.classifierReferenceOwnerState = Objects.requireNonNull(classifierReferenceOwnerState);
-        this.classifierState               = Objects.requireNonNull(classifierState);
+        this.classifierReferenceOwner = Objects.requireNonNull(classifierReferenceOwner);
+        this.classifier               = Objects.requireNonNull(classifier);
     }
 
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.of(this.classifierReferenceOwnerState);
+        return Optional.of(this.classifierReferenceOwner);
     }
 
     @Nonnull
-    public AntlrClassifier getClassifierState()
+    public AntlrClassifier getClassifier()
     {
-        return this.classifierState;
+        return this.classifier;
     }
 }

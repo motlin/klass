@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
@@ -142,14 +142,14 @@ public class AntlrProjectionReferenceProperty
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportDuplicateMemberName(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportDuplicateMemberName(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         String message = String.format("Duplicate member: '%s'.", this.getName());
         compilerAnnotationHolder.add("ERR_DUP_PRJ", message, this);
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportErrors(compilerAnnotationHolder);
 
@@ -203,7 +203,7 @@ public class AntlrProjectionReferenceProperty
         }
     }
 
-    private void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportForwardReference(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (!this.isForwardReference(this.referenceProperty))
         {
@@ -225,7 +225,7 @@ public class AntlrProjectionReferenceProperty
     }
 
     @Override
-    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         // Intentionally blank. Reference to a named element that gets its name checked.
     }

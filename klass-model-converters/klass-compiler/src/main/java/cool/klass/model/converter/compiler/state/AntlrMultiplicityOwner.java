@@ -5,5 +5,5 @@ import javax.annotation.Nonnull;
 public interface AntlrMultiplicityOwner
         extends IAntlrElement
 {
-    void enterMultiplicity(@Nonnull AntlrMultiplicity multiplicityState);
+    void enterMultiplicity(@Nonnull AntlrMultiplicity multiplicity);
 }

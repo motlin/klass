@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
@@ -43,7 +43,7 @@ public abstract class AntlrCriteria
     @Override
     public abstract AbstractCriteriaBuilder<?> getElementBuilder();
 
-    public abstract void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder);
+    public abstract void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder);
 
     public abstract void resolveServiceVariables(@Nonnull OrderedMap<String, AntlrParameter> formalParametersByName);
 

@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrThisMemberReferencePath;
@@ -19,27 +19,26 @@ public class AntlrOrderByMemberReferencePath
         extends AntlrElement
 {
     @Nonnull
-    private final AntlrOrderBy                 orderByState;
+    private final AntlrOrderBy                 orderBy;
     private final int                          ordinal;
     @Nonnull
-    private final AntlrThisMemberReferencePath thisMemberReferencePathState;
+    private final AntlrThisMemberReferencePath thisMemberReferencePath;
 
     @Nullable
-    private AntlrOrderByDirection orderByDirectionState;
-
+    private AntlrOrderByDirection             orderByDirection;
     private OrderByMemberReferencePathBuilder elementBuilder;
 
     public AntlrOrderByMemberReferencePath(
             @Nonnull OrderByMemberReferencePathContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull AntlrOrderBy orderByState,
+            @Nonnull AntlrOrderBy orderBy,
             int ordinal,
-            @Nonnull AntlrThisMemberReferencePath thisMemberReferencePathState)
+            @Nonnull AntlrThisMemberReferencePath thisMemberReferencePath)
     {
         super(elementContext, compilationUnit);
-        this.orderByState                 = Objects.requireNonNull(orderByState);
-        this.ordinal                      = ordinal;
-        this.thisMemberReferencePathState = Objects.requireNonNull(thisMemberReferencePathState);
+        this.orderBy                 = Objects.requireNonNull(orderBy);
+        this.ordinal                 = ordinal;
+        this.thisMemberReferencePath = Objects.requireNonNull(thisMemberReferencePath);
     }
 
     @Nonnull
@@ -55,21 +54,21 @@ public class AntlrOrderByMemberReferencePath
         return this.ordinal;
     }
 
-    public void enterOrderByDirection(@Nonnull AntlrOrderByDirection orderByDirectionState)
+    public void enterOrderByDirection(@Nonnull AntlrOrderByDirection orderByDirection)
     {
-        this.orderByDirectionState = Objects.requireNonNull(orderByDirectionState);
+        this.orderByDirection = Objects.requireNonNull(orderByDirection);
     }
 
     @Nullable
-    public AntlrOrderByDirection getOrderByDirectionState()
+    public AntlrOrderByDirection getOrderByDirection()
     {
-        return this.orderByDirectionState;
+        return this.orderByDirection;
     }
 
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         // TODO: ❗️ Redo context stack for error reporting
-        this.thisMemberReferencePathState.reportErrors(compilerAnnotationHolder);
+        this.thisMemberReferencePath.reportErrors(compilerAnnotationHolder);
     }
 
     @Nonnull
@@ -79,17 +78,17 @@ public class AntlrOrderByMemberReferencePath
         {
             throw new IllegalStateException();
         }
-        ThisMemberReferencePathBuilder thisMemberReferencePathBuilder = this.thisMemberReferencePathState.build();
+        ThisMemberReferencePathBuilder thisMemberReferencePathBuilder = this.thisMemberReferencePath.build();
 
         this.elementBuilder = new OrderByMemberReferencePathBuilder(
                 (OrderByMemberReferencePathContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.orderByState.getElementBuilder(),
+                this.orderBy.getElementBuilder(),
                 this.ordinal,
                 thisMemberReferencePathBuilder);
 
-        this.elementBuilder.setOrderByDirectionBuilder(this.orderByDirectionState.build());
+        this.elementBuilder.setOrderByDirectionBuilder(this.orderByDirection.build());
         return this.elementBuilder;
     }
 

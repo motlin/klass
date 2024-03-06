@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
@@ -22,7 +22,7 @@ public class AntlrServiceProjectionDispatch
         extends AntlrElement
 {
     @Nonnull
-    private final AntlrService                     serviceState;
+    private final AntlrService                     service;
     @Nonnull
     private final AntlrProjection                  projection;
     private       ServiceProjectionDispatchBuilder elementBuilder;
@@ -30,19 +30,19 @@ public class AntlrServiceProjectionDispatch
     public AntlrServiceProjectionDispatch(
             @Nonnull ServiceProjectionDispatchContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull AntlrService serviceState,
+            @Nonnull AntlrService service,
             @Nonnull AntlrProjection projection)
     {
         super(elementContext, compilationUnit);
-        this.serviceState = Objects.requireNonNull(serviceState);
-        this.projection   = Objects.requireNonNull(projection);
+        this.service    = Objects.requireNonNull(service);
+        this.projection = Objects.requireNonNull(projection);
     }
 
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.of(this.serviceState);
+        return Optional.of(this.service);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class AntlrServiceProjectionDispatch
     }
 
     //<editor-fold desc="Report Compiler Errors">
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.projection == AntlrProjection.NOT_FOUND)
         {
@@ -88,7 +88,7 @@ public class AntlrServiceProjectionDispatch
             return;
         }
 
-        AntlrClass serviceGroupKlass = this.serviceState.getUrlState().getServiceGroup().getKlass();
+        AntlrClass serviceGroupKlass = this.service.getUrl().getServiceGroup().getKlass();
         if (serviceGroupKlass == AntlrClass.AMBIGUOUS || serviceGroupKlass == AntlrClass.NOT_FOUND)
         {
             return;
@@ -112,7 +112,7 @@ public class AntlrServiceProjectionDispatch
         this.reportForwardReference(compilerAnnotationHolder);
     }
 
-    private void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportForwardReference(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (!this.isForwardReference(this.projection))
         {

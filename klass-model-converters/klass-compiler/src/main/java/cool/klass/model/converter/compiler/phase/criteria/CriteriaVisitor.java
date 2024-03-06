@@ -58,7 +58,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     {
         EdgePointAntlrCriteria edgePointAntlrCriteria = new EdgePointAntlrCriteria(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.criteriaOwner);
 
         KlassVisitor<AntlrExpressionValue> expressionValueVisitor = this.getExpressionValueVisitor(
@@ -73,22 +73,22 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     @Override
     public AntlrCriteria visitCriteriaExpressionAnd(@Nonnull CriteriaExpressionAndContext ctx)
     {
-        AntlrAndCriteria andCriteriaState = new AntlrAndCriteria(
+        AntlrAndCriteria andCriteria = new AntlrAndCriteria(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.criteriaOwner);
 
         KlassVisitor<AntlrCriteria> criteriaVisitor = new CriteriaVisitor(
                 this.compilerState,
-                andCriteriaState);
+                andCriteria);
 
         AntlrCriteria left  = criteriaVisitor.visit(ctx.left);
         AntlrCriteria right = criteriaVisitor.visit(ctx.right);
 
-        andCriteriaState.setLeft(left);
-        andCriteriaState.setRight(right);
+        andCriteria.setLeft(left);
+        andCriteria.setRight(right);
 
-        return andCriteriaState;
+        return andCriteria;
     }
 
     @Nonnull
@@ -113,7 +113,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     {
         return new AllAntlrCriteria(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.criteriaOwner);
     }
 
@@ -126,7 +126,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
 
         OperatorAntlrCriteria operatorAntlrCriteria = new OperatorAntlrCriteria(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.criteriaOwner,
                 operator);
 
@@ -149,22 +149,22 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     @Override
     public AntlrCriteria visitCriteriaExpressionOr(@Nonnull CriteriaExpressionOrContext ctx)
     {
-        AntlrOrCriteria orCriteriaState = new AntlrOrCriteria(
+        AntlrOrCriteria orCriteria = new AntlrOrCriteria(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.criteriaOwner);
 
         KlassVisitor<AntlrCriteria> criteriaVisitor = new CriteriaVisitor(
                 this.compilerState,
-                orCriteriaState);
+                orCriteria);
 
         AntlrCriteria left  = criteriaVisitor.visit(ctx.left);
         AntlrCriteria right = criteriaVisitor.visit(ctx.right);
 
-        orCriteriaState.setLeft(left);
-        orCriteriaState.setRight(right);
+        orCriteria.setLeft(left);
+        orCriteria.setRight(right);
 
-        return orCriteriaState;
+        return orCriteria;
     }
 
     @Nonnull
@@ -244,7 +244,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     {
         return new ExpressionValueVisitor(
                 this.compilerState,
-                this.compilerState.getCompilerWalkState().getThisReference(),
+                this.compilerState.getCompilerWalk().getThisReference(),
                 expressionValueOwner);
     }
 

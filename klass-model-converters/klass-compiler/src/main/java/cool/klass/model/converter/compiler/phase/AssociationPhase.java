@@ -19,9 +19,9 @@ public class AssociationPhase
         extends ReferencePropertyPhase
 {
     @Nullable
-    private AntlrAssociation    associationState;
+    private AntlrAssociation    association;
     @Nullable
-    private AntlrAssociationEnd associationEndState;
+    private AntlrAssociationEnd associationEnd;
 
     public AssociationPhase(@Nonnull CompilerState compilerState)
     {
@@ -33,26 +33,26 @@ public class AssociationPhase
     {
         super.enterAssociationDeclaration(ctx);
 
-        if (this.associationState != null)
+        if (this.association != null)
         {
             throw new IllegalStateException();
         }
 
         IdentifierContext identifier = ctx.identifier();
-        this.associationState = new AntlrAssociation(
+        this.association = new AntlrAssociation(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.compilerState.getOrdinal(ctx),
                 identifier,
-                this.compilerState.getCompilerWalkState().getCompilationUnitState());
+                this.compilerState.getCompilerWalk().getCompilationUnit());
     }
 
     @Override
     public void exitAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
-        this.associationState.exitAssociationDeclaration();
-        this.compilerState.getDomainModelState().exitAssociationDeclaration(this.associationState);
-        this.associationState = null;
+        this.association.exitAssociationDeclaration();
+        this.compilerState.getDomainModel().exitAssociationDeclaration(this.association);
+        this.association = null;
 
         super.exitAssociationDeclaration(ctx);
     }
@@ -62,29 +62,29 @@ public class AssociationPhase
     {
         super.enterAssociationEnd(ctx);
 
-        if (this.associationEndState != null)
+        if (this.associationEnd != null)
         {
             throw new IllegalStateException();
         }
-        if (this.classReferenceOwnerState != null)
+        if (this.classReferenceOwner != null)
         {
             throw new IllegalStateException();
         }
-        if (this.multiplicityOwnerState != null)
+        if (this.multiplicityOwner != null)
         {
             throw new IllegalStateException();
         }
 
-        this.associationEndState      = new AntlrAssociationEnd(
+        this.associationEnd = new AntlrAssociationEnd(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.associationState.getNumAssociationEnds() + 1,
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.association.getNumAssociationEnds() + 1,
                 ctx.identifier(),
-                this.associationState);
+                this.association);
 
-        this.classReferenceOwnerState = this.associationEndState;
-        this.multiplicityOwnerState   = this.associationEndState;
-        this.associationState.enterAssociationEnd(this.associationEndState);
+        this.classReferenceOwner = this.associationEnd;
+        this.multiplicityOwner   = this.associationEnd;
+        this.association.enterAssociationEnd(this.associationEnd);
 
         this.handleClassReference(ctx.classReference());
         this.handleMultiplicity(ctx.multiplicity());
@@ -93,10 +93,10 @@ public class AssociationPhase
     @Override
     public void exitAssociationEnd(@Nonnull AssociationEndContext ctx)
     {
-        Objects.requireNonNull(this.associationEndState);
-        this.associationEndState      = null;
-        this.classReferenceOwnerState = null;
-        this.multiplicityOwnerState   = null;
+        Objects.requireNonNull(this.associationEnd);
+        this.associationEnd      = null;
+        this.classReferenceOwner = null;
+        this.multiplicityOwner   = null;
         super.exitAssociationEnd(ctx);
     }
 
@@ -105,12 +105,12 @@ public class AssociationPhase
     {
         super.enterAssociationEndModifier(ctx);
 
-        Objects.requireNonNull(this.associationEndState);
+        Objects.requireNonNull(this.associationEnd);
         AntlrModifier antlrAssociationEndModifier = new AntlrModifier(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.associationEndState.getNumModifiers() + 1,
-                this.associationEndState);
-        this.associationEndState.enterModifier(antlrAssociationEndModifier);
+                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.associationEnd.getNumModifiers() + 1,
+                this.associationEnd);
+        this.associationEnd.enterModifier(antlrAssociationEndModifier);
     }
 }

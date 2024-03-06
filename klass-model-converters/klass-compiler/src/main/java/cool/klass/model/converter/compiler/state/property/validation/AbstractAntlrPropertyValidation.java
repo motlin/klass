@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
@@ -19,22 +19,22 @@ public abstract class AbstractAntlrPropertyValidation
         extends AntlrElement
 {
     @Nonnull
-    protected final AntlrDataTypeProperty<?> owningPropertyState;
+    protected final AntlrDataTypeProperty<?> owningProperty;
 
     protected AbstractAntlrPropertyValidation(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull AntlrDataTypeProperty<?> owningPropertyState)
+            @Nonnull AntlrDataTypeProperty<?> owningProperty)
     {
         super(elementContext, compilationUnit);
-        this.owningPropertyState = Objects.requireNonNull(owningPropertyState);
+        this.owningProperty = Objects.requireNonNull(owningProperty);
     }
 
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.of(this.owningPropertyState);
+        return Optional.of(this.owningProperty);
     }
 
     public abstract PropertyValidationBuilder<?> build();
@@ -44,7 +44,7 @@ public abstract class AbstractAntlrPropertyValidation
     public abstract PropertyValidationBuilder<?> getElementBuilder();
 
     public void reportInvalidType(
-            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
+            @Nonnull CompilerAnnotationHolder compilerAnnotationHolder,
             @Nonnull PrimitiveType primitiveType)
     {
         ParserRuleContext offendingToken = this.getKeywordToken();

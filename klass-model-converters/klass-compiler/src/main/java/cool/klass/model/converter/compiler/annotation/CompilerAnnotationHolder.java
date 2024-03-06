@@ -14,7 +14,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class CompilerAnnotationState
+public class CompilerAnnotationHolder
 {
     private final MutableList<RootCompilerAnnotation> compilerAnnotations = Lists.mutable.empty();
 

@@ -17,10 +17,10 @@ public abstract class AbstractAntlrNumericPropertyValidation
     protected AbstractAntlrNumericPropertyValidation(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull AntlrDataTypeProperty<?> owningPropertyState,
+            @Nonnull AntlrDataTypeProperty<?> owningProperty,
             int number)
     {
-        super(elementContext, compilationUnit, owningPropertyState);
+        super(elementContext, compilationUnit, owningProperty);
         this.number = number;
     }
 

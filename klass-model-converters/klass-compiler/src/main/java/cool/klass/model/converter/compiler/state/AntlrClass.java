@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.AnnotationSeverity;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
@@ -76,7 +76,7 @@ public class AntlrClass
         }
 
         @Override
-        public void enterParameterizedProperty(@Nonnull AntlrParameterizedProperty parameterizedPropertyState)
+        public void enterParameterizedProperty(@Nonnull AntlrParameterizedProperty parameterizedProperty)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".enterParameterizedProperty() not implemented yet");
@@ -114,7 +114,7 @@ public class AntlrClass
         }
 
         @Override
-        public void enterParameterizedProperty(@Nonnull AntlrParameterizedProperty parameterizedPropertyState)
+        public void enterParameterizedProperty(@Nonnull AntlrParameterizedProperty parameterizedProperty)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".enterParameterizedProperty() not implemented yet");
@@ -124,15 +124,14 @@ public class AntlrClass
 
     // TODO: Unified list of dataType and parameterized properties
 
-    private final MutableList<AntlrAssociationEnd>               associationEndStates  = Lists.mutable.empty();
-    private final MutableOrderedMap<String, AntlrAssociationEnd> associationEndsByName =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableList<AntlrAssociationEnd>               declaredAssociationEnds       = Lists.mutable.empty();
+    private final MutableOrderedMap<String, AntlrAssociationEnd> declaredAssociationEndsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    private final MutableList<AntlrParameterizedProperty>                                     parameterizedPropertyStates      = Lists.mutable.empty();
-    private final MutableOrderedMap<String, AntlrParameterizedProperty>                       parameterizedPropertiesByName    =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    private final MutableOrderedMap<ParameterizedPropertyContext, AntlrParameterizedProperty> parameterizedPropertiesByContext =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableList<AntlrParameterizedProperty> declaredParameterizedProperties = Lists.mutable.empty();
+
+    private final MutableOrderedMap<String, AntlrParameterizedProperty> declaredParameterizedPropertiesByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
+    private final MutableOrderedMap<ParameterizedPropertyContext, AntlrParameterizedProperty> declaredParameterizedPropertiesByContext = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private final boolean isUser;
 
@@ -141,9 +140,9 @@ public class AntlrClass
     private KlassBuilder klassBuilder;
 
     @Nonnull
-    private Optional<AntlrClass>    superClassState = Optional.empty();
+    private       Optional<AntlrClass>    superClass = Optional.empty();
     @Nonnull
-    private MutableList<AntlrClass> subClassStates  = Lists.mutable.empty();
+    private MutableList<AntlrClass> subClasses = Lists.mutable.empty();
 
     public AntlrClass(
             @Nonnull ClassDeclarationContext elementContext,
@@ -162,20 +161,20 @@ public class AntlrClass
         return this.isUser;
     }
 
-    public ListIterable<AntlrAssociationEnd> getAssociationEndStates()
+    public ListIterable<AntlrAssociationEnd> getDeclaredAssociationEnds()
     {
-        return this.associationEndStates.asUnmodifiable();
+        return this.declaredAssociationEnds.asUnmodifiable();
     }
 
     @Override
     protected ImmutableList<AntlrProperty> getInheritedProperties(@Nonnull MutableList<AntlrClassifier> visited)
     {
-        ImmutableList<AntlrProperty> superClassProperties = this.superClassState
-                .map(antlrClass -> antlrClass.getProperties(visited))
+        ImmutableList<AntlrProperty> superClassProperties = this.superClass
+                .map(antlrClass -> antlrClass.getAllProperties(visited))
                 .orElseGet(Lists.immutable::empty);
 
-        ImmutableList<AntlrProperty> interfaceProperties = this.interfaceStates
-                .flatCollectWith(AntlrClassifier::getProperties, visited)
+        ImmutableList<AntlrProperty> interfaceProperties = this.declaredInterfaces
+                .flatCollectWith(AntlrClassifier::getAllProperties, visited)
                 .toImmutable();
 
         return superClassProperties.newWithAll(interfaceProperties).distinctBy(AntlrNamedElement::getName);
@@ -184,12 +183,12 @@ public class AntlrClass
     @Override
     protected ImmutableList<AntlrDataTypeProperty<?>> getInheritedDataTypeProperties(@Nonnull MutableList<AntlrClassifier> visited)
     {
-        ImmutableList<AntlrDataTypeProperty<?>> superClassProperties = this.superClassState
-                .map(antlrClass -> antlrClass.getDataTypeProperties(visited))
+        ImmutableList<AntlrDataTypeProperty<?>> superClassProperties = this.superClass
+                .map(antlrClass -> antlrClass.getAllDataTypeProperties(visited))
                 .orElseGet(Lists.immutable::empty);
 
-        ImmutableList<AntlrDataTypeProperty<?>> interfaceProperties = this.interfaceStates
-                .flatCollectWith(AntlrClassifier::getDataTypeProperties, visited)
+        ImmutableList<AntlrDataTypeProperty<?>> interfaceProperties = this.declaredInterfaces
+                .flatCollectWith(AntlrClassifier::getAllDataTypeProperties, visited)
                 .toImmutable();
 
         return superClassProperties.newWithAll(interfaceProperties).distinctBy(AntlrNamedElement::getName);
@@ -198,11 +197,11 @@ public class AntlrClass
     @Override
     protected ImmutableList<AntlrModifier> getInheritedModifiers(@Nonnull MutableList<AntlrClassifier> visited)
     {
-        ImmutableList<AntlrModifier> superClassModifiers = this.superClassState
-                .map(antlrClass -> antlrClass.getModifiers(visited)).orElseGet(Lists.immutable::empty);
+        ImmutableList<AntlrModifier> superClassModifiers = this.superClass
+                .map(antlrClass -> antlrClass.getAllModifiers(visited)).orElseGet(Lists.immutable::empty);
 
-        ImmutableList<AntlrModifier> interfaceModifiers = this.interfaceStates
-                .flatCollectWith(AntlrClassifier::getModifiers, visited)
+        ImmutableList<AntlrModifier> interfaceModifiers = this.declaredInterfaces
+                .flatCollectWith(AntlrClassifier::getAllModifiers, visited)
                 .toImmutable();
 
         return superClassModifiers.newWithAll(interfaceModifiers).distinctBy(AntlrModifier::getKeyword);
@@ -211,29 +210,29 @@ public class AntlrClass
     @Override
     public int getNumMembers()
     {
-        return this.getDataTypeProperties().size()
-                + this.parameterizedPropertyStates.size()
-                + this.associationEndStates.size()
-                + this.associationEndSignatureStates.size();
+        return this.getAllDataTypeProperties().size()
+                + this.declaredParameterizedProperties.size()
+                + this.declaredAssociationEnds.size()
+                + this.declaredAssociationEndSignatures.size();
     }
 
     @Override
     public AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name)
     {
-        AntlrReferenceProperty<?> declaredProperty = this.referencePropertiesByName.get(name);
+        AntlrReferenceProperty<?> declaredProperty = this.declaredReferencePropertiesByName.get(name);
         if (declaredProperty != null)
         {
             return declaredProperty;
         }
 
-        Optional<AntlrReferenceProperty<?>> superClassProperty = this.superClassState
+        Optional<AntlrReferenceProperty<?>> superClassProperty = this.superClass
                 .map(superClass -> superClass.getReferencePropertyByName(name));
         if (superClassProperty.isPresent())
         {
             return superClassProperty.get();
         }
 
-        return this.interfaceStates
+        return this.declaredInterfaces
                 .asLazy()
                 .collectWith(AntlrInterface::getReferencePropertyByName, name)
                 .detectIfNone(Objects::nonNull, () -> AntlrReferenceProperty.NOT_FOUND);
@@ -241,21 +240,21 @@ public class AntlrClass
 
     public void enterAssociationEnd(@Nonnull AntlrAssociationEnd antlrAssociationEnd)
     {
-        this.propertyStates.add(antlrAssociationEnd);
-        this.associationEndStates.add(antlrAssociationEnd);
-        this.associationEndsByName.compute(
+        this.declaredProperties.add(antlrAssociationEnd);
+        this.declaredAssociationEnds.add(antlrAssociationEnd);
+        this.declaredAssociationEndsByName.compute(
                 antlrAssociationEnd.getName(),
                 (name, builder) -> builder == null
                         ? antlrAssociationEnd
                         : AntlrAssociationEnd.AMBIGUOUS);
 
-        this.referencePropertyStates.add(antlrAssociationEnd);
-        this.referencePropertiesByName.compute(
+        this.declaredReferenceProperties.add(antlrAssociationEnd);
+        this.declaredReferencePropertiesByName.compute(
                 antlrAssociationEnd.getName(),
                 (name, builder) -> builder == null
                         ? antlrAssociationEnd
                         : AntlrAssociationEnd.AMBIGUOUS);
-        AntlrReferenceProperty<?> duplicate2 = this.referencePropertiesByContext.put(
+        AntlrReferenceProperty<?> duplicate2 = this.declaredReferencePropertiesByContext.put(
                 antlrAssociationEnd.getElementContext(),
                 antlrAssociationEnd);
         if (duplicate2 != null)
@@ -264,34 +263,34 @@ public class AntlrClass
         }
     }
 
-    public void enterParameterizedProperty(@Nonnull AntlrParameterizedProperty parameterizedPropertyState)
+    public void enterParameterizedProperty(@Nonnull AntlrParameterizedProperty parameterizedProperty)
     {
-        // this.propertyStates.add(parameterizedPropertyState);
-        this.parameterizedPropertyStates.add(parameterizedPropertyState);
-        this.parameterizedPropertiesByName.compute(
-                parameterizedPropertyState.getName(),
+        // this.properties.add(parameterizedProperty);
+        this.declaredParameterizedProperties.add(parameterizedProperty);
+        this.declaredParameterizedPropertiesByName.compute(
+                parameterizedProperty.getName(),
                 (name, builder) -> builder == null
-                        ? parameterizedPropertyState
+                        ? parameterizedProperty
                         : AntlrParameterizedProperty.AMBIGUOUS);
 
-        AntlrParameterizedProperty duplicate1 = this.parameterizedPropertiesByContext.put(
-                parameterizedPropertyState.getElementContext(),
-                parameterizedPropertyState);
+        AntlrParameterizedProperty duplicate1 = this.declaredParameterizedPropertiesByContext.put(
+                parameterizedProperty.getElementContext(),
+                parameterizedProperty);
         if (duplicate1 != null)
         {
             throw new AssertionError();
         }
 
         /*
-        this.referencePropertyStates.add(parameterizedPropertyState);
+        this.referenceProperties.add(parameterizedProperty);
         this.referencePropertiesByName.compute(
-                parameterizedPropertyState.getName(),
+                parameterizedProperty.getName(),
                 (name, builder) -> builder == null
-                        ? parameterizedPropertyState
+                        ? parameterizedProperty
                         : AntlrParameterizedProperty.AMBIGUOUS);
         AntlrReferenceProperty<?> duplicate2 = this.referencePropertiesByContext.put(
-                parameterizedPropertyState.getElementContext(),
-                parameterizedPropertyState);
+                parameterizedProperty.getElementContext(),
+                parameterizedProperty);
         if (duplicate2 != null)
         {
             throw new AssertionError();
@@ -301,7 +300,7 @@ public class AntlrClass
 
     public AntlrParameterizedProperty getParameterizedPropertyByContext(ParameterizedPropertyContext ctx)
     {
-        return this.parameterizedPropertiesByContext.get(ctx);
+        return this.declaredParameterizedPropertiesByContext.get(ctx);
     }
 
     public boolean isAbstract()
@@ -314,14 +313,14 @@ public class AntlrClass
         this.isAbstract = isAbstract;
     }
 
-    public void enterExtendsDeclaration(@Nonnull AntlrClass superClassState)
+    public void enterExtendsDeclaration(@Nonnull AntlrClass superClass)
     {
-        if (this.superClassState.isPresent())
+        if (this.superClass.isPresent())
         {
             throw new AssertionError();
         }
-        this.superClassState = Optional.of(superClassState);
-        superClassState.subClassStates.add(this);
+        this.superClass = Optional.of(superClass);
+        superClass.subClasses.add(this);
     }
 
     @Nonnull
@@ -332,15 +331,15 @@ public class AntlrClass
     }
 
     @Override
-    protected boolean implementsInterface(AntlrInterface interfaceState)
+    protected boolean implementsInterface(AntlrInterface iface)
     {
-        if (super.implementsInterface(interfaceState))
+        if (super.implementsInterface(iface))
         {
             return true;
         }
 
-        return this.superClassState
-                .map(classState -> classState.implementsInterface(interfaceState))
+        return this.superClass
+                .map(klass -> klass.implementsInterface(iface))
                 .orElse(false);
     }
 
@@ -362,16 +361,16 @@ public class AntlrClass
                 this.isUser,
                 this.isTransient());
 
-        ImmutableList<ModifierBuilder> classifierModifierBuilders = this.modifierStates
+        ImmutableList<ModifierBuilder> declaredModifiers = this.declaredModifiers
                 .collect(AntlrModifier::build)
                 .toImmutable();
-        this.klassBuilder.setModifierBuilders(classifierModifierBuilders);
+        this.klassBuilder.setDeclaredModifiers(declaredModifiers);
 
-        ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders = this.dataTypePropertyStates
+        ImmutableList<DataTypePropertyBuilder<?, ?, ?>> declaredDataTypeProperties = this.declaredDataTypeProperties
                 .<DataTypePropertyBuilder<?, ?, ?>>collect(AntlrDataTypeProperty::build)
                 .toImmutable();
 
-        this.klassBuilder.setDataTypePropertyBuilders(dataTypePropertyBuilders);
+        this.klassBuilder.setDeclaredDataTypeProperties(declaredDataTypeProperties);
         return this.klassBuilder;
     }
 
@@ -382,45 +381,45 @@ public class AntlrClass
             throw new IllegalStateException();
         }
 
-        ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates
+        ImmutableList<AssociationEndBuilder> declaredAssociationEnds = this.declaredAssociationEnds
                 .collect(AntlrAssociationEnd::getElementBuilder)
                 .toImmutable();
-        this.klassBuilder.setAssociationEndBuilders(associationEndBuilders);
+        this.klassBuilder.setDeclaredAssociationEnds(declaredAssociationEnds);
 
-        ImmutableList<AssociationEndSignatureBuilder> associationEndSignatureBuilders = this.associationEndSignatureStates
+        ImmutableList<AssociationEndSignatureBuilder> declaredAssociationEndSignatures = this.declaredAssociationEndSignatures
                 .collect(AntlrAssociationEndSignature::build)
                 .toImmutable();
-        this.klassBuilder.setAssociationEndSignatureBuilders(associationEndSignatureBuilders);
+        this.klassBuilder.setDeclaredAssociationEndSignatures(declaredAssociationEndSignatures);
 
-        ImmutableList<ReferencePropertyBuilder<?, ?, ?>> referencePropertyBuilders = this.referencePropertyStates
+        ImmutableList<ReferencePropertyBuilder<?, ?, ?>> declaredReferenceProperties = this.declaredReferenceProperties
                 .<ReferencePropertyBuilder<?, ?, ?>>collect(AntlrReferenceProperty::getElementBuilder)
                 .toImmutable();
-        this.klassBuilder.setReferencePropertyBuilders(referencePropertyBuilders);
+        this.klassBuilder.setDeclaredReferenceProperties(declaredReferenceProperties);
 
-        ImmutableList<PropertyBuilder<?, ?, ?>> propertyBuilders = this.propertyStates
+        ImmutableList<PropertyBuilder<?, ?, ?>> declaredProperties = this.declaredProperties
                 .<PropertyBuilder<?, ?, ?>>collect(AntlrProperty::getElementBuilder)
                 .toImmutable();
-        this.klassBuilder.setPropertyBuilders(propertyBuilders);
+        this.klassBuilder.setDeclaredProperties(declaredProperties);
 
-        this.dataTypePropertyStates.each(AntlrDataTypeProperty::build2);
+        this.declaredDataTypeProperties.each(AntlrDataTypeProperty::build2);
 
-        ImmutableList<InterfaceBuilder> interfaceBuilders = this.interfaceStates
+        ImmutableList<InterfaceBuilder> declaredInterfaces = this.declaredInterfaces
                 .collect(AntlrInterface::getElementBuilder)
                 .toImmutable();
-        this.klassBuilder.setInterfaceBuilders(interfaceBuilders);
+        this.klassBuilder.setDeclaredInterfaces(declaredInterfaces);
 
-        Optional<KlassBuilder> superClassBuilder = this.superClassState.map(AntlrClass::getElementBuilder);
-        this.klassBuilder.setSuperClassBuilder(superClassBuilder);
+        Optional<KlassBuilder> superClass = this.superClass.map(AntlrClass::getElementBuilder);
+        this.klassBuilder.setSuperClass(superClass);
 
-        ImmutableList<KlassBuilder> subClassBuilders = this.subClassStates
+        ImmutableList<KlassBuilder> subClasses = this.subClasses
                 .collect(AntlrClass::getElementBuilder)
                 .toImmutable();
-        this.klassBuilder.setSubClassBuilders(subClassBuilders);
+        this.klassBuilder.setSubClassBuilders(subClasses);
     }
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportNameErrors(compilerAnnotationHolder);
         this.reportKeywordCollision(compilerAnnotationHolder);
@@ -431,14 +430,14 @@ public class AntlrClass
             compilerAnnotationHolder.add("ERR_REL_NME", message, this);
         }
 
-        this.dataTypePropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
-        this.parameterizedPropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
-        this.associationEndStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
-        this.associationEndSignatureStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
+        this.declaredDataTypeProperties.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
+        this.declaredParameterizedProperties.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
+        this.declaredAssociationEnds.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
+        this.declaredAssociationEndSignatures.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportErrors(compilerAnnotationHolder);
 
@@ -446,7 +445,7 @@ public class AntlrClass
         {
             this.reportMultiplePropertiesWithModifiers(
                     compilerAnnotationHolder,
-                    this.dataTypePropertyStates,
+                    this.declaredDataTypeProperties,
                     "key",
                     "userId");
         }
@@ -463,11 +462,11 @@ public class AntlrClass
     }
 
     private void reportMultipleOppositesWithModifier(
-            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
+            @Nonnull CompilerAnnotationHolder compilerAnnotationHolder,
             @Nonnull String modifier,
             @Nonnull AnnotationSeverity severity)
     {
-        MutableList<AntlrAssociationEnd> associationEnds = this.associationEndStates
+        MutableList<AntlrAssociationEnd> associationEnds = this.declaredAssociationEnds
                 .select(associationEnd -> associationEnd
                         .getOpposite()
                         .getModifiers()
@@ -489,17 +488,17 @@ public class AntlrClass
         }
     }
 
-    private void reportVersionErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportVersionErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (this.referencePropertyStates.anySatisfy(AntlrReferenceProperty::isVersion)
-                && this.associationEndStates.anySatisfy(AntlrAssociationEnd::isVersioned))
+        if (this.declaredReferenceProperties.anySatisfy(AntlrReferenceProperty::isVersion)
+                && this.declaredAssociationEnds.anySatisfy(AntlrAssociationEnd::isVersioned))
         {
             String message = String.format("Class '%s' is a version and has a version.", this.getName());
             compilerAnnotationHolder.add("ERR_VER_VER", message, this);
         }
     }
 
-    private void reportMissingKeyProperty(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportMissingKeyProperty(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (!this.hasKeyProperty() && !this.hasIDProperty())
         {
@@ -508,7 +507,7 @@ public class AntlrClass
         }
     }
 
-    public void reportDuplicateUserClass(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportDuplicateUserClass(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         String message = String.format(
                 "Only one 'user' class is allowed. Found '%s'.",
@@ -516,9 +515,9 @@ public class AntlrClass
         compilerAnnotationHolder.add("ERR_DUP_USR", message, this, this.nameContext);
     }
 
-    private void reportSuperClassNotFound(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportSuperClassNotFound(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (this.superClassState.equals(Optional.of(AntlrClass.NOT_FOUND)))
+        if (this.superClass.equals(Optional.of(AntlrClass.NOT_FOUND)))
         {
             ClassReferenceContext offendingToken = this
                     .getElementContext()
@@ -532,16 +531,16 @@ public class AntlrClass
         }
     }
 
-    private void reportExtendsConcrete(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportExtendsConcrete(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        if (this.superClassState.isEmpty()
-                || this.superClassState.equals(Optional.of(NOT_FOUND))
-                || this.superClassState.equals(Optional.of(AMBIGUOUS)))
+        if (this.superClass.isEmpty()
+                || this.superClass.equals(Optional.of(NOT_FOUND))
+                || this.superClass.equals(Optional.of(AMBIGUOUS)))
         {
             return;
         }
 
-        if (!this.superClassState.get().isAbstract())
+        if (!this.superClass.get().isAbstract())
         {
             ClassReferenceContext offendingToken = this
                     .getElementContext()
@@ -555,11 +554,11 @@ public class AntlrClass
         }
     }
 
-    private void reportTransientInheritance(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportTransientInheritance(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.isTransient()
-                || this.superClassState.isEmpty()
-                || !this.superClassState.get().isTransient())
+                || this.superClass.isEmpty()
+                || !this.superClass.get().isTransient())
         {
             return;
         }
@@ -575,20 +574,20 @@ public class AntlrClass
         compilerAnnotationHolder.add("ERR_EXT_TNS", message, this, offendingToken);
     }
 
-    private void reportTransientIdProperties(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportTransientIdProperties(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (!this.isTransient())
         {
             return;
         }
 
-        this.dataTypePropertyStates
+        this.declaredDataTypeProperties
                 .select(AntlrDataTypeProperty::isId)
                 .forEachWith(AntlrDataTypeProperty::reportTransientIdProperties, compilerAnnotationHolder);
     }
 
     @Override
-    protected void reportCircularInheritance(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    protected void reportCircularInheritance(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.hasCircularInheritance())
         {
@@ -609,25 +608,25 @@ public class AntlrClass
     }
 
     @Override
-    protected void reportForwardReference(CompilerAnnotationState compilerAnnotationState)
+    protected void reportForwardReference(CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        super.reportForwardReference(compilerAnnotationState);
-        if (this.superClassState.isEmpty())
+        super.reportForwardReference(compilerAnnotationHolder);
+        if (this.superClass.isEmpty())
         {
             return;
         }
 
-        AntlrClass klassState = this.superClassState.get();
-        if (this.isForwardReference(klassState))
+        AntlrClass klass = this.superClass.get();
+        if (this.isForwardReference(klass))
         {
             String message = String.format(
                     "Class '%s' is declared on line %d and has a forward reference to super class '%s' which is declared later in the source file '%s' on line %d.",
                     this.getName(),
                     this.getElementContext().getStart().getLine(),
-                    klassState.getName(),
+                    klass.getName(),
                     this.getCompilationUnit().get().getSourceName(),
-                    klassState.getElementContext().getStart().getLine());
-            compilerAnnotationState.add(
+                    klass.getElementContext().getStart().getLine());
+            compilerAnnotationHolder.add(
                     "ERR_FWD_REF",
                     message,
                     this,
@@ -638,28 +637,28 @@ public class AntlrClass
 
     private boolean hasIDProperty()
     {
-        return this.getDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isId);
+        return this.getAllDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isId);
     }
 
     private boolean hasKeyProperty()
     {
-        return this.getDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isKey);
+        return this.getAllDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isKey);
     }
 
     private boolean hasCircularInheritance()
     {
-        return this.superClassState.isPresent()
-                && this.superClassState.get().extendsClass(this, Sets.mutable.empty());
+        return this.superClass.isPresent()
+                && this.superClass.get().extendsClass(this, Sets.mutable.empty());
     }
 
     private boolean extendsClass(@Nonnull AntlrClass antlrClass, @Nonnull MutableSet<AntlrClass> visitedClasses)
     {
-        if (this.superClassState.isEmpty())
+        if (this.superClass.isEmpty())
         {
             return false;
         }
 
-        if (this.superClassState.equals(Optional.of(antlrClass)))
+        if (this.superClass.equals(Optional.of(antlrClass)))
         {
             return true;
         }
@@ -670,14 +669,14 @@ public class AntlrClass
         }
 
         visitedClasses.add(this);
-        return this.superClassState.get().extendsClass(antlrClass, visitedClasses);
+        return this.superClass.get().extendsClass(antlrClass, visitedClasses);
     }
 
     @Override
-    protected boolean isInterfaceRedundant(int index, @Nonnull AntlrInterface interfaceState)
+    protected boolean isInterfaceRedundant(int index, @Nonnull AntlrInterface iface)
     {
-        return this.superClassState.isPresent() && this.superClassState.get().implementsInterface(interfaceState)
-                || this.interfaceNotAtIndexImplements(index, interfaceState);
+        return this.superClass.isPresent() && this.superClass.get().implementsInterface(iface)
+                || this.interfaceNotAtIndexImplements(index, iface);
     }
 
     @Override
@@ -698,10 +697,10 @@ public class AntlrClass
     private ImmutableList<String> getDeclaredMemberNames()
     {
         MutableList<String> topLevelNames = Lists.mutable.empty();
-        this.getDataTypeProperties().collect(AntlrProperty::getName, topLevelNames);
-        this.parameterizedPropertyStates.collect(AntlrNamedElement::getName, topLevelNames);
-        this.associationEndStates.collect(AntlrProperty::getName, topLevelNames);
-        this.associationEndSignatureStates.collect(AntlrProperty::getName, topLevelNames);
+        this.getAllDataTypeProperties().collect(AntlrProperty::getName, topLevelNames);
+        this.declaredParameterizedProperties.collect(AntlrNamedElement::getName, topLevelNames);
+        this.declaredAssociationEnds.collect(AntlrProperty::getName, topLevelNames);
+        this.declaredAssociationEndSignatures.collect(AntlrProperty::getName, topLevelNames);
         return topLevelNames.toImmutable();
     }
 
@@ -713,12 +712,12 @@ public class AntlrClass
             return false;
         }
 
-        if (this.superClassState.isEmpty())
+        if (this.superClass.isEmpty())
         {
             return false;
         }
 
-        AntlrClass superClass = this.superClassState.get();
+        AntlrClass superClass = this.superClass.get();
         if (superClass == classifier)
         {
             return true;
@@ -730,7 +729,7 @@ public class AntlrClass
     @Override
     public Optional<AntlrClass> getSuperClass()
     {
-        return this.superClassState;
+        return this.superClass;
     }
 
     @Nonnull
@@ -749,14 +748,14 @@ public class AntlrClass
     @Override
     public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
     {
-        if (this.dataTypePropertiesByName.containsKey(name))
+        if (this.declaredDataTypePropertiesByName.containsKey(name))
         {
-            return this.dataTypePropertiesByName.get(name);
+            return this.declaredDataTypePropertiesByName.get(name);
         }
 
-        if (this.superClassState.isPresent())
+        if (this.superClass.isPresent())
         {
-            AntlrDataTypeProperty<?> superClassProperty = this.superClassState.get().getDataTypePropertyByName(name);
+            AntlrDataTypeProperty<?> superClassProperty = this.superClass.get().getDataTypePropertyByName(name);
             if (superClassProperty != AntlrEnumerationProperty.NOT_FOUND)
             {
                 return superClassProperty;
@@ -768,26 +767,26 @@ public class AntlrClass
 
     public AntlrAssociationEnd getAssociationEndByName(String name)
     {
-        if (this.associationEndsByName.containsKey(name))
+        if (this.declaredAssociationEndsByName.containsKey(name))
         {
-            return this.associationEndsByName.get(name);
+            return this.declaredAssociationEndsByName.get(name);
         }
 
-        return this.superClassState
+        return this.superClass
                 .map(superClass -> superClass.getAssociationEndByName(name))
                 .orElse(AntlrAssociationEnd.NOT_FOUND);
     }
 
     public AntlrModifier getModifierByName(String name)
     {
-        if (this.modifiersByName.containsKey(name))
+        if (this.declaredModifiersByName.containsKey(name))
         {
-            return this.modifiersByName.get(name);
+            return this.declaredModifiersByName.get(name);
         }
 
-        if (this.superClassState.isPresent())
+        if (this.superClass.isPresent())
         {
-            AntlrModifier superClassProperty = this.superClassState.get().getModifierByName(name);
+            AntlrModifier superClassProperty = this.superClass.get().getModifierByName(name);
             if (superClassProperty != AntlrModifier.NOT_FOUND)
             {
                 return superClassProperty;
@@ -807,6 +806,6 @@ public class AntlrClass
 
     public boolean isVersion()
     {
-        return this.dataTypePropertyStates.anySatisfy(AntlrDataTypeProperty::isVersion);
+        return this.declaredDataTypeProperties.anySatisfy(AntlrDataTypeProperty::isVersion);
     }
 }

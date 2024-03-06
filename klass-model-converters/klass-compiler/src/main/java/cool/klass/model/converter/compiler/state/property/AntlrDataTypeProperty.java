@@ -9,7 +9,7 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.AnnotationSeverity;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
@@ -91,7 +91,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
 
         @Override
-        protected void reportInvalidIdProperties(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+        protected void reportInvalidIdProperties(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".reportInvalidIdProperties() not implemented yet");
@@ -145,7 +145,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
 
         @Override
-        protected void reportInvalidIdProperties(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+        protected void reportInvalidIdProperties(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".reportInvalidIdProperties() not implemented yet");
@@ -161,13 +161,13 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     protected final boolean isOptional;
 
     @Nonnull
-    protected final AntlrClassifier owningClassifierState;
+    protected final AntlrClassifier owningClassifier;
 
-    protected final MutableList<AbstractAntlrPropertyValidation>  validationStates          = Lists.mutable.empty();
-    protected final MutableList<AntlrMinLengthPropertyValidation> minLengthValidationStates = Lists.mutable.empty();
-    protected final MutableList<AntlrMaxLengthPropertyValidation> maxLengthValidationStates = Lists.mutable.empty();
-    protected final MutableList<AntlrMinPropertyValidation>       minValidationStates       = Lists.mutable.empty();
-    protected final MutableList<AntlrMaxPropertyValidation>       maxValidationStates       = Lists.mutable.empty();
+    protected final MutableList<AbstractAntlrPropertyValidation>  validations          = Lists.mutable.empty();
+    protected final MutableList<AntlrMinLengthPropertyValidation> minLengthValidations = Lists.mutable.empty();
+    protected final MutableList<AntlrMaxLengthPropertyValidation> maxLengthValidations = Lists.mutable.empty();
+    protected final MutableList<AntlrMinPropertyValidation>       minValidations       = Lists.mutable.empty();
+    protected final MutableList<AntlrMaxPropertyValidation>       maxValidations       = Lists.mutable.empty();
 
     private final MutableOrderedMap<AntlrAssociationEnd, MutableList<AntlrDataTypeProperty<?>>> keysMatchingThisForeignKey = OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<AntlrAssociationEnd, MutableList<AntlrDataTypeProperty<?>>> foreignKeysMatchingThisKey = OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -177,19 +177,19 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
-            @Nonnull AntlrClassifier owningClassifierState,
+            @Nonnull AntlrClassifier owningClassifier,
             boolean isOptional)
     {
         super(elementContext, compilationUnit, ordinal, nameContext);
-        this.isOptional            = isOptional;
-        this.owningClassifierState = Objects.requireNonNull(owningClassifierState);
+        this.isOptional       = isOptional;
+        this.owningClassifier = Objects.requireNonNull(owningClassifier);
     }
 
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.of(this.owningClassifierState);
+        return Optional.of(this.owningClassifier);
     }
 
     protected abstract ParserRuleContext getTypeParserRuleContext();
@@ -292,53 +292,53 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 .add(foreignKeyProperty);
     }
 
-    public void addMinLengthValidationState(AntlrMinLengthPropertyValidation minLengthValidationState)
+    public void addMinLengthValidation(AntlrMinLengthPropertyValidation minLengthValidation)
     {
-        this.validationStates.add(minLengthValidationState);
-        this.minLengthValidationStates.add(minLengthValidationState);
+        this.validations.add(minLengthValidation);
+        this.minLengthValidations.add(minLengthValidation);
     }
 
-    public void addMaxLengthValidationState(AntlrMaxLengthPropertyValidation maxLengthValidationState)
+    public void addMaxLengthValidation(AntlrMaxLengthPropertyValidation maxLengthValidation)
     {
-        this.validationStates.add(maxLengthValidationState);
-        this.maxLengthValidationStates.add(maxLengthValidationState);
+        this.validations.add(maxLengthValidation);
+        this.maxLengthValidations.add(maxLengthValidation);
     }
 
-    public void addMinValidationState(AntlrMinPropertyValidation minValidationState)
+    public void addMinValidation(AntlrMinPropertyValidation minValidation)
     {
-        this.validationStates.add(minValidationState);
-        this.minValidationStates.add(minValidationState);
+        this.validations.add(minValidation);
+        this.minValidations.add(minValidation);
     }
 
-    public void addMaxValidationState(AntlrMaxPropertyValidation maxValidationState)
+    public void addMaxValidation(AntlrMaxPropertyValidation maxValidation)
     {
-        this.validationStates.add(maxValidationState);
-        this.maxValidationStates.add(maxValidationState);
+        this.validations.add(maxValidation);
+        this.maxValidations.add(maxValidation);
     }
 
-    public ListIterable<AbstractAntlrPropertyValidation> getValidationStates()
+    public ListIterable<AbstractAntlrPropertyValidation> getValidations()
     {
-        return this.validationStates;
+        return this.validations;
     }
 
-    public ListIterable<AntlrMinLengthPropertyValidation> getMinLengthValidationStates()
+    public ListIterable<AntlrMinLengthPropertyValidation> getMinLengthValidations()
     {
-        return this.minLengthValidationStates;
+        return this.minLengthValidations;
     }
 
-    public ListIterable<AntlrMaxLengthPropertyValidation> getMaxLengthValidationStates()
+    public ListIterable<AntlrMaxLengthPropertyValidation> getMaxLengthValidations()
     {
-        return this.maxLengthValidationStates;
+        return this.maxLengthValidations;
     }
 
-    public ListIterable<AntlrMinPropertyValidation> getMinValidationStates()
+    public ListIterable<AntlrMinPropertyValidation> getMinValidations()
     {
-        return this.minValidationStates;
+        return this.minValidations;
     }
 
-    public ListIterable<AntlrMaxPropertyValidation> getMaxValidationStates()
+    public ListIterable<AntlrMaxPropertyValidation> getMaxValidations()
     {
-        return this.maxValidationStates;
+        return this.maxValidations;
     }
 
     @Nonnull
@@ -347,14 +347,14 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     @Nonnull
     @Override
-    public AntlrClassifier getOwningClassifierState()
+    public AntlrClassifier getOwningClassifier()
     {
-        return this.owningClassifierState;
+        return this.owningClassifier;
     }
 
     public ImmutableList<AntlrDataTypeProperty<?>> getOverriddenProperties()
     {
-        return this.owningClassifierState.getOverriddenDataTypeProperties(this.getName());
+        return this.owningClassifier.getOverriddenDataTypeProperties(this.getName());
     }
 
     //<editor-fold desc="Perform Compilation">
@@ -364,20 +364,20 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     protected void buildValidations()
     {
-        Optional<MinLengthPropertyValidationBuilder> minLengthPropertyValidationBuilders = this.minLengthValidationStates
+        Optional<MinLengthPropertyValidationBuilder> minLengthPropertyValidationBuilders = this.minLengthValidations
                 .collect(AntlrMinLengthPropertyValidation::build)
                 .detectOptional(x -> true);
-        Optional<MaxLengthPropertyValidationBuilder> maxLengthPropertyValidationBuilders = this.maxLengthValidationStates
+        Optional<MaxLengthPropertyValidationBuilder> maxLengthPropertyValidationBuilders = this.maxLengthValidations
                 .collect(AntlrMaxLengthPropertyValidation::build)
                 .detectOptional(x -> true);
-        Optional<MinPropertyValidationBuilder> minPropertyValidationBuilders = this.minValidationStates
+        Optional<MinPropertyValidationBuilder> minPropertyValidationBuilders = this.minValidations
                 .collect(AntlrMinPropertyValidation::build)
                 .detectOptional(x -> true);
-        Optional<MaxPropertyValidationBuilder> maxPropertyValidationBuilders = this.maxValidationStates
+        Optional<MaxPropertyValidationBuilder> maxPropertyValidationBuilders = this.maxValidations
                 .collect(AntlrMaxPropertyValidation::build)
                 .detectOptional(x -> true);
 
-        MutableList<PropertyValidationBuilder<?>> propertyValidationBuilders = this.validationStates.collect(
+        MutableList<PropertyValidationBuilder<?>> propertyValidationBuilders = this.validations.collect(
                 AbstractAntlrPropertyValidation::getElementBuilder);
 
         this.getElementBuilder().setMinLengthPropertyValidationBuilder(minLengthPropertyValidationBuilders);
@@ -410,7 +410,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     //<editor-fold desc="Report Compiler Errors">
     @OverridingMethodsMustInvokeSuper
     @Override
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportErrors(compilerAnnotationHolder);
 
@@ -424,24 +424,24 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         // TODO: ☑ Check for nullable key properties
     }
 
-    private void reportDuplicateValidations(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    private void reportDuplicateValidations(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        this.reportDuplicateValidations(compilerAnnotationHolder, this.minLengthValidationStates);
-        this.reportDuplicateValidations(compilerAnnotationHolder, this.maxLengthValidationStates);
-        this.reportDuplicateValidations(compilerAnnotationHolder, this.minValidationStates);
-        this.reportDuplicateValidations(compilerAnnotationHolder, this.maxValidationStates);
+        this.reportDuplicateValidations(compilerAnnotationHolder, this.minLengthValidations);
+        this.reportDuplicateValidations(compilerAnnotationHolder, this.maxLengthValidations);
+        this.reportDuplicateValidations(compilerAnnotationHolder, this.minValidations);
+        this.reportDuplicateValidations(compilerAnnotationHolder, this.maxValidations);
     }
 
     private void reportDuplicateValidations(
-            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
-            @Nonnull ListIterable<? extends AbstractAntlrPropertyValidation> validationStates)
+            @Nonnull CompilerAnnotationHolder compilerAnnotationHolder,
+            @Nonnull ListIterable<? extends AbstractAntlrPropertyValidation> validations)
     {
-        if (validationStates.size() <= 1)
+        if (validations.size() <= 1)
         {
             return;
         }
 
-        for (AbstractAntlrPropertyValidation minLengthValidation : validationStates)
+        for (AbstractAntlrPropertyValidation minLengthValidation : validations)
         {
             ParserRuleContext offendingToken = minLengthValidation.getElementContext();
             String message = String.format(
@@ -455,9 +455,9 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
     }
 
-    protected abstract void reportInvalidIdProperties(@Nonnull CompilerAnnotationState compilerAnnotationHolder);
+    protected abstract void reportInvalidIdProperties(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder);
 
-    private void reportInvalidForeignKeyProperties(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportInvalidForeignKeyProperties(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         this.keysMatchingThisForeignKey.forEach((associationEnd, keyBuilders) -> this.reportInvalidForeignKeyProperties(
                 compilerAnnotationHolder,
@@ -466,7 +466,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     }
 
     private void reportInvalidForeignKeyProperties(
-            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
+            @Nonnull CompilerAnnotationHolder compilerAnnotationHolder,
             @Nonnull AntlrAssociationEnd associationEnd,
             @Nonnull ListIterable<AntlrDataTypeProperty<?>> keyBuilders)
     {
@@ -485,10 +485,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         {
             String message = String.format(
                     "Association end '%s.%s' has multiplicity [%s] so foreign key '%s.%s' ought to be required.",
-                    associationEnd.getOwningClassifierState().getName(),
+                    associationEnd.getOwningClassifier().getName(),
                     associationEnd.getName(),
                     associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
-                    this.getOwningClassifierState().getName(),
+                    this.getOwningClassifier().getName(),
                     this.getName());
             compilerAnnotationHolder.add("ERR_FOR_MUL", message, this, this.getTypeParserRuleContext());
             compilerAnnotationHolder.add("ERR_FOR_MUL", message, associationEnd.getMultiplicity());
@@ -498,10 +498,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         {
             String message = String.format(
                     "Association end '%s.%s' has multiplicity [%s] so foreign key '%s.%s' ought to be optional.",
-                    associationEnd.getOwningClassifierState().getName(),
+                    associationEnd.getOwningClassifier().getName(),
                     associationEnd.getName(),
                     associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
-                    this.owningClassifierState.getName(),
+                    this.owningClassifier.getName(),
                     this.getName());
             compilerAnnotationHolder.add(
                     "ERR_FOR_MUL",
@@ -520,10 +520,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         {
             String message = String.format(
                     "Association end '%s.%s' is final [%s] so foreign key '%s.%s' ought to be final.",
-                    associationEnd.getOwningClassifierState().getName(),
+                    associationEnd.getOwningClassifier().getName(),
                     associationEnd.getName(),
                     associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
-                    this.getOwningClassifierState().getName(),
+                    this.getOwningClassifier().getName(),
                     this.getName());
             compilerAnnotationHolder.add("ERR_FOR_FIN", message, this);
             for (AntlrModifier modifier : associationEnd.getModifiersByName("final"))
@@ -536,10 +536,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         {
             String message = String.format(
                     "Association end '%s.%s' is not final [%s] but foreign key '%s.%s' is final. The two properties must match.",
-                    associationEnd.getOwningClassifierState().getName(),
+                    associationEnd.getOwningClassifier().getName(),
                     associationEnd.getName(),
                     associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
-                    this.getOwningClassifierState().getName(),
+                    this.getOwningClassifier().getName(),
                     this.getName());
             ImmutableList<AntlrModifier> modifiers = this.getModifiersByName("final");
             for (AntlrModifier modifier : modifiers)
@@ -550,7 +550,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
     }
 
-    private void reportInvalidUserIdProperties(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportInvalidUserIdProperties(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (!this.isUserId() || this.isCreatedBy() || this.isLastUpdatedBy())
         {
@@ -578,7 +578,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 Lists.immutable.with(modifier.getElementContext(), this.getTypeParserRuleContext()));
     }
 
-    private void reportInvalidVersionProperties(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportInvalidVersionProperties(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.getModifiers().noneSatisfy(AntlrModifier::isVersion))
         {
@@ -607,7 +607,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 Lists.immutable.with(offendingToken, modifier.getElementContext()));
     }
 
-    private void reportInvalidTemporalProperties(CompilerAnnotationState compilerAnnotationHolder)
+    private void reportInvalidTemporalProperties(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.isValidRange() || this.isSystemRange())
         {
@@ -692,7 +692,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     }
 
     @Override
-    protected void reportInvalidAuditProperties(CompilerAnnotationState compilerAnnotationHolder)
+    protected void reportInvalidAuditProperties(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportInvalidAuditProperties(compilerAnnotationHolder);
 
@@ -848,25 +848,25 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
     }
 
-    public void reportIdPropertyWithKeyProperties(CompilerAnnotationState compilerAnnotationHolder)
+    public void reportIdPropertyWithKeyProperties(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         String message = String.format(
                 "Class '%s' may have id properties or non-id key properties, but not both. Found id property: %s.",
-                this.owningClassifierState.getName(),
+                this.owningClassifier.getName(),
                 this);
         compilerAnnotationHolder.add("ERR_KEY_IDS", message, this);
     }
 
-    public void reportKeyPropertyWithIdProperties(CompilerAnnotationState compilerAnnotationHolder)
+    public void reportKeyPropertyWithIdProperties(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         String message = String.format(
                 "Class '%s' may have id properties or non-id key properties, but not both. Found non-id key property: %s.",
-                this.owningClassifierState.getName(),
+                this.owningClassifier.getName(),
                 this);
         compilerAnnotationHolder.add("ERR_KEY_IDS", message, this);
     }
 
-    public void reportTransientIdProperties(CompilerAnnotationState compilerAnnotationHolder)
+    public void reportTransientIdProperties(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         ImmutableList<AntlrModifier> idModifiers = this.getModifiersByName("id");
         if (idModifiers.isEmpty())
@@ -876,7 +876,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
         String message = String.format(
                 "Transient class '%s' may not have id properties.",
-                this.owningClassifierState.getName());
+                this.owningClassifier.getName());
         compilerAnnotationHolder.add(
                 "ERR_TNS_IDP",
                 message,
@@ -890,7 +890,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     {
         return String.format(
                 "%s.%s",
-                this.owningClassifierState.getName(),
+                this.owningClassifier.getName(),
                 this.getShortString());
     }
 
@@ -909,7 +909,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 .into(sourceCodeStrings);
 
         this
-                .getValidationStates()
+                .getValidations()
                 .asLazy()
                 .collect(AntlrElement::toString)
                 .into(sourceCodeStrings);

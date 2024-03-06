@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
@@ -23,42 +23,42 @@ public abstract class AntlrMemberReferencePath
         extends AntlrExpressionValue
 {
     @Nonnull
-    protected final AntlrClass                         classState;
+    protected final AntlrClass                         klass;
     @Nonnull
-    protected final ImmutableList<AntlrAssociationEnd> associationEndStates;
+    protected final ImmutableList<AntlrAssociationEnd> associationEnd;
     @Nonnull
-    protected final AntlrDataTypeProperty<?>           dataTypePropertyState;
+    protected final AntlrDataTypeProperty<?>           dataTypeProperty;
 
     protected AntlrMemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull AntlrClass classState,
-            @Nonnull ImmutableList<AntlrAssociationEnd> associationEndStates,
-            @Nonnull AntlrDataTypeProperty<?> dataTypePropertyState,
+            @Nonnull AntlrClass klass,
+            @Nonnull ImmutableList<AntlrAssociationEnd> associationEnd,
+            @Nonnull AntlrDataTypeProperty<?> dataTypeProperty,
             @Nonnull IAntlrElement expressionValueOwner)
     {
         super(elementContext, compilationUnit, expressionValueOwner);
-        this.classState            = Objects.requireNonNull(classState);
-        this.associationEndStates  = Objects.requireNonNull(associationEndStates);
-        this.dataTypePropertyState = Objects.requireNonNull(dataTypePropertyState);
+        this.klass            = Objects.requireNonNull(klass);
+        this.associationEnd   = Objects.requireNonNull(associationEnd);
+        this.dataTypeProperty = Objects.requireNonNull(dataTypeProperty);
     }
 
     @Nonnull
-    public AntlrClass getClassState()
+    public AntlrClass getKlass()
     {
-        return this.classState;
+        return this.klass;
     }
 
     @Nonnull
     public ImmutableList<AntlrAssociationEnd> getAssociationEnds()
     {
-        return this.associationEndStates;
+        return this.associationEnd;
     }
 
     @Nonnull
     public AntlrDataTypeProperty<?> getDataTypeProperty()
     {
-        return this.dataTypePropertyState;
+        return this.dataTypeProperty;
     }
 
     @Nonnull
@@ -67,25 +67,25 @@ public abstract class AntlrMemberReferencePath
 
     @Nullable
     protected AntlrClass reportErrorsAssociationEnds(
-            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
+            @Nonnull CompilerAnnotationHolder compilerAnnotationHolder,
             @Nonnull List<AssociationEndReferenceContext> associationEndReferenceContexts)
     {
-        AntlrClass currentClassState = this.classState;
-        for (int i = 0; i < this.associationEndStates.size(); i++)
+        AntlrClass currentClass = this.klass;
+        for (int i = 0; i < this.associationEnd.size(); i++)
         {
-            AntlrAssociationEnd associationEndState = this.associationEndStates.get(i);
-            if (associationEndState == AntlrAssociationEnd.NOT_FOUND)
+            AntlrAssociationEnd associationEnd = this.associationEnd.get(i);
+            if (associationEnd == AntlrAssociationEnd.NOT_FOUND)
             {
                 IdentifierContext identifier = associationEndReferenceContexts.get(i).identifier();
                 String message = String.format(
                         "Cannot find member '%s.%s'.",
-                        currentClassState.getName(),
+                        currentClass.getName(),
                         identifier.getText());
                 compilerAnnotationHolder.add("ERR_MEM_EXP", message, this, identifier);
                 return null;
             }
-            currentClassState = associationEndState.getType();
+            currentClass = associationEnd.getType();
         }
-        return currentClassState;
+        return currentClass;
     }
 }
