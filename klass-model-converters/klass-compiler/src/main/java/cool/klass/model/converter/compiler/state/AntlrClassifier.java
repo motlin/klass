@@ -212,6 +212,11 @@ public abstract class AntlrClassifier
                 .toImmutable();
     }
 
+    public ImmutableList<AntlrReferenceProperty<?>> getDeclaredReferenceProperties()
+    {
+        return this.referencePropertyStates.toImmutable();
+    }
+
     private ImmutableList<AntlrModifier> getModifiers()
     {
         return this.getModifiers(Lists.mutable.empty());
