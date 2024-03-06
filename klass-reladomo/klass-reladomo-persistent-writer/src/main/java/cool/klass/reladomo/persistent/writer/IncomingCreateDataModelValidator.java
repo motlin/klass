@@ -340,6 +340,7 @@ public class IncomingCreateDataModelValidator
             throw new AssertionError();
         }
         */
+
         ImmutableList<Object> keys = this.getKeysFromJsonNode(
                 incomingChildInstance,
                 associationEnd,
@@ -638,6 +639,6 @@ public class IncomingCreateDataModelValidator
             return Objects.requireNonNull(result);
         }
 
-        throw new AssertionError();
+        throw new AssertionError(jsonNode);
     }
 }
