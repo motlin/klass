@@ -12,6 +12,7 @@ import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
@@ -67,5 +68,14 @@ public abstract class AntlrProjectionParent extends AntlrNamedElement
                 (name, builder) -> builder == null
                         ? child
                         : AntlrProjectionDataTypeProperty.AMBIGUOUS);
+    }
+
+    protected ImmutableBag<String> getDuplicateMemberNames()
+    {
+        return this.children
+                .collect(AntlrProjectionElement::getName)
+                .toBag()
+                .selectByOccurrences(occurrences -> occurrences > 1)
+                .toImmutable();
     }
 }

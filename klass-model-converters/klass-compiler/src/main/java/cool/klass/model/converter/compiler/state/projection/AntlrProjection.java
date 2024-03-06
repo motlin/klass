@@ -125,15 +125,6 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
         }
     }
 
-    public ImmutableBag<String> getDuplicateMemberNames()
-    {
-        return this.children
-                .collect(AntlrProjectionElement::getName)
-                .toBag()
-                .selectByOccurrences(occurrences -> occurrences > 1)
-                .toImmutable();
-    }
-
     @Nonnull
     @Override
     public ProjectionDeclarationContext getElementContext()

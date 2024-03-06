@@ -146,15 +146,6 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
         }
     }
 
-    public ImmutableBag<String> getDuplicateMemberNames()
-    {
-        return this.children
-                .collect(AntlrProjectionElement::getName)
-                .toBag()
-                .selectByOccurrences(occurrences -> occurrences > 1)
-                .toImmutable();
-    }
-
     @Override
     public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
