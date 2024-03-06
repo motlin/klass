@@ -71,7 +71,7 @@ public class ReladomoDataStore implements DataStore
             Transaction transactionAdapter = new TransactionAdapter(tx);
             transactionalCommand.run(transactionAdapter);
             return null;
-        });
+        }, this.retryCount);
     }
 
     @Override
