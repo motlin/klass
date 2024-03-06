@@ -23,12 +23,15 @@ public class StackOverflowGraphQLTest
                 query {
                     question(id: 1) {
                         id
-                        system
                         systemFrom
                         systemTo
-                        createdById
+                        createdBy {
+                            userId
+                        }
                         createdOn
-                        lastUpdatedById
+                        lastUpdatedBy {
+                            userId
+                        }
                         body
                         title
                         status
@@ -36,12 +39,15 @@ public class StackOverflowGraphQLTest
                         tags {
                             tag {
                                 name
-                                system
                                 systemFrom
                                 systemTo
-                                createdById
+                                createdBy {
+                                    userId
+                                }
                                 createdOn
-                                lastUpdatedById
+                                lastUpdatedBy {
+                                    userId
+                                }
                                 description
                             }
                         },

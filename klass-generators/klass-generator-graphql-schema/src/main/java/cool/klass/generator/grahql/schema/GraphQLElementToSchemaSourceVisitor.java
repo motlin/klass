@@ -94,6 +94,7 @@ public class GraphQLElementToSchemaSourceVisitor
         String fieldsSourceCode = klass
                 .getProperties()
                 .reject(Property::isDerived)
+                .reject(Property::isPrivate)
                 .collect(GraphQLElementToSchemaSourceVisitor::getPropertySourceCode)
                 .collect(name -> String.format("    %s\n", name))
                 .makeString("");

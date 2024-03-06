@@ -67,12 +67,13 @@ public interface ReferenceProperty
 
     default boolean isFinal()
     {
-        return this.getModifiers().anySatisfy(modifier -> modifier.is("final"));
+        return this.getModifiers().anySatisfy(Modifier::isFinal);
     }
 
+    @Override
     default boolean isPrivate()
     {
-        return this.getModifiers().anySatisfy(modifier -> modifier.is("private"));
+        return this.getModifiers().anySatisfy(Modifier::isPrivate);
     }
 
     default boolean isToSelf()

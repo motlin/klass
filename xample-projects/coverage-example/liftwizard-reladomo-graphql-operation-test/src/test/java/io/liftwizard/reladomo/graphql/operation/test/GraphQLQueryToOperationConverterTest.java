@@ -93,12 +93,15 @@ public class GraphQLQueryToOperationConverterTest
                     optionalBoolean
                     optionalInstant
                     optionalLocalDate
-                    system
                     systemFrom
                     systemTo
-                    createdById
+                    createdBy {
+                        userId
+                    }
                     createdOn
-                    lastUpdatedById
+                    lastUpdatedBy {
+                        userId
+                    }
                     version {
                       number
                     }

@@ -16,5 +16,7 @@ public interface Property
 
     boolean isDerived();
 
+    boolean isPrivate();
+
     void visit(PropertyVisitor visitor);
 }

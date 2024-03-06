@@ -55,14 +55,14 @@ public class CoverageExampleGraphQLTest
                     systemFrom
                     systemTo
                     lastUpdatedBy {
+                      userId
                       email
                     }
-                    lastUpdatedById
                     createdOn
                     createdBy {
+                      userId
                       email
                     }
-                    createdById
                     version {
                       number
                     }

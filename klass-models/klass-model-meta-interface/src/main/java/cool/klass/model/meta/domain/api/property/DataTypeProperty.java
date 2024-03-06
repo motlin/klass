@@ -121,6 +121,7 @@ public interface DataTypeProperty
         return this.getModifiers().anySatisfy(Modifier::isFinal);
     }
 
+    @Override
     default boolean isPrivate()
     {
         return this.getModifiers().anySatisfy(Modifier::isPrivate);

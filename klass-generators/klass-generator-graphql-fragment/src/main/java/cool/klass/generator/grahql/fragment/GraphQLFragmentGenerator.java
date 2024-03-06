@@ -55,8 +55,14 @@ public class GraphQLFragmentGenerator
     {
         String lowerCaseName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, klass.getName());
 
+        String propertiesSourceCode = klass
+                .getDataTypeProperties()
+                .reject(DataTypeProperty::isDerived)
+                .reject(DataTypeProperty::isPrivate)
+                .collect(this::getSourceCode)
+                .makeString("");
         return "fragment " + lowerCaseName + "Fragment on " + klass.getName() + " {\n"
-                + klass.getDataTypeProperties().collect(this::getSourceCode).makeString("")
+                + propertiesSourceCode
                 + "}\n\n";
     }
 
