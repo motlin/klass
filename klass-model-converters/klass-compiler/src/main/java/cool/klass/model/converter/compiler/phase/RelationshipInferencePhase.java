@@ -39,7 +39,7 @@ public class RelationshipInferencePhase
     {
         super.enterAssociationDeclaration(ctx);
 
-        RelationshipContext relationship = ctx.associationBody().relationship();
+        RelationshipContext relationship = ctx.associationBodyDeclaration().associationBody().relationship();
         if (relationship == null)
         {
             AntlrAssociation association = this.compilerState.getCompilerWalk().getAssociation();

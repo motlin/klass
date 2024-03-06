@@ -7,6 +7,7 @@ import cool.klass.model.meta.grammar.KlassParser.AbstractDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentContext;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentListContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationBodyDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
@@ -333,17 +334,17 @@ public class KlassThrowingListener
     }
 
     @Override
-    public void enterAbstractDeclaration(@Nonnull AbstractDeclarationContext ctx)
+    public void enterClassBodyDeclaration(ClassBodyDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterAbstractDeclaration() not implemented yet");
+                + ".enterClassBodyDeclaration() not implemented yet");
     }
 
     @Override
-    public void exitAbstractDeclaration(@Nonnull AbstractDeclarationContext ctx)
+    public void exitClassBodyDeclaration(ClassBodyDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitAbstractDeclaration() not implemented yet");
+                + ".exitClassBodyDeclaration() not implemented yet");
     }
 
     @Override
@@ -358,6 +359,20 @@ public class KlassThrowingListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitClassBody() not implemented yet");
+    }
+
+    @Override
+    public void enterAbstractDeclaration(@Nonnull AbstractDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterAbstractDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitAbstractDeclaration(@Nonnull AbstractDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitAbstractDeclaration() not implemented yet");
     }
 
     @Override
@@ -386,20 +401,6 @@ public class KlassThrowingListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitImplementsDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void enterParameterizedPropertySignature(@Nonnull ParameterizedPropertySignatureContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterParameterizedPropertySignature() not implemented yet");
-    }
-
-    @Override
-    public void exitParameterizedPropertySignature(@Nonnull ParameterizedPropertySignatureContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitParameterizedPropertySignature() not implemented yet");
     }
 
     @Override
@@ -470,6 +471,20 @@ public class KlassThrowingListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitAssociationDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void enterAssociationBodyDeclaration(AssociationBodyDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterAssociationBodyDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitAssociationBodyDeclaration(AssociationBodyDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitAssociationBodyDeclaration() not implemented yet");
     }
 
     @Override
@@ -957,17 +972,17 @@ public class KlassThrowingListener
     }
 
     @Override
-    public void enterClassBodyDeclaration(ClassBodyDeclarationContext ctx)
+    public void enterParameterizedPropertySignature(@Nonnull ParameterizedPropertySignatureContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterClassBodyDeclaration() not implemented yet");
+                + ".enterParameterizedPropertySignature() not implemented yet");
     }
 
     @Override
-    public void exitClassBodyDeclaration(ClassBodyDeclarationContext ctx)
+    public void exitParameterizedPropertySignature(@Nonnull ParameterizedPropertySignatureContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitClassBodyDeclaration() not implemented yet");
+                + ".exitParameterizedPropertySignature() not implemented yet");
     }
 
     @Override

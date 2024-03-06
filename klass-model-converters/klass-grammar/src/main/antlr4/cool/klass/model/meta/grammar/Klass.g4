@@ -49,8 +49,9 @@ enumerationLiteral: identifier ('(' enumerationPrettyName ')')? ',';
 enumerationPrettyName: StringLiteral;
 
 // association
-associationDeclaration: 'association' identifier associationBody;
-associationBody: '{' associationEnd? associationEnd? relationship? '}';
+associationDeclaration: 'association' identifier associationBodyDeclaration;
+associationBodyDeclaration: '{' associationBody '}';
+associationBody: associationEnd? associationEnd? relationship? ;
 associationEnd
     : identifier ':' classReference multiplicity associationEndModifier* orderByDeclaration? ';'
     | identifier ':' classReference multiplicity associationEndModifier* orderByDeclaration? {notifyErrorListeners("Missing semi-colon after association end declaration.");};

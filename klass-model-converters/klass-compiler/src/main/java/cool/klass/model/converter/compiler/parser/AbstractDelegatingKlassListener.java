@@ -7,6 +7,7 @@ import cool.klass.model.meta.grammar.KlassParser.AbstractDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentContext;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentListContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationBodyDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
@@ -466,6 +467,18 @@ public abstract class AbstractDelegatingKlassListener
     public void exitAssociationDeclaration(AssociationDeclarationContext ctx)
     {
         this.getDelegate().exitAssociationDeclaration(ctx);
+    }
+
+    @Override
+    public void enterAssociationBodyDeclaration(AssociationBodyDeclarationContext ctx)
+    {
+        getDelegate().enterAssociationBodyDeclaration(ctx);
+    }
+
+    @Override
+    public void exitAssociationBodyDeclaration(AssociationBodyDeclarationContext ctx)
+    {
+        getDelegate().exitAssociationBodyDeclaration(ctx);
     }
 
     @Override

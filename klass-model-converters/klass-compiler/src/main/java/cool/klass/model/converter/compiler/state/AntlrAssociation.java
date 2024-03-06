@@ -13,7 +13,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
-import cool.klass.model.meta.grammar.KlassParser.AssociationBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationBodyDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -88,9 +88,9 @@ public class AntlrAssociation
     }
 
     @Override
-    public AssociationBodyContext getBodyContext()
+    public AssociationBodyDeclarationContext getBodyContext()
     {
-        return this.getElementContext().associationBody();
+        return this.getElementContext().associationBodyDeclaration();
     }
 
     public MutableList<AntlrAssociationEnd> getAssociationEnds()
@@ -237,7 +237,7 @@ public class AntlrAssociation
                     ownedModifier,
                     Lists.immutable.with(
                             ownedModifier.getElementContext(),
-                            this.getElementContext().associationBody().associationEnd(1).multiplicity()));
+                            this.getElementContext().associationBodyDeclaration().associationBody().associationEnd(1).multiplicity()));
         }
         else if (this.getSourceEnd().isToOne() && this.getTargetEnd().isToMany() && this.getSourceEnd().isOwned())
         {
@@ -252,7 +252,7 @@ public class AntlrAssociation
                     ownedModifier,
                     Lists.immutable.with(
                             ownedModifier.getElementContext(),
-                            this.getElementContext().associationBody().associationEnd(0).multiplicity()));
+                            this.getElementContext().associationBodyDeclaration().associationBody().associationEnd(0).multiplicity()));
         }
         else if (this.getSourceEnd().isToOne()
                 && this.getTargetEnd().isToOne()
