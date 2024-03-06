@@ -610,11 +610,31 @@ service Class
 
 projection AssociationReadProjection on Association
 {
-    name                          : "Association name",
-    inferred                      : "Association inferred",
-    packageName                   : "Association package name",
-    ordinal                       : "Association ordinal",
-    sourceCode                    : "Association source code",
+    name           : "Association name",
+    inferred       : "Association inferred",
+    packageName    : "Association package name",
+    ordinal        : "Association ordinal",
+    sourceCode     : "Association source code",
+    associationEnds:
+    {
+        name        : "Association end name",
+        inferred    : "Association end inferred",
+        direction   : "Association end direction",
+        multiplicity: "Association end multiplicity",
+        ordinal     : "Association end ordinal",
+        /*
+        owningClass :
+        {
+            name       : "Association end owning class name",
+            packageName: "Association end owning class package name",
+        },
+        */
+        resultType  :
+        {
+            name       : "Association end result class name",
+            packageName: "Association end result class package name",
+        },
+    },
 }
 
 service Association
