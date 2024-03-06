@@ -54,12 +54,17 @@ public class CompilerError implements Comparable<CompilerError>
         String sourceName         = this.getSourceName();
         int    line               = this.getLine();
         int    charPositionInLine = this.getCharPositionInLine();
+        // TODO: This should be part of the source information
+        String fileNameWithoutDirectory = sourceName.substring(sourceName.lastIndexOf('/') + 1);
+
         return String.format(
-                "File: %s Line: %d Char: %d Error: %s",
+                "Error: %s (%s:%d) %s:%d:%d",
+                this.message,
+                fileNameWithoutDirectory,
+                line,
                 sourceName,
                 line,
-                charPositionInLine + 1,
-                this.message);
+                charPositionInLine + 1);
     }
 
     private ImmutableList<String> applyListenerToStack()
