@@ -158,10 +158,6 @@ association QuestionHasAnswer
     question               : Question[1..1] final;
     answers                : Answer[0..*]
         orderBy: this.id ascending;
-
-    // TODO: check that the foreign key (questionId) is required since the to-one relationship end is also required (question: Question[1..1])
-    // ordering by primary key ascending is the default
-    relationship this.id == Answer.questionId
 }
 
 // The _HasVersion association is implied by the versioned annotation, and not supposed to actually be declared
@@ -216,8 +212,6 @@ association QuestionHasVotes
 {
     question               : Question[1..1] final;
     votes                  : QuestionVote[0..*];
-
-    relationship this.id == QuestionVote.questionId
 }
 
 projection QuestionVoteWriteProjection on QuestionVote
@@ -271,8 +265,6 @@ association QuestionHasTagMappings
     question               : Question[1..1] final;
     tags: QuestionTagMapping[0..*] owned
         orderBy: this.tagName;
-
-    relationship this.id == QuestionTagMapping.questionId
 }
 
 association TagHasQuestionMappings
@@ -280,8 +272,6 @@ association TagHasQuestionMappings
     tag                    : Tag[1..1] final;
     questions              : QuestionTagMapping[0..*]
         orderBy: this.questionId;
-
-    relationship this.name == QuestionTagMapping.tagName
 }
 
 // TODO: Projection inheritance? QuestionReadProjection extends QuestionWriteProjection

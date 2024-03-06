@@ -9,6 +9,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.domain.AbstractElement.ElementBuilder;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.misc.Interval;
 
 public abstract class AntlrElement
         implements IAntlrElement
@@ -42,6 +43,14 @@ public abstract class AntlrElement
         ParserRuleContext nextParent = childContext.getParent();
         Objects.requireNonNull(nextParent);
         AntlrElement.assertContextContains(parentContext, nextParent);
+    }
+
+    protected static String getSourceText(ParserRuleContext parserRuleContext)
+    {
+        int startIndex = parserRuleContext.getStart().getStartIndex();
+        int      stopIndex = parserRuleContext.getStop().getStopIndex();
+        Interval interval  = new Interval(startIndex, stopIndex);
+        return parserRuleContext.getStart().getInputStream().getText(interval);
     }
 
     @Override

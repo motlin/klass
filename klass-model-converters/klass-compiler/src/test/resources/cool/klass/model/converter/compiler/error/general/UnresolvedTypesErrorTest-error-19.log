@@ -1,17 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_PRJ_DTP[m [33m════════════════════════════════════════[m
 [31mError: Cannot find member 'Parent.unresolvedProjectionMember'.[m
 
-At (UnresolvedTypesErrorTest.klass:110)
+At (UnresolvedTypesErrorTest.klass:108)
 
 [39m  1║ [35mpackage [39mdummy
-[39m108║ [35mprojection [39mParentProjection [35mon [39mParent
-[39m109║ [36m{
-[39m110║     [39munresolvedProjectionMember[36m: [34m"Header"[36m,
+[39m106║ [35mprojection [39mParentProjection [35mon [39mParent
+[39m107║ [36m{
+[39m108║     [39munresolvedProjectionMember[36m: [34m"Header"[36m,
 [39m   ║ [31m    ^^^^^^^^^^^^^^^^^^^^^^^^^^
-[39m136║ [36m}
+[39m134║ [36m}
 [m
-[36mLocation:  [mUnresolvedTypesErrorTest.klass:110[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:108[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m
-[36mLine:      [m110[m
+[36mLine:      [m108[m
 [36mCharacter: [m5
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

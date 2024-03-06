@@ -22,12 +22,10 @@ public final class AssociationImpl
         extends AbstractPackageableElement
         implements AssociationWithSourceCode
 {
-    @Nonnull
-    private final AbstractCriteria criteria;
-
     private ImmutableList<AssociationEnd> associationEnds;
     private AssociationEnd                sourceAssociationEnd;
     private AssociationEnd                targetAssociationEnd;
+    private AbstractCriteria              criteria;
 
     private AssociationImpl(
             @Nonnull AssociationDeclarationContext elementContext,
@@ -35,11 +33,9 @@ public final class AssociationImpl
             @Nullable SourceCode sourceCode,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
-            @Nonnull String packageName,
-            @Nonnull AbstractCriteria criteria)
+            @Nonnull String packageName)
     {
         super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
-        this.criteria = Objects.requireNonNull(criteria);
     }
 
     @Nonnull
@@ -73,6 +69,11 @@ public final class AssociationImpl
         this.targetAssociationEnd = associationEnds.get(1);
     }
 
+    private void setCriteria(@Nonnull AbstractCriteria criteria)
+    {
+        this.criteria = Objects.requireNonNull(criteria);
+    }
+
     @Override
     public AssociationEnd getSourceAssociationEnd()
     {
@@ -90,7 +91,7 @@ public final class AssociationImpl
             implements TopLevelElementBuilderWithSourceCode
     {
         @Nonnull
-        private final AbstractCriteriaBuilder<?> criteriaBuilder;
+        private AbstractCriteriaBuilder<?> criteriaBuilder;
 
         private ImmutableList<AssociationEndBuilder> associationEndBuilders;
 
@@ -100,16 +101,19 @@ public final class AssociationImpl
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
                 @Nonnull IdentifierContext nameContext,
-                @Nonnull String packageName,
-                @Nonnull AbstractCriteriaBuilder<?> criteriaBuilder)
+                @Nonnull String packageName)
         {
             super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
-            this.criteriaBuilder = Objects.requireNonNull(criteriaBuilder);
         }
 
         public void setAssociationEndBuilders(@Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders)
         {
             this.associationEndBuilders = Objects.requireNonNull(associationEndBuilders);
+        }
+
+        public void setCriteriaBuilder(@Nonnull AbstractCriteriaBuilder<?> criteriaBuilder)
+        {
+            this.criteriaBuilder = Objects.requireNonNull(criteriaBuilder);
         }
 
         @Nonnull
@@ -122,8 +126,7 @@ public final class AssociationImpl
                     this.sourceCode.build(),
                     this.ordinal,
                     this.getNameContext(),
-                    this.packageName,
-                    this.criteriaBuilder.build());
+                    this.packageName);
         }
 
         @Override
@@ -132,6 +135,9 @@ public final class AssociationImpl
             ImmutableList<AssociationEnd> associationEnds = this.associationEndBuilders
                     .collect(AssociationEndBuilder::build);
             this.element.setAssociationEnds(associationEnds);
+
+            AbstractCriteria criteria = this.criteriaBuilder.build();
+            this.element.setCriteria(criteria);
         }
     }
 }

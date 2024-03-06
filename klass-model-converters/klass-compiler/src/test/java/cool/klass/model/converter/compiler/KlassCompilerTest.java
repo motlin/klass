@@ -56,7 +56,6 @@ public class KlassCompilerTest
                     enumeration: Enumeration[1..1];
                     enumerationLiterals: EnumerationLiteral[1..*]
                         orderBy: this.ordinal;
-                    relationship this.name == EnumerationLiteral.enumerationName
                 }
                 enumeration InheritanceType
                 {
@@ -86,13 +85,11 @@ public class KlassCompilerTest
                 {
                     subClassifier: Classifier[1..1];
                     superInterfaces               : ClassifierInterfaceMapping[0..*] owned;
-                    relationship this.name == ClassifierInterfaceMapping.classifierName
                 }
                 association ClassifierInterfaceMappingHasInterface
                 {
                     superInterface                : Interface[1..1];
                     subClassifiers                : ClassifierInterfaceMapping[0..*];
-                    relationship this.name == ClassifierInterfaceMapping.interfaceName
                 }
                 class Klass
                     extends Classifier
@@ -149,7 +146,6 @@ public class KlassCompilerTest
                 {
                     enumerationProperties         : EnumerationProperty[0..*];
                     enumeration                   : Enumeration[1..1];
-                    relationship this.enumerationName == Enumeration.name
                 }
                 // TODO: Change the orderBy syntax to orderBy(this.ordinal)
                 /*
@@ -167,7 +163,6 @@ public class KlassCompilerTest
                     owningClassifier: Classifier[1..1];
                     primitiveProperties: PrimitiveProperty[0..*]
                         orderBy: this.ordinal;
-                    relationship this.name == PrimitiveProperty.classifierName
                 }
                 // TODO: Owned
                 association ClassifierHasEnumerationProperties
@@ -175,7 +170,6 @@ public class KlassCompilerTest
                     owningClassifier: Classifier[1..1];
                     enumerationProperties: EnumerationProperty[0..*]
                         orderBy: this.ordinal;
-                    relationship this.name == EnumerationProperty.classifierName
                 }
                 interface PropertyValidation implements Element
                 {
@@ -260,7 +254,6 @@ public class KlassCompilerTest
                     owningClassifier: Classifier[1..1];
                     classifierModifiers: ClassifierModifier[0..*]
                         orderBy: this.ordinal;
-                    relationship this.name == ClassifierModifier.classifierName
                 }
                 class Parameter
                     abstract(table-per-class)
@@ -317,7 +310,6 @@ public class KlassCompilerTest
                 {
                     variableReferences: VariableReference[0..*];
                     parameter: Parameter[1..1];
-                    relationship this.parameterId == Parameter.id
                 }
                 class Criteria
                     abstract(table-per-class)
@@ -415,7 +407,6 @@ public class KlassCompilerTest
                     owningAssociation: Association[1..1];
                     associationEnds: AssociationEnd[0..*]
                         orderBy: this.direction;
-                    relationship this.name == AssociationEnd.associationName
                 }
                 association ClassHasAssociationEnds
                 {
@@ -462,13 +453,11 @@ public class KlassCompilerTest
                 {
                     memberReferencePath: MemberReferencePath[1..1];
                     edgePointCriteria: EdgePointCriteria[1..1] owned;
-                    relationship this.id == EdgePointCriteria.memberReferencePathId
                 }
                 association EnumerationParameterHasEnumeration
                 {
                     enumerationParameters: EnumerationParameter[0..*];
                     enumeration: Enumeration[1..1];
-                    relationship this.enumerationName == Enumeration.name
                 }
                 association MemberReferencePathHasClass
                 {
@@ -486,7 +475,6 @@ public class KlassCompilerTest
                 {
                     memberReferencePath: MemberReferencePath[1..1];
                     associationEnds: MemberReferencePathAssociationEndMapping[0..*];
-                    relationship this.id == MemberReferencePathAssociationEndMapping.memberReferencePathId
                 }
                 association MemberReferencePathAssociationEndMappingHasAssociationEnd
                 {
@@ -807,9 +795,6 @@ public class KlassCompilerTest
                 {
                     service                       : Service[1..1];
                     orderBys                      : ServiceOrderBy[0..*];
-                    relationship this.className == ServiceOrderBy.serviceClassName
-                            && this.urlString == ServiceOrderBy.serviceUrlString
-                            && this.verb == ServiceOrderBy.serviceVerb
                 }
                 association ServiceOrderByHasMemberReferencePath
                 {

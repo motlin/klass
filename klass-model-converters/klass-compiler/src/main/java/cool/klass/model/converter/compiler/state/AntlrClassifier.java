@@ -411,8 +411,7 @@ public abstract class AntlrClassifier
             return;
         }
 
-        MutableList<AntlrDataTypeProperty<?>> nonIdKeyProperties = this.dataTypePropertyStates
-                .select(AntlrDataTypeProperty::isKey)
+        ImmutableList<AntlrDataTypeProperty<?>> nonIdKeyProperties = this.getKeyProperties()
                 .reject(AntlrDataTypeProperty::isId);
         if (nonIdKeyProperties.isEmpty())
         {
@@ -575,5 +574,10 @@ public abstract class AntlrClassifier
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".isSubClassOf() not implemented yet");
+    }
+
+    public ImmutableList<AntlrDataTypeProperty<?>> getKeyProperties()
+    {
+        return this.getDataTypeProperties().select(AntlrDataTypeProperty::isKey).toImmutable();
     }
 }

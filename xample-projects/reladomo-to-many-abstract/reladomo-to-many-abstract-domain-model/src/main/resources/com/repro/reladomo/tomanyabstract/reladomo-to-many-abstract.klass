@@ -68,8 +68,6 @@ association ContainerHasItems
     book                   : Book[1..1];
     chapters               : AbstractChapter[0..*] owned
         orderBy: this.chapterNumber;
-
-    relationship this.title == AbstractChapter.bookTitle
 }
 
 projection BookReadProjection on Book

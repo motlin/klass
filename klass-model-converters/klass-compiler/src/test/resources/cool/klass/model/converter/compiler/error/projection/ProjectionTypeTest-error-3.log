@@ -1,18 +1,18 @@
 [33m════════════════════════════════════════[m [35mERR_PRP_TYP[m [33m════════════════════════════════════════[m
 [31mError: Nested projection nodes require a reference property, but found a data type property 'Parent.enumPropertyToUnresolvedEnumeration' with type 'UnresolvedEnumeration'.[m
 
-At (ProjectionTypeTest.klass:35)
+At (ProjectionTypeTest.klass:33)
 
 [39m 1║ [35mpackage [39mdummy
-[39m30║ [35mprojection [39mProjection1 [35mon [39mParent
-[39m31║ [36m{
-[39m35║     [39menumPropertyToUnresolvedEnumeration[36m: [36m{
+[39m28║ [35mprojection [39mProjection1 [35mon [39mParent
+[39m29║ [36m{
+[39m33║     [39menumPropertyToUnresolvedEnumeration[36m: [36m{
 [39m  ║ [31m    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[39m37║     [36m}[36m,
-[39m42║ [36m}
+[39m35║     [36m}[36m,
+[39m40║ [36m}
 [m
-[36mLocation:  [mProjectionTypeTest.klass:35[m
+[36mLocation:  [mProjectionTypeTest.klass:33[m
 [36mFile:      [mProjectionTypeTest.klass[m
-[36mLine:      [m35[m
+[36mLine:      [m33[m
 [36mCharacter: [m5
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

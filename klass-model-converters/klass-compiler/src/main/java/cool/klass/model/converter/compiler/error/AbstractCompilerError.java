@@ -149,7 +149,13 @@ public abstract class AbstractCompilerError
 
         if (!contextTokens.containsAll(underlinedTokens))
         {
-            throw new AssertionError(underlinedTokens);
+            String message = this.offendingContexts
+                    .asLazy()
+                    .flatCollect(this::getUnderlinedTokenRange)
+                    .collect(Token::getText)
+                    .toList()
+                    .makeString("");
+            throw new AssertionError(message);
         }
 
         if (!contextLines.containsAll(underlinedLines))

@@ -77,8 +77,6 @@ association ParentHasChild
 {
     parent: Parent[0..1];
     children: Child[0..*];
-
-    relationship this.key == Child.parentKey
 }
 
 association BadRelationship2

@@ -15,16 +15,12 @@ association ParentHasChild1
 {
     parent: Parent[0..1];
     children: Child[0..*];
-
-    relationship this.key == Child.parentKey
 }
 
 association ParentHasChild2
 {
     parent2: Parent[0..1];
     children: Child[0..*];
-
-    relationship this.key == Child.parentKey
 }
 
 projection ParentProject on Parent

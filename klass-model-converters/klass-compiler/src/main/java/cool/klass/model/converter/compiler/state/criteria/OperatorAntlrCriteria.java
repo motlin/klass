@@ -157,7 +157,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         AntlrAssociationEnd sourceEnd = association.getSourceEnd();
         AntlrAssociationEnd targetEnd = association.getTargetEnd();
 
-        AntlrThisMemberReferencePath thisMemberReferencePathState = this.getThisMemberRefrencePathState();
+        AntlrThisMemberReferencePath thisMemberReferencePathState = this.getThisMemberReferencePathState();
         AntlrTypeMemberReferencePath typeMemberReferencePathState = this.getTypeMemberReferencePathState();
 
         AntlrDataTypeProperty<?> thisDataTypePropertyState = thisMemberReferencePathState.getDataTypePropertyState();
@@ -238,6 +238,14 @@ public class OperatorAntlrCriteria extends AntlrCriteria
             return targetEnd;
         }
 
+        // These happen for associations where the owned type has a generated id key.
+        // association ServiceHasQueryCriteria
+        // {
+        //     queryService                  : Service[0..1];
+        //     queryCriteria                 : Criteria[0..1] owned;
+        //     relationship this.queryCriteriaId == Criteria.id
+        // }
+
         // TODO: These two conditions don't make sense here, because we're only considering one pair of joined properties among several &&-clauses
         if (thisDataTypePropertyState.isKey() && !typeDataTypePropertyState.isKey())
         {
@@ -246,18 +254,6 @@ public class OperatorAntlrCriteria extends AntlrCriteria
 
         // TODO: These two conditions don't make sense here, because we're only considering one pair of joined properties among several &&-clauses
         if (typeDataTypePropertyState.isKey() && !thisDataTypePropertyState.isKey())
-        {
-            return targetEnd;
-        }
-
-        // TODO: Delete these two special cases
-        if (targetEnd.isOwned() && targetEnd.isVersion())
-        {
-            return sourceEnd;
-        }
-
-        // TODO: Delete these two special cases
-        if (sourceEnd.isOwned() && sourceEnd.isVersion())
         {
             return targetEnd;
         }
@@ -278,7 +274,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     }
 
     @Nonnull
-    private AntlrThisMemberReferencePath getThisMemberRefrencePathState()
+    private AntlrThisMemberReferencePath getThisMemberReferencePathState()
     {
         if (this.sourceValue instanceof AntlrThisMemberReferencePath)
         {

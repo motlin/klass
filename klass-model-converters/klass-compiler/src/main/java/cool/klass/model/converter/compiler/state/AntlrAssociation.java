@@ -162,22 +162,23 @@ public class AntlrAssociation
             throw new AssertionError(numAssociationEnds);
         }
 
-        AbstractCriteriaBuilder<?> criteriaBuilder = this.relationship.getCriteria().build();
-
         this.associationBuilder = new AssociationBuilder(
                 (AssociationDeclarationContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,
                 this.getNameContext(),
-                this.getPackageName(),
-                criteriaBuilder);
+                this.getPackageName());
 
         ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates
                 .collect(AntlrAssociationEnd::build)
                 .toImmutable();
 
         this.associationBuilder.setAssociationEndBuilders(associationEndBuilders);
+
+        AbstractCriteriaBuilder<?> criteriaBuilder = this.relationship.getCriteria().build();
+        this.associationBuilder.setCriteriaBuilder(criteriaBuilder);
+
         return this.associationBuilder;
     }
 
