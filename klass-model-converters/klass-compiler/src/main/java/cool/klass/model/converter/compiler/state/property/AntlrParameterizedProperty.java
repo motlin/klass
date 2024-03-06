@@ -187,12 +187,4 @@ public class AntlrParameterizedProperty
         super.reportNameErrors(compilerErrorHolder);
         this.parameterHolder.reportNameErrors(compilerErrorHolder);
     }
-
-    @Override
-    public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
-    {
-        super.reportAuditErrors(compilerErrorHolder);
-
-        // TODO: if (!this.classTypeState.getType().isUser() && !this.isAudit())
-    }
 }

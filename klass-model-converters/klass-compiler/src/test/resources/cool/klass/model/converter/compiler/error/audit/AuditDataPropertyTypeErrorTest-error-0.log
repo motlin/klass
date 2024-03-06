@@ -1,0 +1,17 @@
+[33m════════════════════════════════════════[m [35mERR_USR_DTP[m [33m════════════════════════════════════════[m
+[31mError: Expected type 'String' but was 'DummyEnumeration' for 'userId' property 'User.id: DummyEnumeration key userId'.[m
+
+At (AuditDataPropertyTypeErrorTest.klass:10)
+
+[39m 1║ [35mpackage [39mcom[36m.[39merrors
+[39m 8║ [35muser [39mUser [33msystemTemporal [33mversioned
+[39m 9║ [36m{
+[39m10║     [33mid[36m: [39mDummyEnumeration [33mkey [33muserId[36m;
+[39m  ║ [31m        ^^^^^^^^^^^^^^^^     ^^^^^^
+[39m11║ [36m}
+[m
+[36mLocation:  [mAuditDataPropertyTypeErrorTest.klass:10[m
+[36mFile:      [mAuditDataPropertyTypeErrorTest.klass[m
+[36mLine:      [m10[m
+[36mCharacter: [m30
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

@@ -355,7 +355,13 @@ public abstract class AntlrClassifier
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.reportDuplicatePropertyNames(compilerErrorHolder);
-        this.reportMultipleIdProperties(compilerErrorHolder);
+        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.dataTypePropertyStates, "id");
+        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.dataTypePropertyStates, "version");
+        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.dataTypePropertyStates, "createdBy");
+        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.dataTypePropertyStates, "lastUpdatedBy");
+        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.referencePropertyStates, "version");
+        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.referencePropertyStates, "createdBy");
+        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.referencePropertyStates, "lastUpdatedBy");
         this.reportIdAndKeyProperties(compilerErrorHolder);
         this.reportInterfaceNotFound(compilerErrorHolder);
         this.reportRedundantInterface(compilerErrorHolder);
@@ -371,29 +377,34 @@ public abstract class AntlrClassifier
     private void reportDuplicatePropertyNames(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
-        for (AntlrDataTypeProperty<?> dataTypePropertyState : this.dataTypePropertyStates)
+        for (AntlrProperty property : this.propertyStates)
         {
-            if (duplicateMemberNames.contains(dataTypePropertyState.getName()))
+            if (duplicateMemberNames.contains(property.getName()))
             {
-                dataTypePropertyState.reportDuplicateMemberName(compilerErrorHolder);
+                property.reportDuplicateMemberName(compilerErrorHolder);
             }
-            dataTypePropertyState.reportErrors(compilerErrorHolder);
+            property.reportErrors(compilerErrorHolder);
         }
     }
 
-    private void reportMultipleIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
+    protected <T extends AntlrProperty> void reportMultiplePropertiesWithModifiers(
+            @Nonnull CompilerErrorState compilerErrorHolder,
+            MutableList<T> propertyStates,
+            String... modifiersArray)
     {
-        int numIdProperties = this.dataTypePropertyStates.count(AntlrDataTypeProperty::isId);
-        if (numIdProperties > 1)
+        ImmutableList<String> modifiers = Lists.immutable.with(modifiersArray);
+        MutableList<T> properties = propertyStates
+                .select(property -> modifiers
+                        .allSatisfy(modifier -> property.getModifiers().anySatisfyWith(AntlrModifier::is, modifier)));
+
+        if (properties.size() <= 1)
         {
-            String message = String.format(
-                    "Class '%s' may only have one id property. Found: %s.",
-                    this.getName(),
-                    this.dataTypePropertyStates
-                            .select(AntlrDataTypeProperty::isId)
-                            .collect(AntlrDataTypeProperty::getShortString)
-                            .makeString());
-            compilerErrorHolder.add("ERR_MNY_IDS", message, this);
+            return;
+        }
+
+        for (AntlrProperty property : properties)
+        {
+            property.reportDuplicatePropertyWithModifiers(compilerErrorHolder, modifiers);
         }
     }
 
@@ -532,9 +543,8 @@ public abstract class AntlrClassifier
     @OverridingMethodsMustInvokeSuper
     public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        this.modifierStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
+        this.reportAuditErrors(compilerErrorHolder, this.modifierStates, this);
         this.dataTypePropertyStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
-        this.associationEndSignatureStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
     }
 
     protected AntlrDataTypeProperty<?> getInterfaceDataTypePropertyByName(String name)

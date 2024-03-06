@@ -74,11 +74,7 @@ public class AntlrLiteralListValue
         {
             // TODO: Cover this with a test
 
-            compilerErrorHolder.add(
-                    "ERR_LIT_LST",
-                    "Literal list with heterogeneous values.",
-                    this,
-                    this.elementContext);
+            compilerErrorHolder.add("ERR_LIT_LST", "Literal list with heterogeneous values.", this);
         }
     }
 

@@ -73,19 +73,6 @@ public class AntlrModifier
         // intentionally blank
     }
 
-    public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
-    {
-        if (!this.isAudit() && !this.isUser())
-        {
-            return;
-        }
-
-        String message = String.format(
-                "Modifier '%s' requires one 'user' class in the domain model.",
-                this.getName());
-        compilerErrorHolder.add("ERR_ADT_MOD", message, this);
-    }
-
     public boolean is(String name)
     {
         return this.getName().equals(name);

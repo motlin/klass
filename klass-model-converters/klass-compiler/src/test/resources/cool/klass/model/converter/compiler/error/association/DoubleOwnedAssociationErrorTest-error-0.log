@@ -1,5 +1,5 @@
 [33m════════════════════════════════════════[m [35mERR_ASO_OWN[m [33m════════════════════════════════════════[m
-[31mError: Both associations are owned in association 'DoubleOwnedAssociation'. At most one end may be owned.[m
+[31mError: Both association ends are owned in 'DoubleOwnedAssociation'. At most one end may be owned.[m
 
 At (DoubleOwnedAssociationErrorTest.klass:5)
 

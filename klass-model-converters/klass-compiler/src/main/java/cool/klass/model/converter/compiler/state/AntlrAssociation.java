@@ -186,7 +186,7 @@ public class AntlrAssociation
         if (this.getSourceEnd().isOwned() && this.getTargetEnd().isOwned())
         {
             String message = String.format(
-                    "Both associations are owned in association '%s'. At most one end may be owned.",
+                    "Both association ends are owned in '%s'. At most one end may be owned.",
                     this.getName());
             AntlrModifier sourceOwnedModifier = this.getSourceEnd().getModifiers().detect(AntlrModifier::isOwned);
             AntlrModifier targetOwnedModifier = this.getTargetEnd().getModifiers().detect(AntlrModifier::isOwned);

@@ -11,12 +11,14 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.property.AbstractProperty.PropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.bag.MutableBag;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
@@ -128,16 +130,6 @@ public abstract class AntlrProperty
         }
     }
 
-    public void reportDuplicateUserProperty(@Nonnull CompilerErrorState compilerErrorHolder)
-    {
-        String message = String.format(
-                "Duplicate userId property: '%s.%s'.",
-                this.getOwningClassifierState().getName(),
-                this.getName());
-
-        compilerErrorHolder.add("ERR_DUP_UID", message, this);
-    }
-
     public final void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         String message = String.format(
@@ -151,7 +143,27 @@ public abstract class AntlrProperty
     @OverridingMethodsMustInvokeSuper
     public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        this.modifierStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
+        this.reportAuditErrors(compilerErrorHolder, this.modifierStates, this);
+    }
+
+    public void reportDuplicatePropertyWithModifiers(
+            @Nonnull CompilerErrorState compilerErrorHolder,
+            ImmutableList<String> modifierStrings)
+    {
+        // TODO: Implement getting modifiers by name
+        ImmutableList<AntlrModifier> modifierStates = this.getModifiers()
+                .select(modifier -> modifierStrings.anySatisfy(modifier::is)).toImmutable();
+
+        String message = String.format(
+                "Multiple properties on '%s' with modifiers %s.",
+                this.getOwningClassifierState().getName(),
+                modifierStrings);
+
+        compilerErrorHolder.add(
+                "ERR_PRP_MOD",
+                message,
+                this,
+                modifierStates.collect(AntlrElement::getElementContext));
     }
 
     @Override

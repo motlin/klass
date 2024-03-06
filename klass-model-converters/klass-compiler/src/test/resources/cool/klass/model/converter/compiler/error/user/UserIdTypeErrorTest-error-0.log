@@ -1,5 +1,5 @@
-[33m════════════════════════════════════════[m [35mERR_DUP_UID[m [33m════════════════════════════════════════[m
-[31mError: Duplicate userId property: 'User.userId'.[m
+[33m════════════════════════════════════════[m [35mERR_USR_DTP[m [33m════════════════════════════════════════[m
+[31mError: Expected type 'String' but was 'Instant' for 'userId' property 'User.userId: Instant key userId'.[m
 
 At (UserIdTypeErrorTest.klass:8)
 
@@ -10,11 +10,11 @@ At (UserIdTypeErrorTest.klass:8)
 [39m6║     [33maudited
 [39m7║ [36m{
 [39m8║     [33muserId          [36m: [35mInstant [33mkey [33muserId[36m;
-[39m ║ [31m    ^^^^^^
+[39m ║ [31m                      ^^^^^^^     ^^^^^^
 [39m9║ [36m}
 [m
 [36mLocation:  [mUserIdTypeErrorTest.klass:8[m
 [36mFile:      [mUserIdTypeErrorTest.klass[m
 [36mLine:      [m8[m
-[36mCharacter: [m5
+[36mCharacter: [m35
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

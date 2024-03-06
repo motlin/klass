@@ -1,5 +1,5 @@
-[33m════════════════════════════════════════[m [35mERR_DUP_UID[m [33m════════════════════════════════════════[m
-[31mError: Duplicate userId property: 'User.userId2'.[m
+[33m════════════════════════════════════════[m [35mERR_PRP_MOD[m [33m════════════════════════════════════════[m
+[31mError: Multiple properties on 'User' with modifiers [key, userId].[m
 
 At (UserClassWithDuplicateUserIdErrorTest.klass:6)
 
@@ -7,11 +7,11 @@ At (UserClassWithDuplicateUserIdErrorTest.klass:6)
 [39m3║ [35muser [39mUser
 [39m4║ [36m{
 [39m6║     [39muserId2[36m: [35mString [33mkey [33muserId[36m;
-[39m ║ [31m    ^^^^^^^
+[39m ║ [31m                    ^^^ ^^^^^^
 [39m7║ [36m}
 [m
 [36mLocation:  [mUserClassWithDuplicateUserIdErrorTest.klass:6[m
 [36mFile:      [mUserClassWithDuplicateUserIdErrorTest.klass[m
 [36mLine:      [m6[m
-[36mCharacter: [m5
+[36mCharacter: [m21
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

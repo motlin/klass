@@ -1,17 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_FOR_MUL[m [33m════════════════════════════════════════[m
 [31mError: Association end 'DummyChild.parent' has multiplicity [0..1] but foreign key 'DummyChild.parentId' is required.[m
 
-At (ForeignKeyMultiplicityErrorTest.klass:19)
+At (ForeignKeyMultiplicityErrorTest.klass:5)
 
-[39m 1║ [35mpackage [39mdummy
-[39m16║ [35mclass [39mDummyChild
-[39m17║ [36m{
-[39m19║     [39mparentId[36m: [35mLong [33mprivate[36m;
-[39m  ║ [31m    ^^^^^^^^
-[39m20║ [36m}
+[39m1║ [35mpackage [39mdummy
+[39m3║ [35massociation [39mForeignKeyMultiplicity
+[39m4║ [36m{
+[39m5║     [39mparent[36m: [39mDummyParent[36m[[34m0[36m..[34m1[36m][36m;
+[39m ║ [31m                       ^^^^^^
+[39m9║ [36m}
 [m
-[36mLocation:  [mForeignKeyMultiplicityErrorTest.klass:19[m
+[36mLocation:  [mForeignKeyMultiplicityErrorTest.klass:5[m
 [36mFile:      [mForeignKeyMultiplicityErrorTest.klass[m
-[36mLine:      [m19[m
-[36mCharacter: [m5
+[36mLine:      [m5[m
+[36mCharacter: [m24
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

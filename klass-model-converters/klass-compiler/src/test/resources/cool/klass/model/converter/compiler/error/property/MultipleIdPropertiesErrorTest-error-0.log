@@ -1,16 +1,17 @@
-[33m════════════════════════════════════════[m [35mERR_MNY_IDS[m [33m════════════════════════════════════════[m
-[31mError: Class 'ExampleClass' may only have one id property. Found: id1: Long id key, id2: Long id key.[m
+[33m════════════════════════════════════════[m [35mERR_PRP_MOD[m [33m════════════════════════════════════════[m
+[31mError: Multiple properties on 'ExampleClass' with modifiers [id].[m
 
-At (MultipleIdPropertiesErrorTest.klass:3)
+At (MultipleIdPropertiesErrorTest.klass:5)
 
 [39m1║ [35mpackage [39mexample
 [39m3║ [35mclass [39mExampleClass
-[39m ║ [31m      ^^^^^^^^^^^^
 [39m4║ [36m{
+[39m5║     [39mid1[36m: [35mLong [33mid [33mkey[36m;
+[39m ║ [31m              ^^
 [39m7║ [36m}
 [m
-[36mLocation:  [mMultipleIdPropertiesErrorTest.klass:3[m
+[36mLocation:  [mMultipleIdPropertiesErrorTest.klass:5[m
 [36mFile:      [mMultipleIdPropertiesErrorTest.klass[m
-[36mLine:      [m3[m
-[36mCharacter: [m7
+[36mLine:      [m5[m
+[36mCharacter: [m15
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

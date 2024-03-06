@@ -276,5 +276,17 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         compilerErrorHolder.add("ERR_PRP_TYP", message, this, offendingToken);
     }
 
+    public void reportDuplicatePropertyWithModifier(
+            @Nonnull CompilerErrorState compilerErrorHolder,
+            String modifier)
+    {
+        AntlrModifier modifierState = this.getModifiers().detectWith(AntlrModifier::is, modifier);
+        String message = String.format("Multiple %s properties on '%s'.", modifier, this.getOwningClassifierState().getName());
+        compilerErrorHolder.add(
+                "ERR_DUP_REF",
+                message,
+                modifierState);
+    }
+
     protected abstract IdentifierContext getTypeIdentifier();
 }

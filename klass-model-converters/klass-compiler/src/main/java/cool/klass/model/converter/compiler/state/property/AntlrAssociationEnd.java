@@ -11,6 +11,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.meta.domain.AbstractElement;
@@ -23,6 +24,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrAssociationEnd
@@ -116,6 +118,8 @@ public class AntlrAssociationEnd
 
         this.reportInvalidMultiplicity(compilerErrorHolder);
         this.reportVersionEndUnowned(compilerErrorHolder);
+        this.reportNonVersionEnd(compilerErrorHolder);
+        this.reportNonUserAuditEnd(compilerErrorHolder);
     }
 
     private void reportVersionEndUnowned(@Nonnull CompilerErrorState compilerErrorHolder)
@@ -128,6 +132,80 @@ public class AntlrAssociationEnd
                     this.getName());
             compilerErrorHolder.add("ERR_VER_OWN", message, this, this.nameContext);
         }
+    }
+
+    private void reportNonVersionEnd(CompilerErrorState compilerErrorHolder)
+    {
+        if (this.isVersion() && !this.getType().isVersion())
+        {
+            String message = String.format(
+                    "Expected version association end '%s.%s' to have version type, but %s has no version property.",
+                    this.getOwningClassifierState().getName(),
+                    this.getName(),
+                    this.getType().getName());
+            compilerErrorHolder.add("ERR_VER_END", message, this, this.nameContext);
+        }
+        if (!this.getOwningClassifierState().isUser() && !this.isVersion() && this.getType().isVersion())
+        {
+            String message = String.format(
+                    "Association end '%s.%s' has version type %s, but is missing the version modifier.",
+                    this.getOwningClassifierState().getName(),
+                    this.getName(),
+                    this.getType().getName());
+            compilerErrorHolder.add(
+                    "ERR_VER_TYP",
+                    message,
+                    this,
+                    Lists.immutable.with(this.nameContext, this.getElementContext().classReference()));
+        }
+    }
+
+    private void reportNonUserAuditEnd(CompilerErrorState compilerErrorHolder)
+    {
+        if (this.isCreatedBy() && !this.getType().isUser())
+        {
+            AntlrModifier modifier = this.getModifiers().detect(AntlrModifier::isCreatedBy);
+            String message = String.format(
+                    "Expected createdBy association end '%s.%s' to have user type, but was %s.",
+                    this.getOwningClassifierState().getName(),
+                    this.getName(),
+                    this.getType().getName());
+            compilerErrorHolder.add(
+                    "ERR_AUD_END",
+                    message,
+                    modifier,
+                    modifier.getSurroundingElements(),
+                    Lists.immutable.with(this.getElementContext().classReference(), modifier.getElementContext()));
+        }
+        if (this.isLastUpdatedBy() && !this.getType().isUser())
+        {
+            AntlrModifier modifier = this.getModifiers().detect(AntlrModifier::isLastUpdatedBy);
+            String message = String.format(
+                    "Expected lastUpdatedBy association end '%s.%s' to have user type, but was %s.",
+                    this.getOwningClassifierState().getName(),
+                    this.getName(),
+                    this.getType().getName());
+
+            compilerErrorHolder.add(
+                    "ERR_AUD_END",
+                    message,
+                    modifier,
+                    modifier.getSurroundingElements(),
+                    Lists.immutable.with(this.getElementContext().classReference(), modifier.getElementContext()));
+        }
+    }
+
+    public void reportDuplicateOppositeWithModifier(
+            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull AntlrClassifier classifier,
+            String modifier)
+    {
+        AntlrModifier modifierState = this.getModifiers().detectWith(AntlrModifier::is, modifier);
+        String message = String.format(
+                "Multiple %s association ends point at '%s'.",
+                modifier,
+                classifier.getName());
+        compilerErrorHolder.add("ERR_DUP_END", message, modifierState);
     }
 
     @Nonnull
@@ -161,27 +239,6 @@ public class AntlrAssociationEnd
     public AssociationEndBuilder getElementBuilder()
     {
         return Objects.requireNonNull(this.associationEndBuilder);
-    }
-
-    public void reportDuplicateVersionProperty(
-            @Nonnull CompilerErrorState compilerErrorHolder,
-            @Nonnull AntlrClass antlrClass)
-    {
-        AntlrModifier versionModifier = this.getModifiers().detect(AntlrModifier::isVersion);
-        String message = String.format(
-                "Multiple version properties on '%s'.",
-                antlrClass.getName());
-        compilerErrorHolder.add("ERR_VER_END", message, versionModifier);
-    }
-
-    public void reportDuplicateVersionedProperty(
-            @Nonnull CompilerErrorState compilerErrorHolder,
-            @Nonnull AntlrClass antlrClass)
-    {
-        String message = String.format(
-                "Multiple versioned properties on '%s'.",
-                antlrClass.getName());
-        compilerErrorHolder.add("ERR_VER_END", message, this);
     }
 
     @Nonnull

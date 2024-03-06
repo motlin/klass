@@ -5,12 +5,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
+import cool.klass.model.converter.compiler.state.property.AntlrClassReferenceProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
@@ -414,69 +414,67 @@ public class AntlrClass
     {
         super.reportErrors(compilerErrorHolder);
 
-        this.reportDuplicateParameterizedPropertyNames(compilerErrorHolder);
-        this.reportDuplicateAssociationEndNames(compilerErrorHolder);
-        this.reportVersionErrors(compilerErrorHolder);
+        if (this.isUser)
+        {
+            this.reportMultiplePropertiesWithModifiers(
+                    compilerErrorHolder,
+                    this.dataTypePropertyStates,
+                    "key",
+                    "userId");
+        }
         this.reportMissingKeyProperty(compilerErrorHolder);
         this.reportSuperClassNotFound(compilerErrorHolder);
         this.reportExtendsConcrete(compilerErrorHolder);
+        this.reportMultipleOppositesWithModifier(compilerErrorHolder, "version");
+        this.reportOwnedByMultipleTypes(compilerErrorHolder);
+        this.reportVersionErrors(compilerErrorHolder);
         this.reportTransientInheritance(compilerErrorHolder);
         this.reportTransientIdProperties(compilerErrorHolder);
 
         // TODO: parameterized properties
     }
 
-    private void reportDuplicateParameterizedPropertyNames(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportMultipleOppositesWithModifier(@Nonnull CompilerErrorState compilerErrorHolder, String modifier)
     {
-        ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
-
-        for (AntlrParameterizedProperty parameterizedPropertyState : this.parameterizedPropertyStates)
+        MutableList<AntlrAssociationEnd> associationEnds = this.associationEndStates
+                .select(associationEnd -> associationEnd
+                        .getOpposite()
+                        .getModifiers()
+                        .anySatisfyWith(AntlrModifier::is, modifier));
+        if (associationEnds.size() <= 1)
         {
-            if (duplicateMemberNames.contains(parameterizedPropertyState.getName()))
-            {
-                parameterizedPropertyState.reportDuplicateMemberName(compilerErrorHolder);
-            }
-            parameterizedPropertyState.reportErrors(compilerErrorHolder);
+            return;
+        }
+
+        for (AntlrAssociationEnd associationEnd : associationEnds)
+        {
+            associationEnd.getOpposite().reportDuplicateOppositeWithModifier(compilerErrorHolder, this, modifier);
         }
     }
 
-    private void reportDuplicateAssociationEndNames(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportOwnedByMultipleTypes(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
-
-        for (AntlrAssociationEnd associationEndState : this.associationEndStates)
+        MutableList<AntlrAssociationEnd> associationEnds = this.associationEndStates
+                .select(associationEnd -> associationEnd
+                        .getOpposite()
+                        .getModifiers()
+                        .anySatisfy(AntlrModifier::isOwned))
+                .collect(AntlrAssociationEnd::getOpposite);
+        if (associationEnds.collect(AntlrClassReferenceProperty::getType).distinct().size() <= 1)
         {
-            if (duplicateMemberNames.contains(associationEndState.getName()))
-            {
-                associationEndState.reportDuplicateMemberName(compilerErrorHolder);
-            }
-            associationEndState.reportErrors(compilerErrorHolder);
+            return;
+        }
+
+        for (AntlrAssociationEnd associationEnd : associationEnds)
+        {
+            associationEnd.reportDuplicateOppositeWithModifier(compilerErrorHolder, this, "owned");
         }
     }
 
     private void reportVersionErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        MutableList<AntlrAssociationEnd> versionAssociationEnds =
-                this.associationEndStates.select(AntlrAssociationEnd::isVersion);
-        if (versionAssociationEnds.size() > 1)
-        {
-            for (AntlrAssociationEnd antlrAssociationEnd : versionAssociationEnds)
-            {
-                antlrAssociationEnd.reportDuplicateVersionProperty(compilerErrorHolder, this);
-            }
-        }
-
-        MutableList<AntlrAssociationEnd> versionedAssociationEnds =
-                this.associationEndStates.select(AntlrAssociationEnd::isVersioned);
-        if (versionedAssociationEnds.size() > 1)
-        {
-            for (AntlrAssociationEnd versionedAssociationEnd : versionedAssociationEnds)
-            {
-                versionedAssociationEnd.reportDuplicateVersionedProperty(compilerErrorHolder, this);
-            }
-        }
-
-        if (versionAssociationEnds.notEmpty() && versionedAssociationEnds.notEmpty())
+        if (this.referencePropertyStates.anySatisfy(AntlrReferenceProperty::isVersion)
+                && this.associationEndStates.anySatisfy(AntlrAssociationEnd::isVersioned))
         {
             String message = String.format("Class '%s' is a version and has a version.", this.getName());
             compilerErrorHolder.add("ERR_VER_VER", message, this);
@@ -523,19 +521,6 @@ public class AntlrClass
                 "Only one 'user' class is allowed. Found '%s'.",
                 this.getName());
         compilerErrorHolder.add("ERR_DUP_USR", message, this, this.nameContext);
-    }
-
-    public void reportDuplicateUserProperties(@Nonnull CompilerErrorState compilerErrorHolder)
-    {
-        MutableList<AntlrDataTypeProperty<?>> userIdProperties =
-                this.dataTypePropertyStates.select(AntlrDataTypeProperty::isUserId);
-        if (userIdProperties.size() > 1)
-        {
-            for (AntlrDataTypeProperty<?> userIdProperty : userIdProperties)
-            {
-                userIdProperty.reportDuplicateUserProperty(compilerErrorHolder);
-            }
-        }
     }
 
     private void reportSuperClassNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
@@ -683,15 +668,6 @@ public class AntlrClass
         this.associationEndStates.collect(AntlrProperty::getName, topLevelNames);
         this.associationEndSignatureStates.collect(AntlrProperty::getName, topLevelNames);
         return topLevelNames.toImmutable();
-    }
-
-    @OverridingMethodsMustInvokeSuper
-    @Override
-    public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
-    {
-        super.reportAuditErrors(compilerErrorHolder);
-
-        this.parameterizedPropertyStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
     }
 
     public boolean isSubClassOf(AntlrClassifier classifier)

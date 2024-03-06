@@ -10,7 +10,9 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
+import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.validation.AbstractAntlrPropertyValidation;
@@ -20,6 +22,7 @@ import cool.klass.model.converter.compiler.state.property.validation.AntlrMinLen
 import cool.klass.model.converter.compiler.state.property.validation.AntlrMinPropertyValidation;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.DataType;
+import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.validation.MaxLengthPropertyValidationImpl.MaxLengthPropertyValidationBuilder;
@@ -170,6 +173,11 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     + ".reportInvalidIdProperties() not implemented yet");
         }
     };
+
+    private static final ImmutableList<PrimitiveType> ALLOWED_VERSION_TYPES =
+            Lists.immutable.with(
+                    PrimitiveType.INTEGER,
+                    PrimitiveType.LONG);
 
     protected final boolean isOptional;
 
@@ -396,6 +404,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         this.reportDuplicateValidations(compilerErrorHolder);
         this.reportInvalidIdProperties(compilerErrorHolder);
         this.reportInvalidForeignKeyProperties(compilerErrorHolder);
+        this.reportInvalidUserIdProperties(compilerErrorHolder);
+        this.reportInvalidVersionProperties(compilerErrorHolder);
+        this.reportInvalidTemporalProperties(compilerErrorHolder);
+        this.reportInvalidAuditProperties(compilerErrorHolder);
 
         // TODO: ☑ Check for nullable key properties
     }
@@ -412,16 +424,18 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             @Nonnull CompilerErrorState compilerErrorHolder,
             @Nonnull ListIterable<? extends AbstractAntlrPropertyValidation> validationStates)
     {
-        if (validationStates.size() > 1)
+        if (validationStates.size() <= 1)
         {
-            for (AbstractAntlrPropertyValidation minLengthValidation : validationStates)
-            {
-                ParserRuleContext offendingToken = minLengthValidation.getElementContext();
-                String message = String.format(
-                        "Duplicate validation '%s'.",
-                        offendingToken.getText());
-                compilerErrorHolder.add("ERR_DUP_VAL", message, minLengthValidation, minLengthValidation.getKeywordToken());
-            }
+            return;
+        }
+
+        for (AbstractAntlrPropertyValidation minLengthValidation : validationStates)
+        {
+            ParserRuleContext offendingToken = minLengthValidation.getElementContext();
+            String message = String.format(
+                    "Duplicate validation '%s'.",
+                    offendingToken.getText());
+            compilerErrorHolder.add("ERR_DUP_VAL", message, minLengthValidation, minLengthValidation.getKeywordToken());
         }
     }
 
@@ -460,7 +474,180 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     this.getOwningClassifierState(),
                     this.getName(),
                     this.isOptional ? "not " : "");
-            compilerErrorHolder.add("ERR_FOR_MUL", message, this);
+            compilerErrorHolder.add("ERR_FOR_MUL", message, this, this.getTypeParserRuleContext());
+            compilerErrorHolder.add("ERR_FOR_MUL", message, associationEnd.getMultiplicity());
+        }
+    }
+
+    private void reportInvalidUserIdProperties(CompilerErrorState compilerErrorHolder)
+    {
+        if (!this.isUserId() || this.isCreatedBy() || this.isLastUpdatedBy())
+        {
+            return;
+        }
+
+        AntlrType antlrType = this.getType();
+        if (antlrType instanceof AntlrPrimitiveType
+                && ((AntlrPrimitiveType) antlrType).getPrimitiveType().equals(PrimitiveType.STRING))
+        {
+            return;
+        }
+
+        AntlrModifier modifier = this.getModifiers().detect(AntlrModifier::isUserId);
+        String message = String.format(
+                "Expected type '%s' but was '%s' for '%s' property '%s'.",
+                PrimitiveType.STRING,
+                antlrType.getName(),
+                modifier,
+                this);
+        compilerErrorHolder.add(
+                "ERR_USR_DTP",
+                message,
+                this,
+                Lists.immutable.with(modifier.getElementContext(), this.getTypeParserRuleContext()));
+    }
+
+    private void reportInvalidVersionProperties(CompilerErrorState compilerErrorHolder)
+    {
+        if (this.getModifiers().noneSatisfy(AntlrModifier::isVersion))
+        {
+            return;
+        }
+
+        AntlrType antlrType = this.getType();
+        if (antlrType instanceof AntlrPrimitiveType
+                && ALLOWED_VERSION_TYPES.contains(((AntlrPrimitiveType) antlrType).getPrimitiveType()))
+        {
+            return;
+        }
+
+        AntlrModifier modifier = this.getModifiers().detect(AntlrModifier::isVersion);
+        String message = String.format(
+                "Expected types %s but was '%s' for '%s' property '%s'.",
+                ALLOWED_VERSION_TYPES,
+                antlrType.getName(),
+                modifier,
+                this);
+        compilerErrorHolder.add("ERR_VER_DTP", message, modifier);
+    }
+
+    private void reportInvalidTemporalProperties(CompilerErrorState compilerErrorHolder)
+    {
+        if (this.isValidRange() || this.isSystemRange())
+        {
+            if (this.getType() != AntlrPrimitiveType.TEMPORAL_RANGE)
+            {
+                ParserRuleContext offendingToken = this.getTypeParserRuleContext();
+                String message = String.format(
+                        "Expected type '%s' for temporal property but found '%s'.",
+                        AntlrPrimitiveType.TEMPORAL_RANGE,
+                        offendingToken.getText());
+                ListIterable<AntlrModifier> modifiers = this
+                        .getModifiers()
+                        .select(antlrModifier -> antlrModifier.isSystem() || antlrModifier.isVersion());
+                ListIterable<ParserRuleContext> modifierContexts = modifiers
+                        .collect(AntlrElement::getElementContext);
+                compilerErrorHolder.add(
+                        "ERR_TMP_RNG",
+                        message,
+                        this,
+                        Lists.immutable
+                                .with(offendingToken)
+                                .newWithAll(modifierContexts));
+            }
+        }
+        else if (this.isFrom() || this.isTo())
+        {
+            if (!this.isValid() && !this.isSystem())
+            {
+                ParserRuleContext offendingToken = this.getTypeParserRuleContext();
+                String message = String.format(
+                        "Expected type '%s' for temporal property but found '%s'.",
+                        AntlrPrimitiveType.TEMPORAL_RANGE,
+                        offendingToken.getText());
+                ListIterable<AntlrModifier> modifiers = this
+                        .getModifiers()
+                        .select(antlrModifier -> antlrModifier.isSystem() || antlrModifier.isVersion());
+                ListIterable<ParserRuleContext> modifierContexts = modifiers
+                        .collect(AntlrElement::getElementContext);
+                compilerErrorHolder.add(
+                        "ERR_TMP_RNG",
+                        message,
+                        this,
+                        Lists.immutable
+                                .with(offendingToken)
+                                .newWithAll(modifierContexts));
+            }
+            else if (this.getType() != AntlrPrimitiveType.TEMPORAL_INSTANT)
+            {
+                ParserRuleContext offendingToken = this.getTypeParserRuleContext();
+                String message = String.format(
+                        "Expected type '%s' for temporal property but found '%s'.",
+                        AntlrPrimitiveType.TEMPORAL_INSTANT,
+                        offendingToken.getText());
+                ListIterable<AntlrModifier> modifiers = this
+                        .getModifiers()
+                        .select(modifier -> modifier.isSystem() || modifier.isVersion() || modifier.isFrom() || modifier.isTo());
+                ListIterable<ParserRuleContext> modifierContexts = modifiers
+                        .collect(AntlrElement::getElementContext);
+                compilerErrorHolder.add(
+                        "ERR_TMP_INS",
+                        message,
+                        this,
+                        Lists.immutable
+                                .with(offendingToken)
+                                .newWithAll(modifierContexts));
+            }
+        }
+    }
+
+    private void reportInvalidAuditProperties(CompilerErrorState compilerErrorHolder)
+    {
+        if (this.getModifiers().anySatisfy(AntlrModifier::isCreatedBy)
+                || this.getModifiers().anySatisfy(AntlrModifier::isLastUpdatedBy))
+        {
+            AntlrType antlrType = this.getType();
+            if (!(antlrType instanceof AntlrPrimitiveType)
+                    || ((AntlrPrimitiveType) antlrType).getPrimitiveType() != PrimitiveType.STRING)
+            {
+                AntlrModifier modifier = this
+                        .getModifiers()
+                        .detect(antlrModifier -> antlrModifier.isCreatedBy() || antlrModifier.isLastUpdatedBy());
+                String message = String.format(
+                        "Expected type '%s' but was '%s' for '%s' property '%s'.",
+                        PrimitiveType.STRING,
+                        antlrType.getName(),
+                        modifier,
+                        this);
+                compilerErrorHolder.add(
+                        "ERR_AUD_DTP",
+                        message,
+                        this,
+                        Lists.immutable.with(modifier.getElementContext(), this.getTypeParserRuleContext()));
+            }
+        }
+
+        if (this.getModifiers().anySatisfy(AntlrModifier::isCreatedOn))
+        {
+            AntlrType antlrType = this.getType();
+            if (!(antlrType instanceof AntlrPrimitiveType)
+                    || ((AntlrPrimitiveType) antlrType).getPrimitiveType() != PrimitiveType.INSTANT)
+            {
+                AntlrModifier modifier = this
+                        .getModifiers()
+                        .detect(AntlrModifier::isCreatedOn);
+                String message = String.format(
+                        "Expected type '%s' but was '%s' for '%s' property '%s'.",
+                        PrimitiveType.INSTANT,
+                        antlrType.getName(),
+                        modifier,
+                        this);
+                compilerErrorHolder.add(
+                        "ERR_AUD_DTP",
+                        message,
+                        this,
+                        Lists.immutable.with(modifier.getElementContext(), this.getTypeParserRuleContext()));
+            }
         }
     }
 

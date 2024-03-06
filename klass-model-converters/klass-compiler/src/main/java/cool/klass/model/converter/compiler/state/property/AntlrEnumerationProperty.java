@@ -18,7 +18,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 
-public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationImpl>
+public class AntlrEnumerationProperty
+        extends AntlrDataTypeProperty<EnumerationImpl>
 {
     @Nonnull
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(

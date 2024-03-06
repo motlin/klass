@@ -1,0 +1,17 @@
+[33m════════════════════════════════════════[m [35mERR_VER_DTP[m [33m════════════════════════════════════════[m
+[31mError: Expected types [Integer, Long] but was 'String' for 'version' property 'ExampleVersion.number: String version'.[m
+
+At (NonIntegerVersionPropertyErrorTest.klass:7)
+
+[39m1║ [35mpackage [39mcom[36m.[39merrors
+[39m3║ [35mclass [39mExampleVersion [33msystemTemporal
+[39m4║ [36m{
+[39m7║     [39mnumber[36m: [35mString [33mversion[36m;
+[39m ║ [31m                   ^^^^^^^
+[39m8║ [36m}
+[m
+[36mLocation:  [mNonIntegerVersionPropertyErrorTest.klass:7[m
+[36mFile:      [mNonIntegerVersionPropertyErrorTest.klass[m
+[36mLine:      [m7[m
+[36mCharacter: [m20
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

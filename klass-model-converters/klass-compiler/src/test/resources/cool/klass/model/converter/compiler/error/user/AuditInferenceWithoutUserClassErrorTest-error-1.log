@@ -1,5 +1,5 @@
 [33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m
-[31mError: Modifier 'audited' requires one 'user' class in the domain model.[m
+[31mError: Modifiers [audited] require one 'user' class in the domain model.[m
 
 At (Version class macro)
 

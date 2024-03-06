@@ -5,9 +5,12 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
@@ -87,5 +90,28 @@ public interface IAntlrElement
     default Pair<Token, Token> getEntireContext()
     {
         return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().getStop());
+    }
+
+    default void reportAuditErrors(
+            CompilerErrorState compilerErrorHolder,
+            ListIterable<AntlrModifier> modifierStates,
+            IAntlrElement element)
+    {
+        ImmutableList<AntlrModifier> offendingModifiers = modifierStates
+                .select(modifier -> modifier.isAudit() || modifier.isUser())
+                .toImmutable();
+        if (offendingModifiers.isEmpty())
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Modifiers %s require one 'user' class in the domain model.",
+                offendingModifiers);
+        compilerErrorHolder.add(
+                "ERR_ADT_MOD",
+                message,
+                element,
+                offendingModifiers.collect(AntlrElement::getElementContext));
     }
 }

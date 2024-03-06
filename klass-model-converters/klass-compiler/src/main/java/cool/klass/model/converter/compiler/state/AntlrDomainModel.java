@@ -410,8 +410,6 @@ public class AntlrDomainModel
             {
                 userClassState.reportDuplicateUserClass(compilerErrorHolder);
             }
-
-            userClassState.reportDuplicateUserProperties(compilerErrorHolder);
         }
 
         ImmutableList<String> topLevelNames = this.getTopLevelNames();
