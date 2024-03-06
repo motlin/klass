@@ -87,6 +87,13 @@
         </dependency>
 
         <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-junit-rule-match-file</artifactId>
+            <version>${liftwizard.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-meta-interface</artifactId>
             <version>${project.version}</version>

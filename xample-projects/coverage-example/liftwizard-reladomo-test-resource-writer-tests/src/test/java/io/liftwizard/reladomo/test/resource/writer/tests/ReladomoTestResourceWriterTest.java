@@ -10,6 +10,7 @@ import cool.klass.dropwizard.configuration.domain.model.loader.compiler.DomainMo
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.NamedElement;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
+import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import io.liftwizard.reladomo.test.resource.writer.ReladomoTestResourceWriter;
 import io.liftwizard.reladomo.test.rule.ExecuteSqlTestRule;
 import io.liftwizard.reladomo.test.rule.ReladomoInitializeTestRule;
@@ -22,10 +23,11 @@ import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 
-import static org.junit.Assert.assertEquals;
-
 public class ReladomoTestResourceWriterTest
 {
+    @Rule
+    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
+
     @Rule
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();
 
@@ -53,26 +55,9 @@ public class ReladomoTestResourceWriterTest
     {
         ImmutableList<String> classNames = this.domainModel.getClasses().collect(NamedElement::getName);
         String                actual     = ReladomoTestResourceWriter.generate(classNames);
-        String expected = """
-                class cool.klass.xample.coverage.PropertiesRequired
-                systemFrom               , systemTo               , propertiesRequiredId, requiredString      , requiredInteger, requiredLong, requiredDouble, requiredFloat, requiredBoolean, requiredInstant        , requiredLocalDate, createdById  , createdOn                , lastUpdatedById
-                "1999-12-31 23:59:59.999", "9999-12-01 23:59:00.0",                    1, "requiredString 1 ☝",               1, 100000000000,   1.0123456789,     1.0123457,            true, "1999-12-31 23:59:00.0", "1999-12-31"     , "test user 1", "1999-12-31 23:59:59.999", "test user 1" \s
 
-                class cool.klass.xample.coverage.PropertiesOptional
-                systemFrom               , systemTo               , propertiesOptionalId, optionalString      , optionalInteger, optionalLong, optionalDouble, optionalFloat, optionalBoolean, optionalInstant        , optionalLocalDate, createdById  , createdOn                , lastUpdatedById
-                "1999-12-31 23:59:59.999", "9999-12-01 23:59:00.0",                    1, "optionalString 1 ☝",               1, 100000000000,   1.0123456789,     1.0123457,            true, "1999-12-31 23:59:00.0", "1999-12-31"     , "test user 1", "1999-12-31 23:59:59.999", "test user 1" \s
-                "1999-12-31 23:59:59.999", "9999-12-01 23:59:00.0",                    2, null                ,            null,         null,           null,          null,            null, null                   , null             , "test user 1", "1999-12-31 23:59:59.999", "test user 1" \s
-
-                class cool.klass.xample.coverage.PropertiesRequiredVersion
-                systemFrom               , systemTo               , propertiesRequiredId, number, createdById  , createdOn                , lastUpdatedById
-                "1999-12-31 23:59:59.999", "9999-12-01 23:59:00.0",                    1,      1, "test user 1", "1999-12-31 23:59:59.999", "test user 1" \s
-
-                class cool.klass.xample.coverage.PropertiesOptionalVersion
-                systemFrom               , systemTo               , propertiesOptionalId, number, createdById  , createdOn                , lastUpdatedById
-                "1999-12-31 23:59:59.999", "9999-12-01 23:59:00.0",                    1,      1, "test user 1", "1999-12-31 23:59:59.999", "test user 1" \s
-                """;
-
-        assertEquals(expected, actual);
+        String resourceClassPathLocation = this.getClass().getSimpleName() + ".reladomoTestResourceWriter.txt";
+        this.fileMatchRule.assertFileContents(resourceClassPathLocation, actual);
     }
 
     @Nonnull
