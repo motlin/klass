@@ -2,6 +2,8 @@ package cool.klass.deserializer.json.context;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -41,7 +43,7 @@ public class AssociationEndErrorContext implements ErrorContext
                 keysContext);
     }
 
-    private static String toString(Pair<DataTypeProperty, Object> pair)
+    private static String toString(@Nonnull Pair<DataTypeProperty, Object> pair)
     {
         DataTypeProperty dataTypeProperty = pair.getOne();
         Object           key              = pair.getTwo();

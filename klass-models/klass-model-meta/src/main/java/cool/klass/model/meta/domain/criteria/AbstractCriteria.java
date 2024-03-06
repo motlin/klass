@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AbstractCriteria extends AbstractElement implements Criteria
 {
-    protected AbstractCriteria(@Nonnull ParserRuleContext elementContext, Optional<Element> macroElement)
+    protected AbstractCriteria(@Nonnull ParserRuleContext elementContext, @Nonnull Optional<Element> macroElement)
     {
         super(elementContext, macroElement);
     }

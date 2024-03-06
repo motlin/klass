@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -187,7 +188,7 @@ public class RequiredPropertiesValidator
         return dataTypeProperty.getKeysMatchingThisForeignKey().containsValue(keyProperty);
     }
 
-    private void handleWarnIfPresent(DataTypeProperty property, String propertyKind)
+    private void handleWarnIfPresent(@Nonnull DataTypeProperty property, String propertyKind)
     {
         JsonNode jsonNode = this.objectNode.path(property.getName());
         if (jsonNode.isMissingNode())
@@ -278,7 +279,7 @@ public class RequiredPropertiesValidator
         */
     }
 
-    private void handleWarnIfPresent(AssociationEnd property, String propertyKind)
+    private void handleWarnIfPresent(@Nonnull AssociationEnd property, String propertyKind)
     {
         JsonNode jsonNode = this.objectNode.path(property.getName());
         if (jsonNode.isMissingNode())
@@ -313,7 +314,7 @@ public class RequiredPropertiesValidator
         this.warnings.add(warning);
     }
 
-    private void handleErrorIfAbsent(AssociationEnd associationEnd, String propertyKind)
+    private void handleErrorIfAbsent(@Nonnull AssociationEnd associationEnd, String propertyKind)
     {
         JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
         if (!jsonNode.isMissingNode() && !jsonNode.isNull())
@@ -417,7 +418,7 @@ public class RequiredPropertiesValidator
         }
     }
 
-    private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd, ObjectNode objectNode)
+    private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd, @Nonnull ObjectNode objectNode)
     {
         OperationMode nextMode = this.getNextMode(this.operationMode, associationEnd);
 
@@ -431,7 +432,7 @@ public class RequiredPropertiesValidator
         }
     }
 
-    private void handleVersionAssociationEnd(AssociationEnd associationEnd)
+    private void handleVersionAssociationEnd(@Nonnull AssociationEnd associationEnd)
     {
         if (this.operationMode == OperationMode.CREATE)
         {
@@ -457,8 +458,8 @@ public class RequiredPropertiesValidator
 
     private void handlePlainAssociationEnd(
             @Nonnull AssociationEnd associationEnd,
-            ObjectNode objectNode,
-            OperationMode nextMode)
+            @Nonnull ObjectNode objectNode,
+            @Nonnull OperationMode nextMode)
     {
         RequiredPropertiesValidator validator = new RequiredPropertiesValidator(
                 associationEnd.getType(),
@@ -508,6 +509,7 @@ public class RequiredPropertiesValidator
                         jsonNode));
     }
 
+    @Nullable
     private Object getKeyFromJsonNode(
             @Nonnull DataTypeProperty keyProperty,
             @Nonnull JsonNode jsonNode)
@@ -538,7 +540,7 @@ public class RequiredPropertiesValidator
     private ImmutableList<Object> getKeysFromJsonNode(
             @Nonnull JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd,
-            JsonNode parentJsonNode)
+            @Nonnull JsonNode parentJsonNode)
     {
         Klass                           type                    = associationEnd.getType();
         ImmutableList<DataTypeProperty> keyProperties           = type.getKeyProperties();
@@ -555,7 +557,7 @@ public class RequiredPropertiesValidator
             @Nonnull DataTypeProperty keyProperty,
             @Nonnull JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd,
-            JsonNode parentJsonNode)
+            @Nonnull JsonNode parentJsonNode)
     {
         ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
 
@@ -593,7 +595,7 @@ public class RequiredPropertiesValidator
         return Objects.requireNonNull(result);
     }
 
-    private boolean isBackward(AssociationEnd associationEnd)
+    private boolean isBackward(@Nonnull AssociationEnd associationEnd)
     {
         return this.pathHere.equals(Optional.of(associationEnd.getOpposite()));
     }

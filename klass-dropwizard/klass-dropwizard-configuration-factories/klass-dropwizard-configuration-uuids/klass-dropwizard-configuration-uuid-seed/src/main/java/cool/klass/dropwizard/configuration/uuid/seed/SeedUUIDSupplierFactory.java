@@ -19,6 +19,7 @@ public class SeedUUIDSupplierFactory implements UUIDSupplierFactory
 {
     private @Valid @NotNull String seed;
 
+    @Nonnull
     @Override
     public Supplier<UUID> createUUIDSupplier()
     {

@@ -48,7 +48,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
         this.cacheType = ReladomoRuntimeConfigurationGenerator.getCacheType(cacheType);
     }
 
-    private static CacheType getCacheType(String cacheType)
+    private static CacheType getCacheType(@Nonnull String cacheType)
     {
         switch (cacheType)
         {

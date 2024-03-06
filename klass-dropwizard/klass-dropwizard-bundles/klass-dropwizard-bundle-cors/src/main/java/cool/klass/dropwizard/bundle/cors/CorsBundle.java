@@ -2,6 +2,7 @@ package cool.klass.dropwizard.bundle.cors;
 
 import java.util.EnumSet;
 
+import javax.annotation.Nonnull;
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration.Dynamic;
 
@@ -21,7 +22,7 @@ public class CorsBundle implements PrioritizedBundle
     }
 
     @Override
-    public void run(AbstractKlassConfiguration configuration, Environment environment)
+    public void run(AbstractKlassConfiguration configuration, @Nonnull Environment environment)
     {
         // https://stackoverflow.com/a/25801822/23572
 

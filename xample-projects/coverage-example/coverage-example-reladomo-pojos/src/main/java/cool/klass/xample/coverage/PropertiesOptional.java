@@ -2,6 +2,8 @@ package cool.klass.xample.coverage;
 
 import java.sql.Timestamp;
 
+import javax.annotation.Nonnull;
+
 import com.gs.fw.common.mithra.util.DefaultInfinityTimestamp;
 
 public class PropertiesOptional extends PropertiesOptionalAbstract
@@ -18,6 +20,7 @@ public class PropertiesOptional extends PropertiesOptionalAbstract
         this(DefaultInfinityTimestamp.getDefaultInfinity());
     }
 
+    @Nonnull
     public String getOptionalDerived()
     {
         return "cool.klass.xample.coverage.PropertiesOptional.getOptionalDerived";

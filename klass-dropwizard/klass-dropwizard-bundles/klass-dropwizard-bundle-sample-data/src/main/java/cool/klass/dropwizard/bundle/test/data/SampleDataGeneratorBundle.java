@@ -3,6 +3,8 @@ package cool.klass.dropwizard.bundle.test.data;
 import java.time.Instant;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.bundle.api.DataBundle;
@@ -46,7 +48,7 @@ public class SampleDataGeneratorBundle
     }
 
     @Override
-    public void run(AbstractKlassConfiguration configuration, Environment environment)
+    public void run(@Nonnull AbstractKlassConfiguration configuration, Environment environment)
     {
         Config config                    = ConfigFactory.load();
         Config sampleDataGeneratorConfig = config.getConfig("klass.data.generator.sample");

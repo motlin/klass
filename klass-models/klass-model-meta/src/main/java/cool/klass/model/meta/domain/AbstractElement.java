@@ -26,6 +26,7 @@ public abstract class AbstractElement implements Element
         this.macroElement = Objects.requireNonNull(macroElement);
     }
 
+    @Nonnull
     @Override
     public Optional<Element> getMacroElement()
     {

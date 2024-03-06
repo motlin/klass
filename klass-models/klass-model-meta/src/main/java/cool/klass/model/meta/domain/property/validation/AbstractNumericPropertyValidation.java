@@ -19,7 +19,7 @@ public abstract class AbstractNumericPropertyValidation
     protected AbstractNumericPropertyValidation(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            AbstractDataTypeProperty<?> owningProperty,
+            @Nonnull AbstractDataTypeProperty<?> owningProperty,
             int number)
     {
         super(elementContext, macroElement, owningProperty);
@@ -40,7 +40,7 @@ public abstract class AbstractNumericPropertyValidation
         protected NumericPropertyValidationBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                DataTypePropertyBuilder<?, ?, ?> propertyBuilder,
+                @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder,
                 int number)
         {
             super(elementContext, macroElement, propertyBuilder);

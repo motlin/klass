@@ -27,7 +27,7 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
 
     @Override
     public void run(
-            StackOverflowConfiguration configuration,
+            @Nonnull StackOverflowConfiguration configuration,
             @Nonnull Environment environment) throws Exception
     {
         super.run(configuration, environment);

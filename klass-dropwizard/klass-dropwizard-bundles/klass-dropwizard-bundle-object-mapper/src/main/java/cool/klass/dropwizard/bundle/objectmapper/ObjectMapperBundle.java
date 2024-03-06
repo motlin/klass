@@ -1,5 +1,7 @@
 package cool.klass.dropwizard.bundle.objectmapper;
 
+import javax.annotation.Nonnull;
+
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
@@ -17,7 +19,7 @@ public class ObjectMapperBundle
     }
 
     @Override
-    public void run(AbstractKlassConfiguration configuration, Environment environment)
+    public void run(AbstractKlassConfiguration configuration, @Nonnull Environment environment)
     {
         ObjectMapperConfig.configure(environment.getObjectMapper());
     }

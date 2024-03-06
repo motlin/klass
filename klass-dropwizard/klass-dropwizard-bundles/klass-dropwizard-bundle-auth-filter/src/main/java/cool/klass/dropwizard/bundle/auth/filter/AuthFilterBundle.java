@@ -3,6 +3,8 @@ package cool.klass.dropwizard.bundle.auth.filter;
 import java.security.Principal;
 import java.util.ServiceLoader;
 
+import javax.annotation.Nonnull;
+
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.auth.filter.provider.AuthFilterProvider;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
@@ -27,7 +29,7 @@ public class AuthFilterBundle
     }
 
     @Override
-    public void run(AbstractKlassConfiguration configuration, Environment environment)
+    public void run(AbstractKlassConfiguration configuration, @Nonnull Environment environment)
     {
         ServiceLoader<AuthFilterProvider> serviceLoader      = ServiceLoader.load(AuthFilterProvider.class);
         ImmutableList<AuthFilterProvider> prioritizedBundles = Lists.immutable.withAll(serviceLoader);

@@ -264,7 +264,7 @@ public class IncomingCreateDataModelValidator
         }
     }
 
-    private void handleOutsideProjectionAssociationEnd(AssociationEnd associationEnd)
+    private void handleOutsideProjectionAssociationEnd(@Nonnull AssociationEnd associationEnd)
     {
         Multiplicity multiplicity  = associationEnd.getMultiplicity();
         JsonNode     childJsonNode = this.objectNode.path(associationEnd.getName());
@@ -279,7 +279,7 @@ public class IncomingCreateDataModelValidator
         }
     }
 
-    private void handleOwnedAssociationEnd(AssociationEnd associationEnd)
+    private void handleOwnedAssociationEnd(@Nonnull AssociationEnd associationEnd)
     {
         Multiplicity multiplicity = associationEnd.getMultiplicity();
 
@@ -293,15 +293,15 @@ public class IncomingCreateDataModelValidator
         }
     }
 
-    private boolean isBackward(AssociationEnd associationEnd)
+    private boolean isBackward(@Nonnull AssociationEnd associationEnd)
     {
         return this.pathHere.equals(Optional.of(associationEnd.getOpposite()));
     }
 
     protected void handleToOneOutsideProjection(
-            AssociationEnd associationEnd,
-            JsonNode childJsonNode,
-            ObjectNode parentJsonNode)
+            @Nonnull AssociationEnd associationEnd,
+            @Nonnull JsonNode childJsonNode,
+            @Nonnull ObjectNode parentJsonNode)
     {
         if (associationEnd.isOwned())
         {
@@ -366,7 +366,7 @@ public class IncomingCreateDataModelValidator
     private void handleToManyOutsideProjection(
             @Nonnull AssociationEnd associationEnd,
             @Nonnull JsonNode childrenJsonNodes,
-            JsonNode parentJsonNode)
+            @Nonnull JsonNode parentJsonNode)
     {
         for (JsonNode childJsonNode : childrenJsonNodes)
         {
@@ -563,7 +563,7 @@ public class IncomingCreateDataModelValidator
     private ImmutableList<Object> getKeysFromJsonNode(
             @Nonnull JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd,
-            JsonNode parentJsonNode)
+            @Nonnull JsonNode parentJsonNode)
     {
         Klass                           type                    = associationEnd.getType();
         ImmutableList<DataTypeProperty> keyProperties           = type.getKeyProperties();
@@ -580,7 +580,7 @@ public class IncomingCreateDataModelValidator
             @Nonnull DataTypeProperty keyProperty,
             @Nonnull JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd,
-            JsonNode parentJsonNode)
+            @Nonnull JsonNode parentJsonNode)
     {
         ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
 

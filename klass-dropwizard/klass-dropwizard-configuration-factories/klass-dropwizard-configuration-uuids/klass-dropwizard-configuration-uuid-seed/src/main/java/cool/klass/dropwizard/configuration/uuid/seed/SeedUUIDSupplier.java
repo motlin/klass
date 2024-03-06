@@ -16,6 +16,7 @@ public class SeedUUIDSupplier implements Supplier<UUID>
         this.seed = Objects.requireNonNull(seed);
     }
 
+    @Nonnull
     @Override
     public UUID get()
     {

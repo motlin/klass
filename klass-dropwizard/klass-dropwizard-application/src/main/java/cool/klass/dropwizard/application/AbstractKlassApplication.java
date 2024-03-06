@@ -131,12 +131,12 @@ public abstract class AbstractKlassApplication<T extends AbstractKlassConfigurat
     }
 
     @Override
-    public void run(T configuration, Environment environment) throws Exception
+    public void run(@Nonnull T configuration, Environment environment) throws Exception
     {
         this.initializeClock(configuration);
     }
 
-    protected void initializeClock(T configuration)
+    protected void initializeClock(@Nonnull T configuration)
     {
         KlassFactory klassFactory = configuration.getKlassFactory();
         ClockFactory clockFactory = klassFactory.getClockFactory();

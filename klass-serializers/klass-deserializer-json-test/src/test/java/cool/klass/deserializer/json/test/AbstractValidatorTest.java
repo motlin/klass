@@ -77,7 +77,7 @@ public abstract class AbstractValidatorTest
         return objectMapper;
     }
 
-    protected final void performValidation(ObjectNode incomingInstance)
+    protected final void performValidation(@Nonnull ObjectNode incomingInstance)
     {
         JsonTypeCheckingValidator.validate(
                 incomingInstance,

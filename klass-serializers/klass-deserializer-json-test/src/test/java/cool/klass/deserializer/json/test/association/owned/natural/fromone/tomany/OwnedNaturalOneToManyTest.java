@@ -266,6 +266,7 @@ public class OwnedNaturalOneToManyTest extends AbstractValidatorTest
         this.validate(incomingJson, expectedErrors, expectedWarnings);
     }
 
+    @Nonnull
     @Override
     protected Klass getKlass()
     {

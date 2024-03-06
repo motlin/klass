@@ -215,7 +215,7 @@ public class IncomingUpdateDataModelValidator
         }
     }
 
-    private void handleVersionAssociationEnd(AssociationEnd associationEnd)
+    private void handleVersionAssociationEnd(@Nonnull AssociationEnd associationEnd)
     {
         this.contextStack.push(associationEnd.getName());
         try
@@ -254,7 +254,7 @@ public class IncomingUpdateDataModelValidator
         }
     }
 
-    private void handleErrorIfAbsent(AssociationEnd associationEnd, String propertyKind)
+    private void handleErrorIfAbsent(@Nonnull AssociationEnd associationEnd, String propertyKind)
     {
         JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
         if (!jsonNode.isMissingNode() && !jsonNode.isNull())
@@ -274,7 +274,7 @@ public class IncomingUpdateDataModelValidator
         this.errors.add(error);
     }
 
-    private void handleWarnIfPresent(AssociationEnd property, String propertyKind)
+    private void handleWarnIfPresent(@Nonnull AssociationEnd property, String propertyKind)
     {
         JsonNode jsonNode = this.objectNode.path(property.getName());
         if (jsonNode.isMissingNode())
@@ -309,7 +309,7 @@ public class IncomingUpdateDataModelValidator
         this.warnings.add(warning);
     }
 
-    private boolean isBackward(AssociationEnd associationEnd)
+    private boolean isBackward(@Nonnull AssociationEnd associationEnd)
     {
         return this.pathHere.equals(Optional.of(associationEnd.getOpposite()));
     }
@@ -484,8 +484,8 @@ public class IncomingUpdateDataModelValidator
 
     public void handleAssociationEnd(
             @Nonnull AssociationEnd associationEnd,
-            ObjectNode objectNode,
-            Object persistentInstance)
+            @Nonnull ObjectNode objectNode,
+            @Nonnull Object persistentInstance)
     {
         IncomingUpdateDataModelValidator validator = new IncomingUpdateDataModelValidator(
                 this.dataStore,

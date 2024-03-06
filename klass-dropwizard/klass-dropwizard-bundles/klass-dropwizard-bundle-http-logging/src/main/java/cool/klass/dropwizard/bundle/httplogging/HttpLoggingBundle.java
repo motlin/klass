@@ -3,6 +3,8 @@ package cool.klass.dropwizard.bundle.httplogging;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Nonnull;
+
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
@@ -27,7 +29,7 @@ public class HttpLoggingBundle
     }
 
     @Override
-    public void run(AbstractKlassConfiguration configuration, Environment environment)
+    public void run(AbstractKlassConfiguration configuration, @Nonnull Environment environment)
     {
         Config config              = ConfigFactory.load();
         Config jerseyLoggingConfig = config.getConfig("klass.jersey.logging");

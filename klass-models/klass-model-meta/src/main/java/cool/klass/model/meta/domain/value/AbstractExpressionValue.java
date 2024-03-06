@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AbstractExpressionValue extends AbstractElement implements ExpressionValue
 {
-    protected AbstractExpressionValue(@Nonnull ParserRuleContext elementContext, Optional<Element> macroElement)
+    protected AbstractExpressionValue(@Nonnull ParserRuleContext elementContext, @Nonnull Optional<Element> macroElement)
     {
         super(elementContext, macroElement);
     }

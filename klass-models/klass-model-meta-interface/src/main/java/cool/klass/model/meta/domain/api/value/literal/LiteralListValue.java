@@ -18,5 +18,6 @@ public interface LiteralListValue extends ExpressionValue
     @Nonnull
     ImmutableList<LiteralValue> getLiteralValues();
 
+    @Nonnull
     Type getType();
 }

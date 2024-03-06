@@ -38,7 +38,7 @@ public class H2Bundle implements PrioritizedBundle
     }
 
     @Override
-    public void run(AbstractKlassConfiguration configuration, Environment environment)
+    public void run(AbstractKlassConfiguration configuration, @Nonnull Environment environment)
     {
         Config config         = ConfigFactory.load();
         Config h2BundleConfig = config.getConfig("klass.data.h2");

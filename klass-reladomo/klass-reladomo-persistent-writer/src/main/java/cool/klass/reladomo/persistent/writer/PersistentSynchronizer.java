@@ -140,7 +140,7 @@ public abstract class PersistentSynchronizer
         return mutationOccurred;
     }
 
-    protected void synchronizeUpdatedDataTypeProperties(Klass klass, Object persistentInstance)
+    protected void synchronizeUpdatedDataTypeProperties(@Nonnull Klass klass, Object persistentInstance)
     {
         Optional<PrimitiveProperty> lastUpdatedByProperty = klass.getLastUpdatedByProperty();
         lastUpdatedByProperty.ifPresent(primitiveProperty ->
@@ -181,7 +181,7 @@ public abstract class PersistentSynchronizer
     protected abstract void synchronizeCreatedDataTypeProperties(Klass klass, Object persistentInstance);
 
     private boolean synchronizeDataTypeProperty(
-            DataTypeProperty dataTypeProperty,
+            @Nonnull DataTypeProperty dataTypeProperty,
             Object persistentInstance,
             @Nonnull ObjectNode incomingJson)
     {

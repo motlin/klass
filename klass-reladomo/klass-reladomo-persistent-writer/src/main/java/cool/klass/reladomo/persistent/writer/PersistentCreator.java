@@ -44,7 +44,7 @@ public class PersistentCreator extends PersistentSynchronizer
     }
 
     @Override
-    protected void synchronizeCreatedDataTypeProperties(Klass klass, Object persistentInstance)
+    protected void synchronizeCreatedDataTypeProperties(@Nonnull Klass klass, Object persistentInstance)
     {
         Optional<PrimitiveProperty> createdByProperty = klass.getCreatedByProperty();
         Optional<PrimitiveProperty> createdOnProperty = klass.getCreatedOnProperty();

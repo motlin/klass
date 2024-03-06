@@ -794,7 +794,7 @@ public class KlassCompilerTest
                 .replaceAll("\\\\n(?!$)", "\\\\n\"\n                        + \"");
     }
 
-    private void assertNoCompilerErrors(String sourceCodeText)
+    private void assertNoCompilerErrors(@Nonnull String sourceCodeText)
     {
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
                 Optional.empty(),

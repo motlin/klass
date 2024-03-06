@@ -23,6 +23,7 @@ public class ReladomoDataStoreFactory implements DataStoreFactory
 
     private DataStore dataStore;
 
+    @Nonnull
     @Override
     public UUIDSupplierFactory getUuidFactory()
     {

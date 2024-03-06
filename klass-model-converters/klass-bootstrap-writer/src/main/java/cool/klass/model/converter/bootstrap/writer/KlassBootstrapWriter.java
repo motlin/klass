@@ -148,7 +148,7 @@ public class KlassBootstrapWriter
         this.domainModel.getServiceGroups().each(this::handleServiceGroup);
     }
 
-    private void deleteAll(RelatedFinder<?> finder)
+    private void deleteAll(@Nonnull RelatedFinder<?> finder)
     {
         Operation                  operation               = finder.all();
         MithraList<?>              mithraList              = finder.findMany(operation);

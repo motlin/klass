@@ -19,6 +19,7 @@ public class FixedClockFactory implements ClockFactory
 {
     private @Valid @NotNull Instant instant;
 
+    @Nonnull
     @Override
     public Clock getClock()
     {

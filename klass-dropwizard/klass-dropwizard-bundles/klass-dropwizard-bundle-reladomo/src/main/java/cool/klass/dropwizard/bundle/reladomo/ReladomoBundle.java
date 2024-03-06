@@ -2,6 +2,8 @@ package cool.klass.dropwizard.bundle.reladomo;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import com.google.auto.service.AutoService;
 import com.gs.fw.common.mithra.MithraManagerProvider;
 import cool.klass.data.store.DataStore;
@@ -37,7 +39,7 @@ public class ReladomoBundle implements DataBundle
     }
 
     @Override
-    public void run(AbstractKlassConfiguration configuration, Environment environment)
+    public void run(@Nonnull AbstractKlassConfiguration configuration, @Nonnull Environment environment)
     {
         DataStore dataStore = configuration
                 .getKlassFactory()

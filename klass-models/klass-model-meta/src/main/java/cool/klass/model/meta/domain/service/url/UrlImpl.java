@@ -27,7 +27,7 @@ public final class UrlImpl extends AbstractElement implements Url
     private       ImmutableList<Parameter> pathParameters;
     private       ImmutableList<Service>   services;
 
-    private UrlImpl(@Nonnull ParserRuleContext elementContext, Optional<Element> macroElement, @Nonnull ServiceGroupImpl serviceGroup)
+    private UrlImpl(@Nonnull ParserRuleContext elementContext, @Nonnull Optional<Element> macroElement, @Nonnull ServiceGroupImpl serviceGroup)
     {
         super(elementContext, macroElement);
         this.serviceGroup = Objects.requireNonNull(serviceGroup);
