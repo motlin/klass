@@ -1,9 +1,10 @@
-package cool.klass.model.converter.compiler.syntax.highlighter;
+package cool.klass.model.converter.compiler.token.categorizing.parser;
 
-import java.util.Objects;
+import java.util.LinkedHashMap;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.converter.compiler.token.categories.TokenCategory;
 import cool.klass.model.meta.grammar.KlassBaseListener;
 import cool.klass.model.meta.grammar.KlassParser.AbstractDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
@@ -58,45 +59,27 @@ import cool.klass.model.meta.grammar.KlassParser.StringOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferencePathContext;
 import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.TokenStreamRewriter;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.MutableMapIterable;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class SyntaxHighlighterListener
+public class ParserBasedTokenCategorizer
         extends KlassBaseListener
 {
     @Nonnull
-    private final MutableMapIterable<Token, Color> parserColors;
+    private final MutableMapIterable<Token, TokenCategory> tokenCategories =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
     @Nonnull
-    private final ColorScheme                      colorScheme;
-
-    public SyntaxHighlighterListener(
-            @Nonnull MutableMapIterable<Token, Color> parserColors,
-            @Nonnull ColorScheme colorScheme)
+    public static MapIterable<Token, TokenCategory> findTokenCategoriesFromParser(@Nonnull ParseTree parseTree)
     {
-        this.parserColors = Objects.requireNonNull(parserColors);
-        this.colorScheme  = Objects.requireNonNull(colorScheme);
-    }
-
-    public static void getParserColors(
-            @Nonnull ParseTree parseTree,
-            @Nonnull MutableMapIterable<Token, Color> parserColors,
-            @Nonnull ColorScheme colorScheme)
-    {
-        ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
-        ParseTreeListener listener = new SyntaxHighlighterListener(
-                parserColors,
-                colorScheme);
+        ParseTreeWalker             parseTreeWalker = new ParseTreeWalker();
+        ParserBasedTokenCategorizer listener        = new ParserBasedTokenCategorizer();
         parseTreeWalker.walk(listener, parseTree);
-    }
-
-    public static void colorize(Color color, Token token, TokenStreamRewriter tokenStreamRewriter)
-    {
-        tokenStreamRewriter.insertBefore(token, color.getBefore());
-        color.getAfter().ifPresent(after -> tokenStreamRewriter.insertAfter(token, after));
+        return listener.tokenCategories.asUnmodifiable();
     }
 
     @Override
@@ -104,7 +87,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.KEYWORD_PACKAGE().getSymbol(),
-                this.colorScheme.getPackageKeyword());
+                TokenCategory.PACKAGE_KEYWORD);
     }
 
     @Override
@@ -112,24 +95,37 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getPackageName());
+                TokenCategory.PACKAGE_NAME);
     }
 
     @Override
     public void enterClassOrUser(ClassOrUserContext ctx)
     {
-        this.put(
-                ctx.getStart(),
-                this.colorScheme.getKeyword());
+        if (ctx.KEYWORD_USER() != null)
+        {
+            this.put(
+                    ctx.getStart(),
+                    TokenCategory.KEYWORD_USER);
+        }
+        else if (ctx.KEYWORD_CLASS() != null)
+        {
+            this.put(
+                    ctx.getStart(),
+                    TokenCategory.KEYWORD_CLASS);
+        }
+        else
+        {
+            throw new AssertionError(ctx);
+        }
     }
 
     @Override
     public void enterClassHeader(ClassHeaderContext ctx)
     {
-        // TODO: Background color for user class name and reference
+        // TODO: Consider a different category for user class names.
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getClassName());
+                TokenCategory.CLASS_NAME);
     }
 
     @Override
@@ -137,7 +133,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.KEYWORD_ABSTRACT().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_ABSTRACT);
     }
 
     @Override
@@ -145,7 +141,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_INHERITANCE_TYPE);
     }
 
     @Override
@@ -153,7 +149,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.KEYWORD_EXTENDS().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_EXTENDS);
     }
 
     @Override
@@ -161,7 +157,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.KEYWORD_IMPLEMENTS().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_IMPLEMENTS);
     }
 
     @Override
@@ -169,10 +165,10 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.KEYWORD_ASSOCIATION().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_ASSOCIATION);
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getAssociationName());
+                TokenCategory.ASSOCIATION_NAME);
     }
 
     @Override
@@ -180,7 +176,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getAssociationEndName());
+                TokenCategory.ASSOCIATION_END_NAME);
     }
 
     @Override
@@ -188,16 +184,16 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getAssociationEndName());
+                TokenCategory.ASSOCIATION_END_NAME);
     }
 
     @Override
     public void enterClassReference(ClassReferenceContext ctx)
     {
-        // TODO: Background color for user class name and reference
+        // TODO: Consider a different category for user class names.
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getClassReference());
+                TokenCategory.CLASS_REFERENCE);
     }
 
     @Override
@@ -205,7 +201,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getInterfaceReference());
+                TokenCategory.INTERFACE_REFERENCE);
     }
 
     @Override
@@ -213,7 +209,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getEnumerationReference());
+                TokenCategory.ENUMERATION_REFERENCE);
     }
 
     @Override
@@ -221,7 +217,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getProjectionReference());
+                TokenCategory.PROJECTION_REFERENCE);
     }
 
     @Override
@@ -229,7 +225,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getAssociationEndReference());
+                TokenCategory.ASSOCIATION_END_REFERENCE);
     }
 
     @Override
@@ -238,7 +234,7 @@ public class SyntaxHighlighterListener
         // TODO: This could factor in what kind of property is referenced
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getPropertyReference());
+                TokenCategory.PROPERTY_REFERENCE);
     }
 
     // TODO: Rename Variable to Parameter
@@ -247,7 +243,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getParameterReference());
+                TokenCategory.PARAMETER_REFERENCE);
     }
 
     @Override
@@ -255,7 +251,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getServiceCategoryModifier());
+                TokenCategory.SERVICE_CATEGORY_MODIFIER);
     }
 
     @Override
@@ -263,7 +259,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getClassModifier());
+                TokenCategory.CLASS_MODIFIER);
     }
 
     @Override
@@ -271,7 +267,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getDataTypePropertyModifier());
+                TokenCategory.DATA_TYPE_PROPERTY_MODIFIER);
     }
 
     @Override
@@ -279,7 +275,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getAssociationEndModifier());
+                TokenCategory.ASSOCIATION_END_MODIFIER);
     }
 
     @Override
@@ -287,7 +283,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getParameterizedPropertyModifier());
+                TokenCategory.PARAMETERIZED_PROPERTY_MODIFIER);
     }
 
     @Override
@@ -295,7 +291,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getParameterModifier());
+                TokenCategory.PARAMETER_MODIFIER);
     }
 
     @Override
@@ -303,10 +299,10 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getPrimitivePropertyName());
+                TokenCategory.PRIMITIVE_PROPERTY_NAME);
         this.put(
                 ctx.primitiveType().getStart(),
-                this.colorScheme.getPrimitiveType());
+                TokenCategory.PRIMITIVE_TYPE);
     }
 
     @Override
@@ -314,7 +310,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getEnumerationPropertyName());
+                TokenCategory.ENUMERATION_PROPERTY_NAME);
     }
 
     @Override
@@ -322,7 +318,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getParameterizedPropertyName());
+                TokenCategory.PARAMETERIZED_PROPERTY_NAME);
     }
 
     @Override
@@ -330,7 +326,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getParameterizedPropertyName());
+                TokenCategory.PARAMETERIZED_PROPERTY_NAME);
     }
 
     @Override
@@ -342,10 +338,9 @@ public class SyntaxHighlighterListener
             return;
         }
 
-        // TODO: Asterisk literal
         this.put(
                 terminalNode.getSymbol(),
-                this.colorScheme.getIntegerLiteral());
+                TokenCategory.ASTERISK_LITERAL);
     }
 
     @Override
@@ -353,10 +348,10 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.KEYWORD_ENUMERATION().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_ENUMERATION);
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getEnumerationName());
+                TokenCategory.ENUMERATION_NAME);
     }
 
     @Override
@@ -364,7 +359,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getEnumerationLiteralName());
+                TokenCategory.ENUMERATION_LITERAL_NAME);
     }
 
     @Override
@@ -372,10 +367,10 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.KEYWORD_INTERFACE().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_INTERFACE);
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getInterfaceName());
+                TokenCategory.INTERFACE_NAME);
     }
 
     @Override
@@ -383,13 +378,13 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.KEYWORD_PROJECTION().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_PROJECTION);
         this.put(
                 ctx.KEYWORD_ON().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_ON);
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getProjectionName());
+                TokenCategory.PROJECTION_NAME);
     }
 
     // TODO: Rename Primitive to Data
@@ -398,7 +393,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getDataTypePropertyReference());
+                TokenCategory.DATA_TYPE_PROPERTY_REFERENCE);
     }
 
     @Override
@@ -406,7 +401,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getAssociationEndReference());
+                TokenCategory.ASSOCIATION_END_REFERENCE);
     }
 
     @Override
@@ -415,7 +410,7 @@ public class SyntaxHighlighterListener
         // TODO: ReferencePropertyReference
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getAssociationEndReference());
+                TokenCategory.ASSOCIATION_END_REFERENCE);
     }
 
     @Override
@@ -423,7 +418,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getParameterizedPropertyReference());
+                TokenCategory.PARAMETERIZED_PROPERTY_REFERENCE);
     }
 
     @Override
@@ -431,10 +426,10 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getParameterName());
+                TokenCategory.PARAMETER_NAME);
         this.put(
                 ctx.primitiveType().getStart(),
-                this.colorScheme.getPrimitiveType());
+                TokenCategory.PRIMITIVE_TYPE);
     }
 
     @Override
@@ -442,7 +437,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getParameterName());
+                TokenCategory.PARAMETER_NAME);
     }
 
     @Override
@@ -450,7 +445,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.identifier().getStart(),
-                this.colorScheme.getParameterName());
+                TokenCategory.PARAMETER_NAME);
     }
 
     @Override
@@ -458,7 +453,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.KEYWORD_RELATIONSHIP().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_RELATIONSHIP);
     }
 
     @Override
@@ -466,7 +461,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.KEYWORD_ORDER_BY().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_ORDER_BY);
     }
 
     @Override
@@ -474,7 +469,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.LITERAL_THIS().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.LITERAL_THIS);
     }
 
     @Override
@@ -482,7 +477,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_ORDER_BY_DIRECTION);
     }
 
     @Override
@@ -490,7 +485,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getKeyword());
+                TokenCategory.OPERATOR_IN);
     }
 
     @Override
@@ -498,7 +493,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getKeyword());
+                TokenCategory.OPERATOR_STRING);
     }
 
     @Override
@@ -506,7 +501,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getKeyword());
+                TokenCategory.LITERAL_NATIVE);
     }
 
     @Override
@@ -514,7 +509,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.KEYWORD_SERVICE().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_SERVICE);
     }
 
     @Override
@@ -522,7 +517,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.KEYWORD_MULTIPLICITY().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_MULTIPLICITY);
     }
 
     @Override
@@ -530,7 +525,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_MULTIPLICITY_CHOICE);
     }
 
     @Override
@@ -538,7 +533,7 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_SERVICE_CRITERIA);
     }
 
     @Override
@@ -546,11 +541,11 @@ public class SyntaxHighlighterListener
     {
         this.put(
                 ctx.KEYWORD_PROJECTION().getSymbol(),
-                this.colorScheme.getKeyword());
+                TokenCategory.KEYWORD_PROJECTION);
     }
 
-    private void put(Token token, Color color)
+    private void put(Token token, TokenCategory tokenCategory)
     {
-        this.parserColors.put(token, color);
+        this.tokenCategories.put(token, tokenCategory);
     }
 }

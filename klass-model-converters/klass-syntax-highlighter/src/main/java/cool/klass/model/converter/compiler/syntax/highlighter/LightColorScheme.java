@@ -52,7 +52,7 @@ public enum LightColorScheme
     }
 
     @Override
-    public Color getTypeName()
+    public Color getTopLevelElementName()
     {
         return new Ansi8BitColor(88);
     }

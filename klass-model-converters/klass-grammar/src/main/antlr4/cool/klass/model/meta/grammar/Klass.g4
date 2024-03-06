@@ -263,6 +263,8 @@ KEYWORD_NATIVE       : 'native';
 KEYWORD_RELATIONSHIP : 'relationship';
 KEYWORD_MULTIPLICITY : 'multiplicity';
 KEYWORD_ORDER_BY     : 'orderBy';
+KEYWORD_ASCENDING    : 'ascending';
+KEYWORD_DESCENDING   : 'descending';
 KEYWORD_CRITERIA     : 'criteria';
 KEYWORD_ON           : 'on';
 KEYWORD_ABSTRACT     : 'abstract';

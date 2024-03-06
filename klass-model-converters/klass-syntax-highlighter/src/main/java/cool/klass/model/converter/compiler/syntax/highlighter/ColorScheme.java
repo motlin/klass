@@ -23,51 +23,9 @@ public interface ColorScheme
         return this.getKeyword();
     }
 
-    Color getIdentifier();
-
-    default Color getPackageName()
+    default Color getVerb()
     {
-        return this.getIdentifier();
-    }
-
-    default Color getTypeName()
-    {
-        return this.getIdentifier();
-    }
-
-    default Color getClassName()
-    {
-        return this.getTypeName();
-    }
-
-    default Color getEnumerationName()
-    {
-        return this.getTypeName();
-    }
-
-    default Color getInterfaceName()
-    {
-        return this.getTypeName();
-    }
-
-    default Color getProjectionName()
-    {
-        return this.getTypeName();
-    }
-
-    default Color getAssociationName()
-    {
-        return this.getTypeName();
-    }
-
-    default Color getEnumerationLiteralName()
-    {
-        return this.getIdentifier();
-    }
-
-    default Color getParameterName()
-    {
-        return this.getIdentifier();
+        return this.getKeyword();
     }
 
     default Color getModifier()
@@ -80,7 +38,7 @@ public interface ColorScheme
         return this.getModifier();
     }
 
-    default Color getPropertyModifier()
+    default Color getDataTypePropertyModifier()
     {
         return this.getModifier();
     }
@@ -108,6 +66,138 @@ public interface ColorScheme
     default Color getServiceCategoryModifier()
     {
         return this.getModifier();
+    }
+
+    Color getIdentifier();
+
+    default Color getPackageName()
+    {
+        return this.getIdentifier();
+    }
+
+    default Color getTopLevelElementName()
+    {
+        return this.getIdentifier();
+    }
+
+    default Color getEnumerationName()
+    {
+        return this.getTopLevelElementName();
+    }
+
+    default Color getClassifierName()
+    {
+        return this.getTopLevelElementName();
+    }
+
+    default Color getClassName()
+    {
+        return this.getClassifierName();
+    }
+
+    default Color getInterfaceName()
+    {
+        return this.getClassifierName();
+    }
+
+    default Color getAssociationName()
+    {
+        return this.getTopLevelElementName();
+    }
+
+    default Color getProjectionName()
+    {
+        return this.getTopLevelElementName();
+    }
+
+    default Color getEnumerationLiteralName()
+    {
+        return this.getIdentifier();
+    }
+
+    default Color getParameterName()
+    {
+        return this.getIdentifier();
+    }
+
+    default Color getPropertyName()
+    {
+        return this.getIdentifier();
+    }
+
+    default Color getDataTypePropertyName()
+    {
+        return this.getPropertyName();
+    }
+
+    default Color getPrimitivePropertyName()
+    {
+        return this.getDataTypePropertyName();
+    }
+
+    default Color getEnumerationPropertyName()
+    {
+        return this.getDataTypePropertyName();
+    }
+
+    default Color getReferenceTypePropertyName()
+    {
+        return this.getPropertyName();
+    }
+
+    default Color getParameterizedPropertyName()
+    {
+        return this.getReferenceTypePropertyName();
+    }
+
+    default Color getAssociationEndName()
+    {
+        return this.getReferenceTypePropertyName();
+    }
+
+    default Color getEnumerationReference()
+    {
+        return this.getEnumerationName();
+    }
+
+    default Color getInterfaceReference()
+    {
+        return this.getInterfaceName();
+    }
+
+    default Color getClassReference()
+    {
+        return this.getClassName();
+    }
+
+    default Color getProjectionReference()
+    {
+        return this.getProjectionName();
+    }
+
+    default Color getDataTypePropertyReference()
+    {
+        return this.getPropertyName();
+    }
+
+    default Color getAssociationEndReference()
+    {
+        return this.getAssociationEndName();
+    }
+
+    default Color getParameterizedPropertyReference()
+    {
+        return this.getParameterizedPropertyName();
+    }
+
+    default Color getPropertyReference()
+    {
+        return this.getPropertyName();
+    }
+
+    default Color getParameterReference()
+    {
+        return this.getParameterName();
     }
 
     Color getLiteral();
@@ -162,80 +252,5 @@ public interface ColorScheme
     default Color getOperator()
     {
         return this.getPunctuation();
-    }
-
-    default Color getVerb()
-    {
-        return this.getKeyword();
-    }
-
-    default Color getPropertyName()
-    {
-        return this.getIdentifier();
-    }
-
-    default Color getPrimitivePropertyName()
-    {
-        return this.getPropertyName();
-    }
-
-    default Color getEnumerationPropertyName()
-    {
-        return this.getPropertyName();
-    }
-
-    default Color getParameterizedPropertyName()
-    {
-        return this.getPropertyName();
-    }
-
-    default Color getAssociationEndName()
-    {
-        return this.getPropertyName();
-    }
-
-    default Color getClassReference()
-    {
-        return this.getClassName();
-    }
-
-    default Color getInterfaceReference()
-    {
-        return this.getInterfaceName();
-    }
-
-    default Color getProjectionReference()
-    {
-        return this.getProjectionName();
-    }
-
-    default Color getEnumerationReference()
-    {
-        return this.getEnumerationName();
-    }
-
-    default Color getDataTypePropertyReference()
-    {
-        return this.getPropertyName();
-    }
-
-    default Color getAssociationEndReference()
-    {
-        return this.getAssociationEndName();
-    }
-
-    default Color getParameterizedPropertyReference()
-    {
-        return this.getParameterizedPropertyName();
-    }
-
-    default Color getMemberReference()
-    {
-        return this.getPropertyName();
-    }
-
-    default Color getParameterReference()
-    {
-        return this.getParameterName();
     }
 }
