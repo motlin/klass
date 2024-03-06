@@ -14,10 +14,6 @@
 
     <name>Klass Reladomo Object Sequence DDLs</name>
 
-    <properties>
-        <reladomo.version>17.0.2</reladomo.version>
-    </properties>
-
     <dependencyManagement>
         <dependencies>
 
