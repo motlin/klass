@@ -6,13 +6,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 @JsonTypeInfo(use = Id.NAME, property = "@type")
-@JsonSubTypes(
-        {
-                @Type(value = AndCriteriaDTO.class, name = "klass.model.meta.domain.AndCriteria"),
-                @Type(value = OrCriteriaDTO.class, name = "klass.model.meta.domain.OrCriteria"),
-                @Type(value = OperatorCriteriaDTO.class, name = "klass.model.meta.domain.OperatorCriteria"),
-                @Type(value = AllCriteriaDTO.class, name = "klass.model.meta.domain.AllCriteria"),
-        })
+@JsonSubTypes({
+        @Type(value = AndCriteriaDTO.class, name = "klass.model.meta.domain.AndCriteria"),
+        @Type(value = OrCriteriaDTO.class, name = "klass.model.meta.domain.OrCriteria"),
+        @Type(value = OperatorCriteriaDTO.class, name = "klass.model.meta.domain.OperatorCriteria"),
+        @Type(value = AllCriteriaDTO.class, name = "klass.model.meta.domain.AllCriteria"),
+})
 public interface CriteriaDTO
 {
 }
