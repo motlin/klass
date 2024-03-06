@@ -29,6 +29,14 @@ public class Create_PropertiesRequiredTest
         this.validate("validate_extra_properties");
     }
 
+    @Test
+    @Override
+    public void validate_mutation_context()
+            throws IOException
+    {
+        this.validate("validate_mutation_context");
+    }
+
     @Override
     @Test
     public void validate_expected_primitive_actual_missing()
@@ -67,6 +75,14 @@ public class Create_PropertiesRequiredTest
             throws IOException
     {
         this.validate("validate_expected_primitive_actual_string");
+    }
+
+    @Test
+    @Override
+    public void validate_version_expected_primitive_actual_object()
+            throws IOException
+    {
+        this.validate("validate_version_expected_primitive_actual_object");
     }
 
     @Nonnull

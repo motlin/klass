@@ -47,6 +47,14 @@ public class Update_PropertiesRequiredTest
         this.validate("validate_good", this.persistentInstance);
     }
 
+    @Test
+    @Override
+    public void validate_mutation_context()
+            throws IOException
+    {
+        this.validate("validate_mutation_context", this.persistentInstance);
+    }
+
     @Override
     @Test
     public void validate_extra_properties()
@@ -95,6 +103,16 @@ public class Update_PropertiesRequiredTest
             throws IOException
     {
         this.validate("validate_expected_primitive_actual_string", this.persistentInstance);
+    }
+
+    @Test
+    @Override
+    public void validate_version_expected_primitive_actual_object()
+            throws IOException
+    {
+        this.validate(
+                "validate_version_expected_primitive_actual_object",
+                this.persistentInstance);
     }
 
     @Nonnull

@@ -7,5 +7,8 @@
   "requiredFloat": 1.0123457,
   "requiredBoolean": true,
   "requiredInstant": "1999-12-31T23:59:00Z",
-  "requiredLocalDate": "1999-12-31"
+  "requiredLocalDate": "1999-12-31",
+  "version": {
+    "number": 1
+  }
 }

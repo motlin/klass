@@ -78,9 +78,9 @@ projection PropertiesRequiredVersionProjection on PropertiesRequiredVersion
 projection PropertiesRequiredProjection on PropertiesRequired
 {
     propertiesRequiredId: "propertiesRequiredId",
-    systemFrom   : "systemFrom",
-    systemTo     : "systemTo",
-    createdOn    : "createdOn",
+    systemFrom          : "systemFrom",
+    systemTo            : "systemTo",
+    createdOn           : "createdOn",
     requiredString      : "requiredString",
     requiredInteger     : "requiredInteger",
     requiredLong        : "requiredLong",
@@ -90,9 +90,9 @@ projection PropertiesRequiredProjection on PropertiesRequired
     requiredInstant     : "requiredInstant",
     requiredLocalDate   : "requiredLocalDate",
     requiredDerived     : "requiredDerived",
-    version      : PropertiesRequiredVersionProjection,
-    createdBy    : UserProjection,
-    lastUpdatedBy: UserProjection,
+    version             : PropertiesRequiredVersionProjection,
+    createdBy           : UserProjection,
+    lastUpdatedBy       : UserProjection,
 }
 
 service PropertiesRequired
@@ -145,9 +145,9 @@ projection PropertiesOptionalVersionProjection on PropertiesOptionalVersion
 projection PropertiesOptionalProjection on PropertiesOptional
 {
     propertiesOptionalId: "propertiesOptionalId",
-    systemFrom   : "systemFrom",
-    systemTo     : "systemTo",
-    createdOn    : "createdOn",
+    systemFrom          : "systemFrom",
+    systemTo            : "systemTo",
+    createdOn           : "createdOn",
     optionalString      : "optionalString",
     optionalInteger     : "optionalInteger",
     optionalLong        : "optionalLong",
@@ -157,9 +157,9 @@ projection PropertiesOptionalProjection on PropertiesOptional
     optionalInstant     : "optionalInstant",
     optionalLocalDate   : "optionalLocalDate",
     optionalDerived     : "optionalDerived",
-    version      : PropertiesOptionalVersionProjection,
-    createdBy    : UserProjection,
-    lastUpdatedBy: UserProjection,
+    version             : PropertiesOptionalVersionProjection,
+    createdBy           : UserProjection,
+    lastUpdatedBy       : UserProjection,
 }
 
 service PropertiesOptional

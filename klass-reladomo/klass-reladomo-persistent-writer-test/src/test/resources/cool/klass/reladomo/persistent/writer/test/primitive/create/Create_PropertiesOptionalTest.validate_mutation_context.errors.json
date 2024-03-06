@@ -1,0 +1,8 @@
+[
+  "Expected audit property 'createdById' to match current user 'test user 1' but got 'different user'.",
+  "Expected createdOn property 'createdOn' to match current transaction time '1999-12-31T23:59:59.999Z' but got '2000-01-01T00:00:00Z'.",
+  "Expected audit property 'lastUpdatedById' to match current user 'test user 1' but got 'different user'.",
+  "Expected audit property 'createdById' to match current user 'test user 1' but got 'different user'.",
+  "Expected createdOn property 'createdOn' to match current transaction time '1999-12-31T23:59:59.999Z' but got '2000-01-01T00:00:00Z'.",
+  "Expected audit property 'lastUpdatedById' to match current user 'test user 1' but got 'different user'."
+]

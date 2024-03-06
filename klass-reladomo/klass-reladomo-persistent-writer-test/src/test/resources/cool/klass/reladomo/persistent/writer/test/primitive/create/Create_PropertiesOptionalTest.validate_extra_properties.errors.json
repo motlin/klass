@@ -1,4 +1,6 @@
 [
+  "Error at PropertiesOptional.version.createdBy.system. Mismatched value for temporal property 'User.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
+  "Error at PropertiesOptional.version.lastUpdatedBy.system. Mismatched value for temporal property 'User.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
   "Error at PropertiesOptional.createdBy.system. Mismatched value for temporal property 'User.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
   "Error at PropertiesOptional.lastUpdatedBy.system. Mismatched value for temporal property 'User.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'."
 ]

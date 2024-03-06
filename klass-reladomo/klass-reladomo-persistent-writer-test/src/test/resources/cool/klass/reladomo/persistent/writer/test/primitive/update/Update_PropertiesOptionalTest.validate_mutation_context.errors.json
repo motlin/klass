@@ -1,0 +1,12 @@
+[
+  "Error at PropertiesOptional.system. Mismatched value for temporal property 'PropertiesOptional.system: TemporalRange?'. Expected absent value or 'null' but value was '2000-01-01T00:00:00Z'.",
+  "Error at PropertiesOptional.systemFrom. Mismatched value for temporal property 'PropertiesOptional.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
+  "Error at PropertiesOptional.createdById. Mismatched value for user id property 'PropertiesOptional.createdById: String'. Expected absent value or 'test user 1' but value was 'different user'.",
+  "Error at PropertiesOptional.createdOn. Mismatched value for created on property 'PropertiesOptional.createdOn: Instant'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
+  "Error at PropertiesOptional.lastUpdatedById. Mismatched value for user id property 'PropertiesOptional.lastUpdatedById: String'. Expected absent value or 'test user 1' but value was 'different user'.",
+  "Error at PropertiesOptional.version.system. Mismatched value for temporal property 'PropertiesOptionalVersion.system: TemporalRange?'. Expected absent value or 'null' but value was '2000-01-01T00:00:00Z'.",
+  "Error at PropertiesOptional.version.systemFrom. Mismatched value for temporal property 'PropertiesOptionalVersion.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
+  "Error at PropertiesOptional.version.createdById. Mismatched value for user id property 'PropertiesOptionalVersion.createdById: String'. Expected absent value or 'test user 1' but value was 'different user'.",
+  "Error at PropertiesOptional.version.createdOn. Mismatched value for created on property 'PropertiesOptionalVersion.createdOn: Instant'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
+  "Error at PropertiesOptional.version.lastUpdatedById. Mismatched value for user id property 'PropertiesOptionalVersion.lastUpdatedById: String'. Expected absent value or 'test user 1' but value was 'different user'."
+]

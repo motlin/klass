@@ -48,6 +48,14 @@ public class Update_PropertiesOptionalTest
     }
 
     @Test
+    @Override
+    public void validate_mutation_context()
+            throws IOException
+    {
+        this.validate("validate_mutation_context", this.persistentInstance);
+    }
+
+    @Test
     public void validate_wrong_version()
             throws IOException
     {
@@ -100,6 +108,14 @@ public class Update_PropertiesOptionalTest
             throws IOException
     {
         this.validate("validate_expected_primitive_actual_string", this.persistentInstance);
+    }
+
+    @Test
+    @Override
+    public void validate_version_expected_primitive_actual_object()
+            throws IOException
+    {
+        this.validate("validate_version_expected_primitive_actual_object", this.persistentInstance);
     }
 
     @Nonnull

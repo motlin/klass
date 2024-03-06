@@ -162,7 +162,7 @@ public class IncomingCreateDataModelValidator
         }
         else if (dataTypeProperty.isVersion())
         {
-            throw new AssertionError(dataTypeProperty);
+            this.handleVersionProperty(dataTypeProperty);
         }
     }
 
@@ -238,6 +238,40 @@ public class IncomingCreateDataModelValidator
         }
     }
 
+    private void handleVersionProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    {
+        this.contextStack.push(dataTypeProperty.getName());
+
+        try
+        {
+            JsonNode jsonDataTypeValue = this.objectNode.path(dataTypeProperty.getName());
+            if (jsonDataTypeValue.isMissingNode())
+            {
+                return;
+            }
+
+            if (!jsonDataTypeValue.isIntegralNumber())
+            {
+                return;
+            }
+
+            if (jsonDataTypeValue.asInt() == 1)
+            {
+                return;
+            }
+
+            String error = "Expected version property '%s' to be 1 but got %s."
+                    .formatted(
+                            dataTypeProperty.getName(),
+                            jsonDataTypeValue.asText());
+            this.errors.add(error);
+        }
+        finally
+        {
+            this.contextStack.pop();
+        }
+    }
+
     private static Optional<Instant> getInstant(JsonNode jsonDataTypeValue)
     {
         try
@@ -277,6 +311,7 @@ public class IncomingCreateDataModelValidator
 
         if (associationEnd.isVersion())
         {
+            this.handleVersionAssociationEnd(associationEnd);
             return;
         }
         if (associationEnd.isCreatedBy() || associationEnd.isLastUpdatedBy())
@@ -292,6 +327,47 @@ public class IncomingCreateDataModelValidator
         else
         {
             this.handleOutsideProjectionReferenceProperty(associationEnd);
+        }
+    }
+
+    private void handleVersionAssociationEnd(AssociationEnd associationEnd)
+    {
+        JsonNode childJsonNode = this.objectNode.path(associationEnd.getName());
+
+        if (childJsonNode.isMissingNode()
+                || childJsonNode.isNull()
+                || !childJsonNode.isObject())
+        {
+            return;
+        }
+
+        String associationEndName = associationEnd.getName();
+        this.contextStack.push(associationEndName);
+
+        MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
+                childJsonNode,
+                associationEnd,
+                this.objectNode);
+
+        try
+        {
+            ObjectNode childObjectNode = (ObjectNode) childJsonNode;
+            IncomingCreateDataModelValidator validator = new IncomingCreateDataModelValidator(
+                    this.dataStore,
+                    this.userKlass,
+                    associationEnd.getType(),
+                    this.mutationContext,
+                    childObjectNode,
+                    this.errors,
+                    this.warnings,
+                    this.contextStack,
+                    Optional.of(associationEnd),
+                    false);
+            validator.validate();
+        }
+        finally
+        {
+            this.contextStack.pop();
         }
     }
 

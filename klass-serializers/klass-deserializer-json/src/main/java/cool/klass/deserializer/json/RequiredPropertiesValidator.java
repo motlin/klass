@@ -718,10 +718,36 @@ public class RequiredPropertiesValidator
 
     protected void handleVersionAssociationEnd(@Nonnull AssociationEnd associationEnd)
     {
+        JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
         if (this.operationMode == OperationMode.CREATE)
         {
-            // TODO: recurse and error only if the version number isn't 1
-            this.handleWarnIfPresent(associationEnd, "version");
+            if (jsonNode.isMissingNode())
+            {
+                return;
+            }
+
+            this.contextStack.push(associationEnd.getName());
+            try
+            {
+                if (jsonNode instanceof ObjectNode)
+                {
+                    OperationMode nextMode = this.getNextMode(this.operationMode, associationEnd);
+                    CreateVersionPropertiesValidator validator = new CreateVersionPropertiesValidator(
+                            associationEnd.getType(),
+                            (ObjectNode) jsonNode,
+                            nextMode,
+                            this.errors,
+                            this.warnings,
+                            this.contextStack,
+                            Optional.of(associationEnd),
+                            false);
+                    validator.validate();
+                }
+            }
+            finally
+            {
+                this.contextStack.pop();
+            }
         }
         else if (this.operationMode == OperationMode.REPLACE || this.operationMode == OperationMode.PATCH)
         {
