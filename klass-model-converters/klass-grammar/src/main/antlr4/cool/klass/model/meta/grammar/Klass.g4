@@ -90,13 +90,25 @@ verb: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 interfaceMember: dataTypeProperty | parameterizedPropertySignature | associationEndSignature;
 classMember: dataTypeProperty | parameterizedProperty;
 dataTypeProperty: primitiveProperty | enumerationProperty;
-primitiveProperty: identifier ':' primitiveType optionalMarker? propertyModifier* ';'
-    | identifier ':' primitiveType optionalMarker? propertyModifier* {notifyErrorListeners("Missing semi-colon after primitive property declaration.");};
-enumerationProperty: identifier ':' enumerationReference optionalMarker? propertyModifier* ';'
-    | identifier ':' enumerationReference optionalMarker? propertyModifier* {notifyErrorListeners("Missing semi-colon after enumeration property declaration.");};
+primitiveProperty: identifier ':' primitiveType optionalMarker? propertyModifier* dataTypePropertyValidation* ';'
+    | identifier ':' primitiveType optionalMarker? propertyModifier* dataTypePropertyValidation* {notifyErrorListeners("Missing semi-colon after primitive property declaration.");};
+enumerationProperty: identifier ':' enumerationReference optionalMarker? propertyModifier* dataTypePropertyValidation* ';'
+    | identifier ':' enumerationReference optionalMarker? propertyModifier* dataTypePropertyValidation* {notifyErrorListeners("Missing semi-colon after enumeration property declaration.");};
 parameterizedProperty: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classType parameterizedPropertyModifier* orderByDeclaration? '{' criteriaExpression '}';
 parameterizedPropertySignature: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classifierReference multiplicity parameterizedPropertyModifier* ';';
 optionalMarker: '?';
+
+dataTypePropertyValidation
+    : minLengthValidation
+    | maxLengthValidation
+    | minValidation
+    | maxValidation
+    ;
+
+minLengthValidation: ('minLength' | 'minimumLength') '(' integerLiteral ')';
+maxLengthValidation: ('maxLength' | 'maximumLength') '(' integerLiteral ')';
+minValidation: ('min' | 'minimum') '(' integerLiteral ')';
+maxValidation: ('max' | 'maximum') '(' integerLiteral ')';
 
 // parameter
 parameterDeclaration: primitiveParameterDeclaration | enumerationParameterDeclaration;

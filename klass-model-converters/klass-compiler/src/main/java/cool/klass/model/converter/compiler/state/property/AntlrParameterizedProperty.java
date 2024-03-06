@@ -152,6 +152,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
         return this.parameterizedPropertyBuilder;
     }
 
+    @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // TODO: ☑ Check that there are no duplicate modifiers

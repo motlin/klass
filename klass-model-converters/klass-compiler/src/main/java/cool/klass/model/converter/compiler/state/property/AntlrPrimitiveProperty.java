@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
@@ -78,13 +79,13 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
     @Override
     public boolean isSystem()
     {
-        return this.propertyModifierStates.anySatisfy(AntlrPropertyModifier::isSystem);
+        return this.modifierStates.anySatisfy(AntlrPropertyModifier::isSystem);
     }
 
     @Override
     public boolean isValid()
     {
-        return this.propertyModifierStates.anySatisfy(AntlrPropertyModifier::isValid);
+        return this.modifierStates.anySatisfy(AntlrPropertyModifier::isValid);
     }
 
     @Nonnull
@@ -97,7 +98,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
         }
 
         ImmutableList<PropertyModifierBuilder> propertyModifierBuilders =
-                this.propertyModifierStates.collect(AntlrPropertyModifier::build);
+                this.modifierStates.collect(AntlrPropertyModifier::build);
 
         this.primitivePropertyBuilder = new PrimitivePropertyBuilder(
                 this.elementContext,
@@ -109,7 +110,43 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
                 this.owningClassifierState.getElementBuilder(),
                 propertyModifierBuilders,
                 this.isOptional);
+
+        this.buildValidations();
+
         return this.primitivePropertyBuilder;
+    }
+
+    @Override
+    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    {
+        super.reportErrors(compilerErrorHolder);
+
+        this.reportInvalidStringValidations(compilerErrorHolder);
+        this.reportInvalidNumericValidations(compilerErrorHolder);
+    }
+
+    private void reportInvalidStringValidations(CompilerErrorState compilerErrorHolder)
+    {
+        PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
+        if (primitiveType == PrimitiveType.STRING)
+        {
+            return;
+        }
+
+        this.minLengthValidationStates.each(each -> each.reportInvalidType(compilerErrorHolder, primitiveType));
+        this.maxLengthValidationStates.each(each -> each.reportInvalidType(compilerErrorHolder, primitiveType));
+    }
+
+    private void reportInvalidNumericValidations(CompilerErrorState compilerErrorHolder)
+    {
+        PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
+        if (primitiveType.isNumeric())
+        {
+            return;
+        }
+
+        this.minValidationStates.each(each -> each.reportInvalidType(compilerErrorHolder, primitiveType));
+        this.maxValidationStates.each(each -> each.reportInvalidType(compilerErrorHolder, primitiveType));
     }
 
     @Nonnull

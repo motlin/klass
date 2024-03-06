@@ -7,7 +7,6 @@ import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
-import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -88,14 +87,6 @@ public final class PrimitivePropertyImpl
                     this.typeBuilder,
                     this.owningClassifierBuilder.getElement(),
                     this.isOptional);
-        }
-
-        @Override
-        protected void buildChildren()
-        {
-            ImmutableList<PropertyModifier> propertyModifiers =
-                    this.propertyModifierBuilders.collect(PropertyModifierBuilder::build);
-            this.element.setPropertyModifiers(propertyModifiers);
         }
     }
 }

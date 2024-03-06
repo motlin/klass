@@ -8,7 +8,6 @@ import cool.klass.model.meta.domain.EnumerationImpl;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
-import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -102,14 +101,6 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
                     this.typeBuilder.getElement(),
                     this.owningClassifierBuilder.getElement(),
                     this.isOptional);
-        }
-
-        @Override
-        protected void buildChildren()
-        {
-            ImmutableList<PropertyModifier> propertyModifiers =
-                    this.propertyModifierBuilders.collect(PropertyModifierBuilder::build);
-            this.element.setPropertyModifiers(propertyModifiers);
         }
     }
 }

@@ -101,7 +101,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
         }
 
         ImmutableList<PropertyModifierBuilder> propertyModifierBuilders =
-                this.propertyModifierStates.collect(AntlrPropertyModifier::build);
+                this.modifierStates.collect(AntlrPropertyModifier::build);
 
         this.enumerationPropertyBuilder = new EnumerationPropertyBuilder(
                 this.elementContext,
@@ -113,6 +113,9 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
                 this.owningClassifierState.getElementBuilder(),
                 propertyModifierBuilders,
                 this.isOptional);
+
+        this.buildValidations();
+
         return this.enumerationPropertyBuilder;
     }
 

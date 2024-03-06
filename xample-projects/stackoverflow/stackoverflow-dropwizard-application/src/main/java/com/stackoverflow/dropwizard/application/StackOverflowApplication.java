@@ -36,6 +36,7 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
             bootstrap.addBundle(bundle);
         }
 
+        // TODO: Move up?
         bootstrap.addBundle(new SampleDataGeneratorBundle(this.domainModel, this.dataStore));
         bootstrap.addBundle(new BootstrapWriterBundle(this.domainModel, this.dataStore));
 

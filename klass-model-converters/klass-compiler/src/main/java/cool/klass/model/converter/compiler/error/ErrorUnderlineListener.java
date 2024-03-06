@@ -13,6 +13,10 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MaxValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MinLengthValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MinValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
@@ -72,6 +76,30 @@ public class ErrorUnderlineListener extends KlassThrowingListener
 
     @Override
     public void enterEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
+    {
+        this.addUnderlinedToken(ctx.getStart());
+    }
+
+    @Override
+    public void enterMinLengthValidation(MinLengthValidationContext ctx)
+    {
+        this.addUnderlinedToken(ctx.getStart());
+    }
+
+    @Override
+    public void enterMaxLengthValidation(MaxLengthValidationContext ctx)
+    {
+        this.addUnderlinedToken(ctx.getStart());
+    }
+
+    @Override
+    public void enterMinValidation(MinValidationContext ctx)
+    {
+        this.addUnderlinedToken(ctx.getStart());
+    }
+
+    @Override
+    public void enterMaxValidation(MaxValidationContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }

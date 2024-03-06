@@ -3,6 +3,7 @@ package cool.klass.model.converter.compiler.state.property;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -38,6 +39,7 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
     @Nonnull
     public abstract PropertyBuilder<T, ?, ?> build();
 
+    @OverridingMethodsMustInvokeSuper
     public abstract void reportErrors(CompilerErrorState compilerErrorHolder);
 
     public final void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)

@@ -1206,7 +1206,198 @@ public class KlassCompilerTest
                 + "    id: Long id key key;\n"
                 + "}\n";
 
-        this.assertNoCompilerErrors(sourceCodeText);
+        String[] errors = {
+                ""
+                        + "File: example.klass Line: 5 Char: 17 Error: ERR_DUP_MOD: Duplicate modifier 'key'.\n"
+                        + "package dummy\n"
+                        + "class Dummy\n"
+                        + "{\n"
+                        + "    id: Long id key key;\n"
+                        + "                ^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 5 Char: 21 Error: ERR_DUP_MOD: Duplicate modifier 'key'.\n"
+                        + "package dummy\n"
+                        + "class Dummy\n"
+                        + "{\n"
+                        + "    id: Long id key key;\n"
+                        + "                    ^^^\n"
+                        + "}\n",
+        };
+
+        this.assertCompilerErrors(sourceCodeText, errors);
+    }
+
+    @Test
+    public void duplicateValidation()
+    {
+        //language=Klass
+        String sourceCodeText = ""
+                + "package dummy\n"
+                + "\n"
+                + "enumeration DummyEnumeration\n"
+                + "{\n"
+                + "    EXAMPLE,\n"
+                + "}\n"
+                + "\n"
+                + "class DummyClass\n"
+                + "{\n"
+                + "    id: Long id key;\n"
+                + "    number: Long minimum(1) min(1) maximum(10) max(10);\n"
+                + "    string: String minimumLength(1) minLength(1) maximumLength(10) maxLength(10);\n"
+                + "    enumeration: DummyEnumeration minimumLength(1) minLength(1) maximumLength(10) maxLength(10);\n"
+                + "}\n";
+
+        String[] errors = {
+                ""
+                        + "File: example.klass Line: 11 Char: 18 Error: ERR_DUP_VAL: Duplicate validation 'minimum(1)'.\n"
+                        + "package dummy\n"
+                        + "class DummyClass\n"
+                        + "{\n"
+                        + "    number: Long minimum(1) min(1) maximum(10) max(10);\n"
+                        + "                 ^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 11 Char: 29 Error: ERR_DUP_VAL: Duplicate validation 'min(1)'.\n"
+                        + "package dummy\n"
+                        + "class DummyClass\n"
+                        + "{\n"
+                        + "    number: Long minimum(1) min(1) maximum(10) max(10);\n"
+                        + "                            ^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 11 Char: 36 Error: ERR_DUP_VAL: Duplicate validation 'maximum(10)'.\n"
+                        + "package dummy\n"
+                        + "class DummyClass\n"
+                        + "{\n"
+                        + "    number: Long minimum(1) min(1) maximum(10) max(10);\n"
+                        + "                                   ^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 11 Char: 48 Error: ERR_DUP_VAL: Duplicate validation 'max(10)'.\n"
+                        + "package dummy\n"
+                        + "class DummyClass\n"
+                        + "{\n"
+                        + "    number: Long minimum(1) min(1) maximum(10) max(10);\n"
+                        + "                                               ^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 12 Char: 20 Error: ERR_DUP_VAL: Duplicate validation 'minimumLength(1)'.\n"
+                        + "package dummy\n"
+                        + "class DummyClass\n"
+                        + "{\n"
+                        + "    string: String minimumLength(1) minLength(1) maximumLength(10) maxLength(10);\n"
+                        + "                   ^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 12 Char: 37 Error: ERR_DUP_VAL: Duplicate validation 'minLength(1)'.\n"
+                        + "package dummy\n"
+                        + "class DummyClass\n"
+                        + "{\n"
+                        + "    string: String minimumLength(1) minLength(1) maximumLength(10) maxLength(10);\n"
+                        + "                                    ^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 12 Char: 50 Error: ERR_DUP_VAL: Duplicate validation 'maximumLength(10)'.\n"
+                        + "package dummy\n"
+                        + "class DummyClass\n"
+                        + "{\n"
+                        + "    string: String minimumLength(1) minLength(1) maximumLength(10) maxLength(10);\n"
+                        + "                                                 ^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 12 Char: 68 Error: ERR_DUP_VAL: Duplicate validation 'maxLength(10)'.\n"
+                        + "package dummy\n"
+                        + "class DummyClass\n"
+                        + "{\n"
+                        + "    string: String minimumLength(1) minLength(1) maximumLength(10) maxLength(10);\n"
+                        + "                                                                   ^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 13 Char: 35 Error: ERR_DUP_VAL: Duplicate validation 'minimumLength(1)'.\n"
+                        + "package dummy\n"
+                        + "class DummyClass\n"
+                        + "{\n"
+                        + "    enumeration: DummyEnumeration minimumLength(1) minLength(1) maximumLength(10) maxLength(10);\n"
+                        + "                                  ^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 13 Char: 52 Error: ERR_DUP_VAL: Duplicate validation 'minLength(1)'.\n"
+                        + "package dummy\n"
+                        + "class DummyClass\n"
+                        + "{\n"
+                        + "    enumeration: DummyEnumeration minimumLength(1) minLength(1) maximumLength(10) maxLength(10);\n"
+                        + "                                                   ^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 13 Char: 65 Error: ERR_DUP_VAL: Duplicate validation 'maximumLength(10)'.\n"
+                        + "package dummy\n"
+                        + "class DummyClass\n"
+                        + "{\n"
+                        + "    enumeration: DummyEnumeration minimumLength(1) minLength(1) maximumLength(10) maxLength(10);\n"
+                        + "                                                                ^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 13 Char: 83 Error: ERR_DUP_VAL: Duplicate validation 'maxLength(10)'.\n"
+                        + "package dummy\n"
+                        + "class DummyClass\n"
+                        + "{\n"
+                        + "    enumeration: DummyEnumeration minimumLength(1) minLength(1) maximumLength(10) maxLength(10);\n"
+                        + "                                                                                  ^^^^^^^^^\n"
+                        + "}\n",
+        };
+        this.assertCompilerErrors(sourceCodeText, errors);
+    }
+
+    @Test
+    public void invalidValidation()
+    {
+        //language=Klass
+        String sourceCodeText = "package dummy\n"
+                + "\n"
+                + "class Dummy\n"
+                + "{\n"
+                + "    id: Long id key;\n"
+                + "    number: Long minLength(1) maxLength(10);\n"
+                + "    string: String min(1) max(10);\n"
+                + "}\n";
+
+        String[] errors = {
+                ""
+                        + "File: example.klass Line: 6 Char: 18 Error: ERR_VLD_TYP: Invalid validation 'minLength(1)' for type Long.\n"
+                        + "package dummy\n"
+                        + "class Dummy\n"
+                        + "{\n"
+                        + "    number: Long minLength(1) maxLength(10);\n"
+                        + "                 ^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 6 Char: 31 Error: ERR_VLD_TYP: Invalid validation 'maxLength(10)' for type Long.\n"
+                        + "package dummy\n"
+                        + "class Dummy\n"
+                        + "{\n"
+                        + "    number: Long minLength(1) maxLength(10);\n"
+                        + "                              ^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 7 Char: 20 Error: ERR_VLD_TYP: Invalid validation 'min(1)' for type String.\n"
+                        + "package dummy\n"
+                        + "class Dummy\n"
+                        + "{\n"
+                        + "    string: String min(1) max(10);\n"
+                        + "                   ^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 7 Char: 27 Error: ERR_VLD_TYP: Invalid validation 'max(10)' for type String.\n"
+                        + "package dummy\n"
+                        + "class Dummy\n"
+                        + "{\n"
+                        + "    string: String min(1) max(10);\n"
+                        + "                          ^^^\n"
+                        + "}\n",
+        };
+
+        this.assertCompilerErrors(sourceCodeText, errors);
     }
 
     @Test

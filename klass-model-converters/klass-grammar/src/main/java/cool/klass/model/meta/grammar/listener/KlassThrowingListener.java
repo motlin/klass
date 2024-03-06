@@ -30,6 +30,7 @@ import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionOrContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaNativeContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyContext;
+import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
@@ -56,7 +57,11 @@ import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.KeywordValidAsIdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralListContext;
+import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MaxValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.MemberReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.MinLengthValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MinValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.NativeLiteralContext;
@@ -908,6 +913,76 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitOptionalMarker() not implemented yet");
+    }
+
+    @Override
+    public void enterDataTypePropertyValidation(DataTypePropertyValidationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterDataTypePropertyValidation() not implemented yet");
+    }
+
+    @Override
+    public void exitDataTypePropertyValidation(DataTypePropertyValidationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitDataTypePropertyValidation() not implemented yet");
+    }
+
+    @Override
+    public void enterMinLengthValidation(MinLengthValidationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterMinLengthValidation() not implemented yet");
+    }
+
+    @Override
+    public void exitMinLengthValidation(MinLengthValidationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitMinLengthValidation() not implemented yet");
+    }
+
+    @Override
+    public void enterMaxLengthValidation(MaxLengthValidationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterMaxLengthValidation() not implemented yet");
+    }
+
+    @Override
+    public void exitMaxLengthValidation(MaxLengthValidationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitMaxLengthValidation() not implemented yet");
+    }
+
+    @Override
+    public void enterMinValidation(MinValidationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterMinValidation() not implemented yet");
+    }
+
+    @Override
+    public void exitMinValidation(MinValidationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitMinValidation() not implemented yet");
+    }
+
+    @Override
+    public void enterMaxValidation(MaxValidationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterMaxValidation() not implemented yet");
+    }
+
+    @Override
+    public void exitMaxValidation(MaxValidationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitMaxValidation() not implemented yet");
     }
 
     @Override

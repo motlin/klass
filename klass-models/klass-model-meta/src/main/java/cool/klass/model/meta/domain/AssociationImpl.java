@@ -93,6 +93,7 @@ public final class AssociationImpl extends AbstractPackageableElement implements
             this.associationEndBuilders = Objects.requireNonNull(associationEndBuilders);
         }
 
+        @Nonnull
         @Override
         protected AssociationImpl buildUnsafe()
         {

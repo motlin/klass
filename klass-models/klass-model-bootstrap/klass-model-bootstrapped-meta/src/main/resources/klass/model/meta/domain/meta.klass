@@ -3,8 +3,8 @@ package klass.model.meta.domain
 interface Element
 {
     inferred: Boolean;
-    sourceCode: String;
-    sourceCodeWithInference: String;
+    sourceCode: String maximumLength(100000);
+    sourceCodeWithInference: String maximumLength(100000);
 }
 
 interface NamedElement
@@ -17,6 +17,7 @@ interface NamedElement
 interface PackageableElement
 {
     packageName: String;
+
     // fullyQualifiedName: String = packageName + "." + name;
 }
 
@@ -31,7 +32,7 @@ class Classifier
 
     // TODO: Ordinals should have a syntax and be inferred using macros
     ordinal: Integer;
-    sourceCode: String;
+    sourceCode: String maximumLength(100000);
 }
 
 // TODO: Error when transient extends non-transient
@@ -114,6 +115,7 @@ association ClassHasPrimitiveTypeProperties
 {
     owningClass: Klass[1..1];
     primitiveProperties: PrimitiveProperty[0..*] owned
+
     // TODO: Change the orderBy syntax to orderBy(this.ordinal)
         orderBy: this.ordinal;
 
@@ -126,7 +128,7 @@ class Enumeration
     inferred                      : Boolean;
     packageName                   : String private;
     ordinal                       : Integer;
-    sourceCode                    : String;
+    sourceCode                    : String maximumLength(100000);
 }
 
 class EnumerationLiteral
@@ -242,7 +244,7 @@ class Association
     inferred                      : Boolean;
     packageName                   : String;
     ordinal                       : Integer;
-    sourceCode                    : String;
+    sourceCode                    : String maximumLength(100000);
 
     source(): AssociationEnd[1..1]
     {
@@ -531,7 +533,8 @@ association UrlHasServices
     url: Url[1..1];
     services: Service[1..*];
 
-    relationship this.className == Service.className && this.url == Service.urlString
+    relationship this.className == Service.className
+            && this.url == Service.urlString
 }
 
 projection ClassReadProjection on Klass

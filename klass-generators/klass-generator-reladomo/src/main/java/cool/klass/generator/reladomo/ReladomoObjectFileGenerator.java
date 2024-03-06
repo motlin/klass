@@ -36,6 +36,7 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
+import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import org.eclipse.collections.api.list.ImmutableList;
 
 // TODO: ⬆ Generate default order-bys (or infer default order-bys) and gererate order-bys on association ends.
@@ -361,6 +362,11 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         {
             attributeType.setJavaType("String");
             attributeType.setTrim(false);
+
+            dataTypeProperty
+                    .getMaxLengthPropertyValidation()
+                    .map(NumericPropertyValidation::getNumber)
+                    .ifPresent(attributeType::setMaxLength);
         }
 
         if (dataTypeProperty instanceof PrimitiveProperty)
