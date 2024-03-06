@@ -149,4 +149,15 @@ public abstract class AntlrProperty
     {
         return MEMBER_NAME_PATTERN;
     }
+
+    @Override
+    public String toString()
+    {
+        return String.format(
+                "%s.%s: %s %s",
+                this.getOwningClassifierState().getName(),
+                this.getName(),
+                this.getType(),
+                this.getModifiers().collect(AntlrNamedElement::getName).makeString(" "));
+    }
 }

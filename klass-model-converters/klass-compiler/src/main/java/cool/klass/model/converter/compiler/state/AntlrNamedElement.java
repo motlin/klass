@@ -153,4 +153,10 @@ public abstract class AntlrNamedElement extends AntlrElement
             compilerErrorHolder.add("ERR_SQL_KEY", message, this);
         }
     }
+
+    @Override
+    public String toString()
+    {
+        return this.name;
+    }
 }
