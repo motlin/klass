@@ -23,13 +23,14 @@ import cool.klass.model.meta.domain.api.PackageableElement;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
+// TODO: Split out into Liftwizard by passing in a list of class names (and Sequence name) into the constructor
 public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGenerator
 {
-    // "com.liftwizard.reladomo.connectionmanager.h2.H2ConnectionManager"
-    // "com.gs.fw.common.mithra.test.ConnectionManagerForTests"
+    // Default value will be "ConnectionManagerHolder"
     @Nonnull
-    private final String    connectionManagerFullyQualifiedName;
-    private final boolean   isTest;
+    private final String  connectionManagerClassName;
+    @Nonnull
+    private final String connectionManagerName;
     @Nonnull
     private final String    rootPackageName;
     @Nonnull
@@ -37,16 +38,16 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
 
     public ReladomoRuntimeConfigurationGenerator(
             @Nonnull DomainModel domainModel,
-            @Nonnull String connectionManagerFullyQualifiedName,
-            boolean isTest,
+            @Nonnull String connectionManagerClassName,
+            @Nonnull String connectionManagerName,
             @Nonnull String rootPackageName,
             @Nonnull String cacheType)
     {
         super(domainModel);
-        this.connectionManagerFullyQualifiedName = Objects.requireNonNull(connectionManagerFullyQualifiedName);
-        this.isTest                              = isTest;
-        this.rootPackageName                     = Objects.requireNonNull(rootPackageName);
-        this.cacheType                           = ReladomoRuntimeConfigurationGenerator.getCacheType(cacheType);
+        this.connectionManagerClassName = Objects.requireNonNull(connectionManagerClassName);
+        this.connectionManagerName      = Objects.requireNonNull(connectionManagerName);
+        this.rootPackageName            = Objects.requireNonNull(rootPackageName);
+        this.cacheType                  = ReladomoRuntimeConfigurationGenerator.getCacheType(cacheType);
     }
 
     private static CacheType getCacheType(@Nonnull String cacheType)
@@ -101,11 +102,10 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
 
     private ImmutableList<PropertyType> getPropertyTypes()
     {
-        return this.isTest
-                ? Lists.immutable.with(ReladomoRuntimeConfigurationGenerator.createPropertyType(
-                "resourceName",
-                "testdb"))
-                : Lists.immutable.empty();
+        PropertyType propertyType = ReladomoRuntimeConfigurationGenerator.createPropertyType(
+                "connectionManagerName",
+                this.connectionManagerName);
+        return Lists.immutable.with(propertyType);
     }
 
     @Nonnull
@@ -133,7 +133,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
         List<PropertyType>          properties    = propertyTypes.castToList();
 
         ConnectionManagerType connectionManagerType = new ConnectionManagerType();
-        connectionManagerType.setClassName(this.connectionManagerFullyQualifiedName);
+        connectionManagerType.setClassName(this.connectionManagerClassName);
         connectionManagerType.setProperties(properties);
         connectionManagerType.setMithraObjectConfigurations(this.getConnectionManagerObjectConfigurationTypes().castToList());
         return connectionManagerType;

@@ -34,11 +34,18 @@ public class GenerateReladomoRuntimeConfigurationMojo extends AbstractGenerateMo
     private String outputFilename;
 
     @Parameter(
-            property = "connectionManagerFullyQualifiedName",
+            property = "connectionManagerClassName",
             required = true,
             readonly = true,
-            defaultValue = "com.gs.fw.common.mithra.test.ConnectionManagerForTests")
-    private String connectionManagerFullyQualifiedName;
+            defaultValue = "com.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder")
+    private String connectionManagerClassName;
+
+    @Parameter(
+            property = "connectionManagerName",
+            required = true,
+            readonly = true,
+            defaultValue = "h2-mem")
+    private String connectionManagerName;
 
     @SuppressWarnings("FieldMayBeFinal")
     @Parameter(property = "isTest", required = true, readonly = true, defaultValue = "true")
@@ -67,8 +74,8 @@ public class GenerateReladomoRuntimeConfigurationMojo extends AbstractGenerateMo
             ReladomoRuntimeConfigurationGenerator reladomoRuntimeConfigurationGenerator =
                     new ReladomoRuntimeConfigurationGenerator(
                             domainModel,
-                            this.connectionManagerFullyQualifiedName,
-                            this.isTest,
+                            this.connectionManagerClassName,
+                            this.connectionManagerName,
                             this.rootPackageName,
                             this.cacheType);
             reladomoRuntimeConfigurationGenerator.writeRuntimeConfigFile(path);
