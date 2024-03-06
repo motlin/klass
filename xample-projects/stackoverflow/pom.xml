@@ -32,6 +32,47 @@
 
     <name>${app.name} (Module Group)</name>
 
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>cool.klass</groupId>
+                <artifactId>klass-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <defaultGoal>clean install</defaultGoal>
+
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
     <modules>
         <module>${app.artifactId}-domain-model</module>
         <module>${app.artifactId}-reladomo-definitions</module>
