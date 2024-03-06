@@ -55,12 +55,14 @@ class ClassifierInterfaceMapping
 {
     classifierName: String key private maximumLength(256);
     interfaceName: String key private maximumLength(256);
+    ordinal: Integer;
 }
 
 association ClassifierHasClassifierInterfaceMapping
 {
     subClassifier: Classifier[1..1];
-    superInterfaces               : ClassifierInterfaceMapping[0..*] owned;
+    superInterfaces               : ClassifierInterfaceMapping[0..*] owned
+        orderBy: this.ordinal ascending;
 }
 
 association ClassifierInterfaceMappingHasInterface
@@ -403,7 +405,8 @@ association ClassHasAssociationEnds
 {
     owningClass: Klass[1..1];
     associationEnds: AssociationEnd[0..*];
-    // TODO: Order by this.owningAssociation.ordinal
+        // TODO Order by paths, not just properties
+        // orderBy: this.owningAssociation.ordinal ascending;
 
     relationship this.name == AssociationEnd.owningClassName
 }
@@ -482,12 +485,14 @@ class MemberReferencePathAssociationEndMapping
     memberReferencePathId: Long key private;
     associationOwningClassName: String key private maximumLength(256);
     associationEndName: String key private maximumLength(256);
+    ordinal: Integer;
 }
 
 association MemberReferencePathHasMemberReferencePathAssociationEndMapping
 {
     memberReferencePath: MemberReferencePath[1..1];
-    associationEnds: MemberReferencePathAssociationEndMapping[0..*] owned;
+    associationEnds: MemberReferencePathAssociationEndMapping[0..*] owned
+        orderBy: this.ordinal ascending;
 }
 
 association MemberReferencePathAssociationEndMappingHasAssociationEnd
@@ -563,12 +568,14 @@ class AssociationEndOrderBy
     associationEndName: String key private maximumLength(256);
     thisMemberReferencePathId: Long key private;
     orderByDirection: OrderByDirection maximumLength(256);
+    ordinal: Integer;
 }
 
 association AssociationEndHasOrderBy
 {
     associationEnd: AssociationEnd[1..1];
-    orderBys: AssociationEndOrderBy[0..*] owned;
+    orderBys: AssociationEndOrderBy[0..*] owned
+        orderBy: this.ordinal ascending;
 
     relationship this.owningClassName == AssociationEndOrderBy.associationEndClassName
             && this.name == AssociationEndOrderBy.associationEndName
@@ -592,13 +599,14 @@ class ParameterizedPropertyOrdering
 {
     owningClassName               : String private key maximumLength(256);
     name                          : String key maximumLength(256);
-    orderingId                    : Long; // move this to an orderBy and make it private
+    ordinal: Integer;
 }
 
 association ParameterizedPropertyHasOrdering
 {
     parameterizedProperty: ParameterizedProperty[1..1];
-    parameterizedPropertyOrderings: ParameterizedPropertyOrdering[0..*] owned;
+    parameterizedPropertyOrderings: ParameterizedPropertyOrdering[0..*] owned
+        orderBy: this.ordinal ascending;
 
     relationship this.owningClassName == ParameterizedPropertyOrdering.owningClassName
             && this.name == ParameterizedPropertyOrdering.name
@@ -608,12 +616,14 @@ class ParameterizedPropertyParameter implements NamedElement
 {
     classifierName                : String key private maximumLength(256);
     parameterizedPropertyName     : String key maximumLength(256);
+    ordinal: Integer;
 }
 
 association ParameterizedPropertyHasParameters
 {
     parameterizedProperty         : ParameterizedProperty[1..1];
-    parameters                    : ParameterizedPropertyParameter[0..*];
+    parameters                    : ParameterizedPropertyParameter[0..*]
+        orderBy: this.ordinal ascending;
 
     relationship this.owningClassName == ParameterizedPropertyParameter.classifierName
             && this.name == ParameterizedPropertyParameter.parameterizedPropertyName
@@ -689,7 +699,8 @@ class ProjectionDataTypeProperty
 association ProjectionElementHasChildren
 {
     parent                        : ProjectionElement[0..1];
-    children                      : ProjectionElement[0..*];
+    children                      : ProjectionElement[0..*]
+        orderBy: this.ordinal ascending;
 
     relationship this.id == ProjectionElement.parentId
 }
@@ -747,6 +758,7 @@ class Url
 {
     className                     : String key maximumLength(256);
     url                           : String key maximumLength(8192);
+    ordinal: Integer;
 }
 
 enumeration UrlParameterType
@@ -762,12 +774,14 @@ class UrlParameter
     urlString                     : String key private maximumLength(8192);
     parameterId                   : Long key private;
     type                          : UrlParameterType;
+    ordinal: Integer;
 }
 
 association UrlHasUrlParameters
 {
     url: Url[1..1];
-    parameters                    : UrlParameter[0..*] owned;
+    parameters                    : UrlParameter[0..*] owned
+        orderBy: this.ordinal ascending;
 
     relationship this.className == UrlParameter.urlClassName
             && this.url == UrlParameter.urlString
@@ -782,7 +796,8 @@ association UrlParameterHasParameter
 association ServiceGroupHasUrls
 {
     serviceGroup                  : ServiceGroup[1..1];
-    urls                          : Url[1..*] owned;
+    urls                          : Url[1..*] owned
+        orderBy: this.ordinal ascending;
 
     relationship this.className == Url.className
 }
@@ -814,12 +829,14 @@ class Service
     validateCriteriaId            : Long? private;
     conflictCriteriaId            : Long? private;
     serviceMultiplicity           : ServiceMultiplicity maximumLength(256);
+    ordinal: Integer;
 }
 
 association UrlHasServices
 {
     url: Url[1..1];
-    services                      : Service[1..*] owned;
+    services                      : Service[1..*] owned
+        orderBy: this.ordinal ascending;
 
     relationship this.className == Service.className
             && this.url == Service.urlString
@@ -872,12 +889,14 @@ class ServiceOrderBy
     serviceVerb: Verb key private;
     thisMemberReferencePathId     : Long key private;
     orderByDirection: OrderByDirection;
+    ordinal: Integer;
 }
 
 association ServiceHasOrderBy
 {
     service                       : Service[1..1];
-    orderBys                      : ServiceOrderBy[0..*] owned;
+    orderBys                      : ServiceOrderBy[0..*] owned
+        orderBy: this.ordinal ascending;
 }
 
 association ServiceOrderByHasMemberReferencePath
@@ -958,7 +977,7 @@ projection ParameterizedPropertyProjection on ParameterizedProperty
 
 projection ParameterizedPropertyOrderingProjection on ParameterizedPropertyOrdering
 {
-    orderingId: "ParameterizedPropertyOrdering orderingId",
+    ordinal: "ParameterizedPropertyOrdering orderingId",
 }
 
 projection ProjectionElementProjection on ProjectionElement

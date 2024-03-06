@@ -255,6 +255,17 @@
         "primitiveType": "String",
         "minValidation": null,
         "maxValidation": null
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -288,7 +299,14 @@
             "keyword": "owned"
           }
         ],
-        "orderBys": []
+        "orderBys": [
+          {
+            "orderByDirection": "ascending",
+            "thisMemberReferencePath": {
+              "id": 156
+            }
+          }
+        ]
       }
     ],
     "criteria": {
@@ -419,7 +437,7 @@
           {
             "orderByDirection": "ascending",
             "thisMemberReferencePath": {
-              "id": 156
+              "id": 157
             }
           }
         ]
@@ -736,7 +754,7 @@
           {
             "orderByDirection": "ascending",
             "thisMemberReferencePath": {
-              "id": 157
+              "id": 158
             }
           }
         ]
@@ -1117,7 +1135,7 @@
           {
             "orderByDirection": "ascending",
             "thisMemberReferencePath": {
-              "id": 158
+              "id": 159
             }
           }
         ]
@@ -1848,7 +1866,7 @@
           {
             "orderByDirection": "ascending",
             "thisMemberReferencePath": {
-              "id": 159
+              "id": 160
             }
           }
         ]
@@ -2029,7 +2047,7 @@
           {
             "orderByDirection": "ascending",
             "thisMemberReferencePath": {
-              "id": 160
+              "id": 161
             }
           }
         ]
@@ -2291,6 +2309,17 @@
         "primitiveType": "String",
         "minValidation": null,
         "maxValidation": null
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -2324,7 +2353,14 @@
             "keyword": "owned"
           }
         ],
-        "orderBys": []
+        "orderBys": [
+          {
+            "orderByDirection": "ascending",
+            "thisMemberReferencePath": {
+              "id": 162
+            }
+          }
+        ]
       }
     ],
     "criteria": {
@@ -2576,7 +2612,7 @@
           {
             "orderByDirection": "ascending",
             "thisMemberReferencePath": {
-              "id": 161
+              "id": 163
             }
           }
         ]
@@ -2678,6 +2714,17 @@
         "enumeration": {
           "name": "OrderByDirection"
         }
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -2711,7 +2758,14 @@
             "keyword": "owned"
           }
         ],
-        "orderBys": []
+        "orderBys": [
+          {
+            "orderByDirection": "ascending",
+            "thisMemberReferencePath": {
+              "id": 164
+            }
+          }
+        ]
       }
     ],
     "criteria": {
@@ -2824,12 +2878,12 @@
       },
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
-        "name": "orderingId",
+        "name": "ordinal",
         "optional": false,
         "minLengthValidation": null,
         "maxLengthValidation": null,
         "propertyModifiers": [],
-        "primitiveType": "Long",
+        "primitiveType": "Integer",
         "minValidation": null,
         "maxValidation": null
       }
@@ -2865,7 +2919,14 @@
             "keyword": "owned"
           }
         ],
-        "orderBys": []
+        "orderBys": [
+          {
+            "orderByDirection": "ascending",
+            "thisMemberReferencePath": {
+              "id": 165
+            }
+          }
+        ]
       }
     ],
     "criteria": {
@@ -2921,6 +2982,17 @@
         "primitiveType": "String",
         "minValidation": null,
         "maxValidation": null
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -2950,7 +3022,14 @@
           "name": "ParameterizedPropertyParameter"
         },
         "associationEndModifiers": [],
-        "orderBys": []
+        "orderBys": [
+          {
+            "orderByDirection": "ascending",
+            "thisMemberReferencePath": {
+              "id": 166
+            }
+          }
+        ]
       }
     ],
     "criteria": {
@@ -3274,7 +3353,14 @@
           "name": "ProjectionElement"
         },
         "associationEndModifiers": [],
-        "orderBys": []
+        "orderBys": [
+          {
+            "orderByDirection": "ascending",
+            "thisMemberReferencePath": {
+              "id": 167
+            }
+          }
+        ]
       }
     ],
     "criteria": {
@@ -3508,6 +3594,17 @@
         "primitiveType": "String",
         "minValidation": null,
         "maxValidation": null
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -3610,6 +3707,17 @@
         "enumeration": {
           "name": "UrlParameterType"
         }
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -3643,7 +3751,14 @@
             "keyword": "owned"
           }
         ],
-        "orderBys": []
+        "orderBys": [
+          {
+            "orderByDirection": "ascending",
+            "thisMemberReferencePath": {
+              "id": 168
+            }
+          }
+        ]
       }
     ],
     "criteria": {
@@ -3707,7 +3822,14 @@
             "keyword": "owned"
           }
         ],
-        "orderBys": []
+        "orderBys": [
+          {
+            "orderByDirection": "ascending",
+            "thisMemberReferencePath": {
+              "id": 169
+            }
+          }
+        ]
       }
     ],
     "criteria": {
@@ -3909,6 +4031,17 @@
         "enumeration": {
           "name": "ServiceMultiplicity"
         }
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -3942,7 +4075,14 @@
             "keyword": "owned"
           }
         ],
-        "orderBys": []
+        "orderBys": [
+          {
+            "orderByDirection": "ascending",
+            "thisMemberReferencePath": {
+              "id": 170
+            }
+          }
+        ]
       }
     ],
     "criteria": {
@@ -4208,6 +4348,17 @@
         "enumeration": {
           "name": "OrderByDirection"
         }
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -4241,7 +4392,14 @@
             "keyword": "owned"
           }
         ],
-        "orderBys": []
+        "orderBys": [
+          {
+            "orderByDirection": "ascending",
+            "thisMemberReferencePath": {
+              "id": 171
+            }
+          }
+        ]
       }
     ],
     "criteria": {
@@ -4399,27 +4557,6 @@
     },
     "urls": [
       {
-        "url": "/meta/packageableElement",
-        "parameters": [],
-        "services": [
-          {
-            "verb": "GET",
-            "serviceMultiplicity": "many",
-            "projection": {
-              "name": "PackageableElementProjection"
-            },
-            "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 88
-            },
-            "authorizeCriteria": null,
-            "validateCriteria": null,
-            "conflictCriteria": null,
-            "orderBys": []
-          }
-        ]
-      },
-      {
         "url": "/meta/packageableElement/{name}",
         "parameters": [
           {
@@ -4469,6 +4606,27 @@
             "orderBys": []
           }
         ]
+      },
+      {
+        "url": "/meta/packageableElement",
+        "parameters": [],
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "PackageableElementProjection"
+            },
+            "queryCriteria": {
+              "__typename": "klass.model.meta.domain.AllCriteria",
+              "id": 88
+            },
+            "authorizeCriteria": null,
+            "validateCriteria": null,
+            "conflictCriteria": null,
+            "orderBys": []
+          }
+        ]
       }
     ]
   },
@@ -4480,27 +4638,6 @@
       "name": "Enumeration"
     },
     "urls": [
-      {
-        "url": "/meta/enumeration",
-        "parameters": [],
-        "services": [
-          {
-            "verb": "GET",
-            "serviceMultiplicity": "many",
-            "projection": {
-              "name": "EnumerationProjection"
-            },
-            "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 90
-            },
-            "authorizeCriteria": null,
-            "validateCriteria": null,
-            "conflictCriteria": null,
-            "orderBys": []
-          }
-        ]
-      },
       {
         "url": "/meta/enumeration/{name}",
         "parameters": [
@@ -4551,6 +4688,27 @@
             "orderBys": []
           }
         ]
+      },
+      {
+        "url": "/meta/enumeration",
+        "parameters": [],
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "EnumerationProjection"
+            },
+            "queryCriteria": {
+              "__typename": "klass.model.meta.domain.AllCriteria",
+              "id": 90
+            },
+            "authorizeCriteria": null,
+            "validateCriteria": null,
+            "conflictCriteria": null,
+            "orderBys": []
+          }
+        ]
       }
     ]
   },
@@ -4578,27 +4736,6 @@
       "name": "Interface"
     },
     "urls": [
-      {
-        "url": "/meta/interface",
-        "parameters": [],
-        "services": [
-          {
-            "verb": "GET",
-            "serviceMultiplicity": "many",
-            "projection": {
-              "name": "InterfaceProjection"
-            },
-            "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 92
-            },
-            "authorizeCriteria": null,
-            "validateCriteria": null,
-            "conflictCriteria": null,
-            "orderBys": []
-          }
-        ]
-      },
       {
         "url": "/meta/interface/{name}",
         "parameters": [
@@ -4642,6 +4779,27 @@
                   "name": "name"
                 }
               }
+            },
+            "authorizeCriteria": null,
+            "validateCriteria": null,
+            "conflictCriteria": null,
+            "orderBys": []
+          }
+        ]
+      },
+      {
+        "url": "/meta/interface",
+        "parameters": [],
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "InterfaceProjection"
+            },
+            "queryCriteria": {
+              "__typename": "klass.model.meta.domain.AllCriteria",
+              "id": 92
             },
             "authorizeCriteria": null,
             "validateCriteria": null,
@@ -4693,27 +4851,6 @@
     },
     "urls": [
       {
-        "url": "/meta/class",
-        "parameters": [],
-        "services": [
-          {
-            "verb": "GET",
-            "serviceMultiplicity": "many",
-            "projection": {
-              "name": "KlassProjection"
-            },
-            "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 94
-            },
-            "authorizeCriteria": null,
-            "validateCriteria": null,
-            "conflictCriteria": null,
-            "orderBys": []
-          }
-        ]
-      },
-      {
         "url": "/meta/class/{name}",
         "parameters": [
           {
@@ -4763,6 +4900,27 @@
             "orderBys": []
           }
         ]
+      },
+      {
+        "url": "/meta/class",
+        "parameters": [],
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "KlassProjection"
+            },
+            "queryCriteria": {
+              "__typename": "klass.model.meta.domain.AllCriteria",
+              "id": 94
+            },
+            "authorizeCriteria": null,
+            "validateCriteria": null,
+            "conflictCriteria": null,
+            "orderBys": []
+          }
+        ]
       }
     ]
   },
@@ -4782,27 +4940,6 @@
       "name": "Classifier"
     },
     "urls": [
-      {
-        "url": "/meta/classifier",
-        "parameters": [],
-        "services": [
-          {
-            "verb": "GET",
-            "serviceMultiplicity": "many",
-            "projection": {
-              "name": "ClassifierProjection"
-            },
-            "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 96
-            },
-            "authorizeCriteria": null,
-            "validateCriteria": null,
-            "conflictCriteria": null,
-            "orderBys": []
-          }
-        ]
-      },
       {
         "url": "/meta/classifier/{name}",
         "parameters": [
@@ -4846,6 +4983,27 @@
                   "name": "name"
                 }
               }
+            },
+            "authorizeCriteria": null,
+            "validateCriteria": null,
+            "conflictCriteria": null,
+            "orderBys": []
+          }
+        ]
+      },
+      {
+        "url": "/meta/classifier",
+        "parameters": [],
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "ClassifierProjection"
+            },
+            "queryCriteria": {
+              "__typename": "klass.model.meta.domain.AllCriteria",
+              "id": 96
             },
             "authorizeCriteria": null,
             "validateCriteria": null,
@@ -4977,27 +5135,6 @@
     },
     "urls": [
       {
-        "url": "/meta/association",
-        "parameters": [],
-        "services": [
-          {
-            "verb": "GET",
-            "serviceMultiplicity": "many",
-            "projection": {
-              "name": "AssociationProjection"
-            },
-            "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 98
-            },
-            "authorizeCriteria": null,
-            "validateCriteria": null,
-            "conflictCriteria": null,
-            "orderBys": []
-          }
-        ]
-      },
-      {
         "url": "/meta/association/{name}",
         "parameters": [
           {
@@ -5047,6 +5184,27 @@
             "orderBys": []
           }
         ]
+      },
+      {
+        "url": "/meta/association",
+        "parameters": [],
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "AssociationProjection"
+            },
+            "queryCriteria": {
+              "__typename": "klass.model.meta.domain.AllCriteria",
+              "id": 98
+            },
+            "authorizeCriteria": null,
+            "validateCriteria": null,
+            "conflictCriteria": null,
+            "orderBys": []
+          }
+        ]
       }
     ]
   },
@@ -5058,27 +5216,6 @@
       "name": "NamedProjection"
     },
     "urls": [
-      {
-        "url": "/meta/projection",
-        "parameters": [],
-        "services": [
-          {
-            "verb": "GET",
-            "serviceMultiplicity": "many",
-            "projection": {
-              "name": "NamedProjectionProjection"
-            },
-            "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 100
-            },
-            "authorizeCriteria": null,
-            "validateCriteria": null,
-            "conflictCriteria": null,
-            "orderBys": []
-          }
-        ]
-      },
       {
         "url": "/meta/projection/{name}",
         "parameters": [
@@ -5129,6 +5266,27 @@
             "orderBys": []
           }
         ]
+      },
+      {
+        "url": "/meta/projection",
+        "parameters": [],
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "NamedProjectionProjection"
+            },
+            "queryCriteria": {
+              "__typename": "klass.model.meta.domain.AllCriteria",
+              "id": 100
+            },
+            "authorizeCriteria": null,
+            "validateCriteria": null,
+            "conflictCriteria": null,
+            "orderBys": []
+          }
+        ]
       }
     ]
   },
@@ -5148,27 +5306,6 @@
       "name": "ServiceGroup"
     },
     "urls": [
-      {
-        "url": "/meta/serviceGroup",
-        "parameters": [],
-        "services": [
-          {
-            "verb": "GET",
-            "serviceMultiplicity": "many",
-            "projection": {
-              "name": "ServiceGroupProjection"
-            },
-            "queryCriteria": {
-              "__typename": "klass.model.meta.domain.AllCriteria",
-              "id": 102
-            },
-            "authorizeCriteria": null,
-            "validateCriteria": null,
-            "conflictCriteria": null,
-            "orderBys": []
-          }
-        ]
-      },
       {
         "url": "/meta/serviceGroup/{name}",
         "parameters": [
@@ -5212,6 +5349,27 @@
                   "name": "name"
                 }
               }
+            },
+            "authorizeCriteria": null,
+            "validateCriteria": null,
+            "conflictCriteria": null,
+            "orderBys": []
+          }
+        ]
+      },
+      {
+        "url": "/meta/serviceGroup",
+        "parameters": [],
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "ServiceGroupProjection"
+            },
+            "queryCriteria": {
+              "__typename": "klass.model.meta.domain.AllCriteria",
+              "id": 102
             },
             "authorizeCriteria": null,
             "validateCriteria": null,

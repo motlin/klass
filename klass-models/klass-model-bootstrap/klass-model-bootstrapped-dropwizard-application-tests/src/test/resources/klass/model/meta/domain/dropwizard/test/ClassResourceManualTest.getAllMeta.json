@@ -193,6 +193,17 @@
         "primitiveType": "String",
         "minValidation": null,
         "maxValidation": null
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -1492,6 +1503,17 @@
         "primitiveType": "String",
         "minValidation": null,
         "maxValidation": null
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -1696,6 +1718,17 @@
         "enumeration": {
           "name": "OrderByDirection"
         }
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -1755,12 +1788,12 @@
       },
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
-        "name": "orderingId",
+        "name": "ordinal",
         "optional": false,
         "minLengthValidation": null,
         "maxLengthValidation": null,
         "propertyModifiers": [],
-        "primitiveType": "Long",
+        "primitiveType": "Integer",
         "minValidation": null,
         "maxValidation": null
       }
@@ -1820,6 +1853,17 @@
           }
         ],
         "primitiveType": "String",
+        "minValidation": null,
+        "maxValidation": null
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
         "minValidation": null,
         "maxValidation": null
       }
@@ -2216,6 +2260,17 @@
         "primitiveType": "String",
         "minValidation": null,
         "maxValidation": null
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -2313,6 +2368,17 @@
         "enumeration": {
           "name": "UrlParameterType"
         }
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -2479,6 +2545,17 @@
         "enumeration": {
           "name": "ServiceMultiplicity"
         }
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,
@@ -2600,6 +2677,17 @@
         "enumeration": {
           "name": "OrderByDirection"
         }
+      },
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "ordinal",
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
+        "primitiveType": "Integer",
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "abstractClass": false,

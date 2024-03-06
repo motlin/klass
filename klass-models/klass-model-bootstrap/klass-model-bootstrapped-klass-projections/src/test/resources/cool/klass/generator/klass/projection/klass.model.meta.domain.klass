@@ -86,6 +86,7 @@ projection InterfaceProjection on Interface
 
 projection ClassifierInterfaceMappingProjection on ClassifierInterfaceMapping
 {
+    ordinal: "ClassifierInterfaceMapping ordinal",
     superInterface: {
         name: "NamedElement name",
     },
@@ -374,6 +375,7 @@ projection AssociationEndModifierProjection on AssociationEndModifier
 
 projection MemberReferencePathAssociationEndMappingProjection on MemberReferencePathAssociationEndMapping
 {
+    ordinal: "MemberReferencePathAssociationEndMapping ordinal",
     associationEnd: {
         name: "NamedElement name",
     },
@@ -420,6 +422,7 @@ projection ParameterizedPropertyProjection on ParameterizedProperty
 projection AssociationEndOrderByProjection on AssociationEndOrderBy
 {
     orderByDirection: "AssociationEndOrderBy orderByDirection",
+    ordinal: "AssociationEndOrderBy ordinal",
     thisMemberReferencePath: {
         id: "ExpressionValue id",
     },
@@ -427,13 +430,13 @@ projection AssociationEndOrderByProjection on AssociationEndOrderBy
 
 projection ParameterizedPropertyOrderingProjection on ParameterizedPropertyOrdering
 {
-    orderingId: "ParameterizedPropertyOrdering orderingId",
+    ordinal: "ParameterizedPropertyOrdering ordinal",
 }
 
 projection ParameterizedPropertyParameterProjection on ParameterizedPropertyParameter
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
+    ordinal: "ParameterizedPropertyParameter ordinal",
 }
 
 projection ProjectionElementProjection on ProjectionElement
@@ -571,6 +574,7 @@ projection ServiceGroupProjection on ServiceGroup
 projection UrlProjection on Url
 {
     url: "Url url",
+    ordinal: "Url ordinal",
     parameters: UrlParameterProjection,
     services: ServiceProjection,
 }
@@ -578,6 +582,7 @@ projection UrlProjection on Url
 projection UrlParameterProjection on UrlParameter
 {
     type: "UrlParameter type",
+    ordinal: "UrlParameter ordinal",
     parameter: {
         id: "Parameter id",
     },
@@ -587,6 +592,7 @@ projection ServiceProjection on Service
 {
     verb: "Service verb",
     serviceMultiplicity: "Service serviceMultiplicity",
+    ordinal: "Service ordinal",
     projection: {
         name: "NamedElement name",
     },
@@ -600,6 +606,7 @@ projection ServiceProjection on Service
 projection ServiceOrderByProjection on ServiceOrderBy
 {
     orderByDirection: "ServiceOrderBy orderByDirection",
+    ordinal: "ServiceOrderBy ordinal",
     thisMemberReferencePath: {
         id: "ExpressionValue id",
     },

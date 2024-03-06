@@ -418,10 +418,10 @@
         {
           "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
           "id": 70,
-          "name": "orderingId",
+          "name": "ordinal",
           "children": [],
           "dataTypeProperty": {
-            "name": "orderingId"
+            "name": "ordinal"
           }
         }
       ],

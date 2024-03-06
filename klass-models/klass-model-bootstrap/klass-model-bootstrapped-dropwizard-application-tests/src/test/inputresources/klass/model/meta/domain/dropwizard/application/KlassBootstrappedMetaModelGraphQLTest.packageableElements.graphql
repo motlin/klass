@@ -1,7 +1,6 @@
 fragment PackageableElementFragment on PackageableElement {
   __typename
   name
-  ordinal
   packageName
   ... on Enumeration {
     enumerationLiterals {
@@ -57,7 +56,6 @@ fragment PackageableElementFragment on PackageableElement {
 
 fragment EnumerationLiteralFragment on EnumerationLiteral {
   name
-  ordinal
   prettyName
 }
 
@@ -70,7 +68,6 @@ fragment ClassifierInterfaceMappingFragment on ClassifierInterfaceMapping {
 fragment DataTypePropertyFragment on DataTypeProperty {
   __typename
   name
-  ordinal
   optional
   minLengthValidation {
     ...MinLengthPropertyValidationFragment
@@ -115,7 +112,6 @@ fragment MaxPropertyValidationFragment on MaxPropertyValidation {
 
 fragment AssociationEndFragment on AssociationEnd {
   name
-  ordinal
   direction
   multiplicity
   resultType {
@@ -138,17 +134,15 @@ fragment AssociationEndOrderByFragment on AssociationEndOrderBy {
 
 fragment AssociationEndModifierFragment on AssociationEndModifier {
   keyword
-  ordinal
 }
 fragment ParameterizedPropertyFragment on ParameterizedProperty {
   name
-  ordinal
   multiplicity
   resultType {
     name
   }
   parameterizedPropertyOrderings {
-    orderingId
+    ordinal
   }
   parameters {
     name
@@ -175,7 +169,6 @@ fragment UrlParameterFragment on UrlParameter {
 fragment ParameterFragment on Parameter {
   __typename
   id
-  ordinal
   name
   multiplicity
   ... on EnumerationParameter {

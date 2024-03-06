@@ -165,6 +165,18 @@
             "primitiveType": "STRING",
             "minValidation": null,
             "maxValidation": null
+          },
+          {
+            "__typename": "PrimitiveProperty",
+            "name": "ordinal",
+            "ordinal": 3,
+            "optional": false,
+            "minLengthValidation": null,
+            "maxLengthValidation": null,
+            "propertyModifiers": [],
+            "primitiveType": "INTEGER",
+            "minValidation": null,
+            "maxValidation": null
           }
         ],
         "classifierModifiers": [],
@@ -1284,6 +1296,18 @@
             "primitiveType": "STRING",
             "minValidation": null,
             "maxValidation": null
+          },
+          {
+            "__typename": "PrimitiveProperty",
+            "name": "ordinal",
+            "ordinal": 4,
+            "optional": false,
+            "minLengthValidation": null,
+            "maxLengthValidation": null,
+            "propertyModifiers": [],
+            "primitiveType": "INTEGER",
+            "minValidation": null,
+            "maxValidation": null
           }
         ],
         "classifierModifiers": [],
@@ -1464,6 +1488,18 @@
             "enumeration": {
               "name": "OrderByDirection"
             }
+          },
+          {
+            "__typename": "PrimitiveProperty",
+            "name": "ordinal",
+            "ordinal": 5,
+            "optional": false,
+            "minLengthValidation": null,
+            "maxLengthValidation": null,
+            "propertyModifiers": [],
+            "primitiveType": "INTEGER",
+            "minValidation": null,
+            "maxValidation": null
           }
         ],
         "classifierModifiers": [],
@@ -1517,13 +1553,13 @@
           },
           {
             "__typename": "PrimitiveProperty",
-            "name": "orderingId",
+            "name": "ordinal",
             "ordinal": 3,
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": null,
             "propertyModifiers": [],
-            "primitiveType": "LONG",
+            "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null
           }
@@ -1580,6 +1616,18 @@
               }
             ],
             "primitiveType": "STRING",
+            "minValidation": null,
+            "maxValidation": null
+          },
+          {
+            "__typename": "PrimitiveProperty",
+            "name": "ordinal",
+            "ordinal": 3,
+            "optional": false,
+            "minLengthValidation": null,
+            "maxLengthValidation": null,
+            "propertyModifiers": [],
+            "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null
           }
@@ -1933,6 +1981,18 @@
             "primitiveType": "STRING",
             "minValidation": null,
             "maxValidation": null
+          },
+          {
+            "__typename": "PrimitiveProperty",
+            "name": "ordinal",
+            "ordinal": 3,
+            "optional": false,
+            "minLengthValidation": null,
+            "maxLengthValidation": null,
+            "propertyModifiers": [],
+            "primitiveType": "INTEGER",
+            "minValidation": null,
+            "maxValidation": null
           }
         ],
         "classifierModifiers": [],
@@ -2023,6 +2083,18 @@
             "enumeration": {
               "name": "UrlParameterType"
             }
+          },
+          {
+            "__typename": "PrimitiveProperty",
+            "name": "ordinal",
+            "ordinal": 5,
+            "optional": false,
+            "minLengthValidation": null,
+            "maxLengthValidation": null,
+            "propertyModifiers": [],
+            "primitiveType": "INTEGER",
+            "minValidation": null,
+            "maxValidation": null
           }
         ],
         "classifierModifiers": [],
@@ -2190,6 +2262,18 @@
             "enumeration": {
               "name": "ServiceMultiplicity"
             }
+          },
+          {
+            "__typename": "PrimitiveProperty",
+            "name": "ordinal",
+            "ordinal": 10,
+            "optional": false,
+            "minLengthValidation": null,
+            "maxLengthValidation": null,
+            "propertyModifiers": [],
+            "primitiveType": "INTEGER",
+            "minValidation": null,
+            "maxValidation": null
           }
         ],
         "classifierModifiers": [],
@@ -2293,6 +2377,18 @@
             "enumeration": {
               "name": "OrderByDirection"
             }
+          },
+          {
+            "__typename": "PrimitiveProperty",
+            "name": "ordinal",
+            "ordinal": 6,
+            "optional": false,
+            "minLengthValidation": null,
+            "maxLengthValidation": null,
+            "propertyModifiers": [],
+            "primitiveType": "INTEGER",
+            "minValidation": null,
+            "maxValidation": null
           }
         ],
         "classifierModifiers": [],

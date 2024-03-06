@@ -761,12 +761,12 @@
         "__typename": "ProjectionDataTypeProperty",
         "id": 70,
         "ordinal": 1,
-        "name": "orderingId",
+        "name": "ordinal",
         "parent": {
           "id": 7
         },
         "dataTypeProperty": {
-          "name": "orderingId"
+          "name": "ordinal"
         }
       },
       {

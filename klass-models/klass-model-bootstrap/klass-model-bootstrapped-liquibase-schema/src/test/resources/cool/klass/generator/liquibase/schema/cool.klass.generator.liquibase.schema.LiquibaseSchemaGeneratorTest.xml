@@ -71,6 +71,10 @@
             <column name="INTERFACE_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="CLASSIFIER_INTERFACE_MAPPING_PK" />
             </column>
+
+            <column name="ORDINAL" type="int">
+                <constraints nullable="false" />
+            </column>
         </createTable>
     </changeSet>
 
@@ -497,6 +501,10 @@
             <column name="ASSOCIATION_END_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_PK" />
             </column>
+
+            <column name="ORDINAL" type="int">
+                <constraints nullable="false" />
+            </column>
         </createTable>
     </changeSet>
 
@@ -557,6 +565,10 @@
             <column name="ORDER_BY_DIRECTION" type="varchar(256)">
                 <constraints nullable="false" />
             </column>
+
+            <column name="ORDINAL" type="int">
+                <constraints nullable="false" />
+            </column>
         </createTable>
     </changeSet>
 
@@ -570,7 +582,7 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PARAMETERIZED_PROPERTY_ORDERING_PK" />
             </column>
 
-            <column name="ORDERING_ID" type="bigint">
+            <column name="ORDINAL" type="int">
                 <constraints nullable="false" />
             </column>
         </createTable>
@@ -711,6 +723,10 @@
             <column name="URL" type="varchar(8192)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="URL_PK" />
             </column>
+
+            <column name="ORDINAL" type="int">
+                <constraints nullable="false" />
+            </column>
         </createTable>
     </changeSet>
 
@@ -729,6 +745,10 @@
             </column>
 
             <column name="TYPE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="ORDINAL" type="int">
                 <constraints nullable="false" />
             </column>
         </createTable>
@@ -761,6 +781,10 @@
             <column name="SERVICE_MULTIPLICITY" type="varchar(256)">
                 <constraints nullable="false" />
             </column>
+
+            <column name="ORDINAL" type="int">
+                <constraints nullable="false" />
+            </column>
         </createTable>
     </changeSet>
 
@@ -783,6 +807,10 @@
             </column>
 
             <column name="ORDER_BY_DIRECTION" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="ORDINAL" type="int">
                 <constraints nullable="false" />
             </column>
         </createTable>

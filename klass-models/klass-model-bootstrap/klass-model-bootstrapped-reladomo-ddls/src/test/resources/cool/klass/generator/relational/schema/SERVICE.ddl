@@ -10,6 +10,7 @@ create table SERVICE
     authorize_criteria_id bigint,
     validate_criteria_id bigint,
     conflict_criteria_id bigint,
-    service_multiplicity varchar(256) not null
+    service_multiplicity varchar(256) not null,
+    ordinal int not null
 );
 

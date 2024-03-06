@@ -58,7 +58,7 @@ fragment MemberReferencePathAssociationEndMappingFragment on MemberReferencePath
 }
 
 query {
-  criteria {
+  criterias {
     ...CriteriaFragment
   }
 }
