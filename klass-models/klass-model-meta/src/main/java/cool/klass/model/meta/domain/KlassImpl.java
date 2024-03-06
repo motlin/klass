@@ -35,6 +35,7 @@ public final class KlassImpl
     @Nonnull
     private Optional<AssociationEnd> versionedProperty = Optional.empty();
     private Optional<Klass>          superClass;
+    private ImmutableList<Klass>     subClasses;
 
     private KlassImpl(
             @Nonnull ClassDeclarationContext elementContext,
@@ -139,7 +140,26 @@ public final class KlassImpl
 
     private void setSuperClass(Optional<Klass> superClass)
     {
+        if (this.superClass != null)
+        {
+            throw new IllegalStateException();
+        }
         this.superClass = Objects.requireNonNull(superClass);
+    }
+
+    @Override
+    public ImmutableList<Klass> getSubClasses()
+    {
+        return Objects.requireNonNull(this.subClasses);
+    }
+
+    public void setSubClasses(ImmutableList<Klass> subClasses)
+    {
+        if (this.subClasses != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.subClasses = Objects.requireNonNull(subClasses);
     }
 
     public static final class KlassBuilder
@@ -159,6 +179,7 @@ public final class KlassImpl
         private Optional<AssociationEndBuilder> versionedPropertyBuilder = Optional.empty();
 
         private Optional<KlassBuilder> superClassBuilder;
+        private ImmutableList<KlassBuilder> subClassBuilders;
 
         public KlassBuilder(
                 @Nonnull ClassDeclarationContext elementContext,
@@ -222,7 +243,20 @@ public final class KlassImpl
 
         public void setSuperClassBuilder(@Nonnull Optional<KlassBuilder> superClassBuilder)
         {
+            if (this.superClassBuilder != null)
+            {
+                throw new IllegalStateException();
+            }
             this.superClassBuilder = Objects.requireNonNull(superClassBuilder);
+        }
+
+        public void setSubClassBuilders(ImmutableList<KlassBuilder> subClassBuilders)
+        {
+            if (this.subClassBuilders != null)
+            {
+                throw new IllegalStateException();
+            }
+            this.subClassBuilders = Objects.requireNonNull(subClassBuilders);
         }
 
         @Override
@@ -239,6 +273,8 @@ public final class KlassImpl
             this.element.setVersionedProperty(this.versionedPropertyBuilder.map(AssociationEndBuilder::getElement));
             Optional<Klass> u = this.superClassBuilder.map(ElementBuilder::getElement);
             this.element.setSuperClass(u);
+            ImmutableList<Klass> subClasses = this.subClassBuilders.collect(ElementBuilder::getElement);
+            this.element.setSubClasses(subClasses);
         }
 
         @Override

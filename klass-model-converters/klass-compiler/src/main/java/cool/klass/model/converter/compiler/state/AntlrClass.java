@@ -138,7 +138,9 @@ public class AntlrClass
 
     private KlassBuilder         klassBuilder;
     @Nonnull
-    private Optional<AntlrClass> superClassState = Optional.empty();
+    private Optional<AntlrClass>    superClassState = Optional.empty();
+    @Nonnull
+    private MutableList<AntlrClass> subClassStates  = Lists.mutable.empty();
 
     public AntlrClass(
             @Nonnull ClassDeclarationContext elementContext,
@@ -159,7 +161,7 @@ public class AntlrClass
 
     public ListIterable<AntlrAssociationEnd> getAssociationEndStates()
     {
-        return associationEndStates.asUnmodifiable();
+        return this.associationEndStates.asUnmodifiable();
     }
 
     @Override
@@ -314,7 +316,12 @@ public class AntlrClass
 
     public void enterExtendsDeclaration(@Nonnull AntlrClass superClassState)
     {
+        if (this.superClassState.isPresent())
+        {
+            throw new AssertionError();
+        }
         this.superClassState = Optional.of(superClassState);
+        superClassState.subClassStates.add(this);
     }
 
     @Nonnull
@@ -410,6 +417,11 @@ public class AntlrClass
 
         Optional<KlassBuilder> superClassBuilder = this.superClassState.map(AntlrClass::getElementBuilder);
         this.klassBuilder.setSuperClassBuilder(superClassBuilder);
+
+        ImmutableList<KlassBuilder> subClassBuilders = this.subClassStates
+                .collect(AntlrClass::getElementBuilder)
+                .toImmutable();
+        this.klassBuilder.setSubClassBuilders(subClassBuilders);
     }
 
     //<editor-fold desc="Report Compiler Errors">

@@ -138,6 +138,8 @@ public interface Klass
     @Nonnull
     Optional<Klass> getSuperClass();
 
+    ImmutableList<Klass> getSubClasses();
+
     boolean isUser();
 
     @Override
@@ -158,23 +160,6 @@ public interface Klass
     default boolean isAudited()
     {
         return this.getDataTypeProperties().anySatisfy(DataTypeProperty::isAudit);
-    }
-
-    @Nonnull
-    default String getAbstractSourceCode()
-    {
-        return this.getInheritanceType() == InheritanceType.NONE
-                ? ""
-                : "    abstract(" + this.getInheritanceType().getPrettyName() + ")\n";
-    }
-
-    @Nonnull
-    default String getExtendsSourceCode()
-    {
-        return this.getSuperClass()
-                .map(NamedElement::getName)
-                .map(klassName -> "    extends " + klassName + "\n")
-                .orElse("");
     }
 
     @Override
