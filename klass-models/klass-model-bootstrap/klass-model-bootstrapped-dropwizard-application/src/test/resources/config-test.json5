@@ -73,7 +73,9 @@
   },
   "authFilters": [
     {
-      "type": "impersonation"
+      "type": "header",
+      "header": "Authorization",
+      "prefix": "Impersonation",
     }
   ],
   "h2": {

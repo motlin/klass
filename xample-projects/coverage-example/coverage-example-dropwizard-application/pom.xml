@@ -506,7 +506,7 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-auth-filter-impersonation</artifactId>
+            <artifactId>liftwizard-config-auth-filter-header</artifactId>
             <scope>test</scope>
         </dependency>
 
