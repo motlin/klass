@@ -59,19 +59,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     + ".getTypeParserRuleContext() not implemented yet");
         }
 
-        @Override
-        public boolean isSystem()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".isSystem() not implemented yet");
-        }
-
-        @Override
-        public boolean isValid()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".isValid() not implemented yet");
-        }
-
         @Nonnull
         @Override
         public AntlrType getType()
@@ -123,19 +110,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".getTypeParserRuleContext() not implemented yet");
-        }
-
-        @Override
-        public boolean isSystem()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".isSystem() not implemented yet");
-        }
-
-        @Override
-        public boolean isValid()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".isValid() not implemented yet");
         }
 
         @Nonnull
