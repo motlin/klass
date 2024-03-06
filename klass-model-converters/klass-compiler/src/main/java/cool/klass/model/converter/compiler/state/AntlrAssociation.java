@@ -44,9 +44,10 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
         }
     };
 
-    private final MutableList<AntlrAssociationEnd>                              associationEndStates     = Lists.mutable.empty();
-    private final MutableOrderedMap<AssociationEndContext, AntlrAssociationEnd> associationEndsByContext = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
+    private final MutableList<AntlrAssociationEnd>                              associationEndStates     =
+            Lists.mutable.empty();
+    private final MutableOrderedMap<AssociationEndContext, AntlrAssociationEnd> associationEndsByContext =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private AntlrCriteria criteriaState;
 

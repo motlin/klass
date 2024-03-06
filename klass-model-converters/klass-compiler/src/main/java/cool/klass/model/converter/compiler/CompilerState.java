@@ -348,7 +348,8 @@ public class CompilerState
             throw new AssertionError(ctx);
         }
 
-        Integer topLevelElementOrdinalByContext = this.domainModelState.getTopLevelElementOrdinalByContext(topLevelDeclarationContext);
+        Integer topLevelElementOrdinalByContext =
+                this.domainModelState.getTopLevelElementOrdinalByContext(topLevelDeclarationContext);
         Objects.requireNonNull(topLevelElementOrdinalByContext);
         return topLevelElementOrdinalByContext;
     }
