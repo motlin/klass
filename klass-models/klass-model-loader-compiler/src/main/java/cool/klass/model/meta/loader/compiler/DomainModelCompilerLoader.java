@@ -1,6 +1,8 @@
 package cool.klass.model.meta.loader.compiler;
 
 import java.net.URL;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -53,6 +55,7 @@ public class DomainModelCompilerLoader
     public DomainModelWithSourceCode load()
     {
         LOGGER.info("Scanning source packages: {}", this.klassSourcePackages);
+        Instant  start      = Instant.now();
 
         ImmutableCollection<CompilationUnit> compilationUnits = this.getCompilationUnits();
 
@@ -60,7 +63,12 @@ public class DomainModelCompilerLoader
         CompilationResult         compilationResult = klassCompiler.compile();
         DomainModelWithSourceCode domainModel       = this.handleResult(compilationResult);
 
-        LOGGER.info("Completing domain model compilation.");
+        Instant  end      = Instant.now();
+        Duration duration = Duration.between(start, end);
+        String durationPrettyString = duration.toString().substring(2)
+                .replaceAll("(\\d[HMS])(?!$)", "$1 ")
+                .toLowerCase();
+        LOGGER.info("Domain model compilation completed in {}", durationPrettyString);
 
         return domainModel;
     }
