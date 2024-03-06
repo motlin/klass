@@ -6,15 +6,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
-import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
-import cool.klass.dropwizard.configuration.EnabledFactory;
+import cool.klass.dropwizard.configuration.config.logging.ConfigLoggingFactoryProvider;
+import cool.klass.dropwizard.configuration.enabled.EnabledFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @AutoService(PrioritizedBundle.class)
-public class ConfigLoggingBundle implements PrioritizedBundle<AbstractKlassConfiguration>
+public class ConfigLoggingBundle implements PrioritizedBundle<ConfigLoggingFactoryProvider>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigLoggingBundle.class);
 
@@ -31,7 +31,7 @@ public class ConfigLoggingBundle implements PrioritizedBundle<AbstractKlassConfi
 
     @Override
     public void run(
-            @Nonnull AbstractKlassConfiguration configuration,
+            @Nonnull ConfigLoggingFactoryProvider configuration,
             @Nonnull Environment environment) throws JsonProcessingException, ReflectiveOperationException
     {
         EnabledFactory configLoggingFactory = configuration.getConfigLoggingFactory();
@@ -49,13 +49,13 @@ public class ConfigLoggingBundle implements PrioritizedBundle<AbstractKlassConfi
     }
 
     private static void logConfiguration(
-            @Nonnull AbstractKlassConfiguration configuration,
+            @Nonnull ConfigLoggingFactoryProvider configuration,
             ObjectMapper objectMapper) throws JsonProcessingException, ReflectiveOperationException
     {
         String configurationString = objectMapper.writeValueAsString(configuration);
         LOGGER.debug("Inferred Dropwizard configuration:\n{}", configurationString);
 
-        AbstractKlassConfiguration defaultConfiguration       = configuration.getClass().getConstructor().newInstance();
+        ConfigLoggingFactoryProvider defaultConfiguration       = configuration.getClass().getConstructor().newInstance();
         String                     defaultConfigurationString = objectMapper.writeValueAsString(defaultConfiguration);
         LOGGER.debug("Default Dropwizard configuration:\n{}", defaultConfigurationString);
     }
