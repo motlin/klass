@@ -157,6 +157,7 @@ public class AbstractErrorListener extends KlassThrowingListener
             case KlassLexer.PUNCTUATION_DOT:
             case KlassLexer.PUNCTUATION_DOTDOT:
             case KlassLexer.PUNCTUATION_SLASH:
+            case KlassLexer.PUNCTUATION_QUESTION:
             {
                 return getStringDim(text, CYAN);
             }

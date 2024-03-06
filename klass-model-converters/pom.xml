@@ -21,6 +21,7 @@
         <module>klass-grammar</module>
         <module>klass-bootstrap-writer</module>
         <module>klass-graphql-schema-writer</module>
+        <module>klass-syntax-highlighter</module>
     </modules>
 
     <dependencyManagement>
