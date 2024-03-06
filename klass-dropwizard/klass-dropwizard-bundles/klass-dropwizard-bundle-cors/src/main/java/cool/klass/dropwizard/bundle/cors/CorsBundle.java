@@ -8,33 +8,49 @@ import javax.servlet.FilterRegistration.Dynamic;
 
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
-import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
+import cool.klass.dropwizard.configuration.cors.CorsFactory;
+import cool.klass.dropwizard.configuration.cors.CorsFactoryProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @AutoService(PrioritizedBundle.class)
-public class CorsBundle implements PrioritizedBundle
+public class CorsBundle implements PrioritizedBundle<CorsFactoryProvider>
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CorsBundle.class);
+
     @Override
     public void initialize(Bootstrap<?> bootstrap)
     {
     }
 
     @Override
-    public void run(AbstractKlassConfiguration configuration, @Nonnull Environment environment)
+    public void run(CorsFactoryProvider configuration, @Nonnull Environment environment)
     {
         // https://stackoverflow.com/a/25801822/23572
 
-        Dynamic cors = environment.servlets().addFilter("CORS", CrossOriginFilter.class);
+        CorsFactory corsFactory = configuration.getCorsFactory();
+        if (!corsFactory.isEnabled())
+        {
+            LOGGER.info("{} disabled.", CorsBundle.class.getSimpleName());
+            return;
+        }
 
-        // TODO  #47: Enhance CorsBundle to be configurable through HOCON.
-        cors.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
-        cors.setInitParameter(
-                CrossOriginFilter.ALLOWED_HEADERS_PARAM,
-                "X-Requested-With,Content-Type,Accept,Origin,Authorization");
-        cors.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "OPTIONS,GET,PUT,POST,DELETE,HEAD");
-        cors.setInitParameter(CrossOriginFilter.ALLOW_CREDENTIALS_PARAM, "true");
-        cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+        LOGGER.info("Running {}.", CorsBundle.class.getSimpleName());
+
+        Dynamic cors = environment.servlets().addFilter(corsFactory.getFilterName(), CrossOriginFilter.class);
+
+        cors.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, corsFactory.getAllowedOrigins());
+        cors.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, corsFactory.getAllowedHeaders());
+        cors.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, corsFactory.getAllowedMethods());
+        cors.setInitParameter(CrossOriginFilter.ALLOW_CREDENTIALS_PARAM, corsFactory.getAllowCredentials());
+        cors.addMappingForUrlPatterns(
+                EnumSet.allOf(DispatcherType.class),
+                true,
+                corsFactory.getUrlPatterns().toArray(new String[]{}));
+
+        LOGGER.info("Completing {}.", CorsBundle.class.getSimpleName());
     }
 }

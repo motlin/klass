@@ -7,23 +7,19 @@ import javax.annotation.Nonnull;
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
-import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
-import cool.klass.dropwizard.configuration.KlassFactory;
+import cool.klass.dropwizard.configuration.sample.data.SampleDataFactory;
+import cool.klass.dropwizard.configuration.sample.data.SampleDataFactoryProvider;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.reladomo.sample.data.SampleDataGenerator;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigRenderOptions;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.impl.factory.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @AutoService(PrioritizedBundle.class)
 public class SampleDataGeneratorBundle
-        implements PrioritizedBundle
+        implements PrioritizedBundle<SampleDataFactoryProvider>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(SampleDataGeneratorBundle.class);
 
@@ -39,41 +35,30 @@ public class SampleDataGeneratorBundle
     }
 
     @Override
-    public void run(@Nonnull AbstractKlassConfiguration configuration, Environment environment)
+    public void run(@Nonnull SampleDataFactoryProvider configuration, Environment environment)
     {
-        Config config                    = ConfigFactory.load();
-        Config sampleDataGeneratorConfig = config.getConfig("klass.data.generator.sample");
-
-        if (LOGGER.isDebugEnabled())
-        {
-            ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
-                    .setJson(false)
-                    .setOriginComments(false);
-            String render = sampleDataGeneratorConfig.root().render(configRenderOptions);
-            LOGGER.debug("Sample Data Generator Bundle configuration:\n{}", render);
-        }
-
-        boolean enabled = sampleDataGeneratorConfig.getBoolean("enabled");
+        boolean enabled = configuration.getSampleDataFactory().isEnabled();
         if (!enabled)
         {
+            LOGGER.info("{} disabled.", SampleDataGeneratorBundle.class.getSimpleName());
             return;
         }
 
-        String  systemTimeString = sampleDataGeneratorConfig.getString("dataSystemTime");
-        Instant systemTime       = Instant.parse(systemTimeString);
+        LOGGER.info("Running {}.", SampleDataGeneratorBundle.class.getSimpleName());
 
-        ImmutableList<String> skippedPackages = Lists.immutable.withAll(sampleDataGeneratorConfig.getStringList(
-                "skippedPackages"));
-
-        KlassFactory klassFactory = configuration.getKlassFactory();
-        DataStore    dataStore    = klassFactory.getDataStoreFactory().getDataStore();
-        DomainModel  domainModel  = klassFactory.getDomainModelFactory().getDomainModel();
+        DomainModel           domainModel       = configuration.getDomainModelFactory().getDomainModel();
+        DataStore             dataStore         = configuration.getDataStoreFactory().getDataStore();
+        SampleDataFactory     sampleDataFactory = configuration.getSampleDataFactory();
+        Instant               dataInstant       = sampleDataFactory.getDataInstant();
+        ImmutableList<String> skippedPackages   = sampleDataFactory.getSkippedPackages();
 
         SampleDataGenerator sampleDataGenerator = new SampleDataGenerator(
                 domainModel,
                 dataStore,
-                systemTime,
+                dataInstant,
                 skippedPackages);
         sampleDataGenerator.generate();
+
+        LOGGER.info("Completing {}.", SampleDataGeneratorBundle.class.getSimpleName());
     }
 }

@@ -1,7 +1,5 @@
 package com.stackoverflow.dropwizard.test;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.annotation.Nonnull;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
@@ -39,8 +37,7 @@ public class GraphQLTest
 
     @Rule
     public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule(
-            "reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml")
-            .transactionTimeout(5, TimeUnit.MINUTES);
+            "reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml");
 
     protected Client getClient(String clientName)
     {

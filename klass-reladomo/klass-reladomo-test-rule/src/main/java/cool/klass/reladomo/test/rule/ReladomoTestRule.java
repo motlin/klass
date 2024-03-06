@@ -1,11 +1,9 @@
 package cool.klass.reladomo.test.rule;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import com.gs.fw.common.mithra.MithraManager;
-import com.gs.fw.common.mithra.MithraManagerProvider;
 import com.gs.fw.common.mithra.test.ConnectionManagerForTests;
 import com.gs.fw.common.mithra.test.MithraTestResource;
 import org.junit.rules.TestRule;
@@ -19,25 +17,16 @@ public class ReladomoTestRule implements TestRule
 
     private MithraTestResource mithraTestResource;
 
-    private int      previousTransactionTimeout;
-
-    private int      transactionTimeout         = 1;
-    private TimeUnit transactionTimeoutTimeUnit = TimeUnit.MINUTES;
-
     public ReladomoTestRule(
             String runtimeConfigFilename,
             String... testDataFileNames)
     {
-        this.runtimeConfigFilename = runtimeConfigFilename;
-        this.testDataFileNames = testDataFileNames;
-    }
-
-    @Nonnull
-    public ReladomoTestRule transactionTimeout(int transactionTimeout, TimeUnit timeUnit)
-    {
-        this.transactionTimeout = transactionTimeout;
-        this.transactionTimeoutTimeUnit = timeUnit;
-        return this;
+        this.runtimeConfigFilename = Objects.requireNonNull(runtimeConfigFilename);
+        this.testDataFileNames = Objects.requireNonNull(testDataFileNames);
+        this.mithraTestResource = new MithraTestResource(this.runtimeConfigFilename);
+        this.mithraTestResource.setTestConnectionsOnTearDown(true);
+        this.mithraTestResource.setValidateConnectionManagers(true);
+        this.mithraTestResource.setStrictParsingEnabled(true);
     }
 
     @Nonnull
@@ -69,7 +58,6 @@ public class ReladomoTestRule implements TestRule
 
     private void before(@Nonnull String[] testDataFileNames)
     {
-        this.mithraTestResource = new MithraTestResource(this.runtimeConfigFilename);
         // TODO: Make the test database name configurable
         ConnectionManagerForTests connectionManager = ConnectionManagerForTests.getInstance("testdb");
         this.mithraTestResource.createSingleDatabase(connectionManager);
@@ -79,19 +67,10 @@ public class ReladomoTestRule implements TestRule
             this.mithraTestResource.addTestDataToDatabase(testDataFileName, connectionManager);
         }
         this.mithraTestResource.setUp();
-
-        MithraManager mithraManager = MithraManagerProvider.getMithraManager();
-        this.previousTransactionTimeout = mithraManager.getTransactionTimeout();
-        int nextTransactionTimeout = Math.toIntExact(TimeUnit.SECONDS.convert(
-                this.transactionTimeout,
-                this.transactionTimeoutTimeUnit));
-        mithraManager.setTransactionTimeout(nextTransactionTimeout);
     }
 
     private void after()
     {
-        MithraManagerProvider.getMithraManager().setTransactionTimeout(this.previousTransactionTimeout);
-
         this.mithraTestResource.tearDown();
     }
 }

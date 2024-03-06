@@ -20,6 +20,7 @@ import cool.klass.dropwizard.configuration.uuid.UUIDSupplierFactory;
 public class ReladomoDataStoreFactory implements DataStoreFactory
 {
     private @NotNull @Valid UUIDSupplierFactory uuidFactory;
+    private                 int                 retryCount = 1;
 
     private DataStore dataStore;
 
@@ -30,10 +31,16 @@ public class ReladomoDataStoreFactory implements DataStoreFactory
         return this.uuidFactory;
     }
 
-    @JsonProperty("uuid")
-    public void setUuidFactory(@Nonnull UUIDSupplierFactory uuidFactory)
+    @JsonProperty
+    public void setUuid(@Nonnull UUIDSupplierFactory uuidFactory)
     {
         this.uuidFactory = uuidFactory;
+    }
+
+    @JsonProperty
+    public void setRetryCount(int retryCount)
+    {
+        this.retryCount = retryCount;
     }
 
     @Override
@@ -51,6 +58,6 @@ public class ReladomoDataStoreFactory implements DataStoreFactory
     public DataStore createDataStore()
     {
         Supplier<UUID> uuidSupplier = this.uuidFactory.createUUIDSupplier();
-        return new ReladomoDataStore(uuidSupplier);
+        return new ReladomoDataStore(uuidSupplier, this.retryCount);
     }
 }

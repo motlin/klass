@@ -2,7 +2,6 @@ package cool.klass.xample.coverage.dropwizard.test;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
 import javax.ws.rs.client.Client;
@@ -38,16 +37,15 @@ public class AbstractCoverageTest
 
     @Rule
     public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule(
-            "reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml")
-            .transactionTimeout(5, TimeUnit.MINUTES);
+            "reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml");
 
     @Before
     public void setUpSampleData()
     {
-        DomainModel  domainModel  = RULE.<CoverageExampleApplication>getApplication().getDomainModel();
         KlassFactory klassFactory = RULE.getConfiguration().getKlassFactory();
         DataStore    dataStore    = klassFactory.getDataStoreFactory().getDataStore();
         Clock        clock        = klassFactory.getClockFactory().getClock();
+        DomainModel  domainModel  = klassFactory.getDomainModelFactory().getDomainModel();
         Instant      now          = Instant.now(clock);
 
         SampleDataGenerator sampleDataGenerator = new SampleDataGenerator(

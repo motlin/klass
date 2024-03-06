@@ -1,24 +1,23 @@
 package cool.klass.dropwizard.bundle.ddl.executor;
 
-import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-import javax.annotation.Nonnull;
-
+import com.codahale.metrics.MetricRegistry;
 import com.google.auto.service.AutoService;
-import com.gs.fw.common.mithra.connectionmanager.SourcelessConnectionManager;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
-import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
+import cool.klass.dropwizard.configuration.ddl.executor.DdlExecutorFactory;
+import cool.klass.dropwizard.configuration.ddl.executor.DdlExecutorFactoryProvider;
 import cool.klass.reladomo.ddl.executor.DatabaseDdlExecutor;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigRenderOptions;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.db.ManagedDataSource;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @AutoService(PrioritizedBundle.class)
-public class DdlExecutorBundle implements PrioritizedBundle
+public class DdlExecutorBundle implements PrioritizedBundle<DdlExecutorFactoryProvider>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(DdlExecutorBundle.class);
 
@@ -34,44 +33,24 @@ public class DdlExecutorBundle implements PrioritizedBundle
     }
 
     @Override
-    public void run(AbstractKlassConfiguration configuration, Environment environment)
+    public void run(DdlExecutorFactoryProvider configuration, Environment environment) throws SQLException
     {
-        Config config           = ConfigFactory.load();
-        Config dropTablesConfig = config.getConfig("klass.data.dropTables");
-
-        if (LOGGER.isDebugEnabled())
+        DdlExecutorFactory ddlExecutorFactory = configuration.getDdlExecutorFactory();
+        if (ddlExecutorFactory == null)
         {
-            ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
-                    .setJson(false)
-                    .setOriginComments(false);
-            String render = dropTablesConfig.root().render(configRenderOptions);
-            LOGGER.debug("DDL Executor Bundle configuration:\n{}", render);
-        }
-
-        boolean enabled = dropTablesConfig.getBoolean("enabled");
-        if (!enabled)
-        {
+            LOGGER.info("{} disabled.", DdlExecutorBundle.class.getSimpleName());
             return;
         }
 
-        String connectionManagerFullyQualifiedName = dropTablesConfig.getString("connectionManager");
-        SourcelessConnectionManager connectionManager =
-                this.getConnectionManager(connectionManagerFullyQualifiedName);
-        DatabaseDdlExecutor.executeSql(connectionManager.getConnection());
-    }
+        LOGGER.info("Running {}.", DdlExecutorBundle.class.getSimpleName());
 
-    @Nonnull
-    protected SourcelessConnectionManager getConnectionManager(String connectionManagerFullyQualifiedName)
-    {
-        try
-        {
-            Class<?> connectionManagerClass = Class.forName(connectionManagerFullyQualifiedName);
-            Method   getInstance            = connectionManagerClass.getMethod("getInstance");
-            return (SourcelessConnectionManager) getInstance.invoke(null);
-        }
-        catch (ReflectiveOperationException e)
-        {
-            throw new RuntimeException(e);
-        }
+        MetricRegistry    metricRegistry    = environment.metrics();
+        String            poolName          = DdlExecutorBundle.class.getSimpleName() + " Pool";
+        DataSourceFactory dataSourceFactory = ddlExecutorFactory.getDataSourceFactory();
+        ManagedDataSource managedDataSource = dataSourceFactory.build(metricRegistry, poolName);
+        Connection        connection        = managedDataSource.getConnection();
+        DatabaseDdlExecutor.executeSql(connection);
+
+        LOGGER.info("Completing {}.", DdlExecutorBundle.class.getSimpleName());
     }
 }

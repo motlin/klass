@@ -1,16 +1,15 @@
 package cool.klass.dropwizard.bundle.h2;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.servlet.ServletRegistration.Dynamic;
 
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
-import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigRenderOptions;
+import cool.klass.dropwizard.configuration.h2.H2Factory;
+import cool.klass.dropwizard.configuration.h2.H2FactoryProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.h2.server.web.WebServlet;
@@ -22,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * Inspired by {@link io.github.jhipster.config.h2.H2ConfigurationHelper}
  */
 @AutoService(PrioritizedBundle.class)
-public class H2Bundle implements PrioritizedBundle
+public class H2Bundle implements PrioritizedBundle<H2FactoryProvider>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(H2Bundle.class);
 
@@ -38,39 +37,34 @@ public class H2Bundle implements PrioritizedBundle
     }
 
     @Override
-    public void run(AbstractKlassConfiguration configuration, @Nonnull Environment environment)
+    public void run(H2FactoryProvider configuration, Environment environment)
     {
-        Config config         = ConfigFactory.load();
-        Config h2BundleConfig = config.getConfig("klass.data.h2");
-
-        if (LOGGER.isDebugEnabled())
+        H2Factory h2Factory = configuration.getH2Factory();
+        if (!h2Factory.isEnabled())
         {
-            ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
-                    .setJson(false)
-                    .setOriginComments(false);
-            String render = h2BundleConfig.root().render(configRenderOptions);
-            LOGGER.debug("H2 Bundle configuration:\n{}", render);
+            LOGGER.info("{} disabled.", H2Bundle.class.getSimpleName());
+            return;
         }
 
-        boolean runEmbedded = h2BundleConfig.getBoolean("runEmbedded");
-        if (runEmbedded)
-        {
-            Server tcpServer = this.createTcpServer();
-            environment.lifecycle().manage(new TcpServerShutdownHook(tcpServer));
+        LOGGER.info("Running {}.", H2Bundle.class.getSimpleName());
 
-            Dynamic h2ConsoleServlet = environment.servlets().addServlet("H2Console", new WebServlet());
-            h2ConsoleServlet.addMapping("/h2-console/*");
-            h2ConsoleServlet.setInitParameter("-properties", "src/main/resources/");
-            h2ConsoleServlet.setLoadOnStartup(1);
-        }
+        Server tcpServer = this.createTcpServer(h2Factory.getTcpServerArgs());
+        environment.lifecycle().manage(new TcpServerShutdownHook(tcpServer));
+
+        Dynamic h2ConsoleServlet = environment.servlets().addServlet(h2Factory.getServletName(), new WebServlet());
+        h2ConsoleServlet.addMapping(h2Factory.getServletUrlMapping());
+        h2ConsoleServlet.setInitParameter("-properties", h2Factory.getPropertiesLocation());
+        h2ConsoleServlet.setLoadOnStartup(1);
+
+        LOGGER.info("Completing {}.", H2Bundle.class.getSimpleName());
     }
 
     @Nonnull
-    private Server createTcpServer()
+    private Server createTcpServer(List<String> tcpServerArgs)
     {
         try
         {
-            Server server = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-baseDir", "./target/h2db");
+            Server server = Server.createTcpServer(tcpServerArgs.toArray(new String[]{}));
             server.start();
             LOGGER.debug(server.getStatus());
             return server;

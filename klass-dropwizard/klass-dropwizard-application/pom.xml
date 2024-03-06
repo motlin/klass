@@ -29,6 +29,12 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-http-logging</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-prioritized-api</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -108,13 +114,6 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-bootstrapped-meta</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-http-logging</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>

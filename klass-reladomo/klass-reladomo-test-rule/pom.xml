@@ -18,11 +18,6 @@
 
         <dependency>
             <groupId>com.goldmansachs.reladomo</groupId>
-            <artifactId>reladomo</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.goldmansachs.reladomo</groupId>
             <artifactId>reladomo-test-util</artifactId>
         </dependency>
 

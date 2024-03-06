@@ -93,6 +93,6 @@ public abstract class AbstractValidatorTest
     {
         String           seed         = IncomingCreateDataModelValidator.class.getSimpleName();
         SeedUUIDSupplier uuidSupplier = new SeedUUIDSupplier(seed);
-        return new ReladomoDataStore(uuidSupplier);
+        return new ReladomoDataStore(uuidSupplier, 1);
     }
 }

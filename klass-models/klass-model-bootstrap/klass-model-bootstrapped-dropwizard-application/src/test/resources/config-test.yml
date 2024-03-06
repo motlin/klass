@@ -11,7 +11,7 @@ server:
       - type: console
 
 logging:
-  level: DEBUG
+  level: INFO
   loggers:
     klass.model.meta.domain: INFO
 #    com.gs.fw.common.mithra.sqllogs: DEBUG
@@ -19,6 +19,7 @@ logging:
     com.gs.fw.common.mithra.connectionmanager: INFO
     org.eclipse.jetty: INFO
     org.apache.http: INFO
+    org.hibernate.validator.internal: INFO
   appenders:
     - type: console
       # In production, always use UTC. In unit tests, system is more convenient
@@ -36,3 +37,11 @@ klass:
     type: compiler
     sourcePackages:
       - "klass.model.meta.domain"
+
+jerseyHttpLogging:
+  level: INFO
+  verbosity: PAYLOAD_ANY
+  maxEntitySize: 8k
+
+authFilters:
+  - type: impersonation

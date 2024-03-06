@@ -18,13 +18,13 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-prioritized-api</artifactId>
+            <artifactId>klass-dropwizard-configuration-http-logging</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration</artifactId>
+            <artifactId>klass-dropwizard-bundle-prioritized-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -39,23 +39,23 @@
         </dependency>
 
         <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-util</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-common</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.google.auto.service</groupId>
-            <artifactId>auto-service</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.typesafe</groupId>
-            <artifactId>config</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
         </dependency>
 
         <dependency>

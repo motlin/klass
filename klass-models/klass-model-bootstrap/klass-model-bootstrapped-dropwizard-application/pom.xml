@@ -170,23 +170,25 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- TODO: Fix inheritance and then remove workaround ddls -->
+        <!--
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-reladomo-ddls</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
+        -->
 
-        <!--TODO: This should be a runtime dependency, but the DdlExecutorCommand currently has a hard dependency-->
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-connection-manager-h2</artifactId>
+            <artifactId>klass-dropwizard-application</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-application</artifactId>
+            <artifactId>klass-model-meta-interface</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
@@ -215,13 +217,20 @@
         </dependency>
 
         <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-core</artifactId>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-domain-model-loader</artifactId>
+            <version>${klass.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-reladomo</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-core</artifactId>
         </dependency>
 
         <dependency>
@@ -232,6 +241,16 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-util</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <dependency>
@@ -254,6 +273,27 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-data-store-reladomo</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-domain-model-loader-compiler</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-domain-model-loader-constant</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-connection-manager-h2</artifactId>
             <version>${klass.version}</version>
             <scope>runtime</scope>
         </dependency>
@@ -287,6 +327,13 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-junit-rule-match-json</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-auth-filter-impersonation</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
@@ -360,7 +407,7 @@
 
                 <!--TODO: There seems to be a bug in maven from using the file-missing trigger together with exec-maven-plugin's working directory-->
                 <!--<file>-->
-                    <!--<missing>${project.build.directory}/h2db/klass-app-h2.mv.db</missing>-->
+                <!--<missing>${project.build.directory}/h2db/klass-app-h2.mv.db</missing>-->
                 <!--</file>-->
             </activation>
             <build>

@@ -34,3 +34,11 @@ klass:
     uuid:
       type: seed
       seed: "test seed"
+  domainModel:
+    type: compiler
+    sourcePackages:
+      - "klass.model.meta.domain"
+      - "cool.klass.xample.coverage"
+
+authFilters:
+  - type: impersonation

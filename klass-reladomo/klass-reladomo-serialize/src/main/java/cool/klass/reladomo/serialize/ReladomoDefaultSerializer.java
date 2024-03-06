@@ -2,6 +2,7 @@ package cool.klass.reladomo.serialize;
 
 import javax.annotation.Nonnull;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gs.fw.common.mithra.MithraObject;
@@ -20,8 +21,9 @@ public final class ReladomoDefaultSerializer
 
     public static String serialize(@Nonnull MithraObject mithraObject)
     {
+        // TODO: Initialize with shared ObjectMapper
         ObjectMapper objectMapper = Jackson.newObjectMapper();
-        ObjectMapperConfig.configure(objectMapper);
+        ObjectMapperConfig.configure(objectMapper, true, Include.NON_ABSENT);
         return serialize(mithraObject, objectMapper);
     }
 

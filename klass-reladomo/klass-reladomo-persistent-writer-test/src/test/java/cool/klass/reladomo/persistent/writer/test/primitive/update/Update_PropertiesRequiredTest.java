@@ -1,7 +1,6 @@
 package cool.klass.reladomo.persistent.writer.test.primitive.update;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
 
@@ -23,8 +22,7 @@ public class Update_PropertiesRequiredTest
     @Rule
     public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule(
             "reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml",
-            "test-data/Update_PropertiesRequiredTest.txt")
-            .transactionTimeout(5, TimeUnit.MINUTES);
+            "test-data/Update_PropertiesRequiredTest.txt");
 
     private Object persistentInstance;
 

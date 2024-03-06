@@ -31,7 +31,6 @@
 
     <modules>
         <module>klass-dropwizard-application</module>
-        <module>klass-dropwizard-auth</module>
         <module>klass-dropwizard-bundles</module>
         <module>klass-dropwizard-configuration</module>
         <module>klass-dropwizard-configuration-factories</module>

@@ -11,16 +11,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.eclipsecollections.EclipseCollectionsModule;
 import com.gs.reladomo.serial.jackson.JacksonReladomoModule;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigRenderOptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class ObjectMapperConfig
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ObjectMapperConfig.class);
-
     private static final PrettyPrinter DEFAULT_PRETTY_PRINTER = new JsonPrettyPrinter();
 
     private ObjectMapperConfig()
@@ -28,25 +21,11 @@ public final class ObjectMapperConfig
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    public static void configure(@Nonnull ObjectMapper objectMapper)
+    public static void configure(
+            @Nonnull ObjectMapper objectMapper,
+            boolean prettyPrint,
+            @Nonnull Include serializationInclusion)
     {
-        // TODO: Move the config stuff to the bundle
-        Config config             = ConfigFactory.load();
-        Config objectMapperConfig = config.getConfig("klass.jackson.objectmapper");
-
-        if (LOGGER.isDebugEnabled())
-        {
-            ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
-                    .setJson(false)
-                    .setOriginComments(false);
-            String render = objectMapperConfig.root().render(configRenderOptions);
-            LOGGER.debug("ObjectMapper configuration:\n{}", render);
-        }
-
-        boolean prettyPrint            = objectMapperConfig.getBoolean("prettyPrint");
-        String  serializationInclusion = objectMapperConfig.getString("serializationInclusion");
-        Include include                = Include.valueOf(serializationInclusion);
-
         if (prettyPrint)
         {
             objectMapper.setDefaultPrettyPrinter(DEFAULT_PRETTY_PRINTER);
@@ -64,7 +43,7 @@ public final class ObjectMapperConfig
         objectMapper.configure(Feature.ALLOW_TRAILING_COMMA, true);
 
         objectMapper.setDateFormat(new StdDateFormat());
-        objectMapper.setSerializationInclusion(include);
+        objectMapper.setSerializationInclusion(serializationInclusion);
 
         objectMapper.registerModule(new EclipseCollectionsModule());
         // TODO: Dynamically discover and load Jackson modules to break dependencies

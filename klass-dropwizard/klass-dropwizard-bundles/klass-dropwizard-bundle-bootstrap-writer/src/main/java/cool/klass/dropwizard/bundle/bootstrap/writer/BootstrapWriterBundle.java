@@ -9,9 +9,6 @@ import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
 import cool.klass.model.meta.domain.api.DomainModel;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigRenderOptions;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
@@ -19,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 @AutoService(PrioritizedBundle.class)
 public class BootstrapWriterBundle
-        implements PrioritizedBundle
+        implements PrioritizedBundle<AbstractKlassConfiguration>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(BootstrapWriterBundle.class);
 
@@ -37,23 +34,14 @@ public class BootstrapWriterBundle
     @Override
     public void run(@Nonnull AbstractKlassConfiguration configuration, Environment environment)
     {
-        Config config          = ConfigFactory.load();
-        Config bootstrapConfig = config.getConfig("klass.data.reladomo.bootstrap");
-
-        if (LOGGER.isDebugEnabled())
-        {
-            ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
-                    .setJson(false)
-                    .setOriginComments(false);
-            String render = bootstrapConfig.root().render(configRenderOptions);
-            LOGGER.debug("Bootstrap Writer Bundle configuration:\n{}", render);
-        }
-
-        boolean enabled = bootstrapConfig.getBoolean("enabled");
+        boolean enabled = configuration.getBootstrapFactory().isEnabled();
         if (!enabled)
         {
+            LOGGER.info("{} disabled.", BootstrapWriterBundle.class.getSimpleName());
             return;
         }
+
+        LOGGER.info("Running {}.", BootstrapWriterBundle.class.getSimpleName());
 
         KlassFactory klassFactory = configuration.getKlassFactory();
         DataStore    dataStore    = klassFactory.getDataStoreFactory().getDataStore();
@@ -61,5 +49,7 @@ public class BootstrapWriterBundle
 
         KlassBootstrapWriter klassBootstrapWriter = new KlassBootstrapWriter(domainModel, dataStore);
         klassBootstrapWriter.bootstrapMetaModel();
+
+        LOGGER.info("Completing {}.", BootstrapWriterBundle.class.getSimpleName());
     }
 }
