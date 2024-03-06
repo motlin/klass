@@ -257,26 +257,30 @@ public class AntlrAssociationEnd
             return;
         }
 
-        if (this.getType().getCompilationUnit().isEmpty()
-                || this.opposite.getType().getCompilationUnit().isEmpty())
+        if (this.foreignKeys.isEmpty())
         {
             return;
         }
 
-        CompilationUnit compilationUnit         = this.getType().getCompilationUnit().get();
-        CompilationUnit oppositeCompilationUnit = this.opposite.getType().getCompilationUnit().get();
-        if (!compilationUnit.equals(oppositeCompilationUnit))
+        if (this.isVersion())
         {
+            // We reach here in the case of a version association end that is not owned
+            // This will trigger a different error: ERR_VER_OWN
             return;
         }
 
-        if (compilationUnit.getOrdinal() > oppositeCompilationUnit.getOrdinal())
+        if (this.opposite.getType().isForwardReference(this.getType()))
         {
             String message = String.format(
-                    "Association '%s' establishes that type '%s' requires type '%s', but the declaration order is reversed.",
+                    "Association '%s' establishes that type '%s' requires type '%s', so it ought to be declared later in the source file. '%s' is declared on line %d and '%s' is declared on line %d in source file '%s'.",
                     this.owningAssociationState.getName(),
+                    this.opposite.getType().getName(),
                     this.getType().getName(),
-                    this.opposite.getType().getName());
+                    this.opposite.getType().getName(),
+                    this.opposite.getType().getElementContext().getStart().getLine(),
+                    this.getType().getName(),
+                    this.getType().getElementContext().getStart().getLine(),
+                    this.getCompilationUnit().get().getSourceName());
             compilerErrorHolder.add(
                     "ERR_ASO_ORD",
                     message,
