@@ -55,7 +55,7 @@ public final class IdxGenerator
                 .concatenate(toProperties)
                 .toImmutableList();
 
-        if (allKeyProperties.equals(getAllKeyProperties(klass)))
+        if (allKeyProperties.toImmutableSet().isSubsetOf(getAllKeyProperties(klass).toImmutableSet()))
         {
             return "";
         }
