@@ -16,6 +16,20 @@
 
     <name>Klass Generator Maven Plugins (Module Group)</name>
 
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>cool.klass</groupId>
+                <artifactId>klass-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
     <modules>
         <module>klass-generator-abstract-plugin</module>
         <module>klass-generator-reladomo-plugin</module>
