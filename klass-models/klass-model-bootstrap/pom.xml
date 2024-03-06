@@ -67,5 +67,6 @@
         <module>klass-model-bootstrapped-reladomo-pojos</module>
         <module>klass-model-bootstrapped-reladomo-runtime-configuration</module>
         <module>klass-model-bootstrapped-services</module>
+        <module>klass-model-bootstrapped-uml-nomnoml</module>
     </modules>
 </project>
