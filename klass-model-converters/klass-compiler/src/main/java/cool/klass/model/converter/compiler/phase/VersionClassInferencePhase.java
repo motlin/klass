@@ -6,6 +6,7 @@ import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
+import cool.klass.model.converter.compiler.state.property.validation.AbstractAntlrPropertyValidation;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -90,11 +91,17 @@ public class VersionClassInferencePhase
                 ? ""
                 : modifiers.collect(AntlrModifier::getKeyword).makeString(" ", " ", "");
 
+        ListIterable<AbstractAntlrPropertyValidation> validations = dataTypeProperty.getValidationStates();
+        String validationSourceCode = validations.isEmpty()
+                ? ""
+                : validations.makeString(" ", " ", "");
+
         return String.format(
-                "%s: %s%s%s;",
+                "%s: %s%s%s%s;",
                 dataTypeProperty.getName(),
                 dataTypeProperty.getType().getName(),
                 isOptionalString,
-                modifierSourceCode);
+                modifierSourceCode,
+                validationSourceCode);
     }
 }
