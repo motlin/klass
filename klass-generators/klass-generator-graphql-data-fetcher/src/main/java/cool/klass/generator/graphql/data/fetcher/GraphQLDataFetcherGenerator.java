@@ -228,7 +228,7 @@ public class GraphQLDataFetcherGenerator
     }
 
     // TODO fix this for types coerced from Strings like Instant and LocalDate
-    private static class GraphQLScalarDataTypePropertyVisitor
+    private static final class GraphQLScalarDataTypePropertyVisitor
             implements PropertyVisitor
     {
         private String sourceCode;

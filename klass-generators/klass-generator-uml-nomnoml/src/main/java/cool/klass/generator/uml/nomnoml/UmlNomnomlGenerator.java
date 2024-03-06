@@ -91,7 +91,7 @@ public class UmlNomnomlGenerator
         }
     }
 
-    private static class TopLevelElementSourceCodeVisitor implements TopLevelElementVisitor
+    private static final class TopLevelElementSourceCodeVisitor implements TopLevelElementVisitor
     {
         private String sourceCode;
 
