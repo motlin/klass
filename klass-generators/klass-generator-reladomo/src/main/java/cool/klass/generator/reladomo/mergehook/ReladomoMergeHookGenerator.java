@@ -85,11 +85,15 @@ public class ReladomoMergeHookGenerator
                 .collect(this::getKeyPropertySourceCode)
                 .makeString("");
 
-        String setAuditPropertiesSourceCode = klass.isAudited()
+        String setAuditPropertiesOnCreateSourceCode = klass.isAudited()
                 ? ""
                 + "        version.setCreatedOn(newObject.getCreatedOn());\n"
                 + "        version.setCreatedById(newObject.getCreatedById());\n"
                 + "        version.setLastUpdatedById(newObject.getLastUpdatedById());\n"
+                : "";
+
+        String setAuditPropertiesOnUpdateSourceCode = klass.isAudited()
+                ? "        existingVersion.setLastUpdatedById(incoming.getLastUpdatedById());\n"
                 : "";
 
         // @formatter:off
@@ -115,7 +119,7 @@ public class ReladomoMergeHookGenerator
                 + "        " + versionClass.getName() + " version = new " + versionClass.getName() + "();\n"
                 + "        version.setNumber(1);\n"
                 + setKeyPropertiesSourceCode
-                + setAuditPropertiesSourceCode
+                + setAuditPropertiesOnCreateSourceCode
                 + "        version.insert();\n"
                 + "        return super.beforeInsertOfNew(newObject);\n"
                 + "    }\n"
@@ -127,6 +131,7 @@ public class ReladomoMergeHookGenerator
                 + "    {\n"
                 + "        " + versionClass.getName() + " existingVersion = existing.getVersion();\n"
                 + "        existingVersion.setNumber(existingVersion.getNumber() + 1);\n"
+                + setAuditPropertiesOnUpdateSourceCode
                 + "        return super.matchedWithDifferenceBeforeAttributeCopy(existing, incoming);\n"
                 + "    }\n"
                 + "\n"
