@@ -237,7 +237,7 @@ public class DataTransferObjectsGenerator
     @Nonnull
     private String getAnnotation(DataTypeProperty dataTypeProperty)
     {
-        return isNullable(dataTypeProperty) ? "" : "    @NotNull\n";
+        return this.isNullable(dataTypeProperty) ? "" : "    @NotNull\n";
     }
 
     private boolean isNullable(DataTypeProperty dataTypeProperty)
