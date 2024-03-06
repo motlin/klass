@@ -3,6 +3,7 @@ package cool.klass.generator.reladomo;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -36,7 +37,9 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
+import cool.klass.model.meta.domain.api.value.MemberReferencePath;
 import org.eclipse.collections.api.list.ImmutableList;
 
 // TODO: ⬆ Generate default order-bys (or infer default order-bys) and gererate order-bys on association ends.
@@ -98,8 +101,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
                 .select(DataTypeProperty::isTemporalRange)
                 .collect(this::convertToAsOfAttributePureType);
 
-        ImmutableList<AttributePureType> attributeTypes = klass.getDataTypeProperties()
-                .reject(DataTypeProperty::isTemporal)
+        ImmutableList<AttributePureType> attributeTypes = this.getDataTypeProperties(klass)
                 .collect(this::convertToAttributePureType);
 
         // TODO: Test that private properties are not included in Projections
@@ -139,7 +141,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
                 .select(DataTypeProperty::isTemporalRange)
                 .collect(this::convertToAsOfAttributeType);
 
-        ImmutableList<AttributeType> attributeTypes = klass.getDataTypeProperties()
+        ImmutableList<AttributeType> attributeTypes = this.getDataTypeProperties(klass)
                 .reject(DataTypeProperty::isTemporal)
                 .collect(this::convertToAttributeType);
 
@@ -152,6 +154,31 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         mithraObject.setRelationships(this.convertRelationships(klass.getAssociationEnds()));
 
         return mithraObject;
+    }
+
+    private ImmutableList<DataTypeProperty> getDataTypeProperties(@Nonnull Klass klass)
+    {
+        if (!klass.getSuperClass().isPresent())
+        {
+            return klass.getDataTypeProperties();
+        }
+
+        ImmutableList<DataTypeProperty> keyProperties              = klass.getKeyProperties();
+        ImmutableList<DataTypeProperty> declaredDataTypeProperties = klass.getDeclaredDataTypeProperties();
+
+        ImmutableList<DataTypeProperty> orderByProperties = klass.getAssociationEnds()
+                .collect(AssociationEnd::getOpposite)
+                .collect(ReferenceProperty::getOrderBy)
+                .select(Optional::isPresent)
+                .collect(Optional::get)
+                .flatCollect(OrderBy::getOrderByMemberReferencePaths)
+                .collect(OrderByMemberReferencePath::getThisMemberReferencePath)
+                .collect(MemberReferencePath::getProperty);
+
+        return keyProperties
+                .newWithAll(declaredDataTypeProperties)
+                .newWithAll(orderByProperties)
+                .distinct();
     }
 
     private void convertCommonObject(Klass klass, @Nonnull MithraCommonObjectType mithraCommonObject)
@@ -167,7 +194,8 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         klass.getSuperClass().ifPresent(superClass ->
         {
             SuperClassAttributeType superClassAttributeType = new SuperClassAttributeType();
-            superClassAttributeType.setName(superClass.getFullyQualifiedName());
+            superClassAttributeType.setName(superClass.getName());
+            superClassAttributeType.setGenerated(true);
             mithraCommonObject.setSuperClass(superClassAttributeType);
         });
     }
