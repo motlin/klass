@@ -84,7 +84,7 @@ public class AuditPropertyInferencePhase
 
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedBy))
         {
-            this.runCompilerMacro("    createdById    : String createdBy userId final private;\n");
+            this.runCompilerMacro("    createdById    : String createdBy userId final;\n");
         }
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedOn))
         {
@@ -92,7 +92,7 @@ public class AuditPropertyInferencePhase
         }
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isLastUpdatedBy))
         {
-            this.runCompilerMacro("    lastUpdatedById: String lastUpdatedBy userId private;\n");
+            this.runCompilerMacro("    lastUpdatedById: String lastUpdatedBy userId;\n");
         }
 
         /*
