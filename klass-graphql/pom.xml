@@ -30,6 +30,7 @@
     </dependencyManagement>
 
     <modules>
+        <module>klass-graphql-reladomo-finder-fetcher</module>
         <module>klass-graphql-reladomo-operation-fetcher</module>
         <module>klass-graphql-type-runtime-wiring-provider</module>
     </modules>
