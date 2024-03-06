@@ -80,9 +80,7 @@ public class AuditPropertyInferencePhase
                 .getDataTypeProperties()
                 .detect(AntlrDataTypeProperty::isUserId);
 
-        // TODO: Add validations that audit properties have the right types (String, Instant)
         // TODO: Add validation that any userId is joined to another property that's also userId
-        // TODO: Validate that the return type is the 'user' class for audit reference properties
 
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedBy))
         {
