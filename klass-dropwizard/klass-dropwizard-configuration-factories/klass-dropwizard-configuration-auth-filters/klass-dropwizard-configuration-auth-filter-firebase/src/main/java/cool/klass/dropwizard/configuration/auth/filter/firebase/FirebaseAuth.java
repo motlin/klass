@@ -12,13 +12,9 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.FirebaseOptions.Builder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class FirebaseAuth
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FirebaseAuth.class);
-
     private final String databaseUrl;
     private final String firebaseConfig;
 
@@ -30,8 +26,6 @@ public class FirebaseAuth
 
     public com.google.firebase.auth.FirebaseAuth getFirebaseAuth()
     {
-        LOGGER.info(this.firebaseConfig);
-
         byte[]      bytes               = this.firebaseConfig.getBytes(StandardCharsets.UTF_8);
         InputStream firebaseCredentials = new ByteArrayInputStream(bytes);
 
