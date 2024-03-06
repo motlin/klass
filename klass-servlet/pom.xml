@@ -19,6 +19,7 @@
     <modules>
         <module>klass-servlet-filter-mdc</module>
         <module>klass-servlet-filter-mdc-response</module>
+        <module>klass-servlet-filter-mdc-jsonview</module>
     </modules>
 
     <dependencyManagement>
