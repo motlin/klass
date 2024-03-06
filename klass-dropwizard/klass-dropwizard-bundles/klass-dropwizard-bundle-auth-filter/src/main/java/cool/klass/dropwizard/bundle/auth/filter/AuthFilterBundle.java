@@ -3,6 +3,7 @@ package cool.klass.dropwizard.bundle.auth.filter;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -41,11 +42,15 @@ public class AuthFilterBundle
 
         if (authFilters.isEmpty())
         {
-            LOGGER.info("{} disabled.", AuthFilterBundle.class.getSimpleName());
-            throw new AssertionError();
+            LOGGER.warn("{} disabled.", AuthFilterBundle.class.getSimpleName());
         }
 
-        LOGGER.info("Running {}.", AuthFilterBundle.class.getSimpleName());
+        Stream<String> authFilterNames = authFilters
+                .stream()
+                .map(Object::getClass)
+                .map(Class::getSimpleName);
+
+        LOGGER.info("Running {} with auth filters {}.", AuthFilterBundle.class.getSimpleName(), authFilterNames);
 
         ChainedAuthFilter chainedAuthFilter = new ChainedAuthFilter(authFilters);
 
