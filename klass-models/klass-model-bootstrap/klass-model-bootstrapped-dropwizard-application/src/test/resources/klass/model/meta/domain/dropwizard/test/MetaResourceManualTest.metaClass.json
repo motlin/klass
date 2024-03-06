@@ -5,6 +5,7 @@
   "ordinal": 15,
   "sourceCode": "class Classifier\n    abstract(table-per-class)\n    implements PackageableElement\n{\n}",
   "sourceCodeWithInference": "class Classifier\n    abstract(table-per-class)\n    implements PackageableElement\n{\n    superInterfaces               : ClassifierInterfaceMapping[0..*] owned;\n    primitiveProperties: PrimitiveProperty[0..*]\n        orderBy: this.ordinal;\n    enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;\n    classifierModifiers: ClassifierModifier[0..*]\n        orderBy: this.ordinal;\n}\n",
+  "superClass": null,
   "superInterfaces": [
     {
       "superInterface": {
@@ -21,6 +22,9 @@
       }
     }
   ],
+  "classifierModifiers": [],
+  "primitiveProperties": [],
+  "enumerationProperties": [],
   "associationEnds": [
     {
       "name": "superInterfaces",
@@ -67,7 +71,8 @@
       },
       "owningAssociation": {
         "name": "ClassifierHasPrimitiveProperties"
-      }
+      },
+      "associationEndModifiers": []
     },
     {
       "name": "enumerationProperties",
@@ -87,7 +92,8 @@
       },
       "owningAssociation": {
         "name": "ClassifierHasEnumerationProperties"
-      }
+      },
+      "associationEndModifiers": []
     },
     {
       "name": "classifierModifiers",
@@ -107,7 +113,8 @@
       },
       "owningAssociation": {
         "name": "ClassifierHasModifiers"
-      }
+      },
+      "associationEndModifiers": []
     }
   ]
 }

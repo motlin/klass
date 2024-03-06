@@ -184,28 +184,26 @@ public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>
             Object                   value      = this.dataStore.getToMany(mithraObject, associationEnd);
             MithraList<MithraObject> mithraList = (MithraList<MithraObject>) Objects.requireNonNull(value);
 
-            // TODO: Make this configurable
-            if (mithraList.notEmpty())
+            // TODO: Add configuration to disable serialization of empty lists
+            jsonGenerator.writeArrayFieldStart(associationEndName);
+            try
             {
-                jsonGenerator.writeArrayFieldStart(associationEndName);
-                try
-                {
-                    mithraList.forEachWithCursor(eachChildValue ->
-                            this.recurse((MithraObject) eachChildValue, jsonGenerator, projectionWithAssociationEnd));
-                }
-                finally
-                {
-                    jsonGenerator.writeEndArray();
-                }
+                mithraList.forEachWithCursor(eachChildValue ->
+                        this.recurse((MithraObject) eachChildValue, jsonGenerator, projectionWithAssociationEnd));
+            }
+            finally
+            {
+                jsonGenerator.writeEndArray();
             }
         }
         else
         {
             Object value = this.dataStore.getToOne(mithraObject, associationEnd);
-            // TODO: Make this configurable
+            // TODO: Add configuration to disable serialization of null values
             if (value == null)
             {
                 // Should only happen for to-one optional relationships
+                jsonGenerator.writeNullField(associationEndName);
                 return;
             }
 

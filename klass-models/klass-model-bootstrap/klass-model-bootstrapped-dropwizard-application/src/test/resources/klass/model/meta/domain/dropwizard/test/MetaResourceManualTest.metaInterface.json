@@ -21,6 +21,7 @@
       }
     }
   ],
+  "classifierModifiers": [],
   "primitiveProperties": [
     {
       "name": "packageName",
@@ -30,9 +31,14 @@
       "key": false,
       "id": false,
       "ordinal": 1,
+      "propertyModifiers": [],
+      "minLengthValidation": null,
       "maxLengthValidation": {
         "number": 100000
-      }
+      },
+      "minValidation": null,
+      "maxValidation": null
     }
-  ]
+  ],
+  "enumerationProperties": []
 }

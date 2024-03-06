@@ -5,11 +5,13 @@
   "children": [
     {
       "_type": "ProjectionDataTypeProperty",
-      "name": "name"
+      "name": "name",
+      "children": []
     },
     {
       "_type": "ProjectionDataTypeProperty",
-      "name": "packageName"
+      "name": "packageName",
+      "children": []
     },
     {
       "_type": "ProjectionAssociationEnd",
@@ -17,7 +19,8 @@
       "children": [
         {
           "_type": "ProjectionDataTypeProperty",
-          "name": "name"
+          "name": "name",
+          "children": []
         }
       ]
     },
@@ -26,7 +29,8 @@
       "name": "children",
       "projection": {
         "name": "ProjectionElementSummaryProjection"
-      }
+      },
+      "children": []
     }
   ]
 }

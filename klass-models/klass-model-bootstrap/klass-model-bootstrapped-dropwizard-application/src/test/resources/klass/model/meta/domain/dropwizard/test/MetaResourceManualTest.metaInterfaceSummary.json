@@ -8,6 +8,7 @@
       }
     }
   ],
+  "classifierModifiers": [],
   "primitiveProperties": [
     {
       "name": "packageName",
@@ -15,9 +16,14 @@
       "optional": false,
       "key": false,
       "id": false,
+      "propertyModifiers": [],
+      "minLengthValidation": null,
       "maxLengthValidation": {
         "number": 100000
-      }
+      },
+      "minValidation": null,
+      "maxValidation": null
     }
-  ]
+  ],
+  "enumerationProperties": []
 }

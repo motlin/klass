@@ -6,27 +6,33 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "inferred"
+        "name": "inferred",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "packageName"
+        "name": "packageName",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "ordinal"
+        "name": "ordinal",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "sourceCode"
+        "name": "sourceCode",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "sourceCodeWithInference"
+        "name": "sourceCodeWithInference",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -34,27 +40,33 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "prettyName"
+            "name": "prettyName",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "inferred"
+            "name": "inferred",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "ordinal"
+            "name": "ordinal",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "sourceCode"
+            "name": "sourceCode",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "sourceCodeWithInference"
+            "name": "sourceCodeWithInference",
+            "children": []
           }
         ]
       }
@@ -67,11 +79,13 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "packageName"
+        "name": "packageName",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -79,11 +93,13 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "prettyName"
+            "name": "prettyName",
+            "children": []
           }
         ]
       }
@@ -96,27 +112,33 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "inferred"
+        "name": "inferred",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "packageName"
+        "name": "packageName",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "ordinal"
+        "name": "ordinal",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "sourceCode"
+        "name": "sourceCode",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "sourceCodeWithInference"
+        "name": "sourceCodeWithInference",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -128,11 +150,13 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               },
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "packageName"
+                "name": "packageName",
+                "children": []
               },
               {
                 "_type": "ProjectionAssociationEnd",
@@ -144,11 +168,13 @@
                     "children": [
                       {
                         "_type": "ProjectionDataTypeProperty",
-                        "name": "name"
+                        "name": "name",
+                        "children": []
                       },
                       {
                         "_type": "ProjectionDataTypeProperty",
-                        "name": "packageName"
+                        "name": "packageName",
+                        "children": []
                       }
                     ]
                   }
@@ -164,15 +190,18 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "inferred"
+            "name": "inferred",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "ordinal"
+            "name": "ordinal",
+            "children": []
           }
         ]
       },
@@ -182,31 +211,38 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "inferred"
+            "name": "inferred",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "primitiveType"
+            "name": "primitiveType",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "optional"
+            "name": "optional",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "key"
+            "name": "key",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "id"
+            "name": "id",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "ordinal"
+            "name": "ordinal",
+            "children": []
           },
           {
             "_type": "ProjectionAssociationEnd",
@@ -214,15 +250,18 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               },
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "inferred"
+                "name": "inferred",
+                "children": []
               },
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "ordinal"
+                "name": "ordinal",
+                "children": []
               }
             ]
           },
@@ -232,7 +271,8 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "number"
+                "name": "number",
+                "children": []
               }
             ]
           },
@@ -242,7 +282,8 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "number"
+                "name": "number",
+                "children": []
               }
             ]
           },
@@ -252,7 +293,8 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "number"
+                "name": "number",
+                "children": []
               }
             ]
           },
@@ -262,7 +304,8 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "number"
+                "name": "number",
+                "children": []
               }
             ]
           }
@@ -274,23 +317,28 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "inferred"
+            "name": "inferred",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "optional"
+            "name": "optional",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "key"
+            "name": "key",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "ordinal"
+            "name": "ordinal",
+            "children": []
           },
           {
             "_type": "ProjectionAssociationEnd",
@@ -298,11 +346,13 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               },
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "inferred"
+                "name": "inferred",
+                "children": []
               }
             ]
           },
@@ -312,15 +362,18 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               },
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "inferred"
+                "name": "inferred",
+                "children": []
               },
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "ordinal"
+                "name": "ordinal",
+                "children": []
               }
             ]
           },
@@ -330,7 +383,8 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "number"
+                "name": "number",
+                "children": []
               }
             ]
           },
@@ -340,7 +394,8 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "number"
+                "name": "number",
+                "children": []
               }
             ]
           }
@@ -355,11 +410,13 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "packageName"
+        "name": "packageName",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -371,7 +428,8 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               }
             ]
           }
@@ -383,7 +441,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -392,14 +451,16 @@
         "name": "primitiveProperties",
         "projection": {
           "name": "PrimitivePropertySummaryProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "enumerationProperties",
         "projection": {
           "name": "EnumerationPropertySummaryProjection"
-        }
+        },
+        "children": []
       }
     ]
   },
@@ -410,31 +471,38 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "inferred"
+        "name": "inferred",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "primitiveType"
+        "name": "primitiveType",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "optional"
+        "name": "optional",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "key"
+        "name": "key",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "id"
+        "name": "id",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "ordinal"
+        "name": "ordinal",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -442,11 +510,13 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "inferred"
+            "name": "inferred",
+            "children": []
           }
         ]
       },
@@ -456,15 +526,18 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "inferred"
+            "name": "inferred",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "ordinal"
+            "name": "ordinal",
+            "children": []
           }
         ]
       },
@@ -474,7 +547,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       },
@@ -484,7 +558,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       },
@@ -494,7 +569,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       },
@@ -504,7 +580,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       }
@@ -517,31 +594,38 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "inferred"
+        "name": "inferred",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "primitiveType"
+        "name": "primitiveType",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "optional"
+        "name": "optional",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "key"
+        "name": "key",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "id"
+        "name": "id",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "ordinal"
+        "name": "ordinal",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -549,15 +633,18 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "inferred"
+            "name": "inferred",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "ordinal"
+            "name": "ordinal",
+            "children": []
           }
         ]
       },
@@ -567,7 +654,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       },
@@ -577,7 +665,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       },
@@ -587,7 +676,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       },
@@ -597,7 +687,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       }
@@ -610,23 +701,28 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "primitiveType"
+        "name": "primitiveType",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "optional"
+        "name": "optional",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "key"
+        "name": "key",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "id"
+        "name": "id",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -634,7 +730,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -644,7 +741,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       },
@@ -654,7 +752,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       },
@@ -664,7 +763,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       },
@@ -674,7 +774,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       }
@@ -687,23 +788,28 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "inferred"
+        "name": "inferred",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "optional"
+        "name": "optional",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "key"
+        "name": "key",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "ordinal"
+        "name": "ordinal",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -711,11 +817,13 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "inferred"
+            "name": "inferred",
+            "children": []
           }
         ]
       },
@@ -725,15 +833,18 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "inferred"
+            "name": "inferred",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "ordinal"
+            "name": "ordinal",
+            "children": []
           }
         ]
       },
@@ -743,7 +854,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       },
@@ -753,7 +865,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       }
@@ -766,15 +879,18 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "optional"
+        "name": "optional",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "key"
+        "name": "key",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -782,7 +898,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -792,7 +909,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -802,7 +920,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       },
@@ -812,7 +931,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "number"
+            "name": "number",
+            "children": []
           }
         ]
       }
@@ -825,27 +945,33 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "inferred"
+        "name": "inferred",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "packageName"
+        "name": "packageName",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "ordinal"
+        "name": "ordinal",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "sourceCode"
+        "name": "sourceCode",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "sourceCodeWithInference"
+        "name": "sourceCodeWithInference",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -853,11 +979,13 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "packageName"
+            "name": "packageName",
+            "children": []
           },
           {
             "_type": "ProjectionAssociationEnd",
@@ -865,11 +993,13 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               },
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "packageName"
+                "name": "packageName",
+                "children": []
               }
             ]
           },
@@ -883,11 +1013,13 @@
                 "children": [
                   {
                     "_type": "ProjectionDataTypeProperty",
-                    "name": "name"
+                    "name": "name",
+                    "children": []
                   },
                   {
                     "_type": "ProjectionDataTypeProperty",
-                    "name": "packageName"
+                    "name": "packageName",
+                    "children": []
                   }
                 ]
               }
@@ -905,11 +1037,13 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               },
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "packageName"
+                "name": "packageName",
+                "children": []
               },
               {
                 "_type": "ProjectionAssociationEnd",
@@ -921,11 +1055,13 @@
                     "children": [
                       {
                         "_type": "ProjectionDataTypeProperty",
-                        "name": "name"
+                        "name": "name",
+                        "children": []
                       },
                       {
                         "_type": "ProjectionDataTypeProperty",
-                        "name": "packageName"
+                        "name": "packageName",
+                        "children": []
                       }
                     ]
                   }
@@ -941,15 +1077,18 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "inferred"
+            "name": "inferred",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "ordinal"
+            "name": "ordinal",
+            "children": []
           }
         ]
       },
@@ -958,21 +1097,24 @@
         "name": "primitiveProperties",
         "projection": {
           "name": "PrimitivePropertyProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "enumerationProperties",
         "projection": {
           "name": "EnumerationPropertyProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "associationEnds",
         "projection": {
           "name": "AssociationEndProjection"
-        }
+        },
+        "children": []
       }
     ]
   },
@@ -983,11 +1125,13 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "packageName"
+        "name": "packageName",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -995,7 +1139,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1009,7 +1154,8 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               }
             ]
           }
@@ -1021,7 +1167,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1030,14 +1177,16 @@
         "name": "primitiveProperties",
         "projection": {
           "name": "PrimitivePropertySummaryProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "enumerationProperties",
         "projection": {
           "name": "EnumerationPropertySummaryProjection"
-        }
+        },
+        "children": []
       }
     ]
   },
@@ -1048,11 +1197,13 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "packageName"
+        "name": "packageName",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -1060,7 +1211,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1074,7 +1226,8 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               }
             ]
           }
@@ -1086,7 +1239,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1095,14 +1249,16 @@
         "name": "primitiveProperties",
         "projection": {
           "name": "PrimitivePropertySummaryProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "enumerationProperties",
         "projection": {
           "name": "EnumerationPropertySummaryProjection"
-        }
+        },
+        "children": []
       }
     ]
   },
@@ -1113,31 +1269,38 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "inferred"
+        "name": "inferred",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "ordinal"
+        "name": "ordinal",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "sourceCode"
+        "name": "sourceCode",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "sourceCodeWithInference"
+        "name": "sourceCodeWithInference",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "direction"
+        "name": "direction",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "multiplicity"
+        "name": "multiplicity",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -1145,11 +1308,13 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "packageName"
+            "name": "packageName",
+            "children": []
           }
         ]
       },
@@ -1159,11 +1324,13 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "packageName"
+            "name": "packageName",
+            "children": []
           }
         ]
       },
@@ -1173,7 +1340,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1183,15 +1351,18 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "inferred"
+            "name": "inferred",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "ordinal"
+            "name": "ordinal",
+            "children": []
           }
         ]
       }
@@ -1204,11 +1375,13 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "multiplicity"
+        "name": "multiplicity",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -1216,7 +1389,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1226,7 +1400,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1239,11 +1414,13 @@
             "name": "thisMemberReferencePath",
             "projection": {
               "name": "MemberReferencePathSummaryProjection"
-            }
+            },
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "orderByDirection"
+            "name": "orderByDirection",
+            "children": []
           }
         ]
       }
@@ -1256,41 +1433,49 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "inferred"
+        "name": "inferred",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "packageName"
+        "name": "packageName",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "ordinal"
+        "name": "ordinal",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "sourceCode"
+        "name": "sourceCode",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "sourceCodeWithInference"
+        "name": "sourceCodeWithInference",
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "associationEnds",
         "projection": {
           "name": "AssociationEndProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "criteria",
         "projection": {
           "name": "CriteriaProjection"
-        }
+        },
+        "children": []
       }
     ]
   },
@@ -1301,25 +1486,29 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "packageName"
+        "name": "packageName",
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "associationEnds",
         "projection": {
           "name": "AssociationEndSummaryProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "criteria",
         "projection": {
           "name": "CriteriaSummaryProjection"
-        }
+        },
+        "children": []
       }
     ]
   },
@@ -1334,7 +1523,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1348,7 +1538,8 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               }
             ]
           }
@@ -1360,7 +1551,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       }
@@ -1377,7 +1569,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1391,7 +1584,8 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               }
             ]
           }
@@ -1403,7 +1597,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       }
@@ -1420,7 +1615,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1434,7 +1630,8 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               }
             ]
           }
@@ -1446,7 +1643,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1456,7 +1654,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           },
           {
             "_type": "ProjectionAssociationEnd",
@@ -1464,17 +1663,20 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               }
             ]
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "primitiveType"
+            "name": "primitiveType",
+            "children": []
           },
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "multiplicity"
+            "name": "multiplicity",
+            "children": []
           }
         ]
       }
@@ -1491,7 +1693,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1505,7 +1708,8 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "name"
+                "name": "name",
+                "children": []
               }
             ]
           }
@@ -1517,7 +1721,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1527,7 +1732,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       }
@@ -1543,39 +1749,45 @@
         "name": "left",
         "projection": {
           "name": "CriteriaProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "right",
         "projection": {
           "name": "CriteriaProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "operator"
+        "name": "operator",
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "sourceExpressionValue",
         "projection": {
           "name": "ExpressionValueProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "targetExpressionValue",
         "projection": {
           "name": "ExpressionValueProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "memberReferencePath",
         "projection": {
           "name": "MemberReferencePathProjection"
-        }
+        },
+        "children": []
       }
     ]
   },
@@ -1589,39 +1801,45 @@
         "name": "left",
         "projection": {
           "name": "CriteriaSummaryProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "right",
         "projection": {
           "name": "CriteriaSummaryProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "operator"
+        "name": "operator",
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "sourceExpressionValue",
         "projection": {
           "name": "ExpressionValueSummaryProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "targetExpressionValue",
         "projection": {
           "name": "ExpressionValueSummaryProjection"
-        }
+        },
+        "children": []
       },
       {
         "_type": "ProjectionProjectionReference",
         "name": "memberReferencePath",
         "projection": {
           "name": "MemberReferencePathSummaryProjection"
-        }
+        },
+        "children": []
       }
     ]
   },
@@ -1632,11 +1850,13 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "packageName"
+        "name": "packageName",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -1644,7 +1864,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1653,7 +1874,8 @@
         "name": "children",
         "projection": {
           "name": "ProjectionElementSummaryProjection"
-        }
+        },
+        "children": []
       }
     ]
   },
@@ -1664,11 +1886,13 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "packageName"
+        "name": "packageName",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -1676,7 +1900,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "name"
+            "name": "name",
+            "children": []
           }
         ]
       },
@@ -1685,7 +1910,8 @@
         "name": "children",
         "projection": {
           "name": "ProjectionElementSummaryProjection"
-        }
+        },
+        "children": []
       }
     ]
   },
@@ -1696,11 +1922,13 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "packageName"
+        "name": "packageName",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -1708,7 +1936,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "url"
+            "name": "url",
+            "children": []
           },
           {
             "_type": "ProjectionAssociationEnd",
@@ -1716,11 +1945,13 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "verb"
+                "name": "verb",
+                "children": []
               },
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "serviceMultiplicity"
+                "name": "serviceMultiplicity",
+                "children": []
               },
               {
                 "_type": "ProjectionAssociationEnd",
@@ -1728,7 +1959,8 @@
                 "children": [
                   {
                     "_type": "ProjectionDataTypeProperty",
-                    "name": "name"
+                    "name": "name",
+                    "children": []
                   }
                 ]
               },
@@ -1737,28 +1969,32 @@
                 "name": "queryCriteria",
                 "projection": {
                   "name": "CriteriaSummaryProjection"
-                }
+                },
+                "children": []
               },
               {
                 "_type": "ProjectionProjectionReference",
                 "name": "authorizeCriteria",
                 "projection": {
                   "name": "CriteriaSummaryProjection"
-                }
+                },
+                "children": []
               },
               {
                 "_type": "ProjectionProjectionReference",
                 "name": "validateCriteria",
                 "projection": {
                   "name": "CriteriaSummaryProjection"
-                }
+                },
+                "children": []
               },
               {
                 "_type": "ProjectionProjectionReference",
                 "name": "conflictCriteria",
                 "projection": {
                   "name": "CriteriaSummaryProjection"
-                }
+                },
+                "children": []
               }
             ]
           }
@@ -1773,11 +2009,13 @@
     "children": [
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "name"
+        "name": "name",
+        "children": []
       },
       {
         "_type": "ProjectionDataTypeProperty",
-        "name": "packageName"
+        "name": "packageName",
+        "children": []
       },
       {
         "_type": "ProjectionAssociationEnd",
@@ -1785,7 +2023,8 @@
         "children": [
           {
             "_type": "ProjectionDataTypeProperty",
-            "name": "url"
+            "name": "url",
+            "children": []
           },
           {
             "_type": "ProjectionAssociationEnd",
@@ -1793,11 +2032,13 @@
             "children": [
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "verb"
+                "name": "verb",
+                "children": []
               },
               {
                 "_type": "ProjectionDataTypeProperty",
-                "name": "serviceMultiplicity"
+                "name": "serviceMultiplicity",
+                "children": []
               },
               {
                 "_type": "ProjectionAssociationEnd",
@@ -1805,7 +2046,8 @@
                 "children": [
                   {
                     "_type": "ProjectionDataTypeProperty",
-                    "name": "name"
+                    "name": "name",
+                    "children": []
                   }
                 ]
               },
@@ -1814,7 +2056,8 @@
                 "name": "queryCriteria",
                 "projection": {
                   "name": "CriteriaSummaryProjection"
-                }
+                },
+                "children": []
               }
             ]
           }

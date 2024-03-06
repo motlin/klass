@@ -2,17 +2,22 @@
   {
     "name": "Enumeration",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
           "name": "PackageableElement"
         }
       }
-    ]
+    ],
+    "classifierModifiers": [],
+    "primitiveProperties": [],
+    "enumerationProperties": []
   },
   {
     "name": "EnumerationLiteral",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -20,6 +25,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "enumerationName",
@@ -32,9 +38,12 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "prettyName",
@@ -42,33 +51,49 @@
         "optional": true,
         "key": false,
         "id": false,
+        "propertyModifiers": [],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "Classifier",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
           "name": "PackageableElement"
         }
       }
-    ]
+    ],
+    "classifierModifiers": [],
+    "primitiveProperties": [],
+    "enumerationProperties": []
   },
   {
     "name": "Interface",
     "packageName": "klass.model.meta.domain",
     "superClass": {
       "name": "Classifier"
-    }
+    },
+    "superInterfaces": [],
+    "classifierModifiers": [],
+    "primitiveProperties": [],
+    "enumerationProperties": []
   },
   {
     "name": "ClassifierInterfaceMapping",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "classifierName",
@@ -84,9 +109,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "interfaceName",
@@ -102,11 +130,15 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "Klass",
@@ -114,6 +146,8 @@
     "superClass": {
       "name": "Classifier"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "superClassName",
@@ -126,9 +160,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "enumerationProperties": [
@@ -138,13 +175,17 @@
         "key": false,
         "enumeration": {
           "name": "InheritanceType"
-        }
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       }
     ]
   },
   {
     "name": "DataTypeProperty",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -152,6 +193,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "classifierName",
@@ -164,25 +206,39 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "optional",
         "primitiveType": "Boolean",
         "optional": false,
         "key": false,
-        "id": false
+        "id": false,
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "key",
         "primitiveType": "Boolean",
         "optional": false,
         "key": false,
-        "id": false
+        "id": false,
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "PrimitiveProperty",
@@ -190,13 +246,20 @@
     "superClass": {
       "name": "DataTypeProperty"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
         "primitiveType": "Boolean",
         "optional": false,
         "key": false,
-        "id": false
+        "id": false,
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "enumerationProperties": [
@@ -206,7 +269,10 @@
         "key": false,
         "enumeration": {
           "name": "PrimitiveType"
-        }
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       }
     ]
   },
@@ -216,6 +282,8 @@
     "superClass": {
       "name": "DataTypeProperty"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "enumerationName",
@@ -228,15 +296,20 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "NumericPropertyValidation",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -244,6 +317,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "classifierName",
@@ -256,9 +330,12 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "propertyName",
@@ -271,50 +348,76 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "number",
         "primitiveType": "Integer",
         "optional": false,
         "key": false,
-        "id": false
+        "id": false,
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "MinLengthPropertyValidation",
     "packageName": "klass.model.meta.domain",
     "superClass": {
       "name": "NumericPropertyValidation"
-    }
+    },
+    "superInterfaces": [],
+    "classifierModifiers": [],
+    "primitiveProperties": [],
+    "enumerationProperties": []
   },
   {
     "name": "MaxLengthPropertyValidation",
     "packageName": "klass.model.meta.domain",
     "superClass": {
       "name": "NumericPropertyValidation"
-    }
+    },
+    "superInterfaces": [],
+    "classifierModifiers": [],
+    "primitiveProperties": [],
+    "enumerationProperties": []
   },
   {
     "name": "MinPropertyValidation",
     "packageName": "klass.model.meta.domain",
     "superClass": {
       "name": "NumericPropertyValidation"
-    }
+    },
+    "superInterfaces": [],
+    "classifierModifiers": [],
+    "primitiveProperties": [],
+    "enumerationProperties": []
   },
   {
     "name": "MaxPropertyValidation",
     "packageName": "klass.model.meta.domain",
     "superClass": {
       "name": "NumericPropertyValidation"
-    }
+    },
+    "superInterfaces": [],
+    "classifierModifiers": [],
+    "primitiveProperties": [],
+    "enumerationProperties": []
   },
   {
     "name": "PropertyModifier",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -322,6 +425,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "classifierName",
@@ -334,9 +438,12 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "propertyName",
@@ -349,15 +456,20 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "ClassifierModifier",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -365,6 +477,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "classifierName",
@@ -377,15 +490,20 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "Association",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -393,6 +511,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "criteriaId",
@@ -404,13 +523,19 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "AssociationEnd",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -418,6 +543,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "owningClassName",
@@ -433,9 +559,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "associationName",
@@ -443,9 +572,13 @@
         "optional": false,
         "key": false,
         "id": false,
+        "propertyModifiers": [],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "resultTypeName",
@@ -458,9 +591,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "enumerationProperties": [
@@ -470,7 +606,10 @@
         "key": false,
         "enumeration": {
           "name": "AssociationEndDirection"
-        }
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       },
       {
         "name": "multiplicity",
@@ -478,13 +617,17 @@
         "key": false,
         "enumeration": {
           "name": "Multiplicity"
-        }
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       }
     ]
   },
   {
     "name": "AssociationEndModifier",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -492,6 +635,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "owningClassName",
@@ -504,9 +648,12 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "associationEndName",
@@ -519,15 +666,20 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "Criteria",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -535,6 +687,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -549,9 +702,14 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "AllCriteria",
@@ -559,6 +717,8 @@
     "superClass": {
       "name": "Criteria"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -573,9 +733,14 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "BinaryCriteria",
@@ -583,6 +748,8 @@
     "superClass": {
       "name": "Criteria"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -597,7 +764,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "leftId",
@@ -609,7 +780,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "rightId",
@@ -621,9 +796,14 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "AndCriteria",
@@ -631,6 +811,8 @@
     "superClass": {
       "name": "BinaryCriteria"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -645,9 +827,14 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "OrCriteria",
@@ -655,6 +842,8 @@
     "superClass": {
       "name": "BinaryCriteria"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -669,9 +858,14 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "OperatorCriteria",
@@ -679,6 +873,8 @@
     "superClass": {
       "name": "Criteria"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -693,7 +889,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "sourceExpressionId",
@@ -705,7 +905,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "targetExpressionId",
@@ -717,7 +921,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "enumerationProperties": [
@@ -727,7 +935,10 @@
         "key": false,
         "enumeration": {
           "name": "Operator"
-        }
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       }
     ]
   },
@@ -737,6 +948,8 @@
     "superClass": {
       "name": "Criteria"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -751,7 +964,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "memberReferencePathId",
@@ -763,13 +980,21 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "ExpressionValue",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -784,9 +1009,14 @@
           {
             "name": "id"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "UserLiteral",
@@ -794,6 +1024,8 @@
     "superClass": {
       "name": "ExpressionValue"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -808,9 +1040,14 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "NullLiteral",
@@ -818,6 +1055,8 @@
     "superClass": {
       "name": "ExpressionValue"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -832,9 +1071,14 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "VariableReference",
@@ -842,6 +1086,8 @@
     "superClass": {
       "name": "ExpressionValue"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -856,7 +1102,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "parameterId",
@@ -868,13 +1118,19 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "Parameter",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -882,6 +1138,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "name",
@@ -889,9 +1146,13 @@
         "optional": false,
         "key": false,
         "id": false,
+        "propertyModifiers": [],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "id",
@@ -906,7 +1167,11 @@
           {
             "name": "id"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "enumerationProperties": [
@@ -916,7 +1181,10 @@
         "key": false,
         "enumeration": {
           "name": "Multiplicity"
-        }
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       }
     ]
   },
@@ -926,6 +1194,8 @@
     "superClass": {
       "name": "Parameter"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -940,7 +1210,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "enumerationName",
@@ -953,11 +1227,15 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "PrimitiveParameter",
@@ -965,6 +1243,8 @@
     "superClass": {
       "name": "Parameter"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -979,7 +1259,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "enumerationProperties": [
@@ -989,7 +1273,10 @@
         "key": false,
         "enumeration": {
           "name": "PrimitiveType"
-        }
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       }
     ]
   },
@@ -999,6 +1286,8 @@
     "superClass": {
       "name": "ExpressionValue"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -1013,7 +1302,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "className",
@@ -1026,9 +1319,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "propertyClassName",
@@ -1041,9 +1337,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "propertyName",
@@ -1056,15 +1355,22 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "MemberReferencePathAssociationEndMapping",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "memberReferencePathId",
@@ -1079,7 +1385,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "associationOwningClassName",
@@ -1095,9 +1405,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "associationEndName",
@@ -1113,11 +1426,15 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "ThisMemberReferencePath",
@@ -1125,6 +1442,8 @@
     "superClass": {
       "name": "MemberReferencePath"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -1139,9 +1458,14 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "TypeMemberReferencePath",
@@ -1149,6 +1473,8 @@
     "superClass": {
       "name": "MemberReferencePath"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -1163,13 +1489,19 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "ParameterizedProperty",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -1177,6 +1509,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "owningClassName",
@@ -1192,9 +1525,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "resultTypeName",
@@ -1207,9 +1543,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "enumerationProperties": [
@@ -1219,13 +1558,19 @@
         "key": false,
         "enumeration": {
           "name": "Multiplicity"
-        }
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       }
     ]
   },
   {
     "name": "AssociationEndOrderBy",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "associationEndClassName",
@@ -1241,9 +1586,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "associationEndName",
@@ -1259,9 +1607,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "thisMemberReferencePathId",
@@ -1276,7 +1627,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "enumerationProperties": [
@@ -1286,13 +1641,19 @@
         "key": false,
         "enumeration": {
           "name": "OrderByDirection"
-        }
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       }
     ]
   },
   {
     "name": "ParameterizedPropertyOrdering",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "owningClassName",
@@ -1308,9 +1669,12 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "name",
@@ -1323,16 +1687,24 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "inferred",
         "primitiveType": "Boolean",
         "optional": false,
         "key": false,
-        "id": false
+        "id": false,
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "orderingId",
@@ -1344,13 +1716,19 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "ParameterizedPropertyParameter",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -1358,6 +1736,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "classifierName",
@@ -1373,9 +1752,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "parameterizedPropertyName",
@@ -1388,15 +1770,20 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "ProjectionElement",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -1404,6 +1791,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "name",
@@ -1411,9 +1799,13 @@
         "optional": false,
         "key": false,
         "id": false,
+        "propertyModifiers": [],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "id",
@@ -1428,7 +1820,11 @@
           {
             "name": "id"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "parentId",
@@ -1440,9 +1836,14 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "ServiceProjection",
@@ -1457,6 +1858,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -1471,7 +1873,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "className",
@@ -1484,11 +1890,15 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "ProjectionWithAssociationEnd",
@@ -1496,6 +1906,8 @@
     "superClass": {
       "name": "ProjectionElement"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -1510,7 +1922,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "parentId",
@@ -1522,7 +1938,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "associationEndClass",
@@ -1535,9 +1955,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "associationEndName",
@@ -1550,11 +1973,15 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "ProjectionAssociationEnd",
@@ -1562,6 +1989,8 @@
     "superClass": {
       "name": "ProjectionWithAssociationEnd"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -1576,7 +2005,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "parentId",
@@ -1588,7 +2021,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "associationEndClass",
@@ -1601,9 +2038,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "associationEndName",
@@ -1616,11 +2056,15 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "ProjectionProjectionReference",
@@ -1628,6 +2072,8 @@
     "superClass": {
       "name": "ProjectionWithAssociationEnd"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -1642,7 +2088,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "parentId",
@@ -1654,7 +2104,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "associationEndClass",
@@ -1667,9 +2121,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "associationEndName",
@@ -1682,9 +2139,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "projectionName",
@@ -1697,11 +2157,15 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "ProjectionDataTypeProperty",
@@ -1709,6 +2173,8 @@
     "superClass": {
       "name": "ProjectionElement"
     },
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "id",
@@ -1723,7 +2189,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "parentId",
@@ -1735,7 +2205,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "propertyClassifierName",
@@ -1748,9 +2222,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "propertyName",
@@ -1763,15 +2240,20 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "ServiceGroup",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -1779,6 +2261,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "className",
@@ -1791,15 +2274,20 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "Url",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -1807,6 +2295,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "className",
@@ -1819,9 +2308,12 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "url",
@@ -1834,15 +2326,20 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 8192
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       }
-    ]
+    ],
+    "enumerationProperties": []
   },
   {
     "name": "UrlParameter",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -1850,6 +2347,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "urlClassName",
@@ -1865,9 +2363,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "urlString",
@@ -1883,9 +2384,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 8192
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "parameterId",
@@ -1900,7 +2404,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "enumerationProperties": [
@@ -1910,13 +2418,17 @@
         "key": false,
         "enumeration": {
           "name": "UrlParameterType"
-        }
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       }
     ]
   },
   {
     "name": "Service",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
@@ -1924,6 +2436,7 @@
         }
       }
     ],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "className",
@@ -1936,9 +2449,12 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "urlString",
@@ -1951,9 +2467,12 @@
             "name": "key"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 8192
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "projectionName",
@@ -1966,9 +2485,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "queryCriteriaId",
@@ -1980,7 +2502,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "authorizeCriteriaId",
@@ -1992,7 +2518,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "validateCriteriaId",
@@ -2004,7 +2534,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "conflictCriteriaId",
@@ -2016,7 +2550,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "enumerationProperties": [
@@ -2031,7 +2569,9 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       },
       {
         "name": "serviceMultiplicity",
@@ -2039,13 +2579,19 @@
         "key": false,
         "enumeration": {
           "name": "ServiceMultiplicity"
-        }
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       }
     ]
   },
   {
     "name": "ServiceOrderBy",
     "packageName": "klass.model.meta.domain",
+    "superClass": null,
+    "superInterfaces": [],
+    "classifierModifiers": [],
     "primitiveProperties": [
       {
         "name": "serviceClassName",
@@ -2061,9 +2607,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "serviceUrlString",
@@ -2079,9 +2628,12 @@
             "name": "private"
           }
         ],
+        "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 8192
-        }
+        },
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "name": "thisMemberReferencePathId",
@@ -2096,7 +2648,11 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
       }
     ],
     "enumerationProperties": [
@@ -2114,7 +2670,9 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       },
       {
         "name": "orderByDirection",
@@ -2122,7 +2680,10 @@
         "key": false,
         "enumeration": {
           "name": "OrderByDirection"
-        }
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": null
       }
     ]
   }

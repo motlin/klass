@@ -35,6 +35,7 @@
                 "klass": {
                   "name": "Enumeration"
                 },
+                "associationEnds": [],
                 "dataTypeProperty": {
                   "name": "name"
                 }
@@ -66,6 +67,7 @@
                 "klass": {
                   "name": "Enumeration"
                 },
+                "associationEnds": [],
                 "dataTypeProperty": {
                   "name": "name"
                 }
@@ -118,6 +120,7 @@
                 "klass": {
                   "name": "Interface"
                 },
+                "associationEnds": [],
                 "dataTypeProperty": {
                   "name": "name"
                 }
@@ -149,6 +152,7 @@
                 "klass": {
                   "name": "Interface"
                 },
+                "associationEnds": [],
                 "dataTypeProperty": {
                   "name": "name"
                 }
@@ -201,6 +205,7 @@
                 "klass": {
                   "name": "Klass"
                 },
+                "associationEnds": [],
                 "dataTypeProperty": {
                   "name": "name"
                 }
@@ -232,6 +237,7 @@
                 "klass": {
                   "name": "Klass"
                 },
+                "associationEnds": [],
                 "dataTypeProperty": {
                   "name": "name"
                 }
@@ -284,6 +290,7 @@
                 "klass": {
                   "name": "Classifier"
                 },
+                "associationEnds": [],
                 "dataTypeProperty": {
                   "name": "name"
                 }
@@ -336,6 +343,7 @@
                 "klass": {
                   "name": "Association"
                 },
+                "associationEnds": [],
                 "dataTypeProperty": {
                   "name": "name"
                 }
@@ -367,6 +375,7 @@
                 "klass": {
                   "name": "Association"
                 },
+                "associationEnds": [],
                 "dataTypeProperty": {
                   "name": "name"
                 }
@@ -419,6 +428,7 @@
                 "klass": {
                   "name": "ServiceProjection"
                 },
+                "associationEnds": [],
                 "dataTypeProperty": {
                   "name": "name"
                 }
@@ -450,6 +460,7 @@
                 "klass": {
                   "name": "ServiceProjection"
                 },
+                "associationEnds": [],
                 "dataTypeProperty": {
                   "name": "name"
                 }
@@ -502,6 +513,7 @@
                 "klass": {
                   "name": "ServiceGroup"
                 },
+                "associationEnds": [],
                 "dataTypeProperty": {
                   "name": "name"
                 }
@@ -533,6 +545,7 @@
                 "klass": {
                   "name": "ServiceGroup"
                 },
+                "associationEnds": [],
                 "dataTypeProperty": {
                   "name": "name"
                 }

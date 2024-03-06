@@ -7,7 +7,9 @@
       "multiplicity": "1..1",
       "resultType": {
         "name": "DataTypeProperty"
-      }
+      },
+      "associationEndModifiers": [],
+      "orderBys": []
     },
     {
       "name": "propertyModifiers",
@@ -15,12 +17,14 @@
       "resultType": {
         "name": "PropertyModifier"
       },
+      "associationEndModifiers": [],
       "orderBys": [
         {
           "thisMemberReferencePath": {
             "klass": {
               "name": "PropertyModifier"
             },
+            "associationEnds": [],
             "dataTypeProperty": {
               "name": "ordinal"
             }
@@ -40,6 +44,7 @@
         "klass": {
           "name": "DataTypeProperty"
         },
+        "associationEnds": [],
         "dataTypeProperty": {
           "name": "classifierName"
         }
@@ -49,6 +54,7 @@
         "klass": {
           "name": "PropertyModifier"
         },
+        "associationEnds": [],
         "dataTypeProperty": {
           "name": "classifierName"
         }
@@ -62,6 +68,7 @@
         "klass": {
           "name": "DataTypeProperty"
         },
+        "associationEnds": [],
         "dataTypeProperty": {
           "name": "name"
         }
@@ -71,6 +78,7 @@
         "klass": {
           "name": "PropertyModifier"
         },
+        "associationEnds": [],
         "dataTypeProperty": {
           "name": "propertyName"
         }
