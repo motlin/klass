@@ -32,10 +32,10 @@
     <modules>
         <module>klass-dropwizard-application</module>
         <module>klass-dropwizard-bundles</module>
-        <module>klass-dropwizard-configuration</module>
         <module>klass-dropwizard-configuration-factories</module>
-        <module>klass-dropwizard-healthchecks</module>
         <module>klass-dropwizard-configuration-factory-json</module>
+        <module>klass-dropwizard-configuration</module>
+        <module>klass-dropwizard-healthchecks</module>
         <module>klass-dropwizard-tasks</module>
     </modules>
 </project>
