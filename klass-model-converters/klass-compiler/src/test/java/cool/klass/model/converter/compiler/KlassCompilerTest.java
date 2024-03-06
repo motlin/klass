@@ -1675,4 +1675,56 @@ public class KlassCompilerTest
 
         this.assertCompilerErrors(sourceCodeText, errors);
     }
+
+    @Test
+    public void multipleIdProperties()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = ""
+                + "package example\n"
+                + "\n"
+                + "class ExampleClass\n"
+                + "{\n"
+                + "    id1: Long id key;\n"
+                + "    id2: Long id key;\n"
+                + "}\n";
+        //</editor-fold>
+
+        String[] errors = {
+                ""
+                        + "File: example.klass Line: 3 Char: 7 Error: ERR_MNY_IDS: Class 'ExampleClass' may only have one id property. Found: id1: Long id key, id2: Long id key.\n"
+                        + "package example\n"
+                        + "class ExampleClass\n"
+                        + "      ^^^^^^^^^^^^\n",
+        };
+
+        this.assertCompilerErrors(sourceCodeText, errors);
+    }
+
+    @Test
+    public void idAndKeyProperties()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = ""
+                + "package example\n"
+                + "\n"
+                + "class ExampleClass\n"
+                + "{\n"
+                + "    key: Long key;\n"
+                + "    id: Long id key;\n"
+                + "}\n";
+        //</editor-fold>
+
+        String[] errors = {
+                ""
+                        + "File: example.klass Line: 3 Char: 7 Error: ERR_KEY_IDS: Class 'ExampleClass' may have id properties or non-id key properties, but not both. Found id properties: id: Long id key. Found non-id key properties: key: Long key.\n"
+                        + "package example\n"
+                        + "class ExampleClass\n"
+                        + "      ^^^^^^^^^^^^\n",
+        };
+
+        this.assertCompilerErrors(sourceCodeText, errors);
+    }
 }

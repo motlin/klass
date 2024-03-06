@@ -350,9 +350,38 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             compilerErrorHolder.add(message, this);
         }
 
+        int numIdProperties = this.dataTypePropertyStates.count(AntlrDataTypeProperty::isID);
+        if (numIdProperties > 1)
+        {
+            String message = String.format(
+                    "ERR_MNY_IDS: Class '%s' may only have one id property. Found: %s.",
+                    this.name,
+                    this.dataTypePropertyStates
+                            .select(AntlrDataTypeProperty::isID)
+                            .collect(AntlrDataTypeProperty::getShortString)
+                            .makeString());
+            compilerErrorHolder.add(message, this);
+        }
+
+        if (numIdProperties > 0 && numKeyProperties != numIdProperties)
+        {
+            String message = String.format(
+                    "ERR_KEY_IDS: Class '%s' may have id properties or non-id key properties, but not both. Found id properties: %s. Found non-id key properties: %s.",
+                    this.name,
+                    this.dataTypePropertyStates
+                            .select(AntlrDataTypeProperty::isID)
+                            .collect(AntlrDataTypeProperty::getShortString)
+                            .makeString(),
+                    this.dataTypePropertyStates
+                            .select(AntlrDataTypeProperty::isKey)
+                            .reject(AntlrDataTypeProperty::isID)
+                            .collect(AntlrDataTypeProperty::getShortString)
+                            .makeString());
+            compilerErrorHolder.add(message, this);
+        }
+
         // TODO: Warn if class is owned by multiple
         // TODO: Detect ownership cycles
-        // TODO: Check that ID properties aren't part of a composite key
 
         // TODO: parameterized properties
         // TODO: duplicate class modifiers

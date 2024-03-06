@@ -87,14 +87,14 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     public void build2()
     {
         ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> keysMatchingThisForeignKey =
-                collectKeyMultiValues(
+                AntlrDataTypeProperty.collectKeyMultiValues(
                         this.keyBuildersMatchingThisForeignKey,
                         AntlrAssociationEnd::getElementBuilder,
                         AntlrDataTypeProperty::getPropertyBuilder);
         this.getPropertyBuilder().setKeyBuildersMatchingThisForeignKey(keysMatchingThisForeignKey);
 
         ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> foreignKeysMatchingThisKey =
-                collectKeyMultiValues(
+                AntlrDataTypeProperty.collectKeyMultiValues(
                         this.foreignKeyBuildersMatchingThisKey,
                         AntlrAssociationEnd::getElementBuilder,
                         AntlrDataTypeProperty::getPropertyBuilder);
@@ -155,6 +155,16 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
             AntlrDataTypeProperty<?> foreignKeyProperty)
     {
         this.foreignKeyBuildersMatchingThisKey.put(associationEnd, foreignKeyProperty);
+    }
+
+    public String getShortString()
+    {
+        String result = String.format(
+                "%s: %s %s",
+                this.getName(),
+                this.getType().toString(),
+                this.propertyModifierStates.collect(AntlrNamedElement::getName).makeString(" "));
+        return result;
     }
 
     @Override
