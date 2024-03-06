@@ -18,7 +18,7 @@
 
     <modules>
         <module>klass-connection-manager-h2</module>
-        <module>klass-reladomo-ddl-executor</module>
+        <module>klass-ddl-executor</module>
         <module>klass-reladomo-persistent-writer</module>
         <module>klass-data-store-reladomo</module>
         <module>klass-reladomo-sample-data</module>

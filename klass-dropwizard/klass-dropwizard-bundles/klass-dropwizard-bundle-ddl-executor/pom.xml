@@ -18,7 +18,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-ddl-executor</artifactId>
+            <artifactId>klass-ddl-executor</artifactId>
             <version>${project.version}</version>
         </dependency>
 
