@@ -3,6 +3,7 @@ package cool.klass.reladomo.persistent.writer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -13,15 +14,13 @@ import cool.klass.deserializer.json.JsonDataTypeValueVisitor;
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
-import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
-import cool.klass.model.meta.domain.api.projection.ProjectionElement;
-import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
+import org.eclipse.collections.api.partition.list.PartitionImmutableList;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
@@ -44,9 +43,9 @@ public abstract class PersistentSynchronizer
     protected abstract boolean shouldWriteId();
 
     public void synchronize(
+            Klass klass,
             Object persistentInstance,
-            ObjectNode incomingJson,
-            ProjectionParent projection)
+            ObjectNode incomingJson)
     {
         if (this.inTransaction)
         {
@@ -58,7 +57,7 @@ public abstract class PersistentSynchronizer
             this.inTransaction = true;
             try
             {
-                this.synchronizeInTransaction(persistentInstance, incomingJson, projection);
+                this.synchronizeInTransaction(klass, Optional.empty(), persistentInstance, incomingJson);
             }
             finally
             {
@@ -68,21 +67,21 @@ public abstract class PersistentSynchronizer
     }
 
     protected void synchronizeInTransaction(
+            Klass klass,
+            Optional<AssociationEnd> pathHere,
             Object persistentInstance,
-            ObjectNode incomingJson,
-            ProjectionParent projection)
+            ObjectNode incomingJson)
     {
         if (!this.inTransaction)
         {
             throw new AssertionError();
         }
 
-        Klass klass = projection.getKlass();
         if (!this.isRestrictedFromWriting(klass))
         {
-            this.synchronizeDataTypeProperties(persistentInstance, incomingJson, projection);
+            this.synchronizeDataTypeProperties(klass, persistentInstance, incomingJson);
         }
-        this.synchronizeAssociationEnds(persistentInstance, incomingJson, projection);
+        this.synchronizeAssociationEnds(klass, pathHere, persistentInstance, incomingJson);
     }
 
     private boolean isRestrictedFromWriting(Klass klass)
@@ -91,11 +90,10 @@ public abstract class PersistentSynchronizer
     }
 
     private void synchronizeDataTypeProperties(
+            Klass klass,
             Object persistentInstance,
-            ObjectNode incomingJson,
-            ProjectionParent projection)
+            ObjectNode incomingJson)
     {
-        Klass klass = projection.getKlass();
         ImmutableList<DataTypeProperty> dataTypeProperties = klass.getDataTypeProperties();
         ImmutableList<DataTypeProperty> nonDerivedDataTypeProperties = this.getNonDerivedDataTypeProperties(dataTypeProperties);
         for (int i = 0; i < nonDerivedDataTypeProperties.size(); i++)
@@ -110,7 +108,7 @@ public abstract class PersistentSynchronizer
             if (dataTypeProperty.isForeignKey()
                     || dataTypeProperty.isAudit()
                     || dataTypeProperty.isTemporal()
-                    || this.hasReferencePropertyDependentOnDataTypeProperty(projection, dataTypeProperty)
+                    || this.hasReferencePropertyDependentOnDataTypeProperty(klass, dataTypeProperty)
                     || dataTypeProperty.isKey() && !this.shouldWriteKey()
                     || dataTypeProperty.isID() && !this.shouldWriteId())
             {
@@ -122,66 +120,68 @@ public abstract class PersistentSynchronizer
             this.dataStore.setDataTypeProperty(persistentInstance, dataTypeProperty, newValue);
         }
 
-        this.handleForeignKeysForAssociationsOutsideProjection(persistentInstance, incomingJson, klass, projection.getChildren());
+        this.handleForeignKeysForAssociationsOutsideProjection(persistentInstance, incomingJson, klass);
     }
 
     private void synchronizeAssociationEnds(
+            Klass klass,
+            Optional<AssociationEnd> pathHere,
             Object persistentInstance,
-            ObjectNode incomingObjectNode,
-            ProjectionParent projection)
+            ObjectNode incomingObjectNode)
     {
-        for (ProjectionAssociationEnd projectionAssociationEnd : projection.getAssociationEndChildren())
+        PartitionImmutableList<AssociationEnd> forwardOwnedAssociationEnds = klass.getAssociationEnds()
+                .reject(associationEnd -> pathHere.equals(Optional.of(associationEnd.getOpposite())))
+                .partition(AssociationEnd::isOwned);
+
+        for (AssociationEnd associationEnd : forwardOwnedAssociationEnds.getSelected())
         {
-            AssociationEnd associationEnd = projectionAssociationEnd.getProperty();
-            Multiplicity   multiplicity   = associationEnd.getMultiplicity();
+            Multiplicity multiplicity = associationEnd.getMultiplicity();
 
             JsonNode jsonNode = incomingObjectNode.path(associationEnd.getName());
             if (associationEnd.isVersion())
             {
-                this.handleVersion(persistentInstance, jsonNode, associationEnd);
+                this.handleVersion(associationEnd, persistentInstance, jsonNode);
             }
             else if (multiplicity.isToOne())
             {
-                this.handleToOne(persistentInstance, jsonNode, projectionAssociationEnd);
+                this.handleToOne(associationEnd, persistentInstance, jsonNode);
             }
             else
             {
-                this.handleToMany(persistentInstance, jsonNode, projectionAssociationEnd);
+                this.handleToMany(associationEnd, persistentInstance, jsonNode);
             }
         }
 
-        ImmutableList<AssociationEnd> associationEndsOutsideProjection = projection.getAssociationEndsOutsideProjection();
-        for (AssociationEnd associationEnd : associationEndsOutsideProjection)
+        for (AssociationEnd associationEnd : forwardOwnedAssociationEnds.getRejected())
         {
             Multiplicity multiplicity = associationEnd.getMultiplicity();
-            JsonNode jsonNode = incomingObjectNode.path(associationEnd.getName());
+            JsonNode     jsonNode     = incomingObjectNode.path(associationEnd.getName());
 
             if (associationEnd.isVersion())
             {
-                this.handleVersion(persistentInstance, jsonNode, associationEnd);
+                this.handleVersion(associationEnd, persistentInstance, jsonNode);
             }
             else if (multiplicity.isToOne())
             {
-                this.handleToOneOutsideProjection(persistentInstance, jsonNode, associationEnd);
+                this.handleToOneOutsideProjection(associationEnd, persistentInstance, jsonNode);
             }
             else
             {
-                this.handleToManyOutsideProjection(persistentInstance, jsonNode, associationEnd);
+                this.handleToManyOutsideProjection(associationEnd, persistentInstance, jsonNode);
             }
         }
     }
 
     protected abstract void handleVersion(
+            AssociationEnd associationEnd,
             Object persistentInstance,
-            JsonNode jsonNode,
-            AssociationEnd associationEnd);
+            JsonNode jsonNode);
 
     private void handleToOne(
+            AssociationEnd associationEnd,
             Object persistentParentInstance,
-            JsonNode incomingChildInstance,
-            ProjectionAssociationEnd projectionAssociationEnd)
+            JsonNode incomingChildInstance)
     {
-        AssociationEnd associationEnd          = projectionAssociationEnd.getProperty();
         Object         persistentChildInstance = this.dataStore.getToOne(persistentParentInstance, associationEnd);
 
         if (persistentChildInstance == null
@@ -192,25 +192,28 @@ public abstract class PersistentSynchronizer
                     incomingChildInstance,
                     associationEnd,
                     persistentParentInstance);
-            this.insert(persistentParentInstance, incomingChildInstance, projectionAssociationEnd, keys);
+            this.insert(associationEnd, persistentParentInstance, incomingChildInstance, keys);
         }
         else if (persistentChildInstance != null
                 && incomingChildInstance.isMissingNode()
                 || incomingChildInstance.isNull())
         {
-            this.deleteOrTerminate(persistentChildInstance, projectionAssociationEnd);
+            this.deleteOrTerminate(associationEnd.getType(), persistentChildInstance);
         }
         else if (persistentChildInstance != null && incomingChildInstance != null)
         {
             PersistentSynchronizer synchronizer = this.determineNextMode(OperationMode.REPLACE);
-            synchronizer.synchronize(persistentChildInstance, (ObjectNode) incomingChildInstance, projectionAssociationEnd);
+            synchronizer.synchronize(
+                    associationEnd.getType(),
+                    persistentChildInstance,
+                    (ObjectNode) incomingChildInstance);
         }
     }
 
     protected abstract void handleToOneOutsideProjection(
+            AssociationEnd associationEnd,
             Object persistentParentInstance,
-            JsonNode incomingChildInstance,
-            AssociationEnd associationEnd);
+            JsonNode incomingChildInstance);
 
     protected Object findExistingChildPersistentInstance(
             Object persistentParentInstance,
@@ -226,35 +229,36 @@ public abstract class PersistentSynchronizer
     }
 
     private void insert(
+            AssociationEnd associationEnd,
             Object persistentParentInstance,
             JsonNode incomingChildInstance,
-            ProjectionAssociationEnd projectionAssociationEnd,
             ImmutableList<Object> keys)
     {
-        AssociationEnd associationEnd = projectionAssociationEnd.getProperty();
         Klass          resultType     = associationEnd.getType();
         Object         newInstance    = this.dataStore.instantiate(resultType, keys);
         PersistentSynchronizer synchronizer = this.determineNextMode(OperationMode.CREATE);
-        synchronizer.synchronize(newInstance, (ObjectNode) incomingChildInstance, projectionAssociationEnd);
+        synchronizer.synchronizeInTransaction(
+                associationEnd.getType(),
+                Optional.of(associationEnd),
+                newInstance,
+                (ObjectNode) incomingChildInstance);
         // TODO: This is the backwards order from how I used to do it
         this.dataStore.setToOne(persistentParentInstance, associationEnd, newInstance);
         this.dataStore.insert(newInstance);
     }
 
-    private void deleteOrTerminate(Object persistentChildInstance, ProjectionParent projectionParent)
+    private void deleteOrTerminate(Klass klass, Object persistentChildInstance)
     {
         ReladomoPersistentDeleter reladomoPersistentDeleter = new ReladomoPersistentDeleter(this.dataStore);
-        reladomoPersistentDeleter.deleteOrTerminate(persistentChildInstance, projectionParent);
+        reladomoPersistentDeleter.deleteOrTerminate(klass, persistentChildInstance);
     }
 
     private void handleToMany(
+            AssociationEnd associationEnd,
             Object persistentParentInstance,
-            JsonNode incomingChildInstances,
-            ProjectionAssociationEnd projectionAssociationEnd)
+            JsonNode incomingChildInstances)
     {
         // TODO: Test null where an array goes
-
-        AssociationEnd associationEnd = projectionAssociationEnd.getProperty();
 
         MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey = this.indexIncomingJsonInstances(
                 incomingChildInstances,
@@ -270,7 +274,7 @@ public abstract class PersistentSynchronizer
             if (!incomingChildInstancesByKey.containsKey(keys))
             {
                 ReladomoPersistentDeleter reladomoPersistentDeleter = new ReladomoPersistentDeleter(this.dataStore);
-                reladomoPersistentDeleter.deleteOrTerminate(persistentChildInstance, projectionAssociationEnd);
+                reladomoPersistentDeleter.deleteOrTerminate(associationEnd.getType(), persistentChildInstance);
             }
         }
 
@@ -298,22 +302,30 @@ public abstract class PersistentSynchronizer
                 this.dataStore.setToOne(newInstance, associationEnd.getOpposite(), persistentParentInstance);
 
                 PersistentSynchronizer synchronizer = this.determineNextMode(OperationMode.CREATE);
-                synchronizer.synchronizeInTransaction(newInstance, (ObjectNode) incomingChildInstance, projectionAssociationEnd);
+                synchronizer.synchronizeInTransaction(
+                        associationEnd.getType(),
+                        Optional.of(associationEnd),
+                        newInstance,
+                        (ObjectNode) incomingChildInstance);
 
                 this.dataStore.insert(newInstance);
             }
             else
             {
                 PersistentSynchronizer synchronizer = this.determineNextMode(OperationMode.REPLACE);
-                synchronizer.synchronizeInTransaction(persistentChildInstance, (ObjectNode) incomingChildInstance, projectionAssociationEnd);
+                synchronizer.synchronizeInTransaction(
+                        associationEnd.getType(),
+                        Optional.of(associationEnd),
+                        persistentChildInstance,
+                        (ObjectNode) incomingChildInstance);
             }
         }
     }
 
     private void handleToManyOutsideProjection(
+            AssociationEnd associationEnd,
             Object persistentParentInstance,
-            JsonNode incomingChildInstances,
-            AssociationEnd associationEnd)
+            JsonNode incomingChildInstances)
     {
         // TODO: Test null where an array goes
 
@@ -478,7 +490,7 @@ public abstract class PersistentSynchronizer
     protected abstract PersistentSynchronizer determineNextMode(OperationMode nextMode);
 
     private boolean hasReferencePropertyDependentOnDataTypeProperty(
-            ProjectionParent projection,
+            Klass klass,
             DataTypeProperty dataTypeProperty)
     {
         return false;
@@ -492,8 +504,7 @@ public abstract class PersistentSynchronizer
     private void handleForeignKeysForAssociationsOutsideProjection(
             Object persistentInstance,
             ObjectNode incomingJson,
-            Klass klass,
-            ImmutableList<? extends ProjectionElement> projectionElements)
+            Klass klass)
     {
     }
 }

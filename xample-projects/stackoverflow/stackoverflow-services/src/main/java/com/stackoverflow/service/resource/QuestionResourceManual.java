@@ -172,7 +172,7 @@ public class QuestionResourceManual
         // TODO: Only increment version number if data actually changed
 
         PersistentReplacer replacer = new PersistentReplacer(this.dataStore);
-        replacer.synchronize(persistentInstance, incomingInstance, projection);
+        replacer.synchronize(projection.getKlass(), persistentInstance, incomingInstance);
     }
 
     @Nonnull
@@ -362,7 +362,7 @@ public class QuestionResourceManual
             Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
 
             PersistentCreator creator = new PersistentCreator(this.dataStore);
-            creator.synchronize(question, incomingInstance, projection);
+            creator.synchronize(projection.getKlass(), question, incomingInstance);
             question.insert();
             return question;
         });

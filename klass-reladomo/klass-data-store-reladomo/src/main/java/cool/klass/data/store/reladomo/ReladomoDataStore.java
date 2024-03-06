@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Objects;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
@@ -296,10 +297,7 @@ public class ReladomoDataStore implements DataStore
             AssociationEnd associationEnd,
             Object persistentTargetInstance)
     {
-        if (persistentTargetInstance == null)
-        {
-            throw new AssertionError();
-        }
+        Objects.requireNonNull(persistentTargetInstance);
 
         // A Reladomo bug prevents just calling a method like setQuestion here. Instead we have to call foreign key setters like setQuestionId
 

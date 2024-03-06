@@ -1,7 +1,7 @@
 package cool.klass.reladomo.persistent.writer;
 
 import cool.klass.data.store.DataStore;
-import cool.klass.model.meta.domain.api.projection.ProjectionParent;
+import cool.klass.model.meta.domain.api.Klass;
 
 public class ReladomoPersistentDeleter
 {
@@ -12,7 +12,7 @@ public class ReladomoPersistentDeleter
         this.dataStore = dataStore;
     }
 
-    public void deleteOrTerminate(Object persistentChildInstance, ProjectionParent projectionParent)
+    public void deleteOrTerminate(Klass klass, Object persistentChildInstance)
     {
         this.dataStore.deleteOrTerminate(persistentChildInstance);
     }

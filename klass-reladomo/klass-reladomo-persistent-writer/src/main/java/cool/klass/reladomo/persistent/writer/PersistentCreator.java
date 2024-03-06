@@ -34,7 +34,10 @@ public class PersistentCreator extends PersistentSynchronizer
     }
 
     @Override
-    protected void handleVersion(Object persistentInstance, JsonNode jsonNode, AssociationEnd associationEnd)
+    protected void handleVersion(
+            AssociationEnd associationEnd,
+            Object persistentInstance,
+            JsonNode jsonNode)
     {
         Object persistentChildInstance = this.dataStore.getToOne(persistentInstance, associationEnd);
         if (persistentChildInstance != null)
@@ -42,16 +45,17 @@ public class PersistentCreator extends PersistentSynchronizer
             throw new AssertionError();
         }
 
-        ImmutableList<Object> keys = getKeysFromPersistentInstance(
+        ImmutableList<Object> keys = this.getKeysFromPersistentInstance(
                 persistentInstance,
                 associationEnd.getOwningClassifier());
         this.insertVersion(persistentInstance, associationEnd, keys);
     }
 
+    @Override
     protected void handleToOneOutsideProjection(
+            AssociationEnd associationEnd,
             Object persistentParentInstance,
-            JsonNode incomingChildInstance,
-            AssociationEnd associationEnd)
+            JsonNode incomingChildInstance)
     {
         if (associationEnd.isOwned())
         {
@@ -70,7 +74,8 @@ public class PersistentCreator extends PersistentSynchronizer
                 associationEnd);
         if (childPersistentInstanceWithKey == null)
         {
-            throw new AssertionError();
+            // TODO: Error message including full path here. Error message earlier, during validation.
+            throw new AssertionError("TODO: Error message when unable to find associated item by key.");
         }
 
         this.dataStore.setToOne(persistentParentInstance, associationEnd, childPersistentInstanceWithKey);

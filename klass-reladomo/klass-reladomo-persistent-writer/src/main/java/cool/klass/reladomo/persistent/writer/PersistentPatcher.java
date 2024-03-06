@@ -30,14 +30,20 @@ public class PersistentPatcher extends PersistentSynchronizer
     }
 
     @Override
-    protected void handleVersion(Object persistentInstance, JsonNode jsonNode, AssociationEnd associationEnd)
+    protected void handleVersion(
+            AssociationEnd associationEnd,
+            Object persistentInstance,
+            JsonNode jsonNode)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".handleVersion() not implemented yet");
     }
 
     @Override
-    protected void handleToOneOutsideProjection(Object persistentParentInstance, JsonNode incomingChildInstance, AssociationEnd associationEnd)
+    protected void handleToOneOutsideProjection(
+            AssociationEnd associationEnd,
+            Object persistentParentInstance,
+            JsonNode incomingChildInstance)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".handleToOneOutsideProjection() not implemented yet");

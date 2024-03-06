@@ -31,7 +31,10 @@ public class PersistentReplacer extends PersistentSynchronizer
     }
 
     @Override
-    protected void handleVersion(Object persistentInstance, JsonNode jsonNode, AssociationEnd associationEnd)
+    protected void handleVersion(
+            AssociationEnd associationEnd,
+            Object persistentInstance,
+            JsonNode jsonNode)
     {
         // TODO: Only increment version if values actually changed
         // TODO: Always deep-fetch versions
@@ -48,9 +51,9 @@ public class PersistentReplacer extends PersistentSynchronizer
 
     @Override
     protected void handleToOneOutsideProjection(
+            AssociationEnd associationEnd,
             Object persistentParentInstance,
-            JsonNode incomingChildInstance,
-            AssociationEnd associationEnd)
+            JsonNode incomingChildInstance)
     {
         if (associationEnd.isOwned())
         {
