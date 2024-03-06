@@ -23,10 +23,6 @@
             <directory>.mvn</directory>
         </fileSet>
 
-        <fileSet filtered="true">
-            <directory></directory>
-        </fileSet>
-
         <fileSet>
             <directory></directory>
             <includes>
@@ -47,10 +43,6 @@
             <fileSets>
                 <fileSet filtered="true" packaged="true" encoding="UTF-8">
                     <directory>src/main/resources</directory>
-                </fileSet>
-
-                <fileSet filtered="true">
-                    <directory></directory>
                 </fileSet>
 
             </fileSets>
@@ -133,10 +125,6 @@
                 dir="__rootArtifactId__-graphql-runtime-wiring"
                 name="${rootArtifactId}-graphql-runtime-wiring">
             <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-
                 <fileSet filtered="true" packaged="true" encoding="UTF-8">
                     <directory>src/main/java</directory>
                 </fileSet>
@@ -162,11 +150,6 @@
                 <fileSet filtered="true" packaged="true" encoding="UTF-8">
                     <directory>src/main/resources</directory>
                 </fileSet>
-
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-
             </fileSets>
         </module>
 
