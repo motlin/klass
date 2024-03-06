@@ -18,6 +18,7 @@ import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
 import cool.klass.dropwizard.configuration.ddl.executor.DdlExecutorFactory;
 import cool.klass.dropwizard.configuration.ddl.executor.DdlExecutorFactoryProvider;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
+import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactoryProvider;
 import cool.klass.dropwizard.configuration.enabled.EnabledFactory;
 import cool.klass.dropwizard.configuration.h2.H2Factory;
 import cool.klass.dropwizard.configuration.h2.H2FactoryProvider;
@@ -41,7 +42,8 @@ public class AbstractKlassConfiguration extends Configuration
         ReladomoFactoryProvider,
         SampleDataFactoryProvider,
         ConfigLoggingFactoryProvider,
-        DataStoreFactoryProvider
+        DataStoreFactoryProvider,
+        DomainModelFactoryProvider
 {
     private @Valid @NotNull KlassFactory             klassFactory             = new KlassFactory();
     private @Valid @NotNull JerseyHttpLoggingFactory jerseyHttpLoggingFactory = new JerseyHttpLoggingFactory();

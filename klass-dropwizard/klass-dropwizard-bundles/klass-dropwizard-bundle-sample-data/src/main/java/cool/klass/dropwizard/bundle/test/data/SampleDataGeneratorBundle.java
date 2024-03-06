@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
+import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
+import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactoryProvider;
 import cool.klass.dropwizard.configuration.sample.data.SampleDataFactory;
 import cool.klass.dropwizard.configuration.sample.data.SampleDataFactoryProvider;
 import cool.klass.model.meta.domain.api.DomainModel;
@@ -46,11 +48,12 @@ public class SampleDataGeneratorBundle
 
         LOGGER.info("Running {}.", SampleDataGeneratorBundle.class.getSimpleName());
 
-        DomainModel           domainModel       = configuration.getDomainModelFactory().createDomainModel();
-        DataStore             dataStore         = configuration.getDataStoreFactory().createDataStore();
         SampleDataFactory     sampleDataFactory = configuration.getSampleDataFactory();
         Instant               dataInstant       = sampleDataFactory.getDataInstant();
         ImmutableList<String> skippedPackages   = sampleDataFactory.getSkippedPackages();
+
+        DomainModel domainModel = getDomainModel(configuration);
+        DataStore   dataStore   = getDataStore(configuration);
 
         SampleDataGenerator sampleDataGenerator = new SampleDataGenerator(
                 domainModel,
@@ -60,5 +63,28 @@ public class SampleDataGeneratorBundle
         sampleDataGenerator.generate();
 
         LOGGER.info("Completing {}.", SampleDataGeneratorBundle.class.getSimpleName());
+    }
+
+    @Nonnull
+    private static DomainModel getDomainModel(@Nonnull Object configuration)
+    {
+        if (!(configuration instanceof DomainModelFactoryProvider))
+        {
+            throw new IllegalStateException(configuration.getClass().getCanonicalName());
+        }
+
+        DomainModelFactoryProvider domainModelFactoryProvider = (DomainModelFactoryProvider) configuration;
+        return domainModelFactoryProvider.getDomainModelFactory().createDomainModel();
+    }
+
+    private static DataStore getDataStore(@Nonnull Object configuration)
+    {
+        if (!(configuration instanceof DataStoreFactoryProvider))
+        {
+            throw new IllegalStateException(configuration.getClass().getCanonicalName());
+        }
+
+        DataStoreFactoryProvider dataStoreFactoryProvider = (DataStoreFactoryProvider) configuration;
+        return dataStoreFactoryProvider.getDataStoreFactory().createDataStore();
     }
 }
