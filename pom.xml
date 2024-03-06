@@ -48,6 +48,8 @@
         <checkstyle.configuration>${maven.multiModuleProjectDirectory}/checkstyle-configuration.xml</checkstyle.configuration>
         <checkstyle.suppressions>${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</checkstyle.suppressions>
         <checkstyle.cache>${project.build.directory}/checkstyle-cache</checkstyle.cache>
+
+        <project.build.outputTimestamp>1970-01-01T00:00:00Z</project.build.outputTimestamp>
     </properties>
 
     <build>
