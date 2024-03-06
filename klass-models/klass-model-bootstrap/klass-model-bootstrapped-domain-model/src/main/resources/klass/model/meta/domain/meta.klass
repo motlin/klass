@@ -32,7 +32,7 @@ association EnumerationHasLiterals
 {
     enumeration: Enumeration[1..1];
     enumerationLiterals: EnumerationLiteral[1..*]
-        orderBy: this.ordinal;
+        orderBy: this.ordinal ascending;
 }
 
 enumeration InheritanceType
@@ -145,21 +145,21 @@ association ClassifierHasDataTypeTypeProperties
 {
     owningClassifier              : Classifier[1..1];
     dataTypeProperties            : DataTypeProperty[0..*] owned
-        orderBy: this.ordinal;
+        orderBy: this.ordinal ascending;
 }
 
 association ClassifierHasPrimitiveProperties
 {
     owningClassifier: Classifier[1..1];
     primitiveProperties: PrimitiveProperty[0..*] owned
-        orderBy: this.ordinal;
+        orderBy: this.ordinal ascending;
 }
 
 association ClassifierHasEnumerationProperties
 {
     owningClassifier: Classifier[1..1];
     enumerationProperties: EnumerationProperty[0..*] owned
-        orderBy: this.ordinal;
+        orderBy: this.ordinal ascending;
 }
 
 interface NumericPropertyValidation
@@ -239,7 +239,7 @@ association DataTypePropertyHasModifiers
 {
     dataTypeProperty              : DataTypeProperty[1..1];
     propertyModifiers             : PropertyModifier[0..*]
-        orderBy: this.ordinal;
+        orderBy: this.ordinal ascending;
 
     relationship this.classifierName == PropertyModifier.classifierName
             && this.name == PropertyModifier.propertyName
@@ -257,7 +257,7 @@ association ClassifierHasModifiers
 {
     owningClassifier: Classifier[1..1];
     classifierModifiers: ClassifierModifier[0..*]
-        orderBy: this.ordinal;
+        orderBy: this.ordinal ascending;
 }
 
 class Parameter
@@ -423,7 +423,7 @@ association AssociationHasEnds
 {
     owningAssociation: Association[1..1];
     associationEnds: AssociationEnd[0..*]
-        orderBy: this.direction;
+        orderBy: this.direction ascending;
 }
 
 association ClassHasAssociationEnds
@@ -456,7 +456,7 @@ association AssociationEndHasModifiers
 {
     associationEnd: AssociationEnd[1..1];
     associationEndModifiers: AssociationEndModifier[0..*]
-        orderBy: this.ordinal;
+        orderBy: this.ordinal ascending;
 
     relationship this.owningClassName == AssociationEndModifier.owningClassName
             && this.name == AssociationEndModifier.associationEndName
@@ -961,7 +961,7 @@ service Enumeration
             multiplicity: many;
             criteria    : all;
             projection  : EnumerationSummaryProjection;
-            orderBy     : this.ordinal;
+            orderBy     : this.ordinal ascending;
         }
 }
 
@@ -1079,7 +1079,7 @@ service Interface
             multiplicity: many;
             criteria    : all;
             projection  : InterfaceSummaryProjection;
-            orderBy     : this.ordinal;
+            orderBy     : this.ordinal ascending;
         }
 }
 
@@ -1313,7 +1313,7 @@ service Klass
             multiplicity: many;
             criteria    : all;
             projection  : ClassSummaryProjection;
-            orderBy     : this.ordinal;
+            orderBy     : this.ordinal ascending;
         }
 }
 
@@ -1357,7 +1357,7 @@ service Classifier
             multiplicity: many;
             criteria    : all;
             projection  : ClassifierSummaryProjection;
-            orderBy     : this.ordinal;
+            orderBy     : this.ordinal ascending;
         }
 }
 
@@ -1556,7 +1556,7 @@ service Association
             multiplicity: many;
             criteria    : all;
             projection  : AssociationSummaryProjection;
-            orderBy     : this.ordinal;
+            orderBy     : this.ordinal ascending;
         }
 }
 
@@ -1604,7 +1604,7 @@ service NamedProjection
             multiplicity: many;
             criteria    : all;
             projection  : NamedProjectionProjection;
-            orderBy     : this.ordinal;
+            orderBy     : this.ordinal ascending;
         }
 }
 
@@ -1673,6 +1673,6 @@ service ServiceGroup
             multiplicity: many;
             criteria    : all;
             projection  : ServiceGroupSummaryProjection;
-            orderBy     : this.ordinal;
+            orderBy     : this.ordinal ascending;
         }
 }
