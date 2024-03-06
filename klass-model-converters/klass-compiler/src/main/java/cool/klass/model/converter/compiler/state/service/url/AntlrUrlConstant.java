@@ -13,7 +13,7 @@ import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.service.url.UrlConstantImpl.UrlConstantBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrUrlConstant extends AntlrNamedElement implements IAntlrElement
+public class AntlrUrlConstant extends AntlrNamedElement
 {
     public AntlrUrlConstant(
             @Nonnull ParserRuleContext elementContext,
