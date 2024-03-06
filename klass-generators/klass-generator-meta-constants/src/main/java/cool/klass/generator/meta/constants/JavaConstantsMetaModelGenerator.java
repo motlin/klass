@@ -113,7 +113,7 @@ public class JavaConstantsMetaModelGenerator
                 .collect(PackageableElement::getPackageName)
                 .distinct()
                 .toSortedList()
-                .collect(packageName -> "import " + packageName + ".*;\n")
+                .collect(packageName -> "import " + packageName + ".meta.constants.*;\n")
                 .makeString("");
 
         // @formatter:off
