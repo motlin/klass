@@ -51,14 +51,14 @@ public abstract class AbstractClassifier
         return this.declaredDataTypeProperties;
     }
 
-    protected void setDataTypeProperties(@Nonnull ImmutableList<DataTypeProperty> dataTypeProperties)
+    protected void setDeclaredDataTypeProperties(@Nonnull ImmutableList<DataTypeProperty> declaredDataTypeProperties)
     {
         if (this.declaredDataTypeProperties != null)
         {
             throw new IllegalStateException();
         }
-        this.declaredDataTypeProperties       = Objects.requireNonNull(dataTypeProperties);
-        this.declaredDataTypePropertiesByName = dataTypeProperties.groupByUniqueKey(DataTypeProperty::getName);
+        this.declaredDataTypeProperties       = Objects.requireNonNull(declaredDataTypeProperties);
+        this.declaredDataTypePropertiesByName = declaredDataTypeProperties.groupByUniqueKey(DataTypeProperty::getName);
     }
 
     @Override
@@ -165,7 +165,7 @@ public abstract class AbstractClassifier
             ImmutableList<DataTypeProperty> dataTypeProperties = this.dataTypePropertyBuilders
                     .<DataTypeProperty>collect(DataTypePropertyBuilder::build)
                     .toImmutable();
-            this.element.setDataTypeProperties(dataTypeProperties);
+            this.element.setDeclaredDataTypeProperties(dataTypeProperties);
         }
 
         public void setInterfaceBuilders(ImmutableList<InterfaceBuilder> interfaceBuilders)
