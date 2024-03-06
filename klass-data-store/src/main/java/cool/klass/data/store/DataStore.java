@@ -20,6 +20,19 @@ public interface DataStore
 
     Object findByKey(Klass klass, MapIterable<DataTypeProperty, Object> keys);
 
+    default Object getReferenceProperty(Object persistentInstance, ReferenceProperty referenceProperty)
+    {
+        if (referenceProperty.getMultiplicity().isToOne())
+        {
+            return this.getToOne(persistentInstance, referenceProperty);
+        }
+        if (referenceProperty.getMultiplicity().isToMany())
+        {
+            return this.getToMany(persistentInstance, referenceProperty);
+        }
+        throw new IllegalStateException("Unknown multiplicity: " + referenceProperty.getMultiplicity());
+    }
+
     Object getToOne(Object persistentSourceInstance, @Nonnull ReferenceProperty referenceProperty);
 
     @Nonnull
