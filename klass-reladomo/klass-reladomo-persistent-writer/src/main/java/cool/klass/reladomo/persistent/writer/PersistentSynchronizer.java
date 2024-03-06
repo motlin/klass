@@ -86,6 +86,7 @@ public abstract class PersistentSynchronizer
         this.synchronizeAssociationEnds(klass, pathHere, persistentInstance, incomingJson);
     }
 
+    //region DataTypeProperties
     private boolean isRestrictedFromWriting(@Nonnull Klass klass)
     {
         return klass.isTransient() || klass.getVersionedProperty().isPresent();
@@ -125,7 +126,9 @@ public abstract class PersistentSynchronizer
 
         this.handleForeignKeysForAssociationsOutsideProjection(persistentInstance, incomingJson, klass);
     }
+    //endregion
 
+    //region AssociationEnds
     private void synchronizeAssociationEnds(
             @Nonnull Klass klass,
             @Nonnull Optional<AssociationEnd> pathHere,
@@ -362,50 +365,6 @@ public abstract class PersistentSynchronizer
         return persistentChildInstancesByKey.get(keys);
     }
 
-    private boolean jsonNodeNeedsIdInferredOnInsert(
-            JsonNode jsonNode,
-            @Nonnull AssociationEnd associationEnd)
-    {
-        return associationEnd
-                .getType()
-                .getKeyProperties()
-                .allSatisfy(keyProperty -> this.jsonNodeNeedsIdInferredOnInsert(
-                        keyProperty,
-                        jsonNode,
-                        associationEnd));
-    }
-
-    private boolean jsonNodeNeedsIdInferredOnInsert(
-            @Nonnull DataTypeProperty keyProperty,
-            JsonNode jsonNode,
-            @Nonnull AssociationEnd associationEnd)
-    {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
-
-        AssociationEnd opposite = associationEnd.getOpposite();
-
-        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.get(opposite);
-
-        if (oppositeForeignKeys.notEmpty())
-        {
-            return false;
-        }
-
-        if (keysMatchingThisForeignKey.notEmpty())
-        {
-            if (keysMatchingThisForeignKey.size() != 1)
-            {
-                throw new AssertionError();
-            }
-
-            return false;
-        }
-
-        return JsonDataTypeValueVisitor.dataTypePropertyIsNullInJson(
-                keyProperty,
-                (ObjectNode) jsonNode);
-    }
-
     private void handleToManyOutsideProjection(
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
@@ -477,24 +436,55 @@ public abstract class PersistentSynchronizer
         }
     }
 
-    private ImmutableList<Object> getKeysFromJsonNode(
-            @Nonnull JsonNode jsonNode,
+    @Nonnull
+    private MapIterable<ImmutableList<Object>, JsonNode> indexIncomingJsonInstances(
+            @Nonnull Iterable<JsonNode> incomingInstances,
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance)
     {
-        if (this.jsonNodeNeedsIdInferredOnInsert(jsonNode, associationEnd))
+        MutableOrderedMap<ImmutableList<Object>, JsonNode> result = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+        for (JsonNode incomingInstance : incomingInstances)
         {
-            return Lists.immutable.empty();
+            ImmutableList<Object> keys = this.getKeysFromJsonNode(
+                    incomingInstance,
+                    associationEnd,
+                    persistentParentInstance);
+            result.put(keys, incomingInstance);
         }
-
-        return associationEnd.getType()
-                .getKeyProperties()
-                .collect(keyProperty -> this.getKeyFromJsonNode(
-                        keyProperty,
-                        jsonNode,
-                        associationEnd,
-                        persistentParentInstance));
+        return result;
+        // TODO: Change to use asUnmodifiable after EC 10.0 is released.
+        // return result.asUnmodifiable();
     }
+
+    protected ImmutableList<Object> getKeysFromPersistentInstance(Object persistentInstance, @Nonnull Klass klass)
+    {
+        return klass
+                .getKeyProperties()
+                .collect(keyProperty -> this.dataStore.getDataTypeProperty(persistentInstance, keyProperty));
+    }
+
+    @Nonnull
+    protected abstract PersistentSynchronizer determineNextMode(OperationMode nextMode);
+
+    private boolean hasReferencePropertyDependentOnDataTypeProperty(
+            Klass klass,
+            DataTypeProperty dataTypeProperty)
+    {
+        return false;
+    }
+
+    private ImmutableList<DataTypeProperty> getNonDerivedDataTypeProperties(ImmutableList<DataTypeProperty> dataTypeProperties)
+    {
+        return dataTypeProperties;
+    }
+
+    private void handleForeignKeysForAssociationsOutsideProjection(
+            Object persistentInstance,
+            ObjectNode incomingJson,
+            Klass klass)
+    {
+    }
+    //endregion
 
     private Object getKeyFromJsonNode(
             @Nonnull DataTypeProperty keyProperty,
@@ -559,52 +549,66 @@ public abstract class PersistentSynchronizer
         // return result.asUnmodifiable();
     }
 
-    @Nonnull
-    private MapIterable<ImmutableList<Object>, JsonNode> indexIncomingJsonInstances(
-            @Nonnull Iterable<JsonNode> incomingInstances,
+    private boolean jsonNodeNeedsIdInferredOnInsert(
+            JsonNode jsonNode,
+            @Nonnull AssociationEnd associationEnd)
+    {
+        return associationEnd
+                .getType()
+                .getKeyProperties()
+                .allSatisfy(keyProperty -> this.jsonNodeNeedsIdInferredOnInsert(
+                        keyProperty,
+                        jsonNode,
+                        associationEnd));
+    }
+
+    private ImmutableList<Object> getKeysFromJsonNode(
+            @Nonnull JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance)
     {
-        MutableOrderedMap<ImmutableList<Object>, JsonNode> result = OrderedMapAdapter.adapt(new LinkedHashMap<>());
-        for (JsonNode incomingInstance : incomingInstances)
+        if (this.jsonNodeNeedsIdInferredOnInsert(jsonNode, associationEnd))
         {
-            ImmutableList<Object> keys = this.getKeysFromJsonNode(
-                    incomingInstance,
-                    associationEnd,
-                    persistentParentInstance);
-            result.put(keys, incomingInstance);
+            return Lists.immutable.empty();
         }
-        return result;
-        // TODO: Change to use asUnmodifiable after EC 10.0 is released.
-        // return result.asUnmodifiable();
-    }
 
-    protected ImmutableList<Object> getKeysFromPersistentInstance(Object persistentInstance, @Nonnull Klass klass)
-    {
-        return klass
+        return associationEnd.getType()
                 .getKeyProperties()
-                .collect(keyProperty -> this.dataStore.getDataTypeProperty(persistentInstance, keyProperty));
+                .collect(keyProperty -> this.getKeyFromJsonNode(
+                        keyProperty,
+                        jsonNode,
+                        associationEnd,
+                        persistentParentInstance));
     }
 
-    @Nonnull
-    protected abstract PersistentSynchronizer determineNextMode(OperationMode nextMode);
-
-    private boolean hasReferencePropertyDependentOnDataTypeProperty(
-            Klass klass,
-            DataTypeProperty dataTypeProperty)
+    private boolean jsonNodeNeedsIdInferredOnInsert(
+            @Nonnull DataTypeProperty keyProperty,
+            JsonNode jsonNode,
+            @Nonnull AssociationEnd associationEnd)
     {
-        return false;
-    }
+        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
 
-    private ImmutableList<DataTypeProperty> getNonDerivedDataTypeProperties(ImmutableList<DataTypeProperty> dataTypeProperties)
-    {
-        return dataTypeProperties;
-    }
+        AssociationEnd opposite = associationEnd.getOpposite();
 
-    private void handleForeignKeysForAssociationsOutsideProjection(
-            Object persistentInstance,
-            ObjectNode incomingJson,
-            Klass klass)
-    {
+        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.get(opposite);
+
+        if (oppositeForeignKeys.notEmpty())
+        {
+            return false;
+        }
+
+        if (keysMatchingThisForeignKey.notEmpty())
+        {
+            if (keysMatchingThisForeignKey.size() != 1)
+            {
+                throw new AssertionError();
+            }
+
+            return false;
+        }
+
+        return JsonDataTypeValueVisitor.dataTypePropertyIsNullInJson(
+                keyProperty,
+                (ObjectNode) jsonNode);
     }
 }
