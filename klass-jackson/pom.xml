@@ -32,6 +32,12 @@
     <dependencies>
 
         <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-serialization-jackson-pretty-printer</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
         </dependency>

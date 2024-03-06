@@ -1,4 +1,4 @@
-package cool.klass.jackson;
+package cool.klass.serialization.jackson.pretty;
 
 import java.io.IOException;
 

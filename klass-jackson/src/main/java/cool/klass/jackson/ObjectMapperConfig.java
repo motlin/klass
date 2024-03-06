@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.eclipsecollections.EclipseCollectionsModule;
 import com.gs.reladomo.serial.jackson.JacksonReladomoModule;
+import cool.klass.serialization.jackson.pretty.JsonPrettyPrinter;
 
 public final class ObjectMapperConfig
 {
