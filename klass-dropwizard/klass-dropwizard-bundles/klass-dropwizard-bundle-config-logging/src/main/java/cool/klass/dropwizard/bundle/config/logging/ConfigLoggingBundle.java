@@ -32,7 +32,7 @@ public class ConfigLoggingBundle implements PrioritizedBundle<AbstractKlassConfi
     @Override
     public void run(
             @Nonnull AbstractKlassConfiguration configuration,
-            @Nonnull Environment environment) throws JsonProcessingException
+            @Nonnull Environment environment) throws JsonProcessingException, ReflectiveOperationException
     {
         EnabledFactory configLoggingFactory = configuration.getConfigLoggingFactory();
         if (!configLoggingFactory.isEnabled())
@@ -43,16 +43,20 @@ public class ConfigLoggingBundle implements PrioritizedBundle<AbstractKlassConfi
 
         LOGGER.info("Running {}.", ConfigLoggingBundle.class.getSimpleName());
 
-        this.logConfiguration(configuration, environment.getObjectMapper());
+        ConfigLoggingBundle.logConfiguration(configuration, environment.getObjectMapper());
 
         LOGGER.info("Completing {}.", ConfigLoggingBundle.class.getSimpleName());
     }
 
-    private void logConfiguration(
+    private static void logConfiguration(
             @Nonnull AbstractKlassConfiguration configuration,
-            ObjectMapper objectMapper) throws JsonProcessingException
+            ObjectMapper objectMapper) throws JsonProcessingException, ReflectiveOperationException
     {
         String configurationString = objectMapper.writeValueAsString(configuration);
         LOGGER.info("Inferred Dropwizard configuration:\n{}", configurationString);
+
+        AbstractKlassConfiguration defaultConfiguration       = configuration.getClass().getConstructor().newInstance();
+        String                     defaultConfigurationString = objectMapper.writeValueAsString(defaultConfiguration);
+        LOGGER.info("Default Dropwizard configuration:\n{}", defaultConfigurationString);
     }
 }
