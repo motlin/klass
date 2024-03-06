@@ -14,8 +14,29 @@ public final class AllCriteria extends Criteria
     }
 
     @Override
+    public String getSourceCode()
+    {
+        return "all";
+    }
+
+    @Override
     public void visit(@Nonnull CriteriaVisitor visitor)
     {
         visitor.visitAll(this);
+    }
+
+    public static final class AllCriteriaBuilder extends CriteriaBuilder
+    {
+        public AllCriteriaBuilder(@Nonnull ParserRuleContext elementContext)
+        {
+            super(elementContext);
+        }
+
+        @Nonnull
+        @Override
+        public AllCriteria build()
+        {
+            return INSTANCE;
+        }
     }
 }

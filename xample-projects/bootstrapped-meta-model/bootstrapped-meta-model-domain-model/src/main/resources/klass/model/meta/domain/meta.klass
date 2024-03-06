@@ -391,5 +391,11 @@ service Class
         criteria: this.name == className;
         projection: ClassReadProjection;
     }
-    // TODO: Infer all, add all keyword
+    /api/meta/class
+    GET
+    {
+        multiplicity: many;
+        criteria: all;
+        projection: ClassReadProjection;
+    }
 }

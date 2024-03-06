@@ -123,6 +123,7 @@ criteriaExpression
     : left=criteriaExpression '&&' right=criteriaExpression  #CriteriaExpressionAnd
     | left=criteriaExpression '||' right=criteriaExpression  #CriteriaExpressionOr
     | '(' criteriaExpression ')'                             #CriteriaExpressionGroup
+    | 'all'                                                  #CriteriaAll
     | source=expressionValue operator target=expressionValue #CriteriaOperator
     | expressionMemberReference 'equalsEdgePoint'            #CriteriaEdgePoint
     | 'native' '(' identifier ')'                            #CriteriaNative

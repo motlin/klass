@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
+import cool.klass.model.converter.compiler.state.criteria.AllAntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.AndAntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.EdgePointAntlrCriteria;
@@ -17,6 +18,7 @@ import cool.klass.model.converter.compiler.state.service.CriteriaOwner;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import cool.klass.model.converter.compiler.state.value.AntlrMemberExpressionValue;
 import cool.klass.model.meta.grammar.KlassBaseVisitor;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaEdgePointContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionAndContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionGroupContext;
@@ -108,6 +110,12 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".visitCriteriaExpressionGroup() not implemented yet");
+    }
+
+    @Override
+    public AntlrCriteria visitCriteriaAll(CriteriaAllContext ctx)
+    {
+        return new AllAntlrCriteria(ctx, this.compilationUnit, false, this.criteriaOwner);
     }
 
     @Nonnull
