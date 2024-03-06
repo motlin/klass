@@ -21,14 +21,16 @@ import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.ImmutableMap;
 
 public abstract class AbstractClassifier
         extends AbstractPackageableElement
         implements ClassifierWithSourceCode
 {
-    private ImmutableList<DataTypeProperty> dataTypeProperties;
-    private ImmutableList<Modifier>         modifiers;
-    private ImmutableList<Interface>        interfaces;
+    private ImmutableList<DataTypeProperty>        declaredDataTypeProperties;
+    private ImmutableMap<String, DataTypeProperty> declaredDataTypePropertiesByName;
+    private ImmutableList<Modifier>                modifiers;
+    private ImmutableList<Interface>               interfaces;
     private ImmutableList<AssociationEndSignature> associationEndSignatures;
 
     protected AbstractClassifier(
@@ -46,16 +48,23 @@ public abstract class AbstractClassifier
     @Override
     public ImmutableList<DataTypeProperty> getDeclaredDataTypeProperties()
     {
-        return this.dataTypeProperties;
+        return this.declaredDataTypeProperties;
     }
 
     protected void setDataTypeProperties(@Nonnull ImmutableList<DataTypeProperty> dataTypeProperties)
     {
-        if (this.dataTypeProperties != null)
+        if (this.declaredDataTypeProperties != null)
         {
             throw new IllegalStateException();
         }
-        this.dataTypeProperties = Objects.requireNonNull(dataTypeProperties);
+        this.declaredDataTypeProperties       = Objects.requireNonNull(dataTypeProperties);
+        this.declaredDataTypePropertiesByName = dataTypeProperties.groupByUniqueKey(DataTypeProperty::getName);
+    }
+
+    @Override
+    public DataTypeProperty getDeclaredDataTypePropertyByName(String name)
+    {
+        return this.declaredDataTypePropertiesByName.get(name);
     }
 
     @Nonnull
@@ -101,7 +110,8 @@ public abstract class AbstractClassifier
 
     public abstract static class ClassifierBuilder<BuiltElement extends AbstractClassifier>
             extends PackageableElementBuilder<BuiltElement>
-            implements TypeGetter, TopLevelElementBuilderWithSourceCode
+            implements TypeGetter,
+            TopLevelElementBuilderWithSourceCode
     {
         protected ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders;
         protected ImmutableList<ModifierBuilder>                  modifierBuilders;

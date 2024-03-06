@@ -132,6 +132,8 @@ public interface Classifier
     @Nonnull
     ImmutableList<DataTypeProperty> getDeclaredDataTypeProperties();
 
+    DataTypeProperty getDeclaredDataTypePropertyByName(String name);
+
     default boolean isTemporal()
     {
         return this.isSystemTemporal() || this.isValidTemporal();
