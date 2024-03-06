@@ -167,11 +167,13 @@ public class ReladomoDataStore
             Object key = keys.get(keyProperty);
             if (!keys.containsKey(keyProperty))
             {
-                throw new AssertionError("Expected key for property: " + keyProperty);
+                String detailMessage = "Expected key for property: " + keyProperty;
+                throw new AssertionError(detailMessage);
             }
             if (key == null)
             {
-                throw new AssertionError("Expected non-null key for property: " + keyProperty);
+                String detailMessage = "Expected non-null key for property: " + keyProperty;
+                throw new AssertionError(detailMessage);
             }
             return this.getOperation(finder, keyProperty, key);
         });
@@ -339,8 +341,8 @@ public class ReladomoDataStore
         Attribute        attribute     = finder.getAttributeByName(attributeName);
         if (attribute == null)
         {
-            String error = "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find attribute: " + attributeName;
-            throw new AssertionError(error);
+            String detailMessage = "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find attribute: " + attributeName;
+            throw new AssertionError(detailMessage);
         }
 
         if (attribute.isAttributeNull(persistentInstance))
@@ -418,9 +420,8 @@ public class ReladomoDataStore
         Attribute        attribute = finder.getAttributeByName(dataTypeProperty.getName());
         if (attribute == null)
         {
-            throw new AssertionError(
-                    "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find: "
-                            + dataTypeProperty);
+            String detailMessage = "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find: " + dataTypeProperty;
+            throw new AssertionError(detailMessage);
         }
 
         if (attribute.isAttributeNull(persistentInstance))
@@ -502,7 +503,8 @@ public class ReladomoDataStore
     {
         if (dataTypeProperty.isDerived())
         {
-            throw new AssertionError(dataTypeProperty);
+            String detailMessage = "May not set derived property: " + dataTypeProperty;
+            throw new AssertionError(detailMessage);
         }
 
         Object oldValue = this.getDataTypePropertyLenient(persistentInstance, dataTypeProperty);
@@ -553,13 +555,15 @@ public class ReladomoDataStore
     {
         if (!referenceProperty.getMultiplicity().isToOne())
         {
-            throw new AssertionError();
+            String detailMessage = "Expected to-one property but got " + referenceProperty;
+            throw new AssertionError(detailMessage);
         }
 
         Object result = this.get(persistentSourceInstance, referenceProperty);
         if (result instanceof List<?> list)
         {
-            throw new AssertionError("Expected single object but got " + list.size());
+            String detailMessage = "Expected single object but got " + list.size();
+            throw new AssertionError(detailMessage);
         }
         return result;
     }
@@ -573,10 +577,8 @@ public class ReladomoDataStore
 
         if (relationshipFinder == null)
         {
-            String error =
-                    "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find relationship for property "
-                    + referenceProperty;
-            throw new AssertionError(error);
+            String detailMessage = "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find relationship for property " + referenceProperty;
+            throw new AssertionError(detailMessage);
         }
 
         return relationshipFinder.valueOf(persistentSourceInstance);
@@ -588,13 +590,15 @@ public class ReladomoDataStore
     {
         if (!referenceProperty.getMultiplicity().isToMany())
         {
-            throw new AssertionError();
+            String detailMessage = "Expected to-many property but got " + referenceProperty;
+            throw new AssertionError(detailMessage);
         }
 
         Object result = this.get(persistentSourceInstance, referenceProperty);
         if (!(result instanceof List))
         {
-            throw new AssertionError("Expected list but got " + result.getClass().getCanonicalName());
+            String detailMessage = "Expected list but got " + result.getClass().getCanonicalName();
+            throw new AssertionError(detailMessage);
         }
 
         return (List<Object>) result;
@@ -642,7 +646,8 @@ public class ReladomoDataStore
     {
         if (!(persistentInstance instanceof MithraTransactionalObject))
         {
-            throw new AssertionError();
+            String detailMessage = "Expected MithraTransactionalObject but got " + persistentInstance.getClass().getCanonicalName();
+            throw new AssertionError(detailMessage);
         }
 
         ((MithraTransactionalObject) persistentInstance).insert();
@@ -661,7 +666,8 @@ public class ReladomoDataStore
         }
         else
         {
-            throw new AssertionError();
+            String detailMessage = "Unexpected persistent instance type: " + persistentInstance.getClass().getCanonicalName();
+            throw new AssertionError(detailMessage);
         }
     }
 
@@ -717,7 +723,8 @@ public class ReladomoDataStore
     {
         if (!(persistentInstance instanceof MithraObject))
         {
-            throw new AssertionError("Expected MithraObject but got " + persistentInstance.getClass().getCanonicalName());
+            String detailMessage = "Expected MithraObject but got " + persistentInstance.getClass().getCanonicalName();
+            throw new AssertionError(detailMessage);
         }
 
         ImmutableList<Klass> potentialSubClasses = klass
@@ -748,7 +755,8 @@ public class ReladomoDataStore
             return result;
         }
 
-        throw new AssertionError("Expected one subclass but got " + potentialSubClasses);
+        String detailMessage = "Expected one subclass but got " + potentialSubClasses;
+        throw new AssertionError(detailMessage);
     }
 
     public MithraObject getSubClassPersistentInstance(
@@ -764,10 +772,8 @@ public class ReladomoDataStore
 
         if (relationshipFinder == null)
         {
-            String error =
-                    "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find relationship for property "
-                            + relationshipName;
-            throw new AssertionError(error);
+            String detailMessage = "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find relationship for property " + relationshipName;
+            throw new AssertionError(detailMessage);
         }
 
         Object result = relationshipFinder.valueOf(persistentInstance);
@@ -785,10 +791,8 @@ public class ReladomoDataStore
 
         if (relationshipFinder == null)
         {
-            String error =
-                    "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find relationship for property "
-                            + relationshipName;
-            throw new AssertionError(error);
+            String detailMessage = "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find relationship for property " + relationshipName;
+            throw new AssertionError(detailMessage);
         }
 
         Object result = relationshipFinder.valueOf(persistentInstance);
