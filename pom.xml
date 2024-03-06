@@ -434,6 +434,7 @@
                                                 cool.klass:klass-generator-meta-constants-plugin,
                                                 cool.klass:klass-generator-reladomo-code-plugin,
                                                 cool.klass:klass-generator-reladomo-database-plugin,
+                                                cool.klass:klass-generator-reladomo-merge-hooks-plugin,
                                                 cool.klass:klass-generator-reladomo-plugin,
                                                 cool.klass:klass-generator-service-resources-plugin,
                                                 cool.klass:klass-generator-xsd2bean-plugin,
