@@ -23,6 +23,7 @@ import com.gs.fw.common.mithra.finder.RelatedFinder;
 import cool.klass.data.store.DataStore;
 import cool.klass.data.store.Transaction;
 import cool.klass.data.store.TransactionalCommand;
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.PrimitiveType;
@@ -351,6 +352,21 @@ public class ReladomoDataStore implements DataStore
         else
         {
             throw new AssertionError();
+        }
+    }
+
+    @Override
+    public boolean isInstanceOf(Object persistentInstance, Classifier classifier)
+    {
+        try
+        {
+            Class<?> persistentInstanceClass = persistentInstance.getClass();
+            Class<?> domainModelClass = Class.forName(classifier.getPackageName() + "." + classifier.getName());
+            return domainModelClass.isAssignableFrom(persistentInstanceClass);
+        }
+        catch (ClassNotFoundException e)
+        {
+            throw new RuntimeException(e);
         }
     }
 

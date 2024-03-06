@@ -2,6 +2,7 @@ package cool.klass.data.store;
 
 import java.util.List;
 
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
@@ -30,4 +31,6 @@ public interface DataStore
     void setToOne(Object persistentSourceInstance, AssociationEnd associationEnd, Object persistentTargetInstance);
 
     void deleteOrTerminate(Object persistentInstance);
+
+    boolean isInstanceOf(Object persistentInstance, Classifier classifier);
 }
