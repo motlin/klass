@@ -379,7 +379,12 @@ public class IncomingCreateDataModelValidator
         {
             if (!(childJsonNode instanceof ObjectNode))
             {
-                throw new AssertionError();
+                String error = String.format(
+                        "Error at '%s'. Expected JSON object for owned association end '%s' but got %s.",
+                        this.getContextString(),
+                        associationEnd,
+                        childJsonNode.getNodeType().toString().toLowerCase());
+                this.errors.add(error);
             }
             ObjectNode childObjectNode = (ObjectNode) childJsonNode;
             IncomingCreateDataModelValidator validator = new IncomingCreateDataModelValidator(
