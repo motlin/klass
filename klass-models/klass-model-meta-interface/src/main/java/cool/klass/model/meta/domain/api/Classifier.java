@@ -14,6 +14,8 @@ import org.eclipse.collections.api.set.MutableSet;
 public interface Classifier
         extends Type, ModifierOwner, TopLevelElement
 {
+    boolean isAbstract();
+
     @Nonnull
     ImmutableList<Interface> getInterfaces();
 

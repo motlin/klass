@@ -6,12 +6,19 @@ import cool.klass.model.meta.domain.api.property.Property;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public interface Interface extends Classifier
+public interface Interface
+        extends Classifier
 {
     @Override
     default void visit(TopLevelElementVisitor visitor)
     {
         visitor.visitInterface(this);
+    }
+
+    @Override
+    default boolean isAbstract()
+    {
+        return true;
     }
 
     // TODO: Replace with an implementation that preserves order
