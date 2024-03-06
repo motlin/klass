@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import ch.qos.logback.classic.Level;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
+import cool.klass.dropwizard.task.reladomo.clear.cache.ReladomoClearCacheTask;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
@@ -102,5 +103,6 @@ public abstract class AbstractKlassApplication<T extends AbstractKlassConfigurat
     @Override
     public void run(@Nonnull T configuration, @Nonnull Environment environment) throws Exception
     {
+        environment.admin().addTask(new ReladomoClearCacheTask());
     }
 }
