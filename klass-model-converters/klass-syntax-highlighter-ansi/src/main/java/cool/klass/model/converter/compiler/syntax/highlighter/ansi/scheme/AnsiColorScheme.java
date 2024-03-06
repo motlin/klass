@@ -162,6 +162,11 @@ public interface AnsiColorScheme
         this.enumerationName(ansi);
     }
 
+    default void classifierReference(Ansi ansi)
+    {
+        this.classifierName(ansi);
+    }
+
     default void interfaceReference(Ansi ansi)
     {
         this.interfaceName(ansi);

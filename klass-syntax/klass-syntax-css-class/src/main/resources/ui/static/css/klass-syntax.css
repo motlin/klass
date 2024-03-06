@@ -261,6 +261,10 @@ a {
     color: var(--klass-color-enumeration-reference, var(--klass-color-enumeration-name, var(--klass-color-top-level-element-name, var(--klass-color-identifier, --color-foreground))));
 }
 
+.klass-classifier-reference {
+    color: var(--klass-color-classifier-reference, var(--klass-color-classifier-name, var(--klass-color-top-level-element-name, var(--klass-color-identifier, --color-foreground))));
+}
+
 .klass-interface-reference {
     color: var(--klass-color-interface-reference, var(--klass-color-interface-name, var(--klass-color-classifier-name, var(--klass-color-top-level-element-name, var(--klass-color-identifier, --color-foreground)))));
 }
@@ -440,6 +444,7 @@ a {
 .klass-square-bracket-right {
     color: var(--klass-color-square-bracket-right, var(--klass-color-square-brackets, var(--klass-color-paired-punctuation, var(--klass-color-punctuation, --color-foreground))));
 }
+
 .klass-url-constant {
     color: var(--klass-color-url-constant, var(--klass-color-identifier, --color-foreground));
 }

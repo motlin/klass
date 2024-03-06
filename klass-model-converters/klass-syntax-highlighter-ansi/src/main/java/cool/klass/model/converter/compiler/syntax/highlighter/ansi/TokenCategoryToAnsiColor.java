@@ -211,6 +211,11 @@ public final class TokenCategoryToAnsiColor
                 colorScheme.enumerationReference(ansi);
                 return;
             }
+            case CLASSIFIER_REFERENCE:
+            {
+                colorScheme.classifierReference(ansi);
+                return;
+            }
             case INTERFACE_REFERENCE:
             {
                 colorScheme.interfaceReference(ansi);

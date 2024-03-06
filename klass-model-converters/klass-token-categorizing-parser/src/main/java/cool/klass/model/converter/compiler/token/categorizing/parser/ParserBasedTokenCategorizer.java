@@ -16,6 +16,7 @@ import cool.klass.model.meta.grammar.KlassParser.ClassHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassOrUserContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaEdgePointContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaNativeContext;
@@ -203,6 +204,14 @@ public class ParserBasedTokenCategorizer
         this.put(
                 ctx.identifier().getStart(),
                 TokenCategory.ASSOCIATION_END_NAME);
+    }
+
+    @Override
+    public void enterClassifierReference(ClassifierReferenceContext ctx)
+    {
+        this.put(
+                ctx.identifier().getStart(),
+                TokenCategory.CLASSIFIER_REFERENCE);
     }
 
     @Override
@@ -411,9 +420,6 @@ public class ParserBasedTokenCategorizer
         this.put(
                 ctx.identifier().getStart(),
                 TokenCategory.PROJECTION_NAME);
-        this.put(
-                ctx.classifierReference().identifier().getStart(),
-                TokenCategory.CLASS_REFERENCE);
     }
 
     // TODO: Rename Primitive to Data
@@ -436,7 +442,6 @@ public class ParserBasedTokenCategorizer
     @Override
     public void enterProjectionProjectionReference(ProjectionProjectionReferenceContext ctx)
     {
-        // TODO: ReferencePropertyReference
         this.put(
                 ctx.identifier().getStart(),
                 TokenCategory.ASSOCIATION_END_REFERENCE);
