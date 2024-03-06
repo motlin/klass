@@ -22,6 +22,7 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Sets;
+import org.eclipse.collections.impl.list.Interval;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public abstract class AntlrClassifier extends AntlrPackageableElement implements AntlrType, AntlrTopLevelElement
@@ -297,21 +298,11 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
 
     protected boolean interfaceNotAtIndexImplements(int index, AntlrInterface interfaceState)
     {
-        for (int i = 0; i < this.interfaceStates.size(); i++)
-        {
-            if (i == index)
-            {
-                continue;
-            }
-
-            AntlrInterface otherInterfaceState = this.interfaceStates.get(i);
-            if (otherInterfaceState.implementsInterface(interfaceState))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return Interval.zeroTo(this.interfaceStates.size() - 1)
+                .asLazy()
+                .reject(i -> i == index)
+                .collect(this.interfaceStates::get)
+                .anySatisfyWith(AntlrClassifier::implementsInterface, interfaceState);
     }
 
     protected InterfaceReferenceContext getOffendingInterfaceReference(int index)
@@ -332,31 +323,21 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
 
     protected AntlrDataTypeProperty<?> getInterfaceDataTypePropertyByName(String name)
     {
-        for (AntlrInterface interfaceState : this.interfaceStates)
-        {
-            AntlrDataTypeProperty<?> interfaceProperty = interfaceState.getDataTypePropertyByName(name);
-            if (interfaceProperty != AntlrEnumerationProperty.NOT_FOUND)
-            {
-                return interfaceProperty;
-            }
-        }
-
-        return AntlrEnumerationProperty.NOT_FOUND;
+        return this.interfaceStates
+                .asLazy()
+                .<String, AntlrDataTypeProperty<?>>collectWith(AntlrInterface::getDataTypePropertyByName, name)
+                .detectOptional(interfaceProperty -> interfaceProperty != AntlrEnumerationProperty.NOT_FOUND)
+                .orElse(AntlrEnumerationProperty.NOT_FOUND);
     }
 
     public abstract AntlrClassModifier getClassModifierByName(String name);
 
     protected AntlrClassModifier getInterfaceClassModifierByName(String name)
     {
-        for (AntlrInterface interfaceState : this.interfaceStates)
-        {
-            AntlrClassModifier interfaceModifier = interfaceState.getClassModifierByName(name);
-            if (interfaceModifier != AntlrClassModifier.NOT_FOUND)
-            {
-                return interfaceModifier;
-            }
-        }
-
-        return AntlrClassModifier.NOT_FOUND;
+        return this.interfaceStates
+                .asLazy()
+                .collectWith(AntlrInterface::getClassModifierByName, name)
+                .detectOptional(interfaceModifier -> interfaceModifier != AntlrClassModifier.NOT_FOUND)
+                .orElse(AntlrClassModifier.NOT_FOUND);
     }
 }
