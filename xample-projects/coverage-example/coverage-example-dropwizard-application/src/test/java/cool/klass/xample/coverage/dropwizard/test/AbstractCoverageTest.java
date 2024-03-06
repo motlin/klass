@@ -8,6 +8,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
@@ -47,10 +48,11 @@ public class AbstractCoverageTest
     @Before
     public void setUpSampleData()
     {
+        ObjectMapper objectMapper = this.rule.getEnvironment().getObjectMapper();
         KlassFactory klassFactory = this.rule.getConfiguration().getKlassFactory();
         DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
         Clock        clock        = klassFactory.getClockFactory().createClock();
-        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel();
+        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel(objectMapper);
         Instant      now          = Instant.now(clock);
 
         var sampleDataGenerator = new SampleDataGenerator(

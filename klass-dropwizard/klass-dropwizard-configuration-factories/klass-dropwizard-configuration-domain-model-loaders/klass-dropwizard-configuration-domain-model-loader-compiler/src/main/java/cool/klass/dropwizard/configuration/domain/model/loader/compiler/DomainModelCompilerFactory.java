@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
@@ -29,14 +30,14 @@ public class DomainModelCompilerFactory
 
     @Nonnull
     @Override
-    public DomainModelWithSourceCode createDomainModel()
+    public DomainModelWithSourceCode createDomainModel(ObjectMapper objectMapper)
     {
         if (this.domainModel != null)
         {
             return this.domainModel;
         }
         ImmutableList<String> klassSourcePackagesImmutable = Lists.immutable.withAll(this.sourcePackages);
-        DomainModelCompilerLoader domainModelLoader        = new DomainModelCompilerLoader(
+        DomainModelCompilerLoader domainModelLoader = new DomainModelCompilerLoader(
                 klassSourcePackagesImmutable,
                 Thread.currentThread().getContextClassLoader());
         this.domainModel = domainModelLoader.load();

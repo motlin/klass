@@ -2,6 +2,7 @@ package cool.klass.xample.coverage.dropwizard.application;
 
 import javax.annotation.Nonnull;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
@@ -62,7 +63,11 @@ public class CoverageExampleApplication
             @Nonnull CoverageExampleConfiguration configuration,
             @Nonnull Environment environment) throws Exception
     {
-        DomainModel domainModel = configuration.getKlassFactory().getDomainModelFactory().createDomainModel();
+        ObjectMapper objectMapper = environment.getObjectMapper();
+        DomainModel  domainModel  = configuration
+                .getKlassFactory()
+                .getDomainModelFactory()
+                .createDomainModel(objectMapper);
 
         environment.jersey().register(new JsonViewDynamicFeature(domainModel));
 

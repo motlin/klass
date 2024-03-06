@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
@@ -24,7 +25,7 @@ public class DomainModelConstantFactory
 
     @Nonnull
     @Override
-    public DomainModel createDomainModel()
+    public DomainModel createDomainModel(ObjectMapper objectMapper)
     {
         try
         {

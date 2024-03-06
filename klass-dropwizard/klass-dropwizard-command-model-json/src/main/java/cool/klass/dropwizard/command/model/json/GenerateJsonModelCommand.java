@@ -98,10 +98,10 @@ public class GenerateJsonModelCommand<T extends Configuration>
 
         LOGGER.info("Running {}.", GenerateJsonModelCommand.class.getSimpleName());
 
-        DomainModel  domainModel  = domainModelFactoryProvider.getDomainModelFactory().createDomainModel();
-        DataStore    dataStore    = dataStoreFactoryProvider.getDataStoreFactory().createDataStore();
-        Clock        clock        = clockFactoryProvider.getClockFactory().createClock();
         ObjectMapper objectMapper = environment.getObjectMapper();
+        DomainModel  domainModel   = domainModelFactoryProvider.getDomainModelFactory().createDomainModel(objectMapper);
+        DataStore    dataStore     = dataStoreFactoryProvider.getDataStoreFactory().createDataStore();
+        Clock        clock         = clockFactoryProvider.getClockFactory().createClock();
 
         String applicationName = namespace.getString("applicationName");
         String rootPackageName = namespace.getString("rootPackageName");

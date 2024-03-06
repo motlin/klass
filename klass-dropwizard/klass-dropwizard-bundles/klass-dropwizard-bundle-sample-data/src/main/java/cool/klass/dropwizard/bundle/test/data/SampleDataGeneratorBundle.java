@@ -4,6 +4,7 @@ import java.time.Instant;
 
 import javax.annotation.Nonnull;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
@@ -52,8 +53,9 @@ public class SampleDataGeneratorBundle
         Instant               dataInstant     = sampleDataFactory.getDataInstant();
         ImmutableList<String> skippedPackages = sampleDataFactory.getSkippedPackages();
 
-        DomainModel domainModel = domainModelFactoryProvider.getDomainModelFactory().createDomainModel();
-        DataStore   dataStore   = dataStoreFactoryProvider.getDataStoreFactory().createDataStore();
+        ObjectMapper objectMapper = environment.getObjectMapper();
+        DomainModel  domainModel  = domainModelFactoryProvider.getDomainModelFactory().createDomainModel(objectMapper);
+        DataStore    dataStore    = dataStoreFactoryProvider.getDataStoreFactory().createDataStore();
 
         SampleDataGenerator sampleDataGenerator = new SampleDataGenerator(
                 domainModel,

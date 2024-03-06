@@ -2,6 +2,7 @@ package cool.klass.dropwizard.bundle.bootstrap.writer;
 
 import javax.annotation.Nonnull;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
@@ -37,9 +38,10 @@ public class BootstrapWriterBundle
 
         LOGGER.info("Running {}.", BootstrapWriterBundle.class.getSimpleName());
 
+        ObjectMapper objectMapper = environment.getObjectMapper();
         KlassFactory klassFactory = configuration.getKlassFactory();
         DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
-        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel();
+        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel(objectMapper);
 
         KlassBootstrapWriter klassBootstrapWriter = new KlassBootstrapWriter(domainModel, dataStore);
         klassBootstrapWriter.bootstrapMetaModel();

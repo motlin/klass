@@ -2,6 +2,7 @@ package klass.model.meta.domain.dropwizard.application;
 
 import javax.annotation.Nonnull;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
@@ -54,8 +55,9 @@ public class KlassBootstrappedMetaModelApplication
     {
         super.run(configuration, environment);
 
+        ObjectMapper objectMapper = environment.getObjectMapper();
         KlassFactory klassFactory = configuration.getKlassFactory();
-        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel();
+        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel(objectMapper);
 
         environment.jersey().register(new JsonViewDynamicFeature(domainModel));
     }

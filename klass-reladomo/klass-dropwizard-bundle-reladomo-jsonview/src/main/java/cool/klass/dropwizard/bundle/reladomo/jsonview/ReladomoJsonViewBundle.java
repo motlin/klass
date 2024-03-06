@@ -3,6 +3,7 @@ package cool.klass.dropwizard.bundle.reladomo.jsonview;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.auto.service.AutoService;
 import com.gs.fw.common.mithra.MithraObject;
@@ -40,14 +41,15 @@ public class ReladomoJsonViewBundle
 
         LOGGER.info("Running {}.", ReladomoJsonViewBundle.class.getSimpleName());
 
-        DomainModel domainModel = domainModelFactoryProvider.getDomainModelFactory().createDomainModel();
-        DataStore   dataStore   = dataStoreFactoryProvider.getDataStoreFactory().createDataStore();
+        ObjectMapper objectMapper = environment.getObjectMapper();
+        DomainModel  domainModel  = domainModelFactoryProvider.getDomainModelFactory().createDomainModel(objectMapper);
+        DataStore    dataStore    = dataStoreFactoryProvider.getDataStoreFactory().createDataStore();
 
         JsonSerializer<MithraObject> serializer = new ReladomoJsonViewSerializer(domainModel, dataStore);
 
         SimpleModule module = new SimpleModule();
         module.addSerializer(MithraObject.class, serializer);
-        environment.getObjectMapper().registerModule(module);
+        objectMapper.registerModule(module);
 
         LOGGER.info("Completing {}.", ReladomoJsonViewBundle.class.getSimpleName());
     }

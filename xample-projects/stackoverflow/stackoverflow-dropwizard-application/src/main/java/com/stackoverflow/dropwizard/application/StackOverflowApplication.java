@@ -4,6 +4,7 @@ import java.time.Clock;
 
 import javax.annotation.Nonnull;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
 import cool.klass.dropwizard.configuration.KlassFactory;
@@ -66,10 +67,11 @@ public class StackOverflowApplication
             @Nonnull StackOverflowConfiguration configuration,
             @Nonnull Environment environment) throws Exception
     {
+        ObjectMapper objectMapper = environment.getObjectMapper();
         KlassFactory klassFactory = configuration.getKlassFactory();
         DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
         Clock        clock        = klassFactory.getClockFactory().createClock();
-        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel();
+        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel(objectMapper);
 
         environment.jersey().register(new JsonViewDynamicFeature(domainModel));
 
