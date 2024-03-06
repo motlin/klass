@@ -191,7 +191,7 @@ public class AntlrProjectionProjectionReference
     private void reportTypeMismatch(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.classifier == this.referencedProjection.getClassifier()
-                || this.classifier.isSubClassOf(this.referencedProjection.getClassifier()))
+                || this.classifier.isSubTypeOf(this.referencedProjection.getClassifier()))
         {
             return;
         }

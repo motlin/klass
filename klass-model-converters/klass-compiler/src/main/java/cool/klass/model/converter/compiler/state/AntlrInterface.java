@@ -321,12 +321,6 @@ public class AntlrInterface
         return topLevelNames.toImmutable();
     }
 
-    @Override
-    public boolean isSubClassOf(AntlrClassifier classifier)
-    {
-        return false;
-    }
-
     @Nonnull
     @Override
     public InterfaceDeclarationContext getElementContext()

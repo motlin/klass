@@ -99,7 +99,7 @@ public class AntlrServiceProjectionDispatch
             throw new AssertionError();
         }
 
-        if (serviceGroupKlass != projectionClassifier && !serviceGroupKlass.isSubClassOf(projectionClassifier))
+        if (serviceGroupKlass != projectionClassifier && !serviceGroupKlass.isSubTypeOf(projectionClassifier))
         {
             String error = String.format(
                     "Expected projection referencing '%s' but projection '%s' references '%s'.",

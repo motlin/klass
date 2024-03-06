@@ -320,7 +320,7 @@ public class AntlrClass
     }
 
     @Override
-    protected boolean implementsInterface(AntlrInterface iface)
+    public boolean implementsInterface(AntlrInterface iface)
     {
         if (super.implementsInterface(iface))
         {
@@ -693,10 +693,9 @@ public class AntlrClass
         return topLevelNames.toImmutable();
     }
 
-    @Override
-    public boolean isSubClassOf(AntlrClassifier classifier)
+    public boolean isSubClassOf(AntlrClass klass)
     {
-        if (this == classifier)
+        if (this == klass)
         {
             return false;
         }
@@ -707,12 +706,12 @@ public class AntlrClass
         }
 
         AntlrClass superClass = this.superClass.get();
-        if (superClass == classifier)
+        if (superClass == klass)
         {
             return true;
         }
 
-        return superClass.isSubClassOf(classifier);
+        return superClass.isSubClassOf(klass);
     }
 
     @Override

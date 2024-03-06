@@ -338,13 +338,6 @@ public abstract class AntlrClassifier
         this.declaredInterfaces.add(iface);
     }
 
-    @OverridingMethodsMustInvokeSuper
-    protected boolean implementsInterface(AntlrInterface iface)
-    {
-        return this.declaredInterfaces.contains(iface)
-                || this.declaredInterfaces.anySatisfyWith(AntlrClassifier::implementsInterface, iface);
-    }
-
     //<editor-fold desc="Report Compiler Errors">
     @Override
     @OverridingMethodsMustInvokeSuper
@@ -645,10 +638,30 @@ public abstract class AntlrClassifier
                 .orElse(AntlrModifier.NOT_FOUND);
     }
 
-    public boolean isSubClassOf(AntlrClassifier classifier)
+    public boolean isSubTypeOf(AntlrClassifier classifier)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".isSubClassOf() not implemented yet");
+        if (classifier instanceof AntlrInterface iface)
+        {
+            return this.implementsInterface(iface);
+        }
+
+        if (classifier instanceof AntlrClass klass)
+        {
+            if (this instanceof AntlrClass)
+            {
+                return ((AntlrClass) this).isSubClassOf(klass);
+            }
+            return false;
+        }
+
+        throw new AssertionError("Expected AntlrInterface or AntlrClass but found " + classifier.getClass().getSimpleName());
+    }
+
+    @OverridingMethodsMustInvokeSuper
+    public boolean implementsInterface(AntlrInterface iface)
+    {
+        return this.declaredInterfaces.contains(iface)
+                || this.declaredInterfaces.anySatisfyWith(AntlrClassifier::implementsInterface, iface);
     }
 
     public ImmutableList<AntlrDataTypeProperty<?>> getAllKeyProperties()
