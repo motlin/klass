@@ -46,7 +46,7 @@ public class ThrowingErrorListener extends BaseErrorListener
         return this.sourceName.substring(this.sourceName.lastIndexOf('/') + 1);
     }
 
-    public String getSourceLine(int line)
+    private String getSourceLine(int line)
     {
         if (line == 1)
         {

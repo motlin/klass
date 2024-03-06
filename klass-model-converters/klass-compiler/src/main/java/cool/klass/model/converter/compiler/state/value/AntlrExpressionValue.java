@@ -44,6 +44,7 @@ public abstract class AntlrExpressionValue extends AntlrElement
     @Nonnull
     public abstract AbstractExpressionValueBuilder<?> build();
 
+    @Override
     @Nonnull
     public abstract AbstractExpressionValueBuilder<?> getElementBuilder();
 

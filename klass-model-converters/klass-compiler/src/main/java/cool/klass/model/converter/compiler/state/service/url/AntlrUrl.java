@@ -293,6 +293,7 @@ public class AntlrUrl extends AntlrElement
         throw new AssertionError(element.getClass().getSimpleName());
     }
 
+    @Override
     @Nonnull
     public UrlBuilder getElementBuilder()
     {

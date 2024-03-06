@@ -155,6 +155,7 @@ public final class AntlrParameter extends AntlrNamedElement
         return this.elementBuilder;
     }
 
+    @Override
     @Nonnull
     public ParameterBuilder getElementBuilder()
     {

@@ -47,6 +47,7 @@ public abstract class AntlrCriteria extends AntlrElement
     @Nonnull
     public abstract AbstractCriteriaBuilder<?> build();
 
+    @Override
     public abstract AbstractCriteriaBuilder<?> getElementBuilder();
 
     public abstract void reportErrors(CompilerErrorState compilerErrorHolder);

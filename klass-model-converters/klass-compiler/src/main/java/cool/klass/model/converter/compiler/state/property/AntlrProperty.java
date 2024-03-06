@@ -39,6 +39,7 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
     @Nonnull
     public abstract PropertyBuilder<T, ?, ?> build();
 
+    @Override
     @Nonnull
     public abstract PropertyBuilder<T, ?, ?> getElementBuilder();
 

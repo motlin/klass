@@ -50,6 +50,7 @@ public abstract class AntlrOperator extends AntlrElement
     @Nonnull
     public abstract AbstractOperatorBuilder<?> build();
 
+    @Override
     @Nonnull
     public abstract AbstractOperatorBuilder<?> getElementBuilder();
 

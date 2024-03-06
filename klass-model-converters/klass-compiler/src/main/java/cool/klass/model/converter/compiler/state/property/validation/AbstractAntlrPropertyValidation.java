@@ -43,6 +43,7 @@ public abstract class AbstractAntlrPropertyValidation extends AntlrElement
 
     public abstract PropertyValidationBuilder build();
 
+    @Override
     @Nonnull
     public abstract PropertyValidationBuilder getElementBuilder();
 

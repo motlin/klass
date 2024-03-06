@@ -71,7 +71,7 @@ public class RelationshipPhase extends AbstractCompilerPhase
         }
     }
 
-    protected boolean hasPossibleJoinCriteria(
+    private boolean hasPossibleJoinCriteria(
             @Nonnull CriteriaExpressionContext criteriaExpressionContext,
             AntlrClass targetType)
     {

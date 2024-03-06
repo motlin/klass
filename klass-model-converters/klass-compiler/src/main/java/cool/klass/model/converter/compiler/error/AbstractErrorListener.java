@@ -28,7 +28,7 @@ public class AbstractErrorListener extends KlassThrowingListener
     @Nonnull
     protected final MutableList<AbstractContextString> contextualStrings;
 
-    public AbstractErrorListener(
+    protected AbstractErrorListener(
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull MutableList<AbstractContextString> contextualStrings)
     {

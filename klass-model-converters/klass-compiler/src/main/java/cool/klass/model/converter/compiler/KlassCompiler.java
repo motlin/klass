@@ -23,7 +23,6 @@ import cool.klass.model.converter.compiler.phase.UrlParameterPhase;
 import cool.klass.model.converter.compiler.phase.VariableResolutionPhase;
 import cool.klass.model.converter.compiler.phase.VersionAssociationInferencePhase;
 import cool.klass.model.converter.compiler.phase.VersionClassInferencePhase;
-import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.grammar.KlassListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -63,7 +62,7 @@ public class KlassCompiler
         this.compilerState = compilerState;
     }
 
-    public void executeCompilerPhase(KlassListener compilerPhase)
+    private void executeCompilerPhase(KlassListener compilerPhase)
     {
         // Compiler macros may add new compilation units within a compiler phase, so take an immutable copy
         ImmutableList<CompilationUnit> immutableCompilationUnits =
@@ -79,12 +78,12 @@ public class KlassCompiler
     }
 
     @Nonnull
-    public DomainModel compile()
+    public CompilationResult compile()
     {
         ImmutableList<KlassListener> compilerPhases =
                 COMPILER_PHASE_BUILDERS.collectWith(Function::apply, this.compilerState);
         compilerPhases.forEach(this::executeCompilerPhase);
         this.compilerState.reportErrors();
-        return this.compilerState.buildDomainModel();
+        return compilerState.getCompilationResult();
     }
 }

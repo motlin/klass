@@ -52,7 +52,7 @@ public class ServiceVersionInferencePhase extends AbstractCompilerPhase
         super.exitUrlDeclaration(ctx);
     }
 
-    public AntlrElement getMacroElement()
+    private AntlrElement getMacroElement()
     {
         AntlrClass         classState = this.compilerState.getCompilerWalkState().getServiceGroupState().getKlass();
         AntlrClassModifier versioned  = classState.getClassModifierByName("versioned");

@@ -57,6 +57,7 @@ public class AntlrUrlConstant extends AntlrNamedElement
         return this.elementBuilder;
     }
 
+    @Override
     @Nonnull
     public UrlConstantBuilder getElementBuilder()
     {

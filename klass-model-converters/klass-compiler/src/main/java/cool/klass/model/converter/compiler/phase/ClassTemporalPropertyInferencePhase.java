@@ -2,13 +2,6 @@ package cool.klass.model.converter.compiler.phase;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.KlassCompiler;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrDomainModel;
-import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
-import cool.klass.model.meta.grammar.KlassListener;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
@@ -52,7 +45,7 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
         }
     }
 
-    public boolean hasTemporalProperty(Predicate<AntlrDataTypeProperty<?>> predicate)
+    private boolean hasTemporalProperty(Predicate<AntlrDataTypeProperty<?>> predicate)
     {
         return this.compilerState
                 .getCompilerWalkState()

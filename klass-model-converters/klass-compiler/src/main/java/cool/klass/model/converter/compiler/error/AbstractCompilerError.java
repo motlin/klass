@@ -22,14 +22,14 @@ public abstract class AbstractCompilerError
     @Nonnull
     protected final CompilationUnit                  compilationUnit;
     @Nonnull
-    protected final Optional<CauseCompilerError>     macroCause;
+    private final Optional<CauseCompilerError>     macroCause;
     // TODO: Change type of offendingContexts to also be SourceContexts
     @Nonnull
-    protected final ImmutableList<ParserRuleContext> offendingContexts;
+    private final ImmutableList<ParserRuleContext> offendingContexts;
     @Nonnull
-    protected final ImmutableList<SourceContext>     sourceContexts;
+    private final ImmutableList<SourceContext>     sourceContexts;
 
-    public AbstractCompilerError(
+    protected AbstractCompilerError(
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull Optional<CauseCompilerError> macroCause,
             @Nonnull ImmutableList<ParserRuleContext> offendingContexts,
@@ -50,7 +50,7 @@ public abstract class AbstractCompilerError
         }
     }
 
-    public String getContextString()
+    protected String getContextString()
     {
         ImmutableList<AbstractContextString> contextStrings = this.applyListenerToStack();
 
@@ -65,7 +65,7 @@ public abstract class AbstractCompilerError
     }
 
     @Nonnull
-    protected final String getFilenameWithoutDirectory()
+    private String getFilenameWithoutDirectory()
     {
         String sourceName = this.compilationUnit.getSourceName();
         return this.macroCause

@@ -14,8 +14,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 
 public class KlassCompilerTest
 {
@@ -2883,10 +2884,41 @@ public class KlassCompilerTest
 
     private void assertCompilerErrors(@Nonnull String sourceCodeText, String... expectedErrors)
     {
-        DomainModel domainModel = this.compile(sourceCodeText);
-        assertThat("Expected a compile error.", domainModel, nullValue());
-        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(true));
-        ImmutableList<String> compilerErrors = this.compilerErrorHolder.getCompilerErrors().collect(CompilerError::toString);
+        CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                Optional.empty(),
+                "example.klass",
+                sourceCodeText);
+        CompilerState     compilerState     = new CompilerState(compilationUnit);
+        KlassCompiler     compiler          = new KlassCompiler(compilerState);
+        CompilationResult compilationResult = compiler.compile();
+        if (compilationResult instanceof DomainModelCompilationResult)
+        {
+            fail("Expected a compile error.");
+        }
+        else if (compilationResult instanceof ErrorsCompilationResult)
+        {
+            ErrorsCompilationResult          errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
+            ImmutableList<RootCompilerError> compilerErrors          = errorsCompilationResult.getCompilerErrors();
+            ImmutableList<String>            compilerErrorStrings    = compilerErrors.collect(RootCompilerError::toString);
+
+            String string = compilerErrorStrings.collect(this::compilerErrorSourceCode).makeString("\n", "", "");
+            assertThat(
+                    string,
+                    compilerErrorStrings,
+                    is(Lists.immutable.with(expectedErrors)));
+        }
+        else
+        {
+            fail(compilationResult.getClass().getSimpleName());
+        }
+    }
+
+    @Nonnull
+    private String compilerErrorSourceCode(String compilerError)
+    {
+        return "                \"\"\n"
+                + "                        + \"" + this.wrapSourceCode(compilerError) + "\",\n";
+    }
 
     @Nonnull
     private String wrapSourceCode(String unwrappedSourceCode)
@@ -2898,8 +2930,30 @@ public class KlassCompilerTest
 
     private void assertNoCompilerErrors(String sourceCodeText)
     {
-        DomainModel           domainModel    = this.compile(sourceCodeText);
-        ImmutableList<String> compilerErrors = this.compilerErrorHolder.getCompilerErrors().collect(CompilerError::toString);
+        CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                Optional.empty(),
+                "example.klass",
+                sourceCodeText);
+        CompilerState     compilerState     = new CompilerState(compilationUnit);
+        KlassCompiler     compiler          = new KlassCompiler(compilerState);
+        CompilationResult compilationResult = compiler.compile();
+        if (compilationResult instanceof ErrorsCompilationResult)
+        {
+            ErrorsCompilationResult          errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
+            ImmutableList<RootCompilerError> compilerErrors          = errorsCompilationResult.getCompilerErrors();
+            String                           message                 = compilerErrors.makeString("\n");
+            fail(message);
+        }
+        else if (compilationResult instanceof DomainModelCompilationResult)
+        {
+            DomainModelCompilationResult domainModelCompilationResult = (DomainModelCompilationResult) compilationResult;
+            DomainModel                  domainModel                  = domainModelCompilationResult.getDomainModel();
+            assertThat(domainModel, notNullValue());
+        }
+        else
+        {
+            fail(compilationResult.getClass().getSimpleName());
+        }
     }
 
     private DomainModel compile(@Nonnull String sourceCodeText)
@@ -3670,6 +3724,7 @@ public class KlassCompilerTest
         this.assertCompilerErrors(sourceCodeText, errors);
     }
 
+    @Ignore("TODO: Reject bad overrides with a compiler error")
     @Test
     public void badOverride()
     {
@@ -3695,7 +3750,7 @@ public class KlassCompilerTest
         };
 
         // TODO
-        // this.assertCompilerErrors(sourceCodeText, errors);
+        this.assertCompilerErrors(sourceCodeText, errors);
     }
 
     @Test

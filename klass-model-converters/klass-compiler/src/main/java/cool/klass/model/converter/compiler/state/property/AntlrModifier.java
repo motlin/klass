@@ -46,6 +46,7 @@ public abstract class AntlrModifier extends AntlrNamedElement
     @Nonnull
     public abstract NamedElementBuilder<?> build();
 
+    @Override
     @Nonnull
     public abstract NamedElementBuilder<?> getElementBuilder();
 }

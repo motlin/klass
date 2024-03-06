@@ -79,9 +79,7 @@ public class CompilerState
         this.macroAntlrWalkStates.put(compilationUnit, antlrWalkState);
 
         this.compilerWalkState.withCompilationUnit(compilationUnit, () ->
-        {
-            this.compilerInputState.runCompilerMacro(compilationUnit, Lists.immutable.with(listeners));
-        });
+                this.compilerInputState.runCompilerMacro(compilationUnit, Lists.immutable.with(listeners)));
     }
 
     public void runRootCompilerMacro(
@@ -118,7 +116,7 @@ public class CompilerState
         this.runRootCompilerMacro(listeners, compilationUnit);
     }
 
-    public void runRootCompilerMacro(
+    private void runRootCompilerMacro(
             @Nonnull ImmutableList<ParseTreeListener> listeners,
             @Nonnull CompilationUnit compilationUnit)
     {
@@ -143,15 +141,27 @@ public class CompilerState
         this.domainModelState.reportErrors(this.compilerErrorHolder);
     }
 
-    @Nullable
-    public DomainModel buildDomainModel()
+    @Nonnull
+    public CompilationResult getCompilationResult()
     {
-        if (!this.compilerErrorHolder.hasCompilerErrors())
+        ImmutableList<RootCompilerError> compilerErrors = this.compilerErrorHolder.getCompilerErrors();
+        if (compilerErrors.notEmpty())
         {
-            DomainModelBuilder domainModelBuilder = this.domainModelState.build();
-            return domainModelBuilder.build();
+            return new ErrorsCompilationResult(compilerErrors);
         }
-        throw new AssertionError(this.compilerErrorHolder.getCompilerErrors().makeString());
+        return new DomainModelCompilationResult(this.buildDomainModel());
+    }
+
+    @Nonnull
+    private DomainModel buildDomainModel()
+    {
+        if (this.compilerErrorHolder.hasCompilerErrors())
+        {
+            throw new AssertionError(this.compilerErrorHolder.getCompilerErrors().makeString());
+        }
+
+        DomainModelBuilder domainModelBuilder = this.domainModelState.build();
+        return domainModelBuilder.build();
     }
 
     @Nonnull
@@ -334,11 +344,6 @@ public class CompilerState
         this.compilerWalkState.exitClassModifier();
     }
 
-    public ImmutableList<RootCompilerError> getCompilerErrors()
-    {
-        return this.compilerErrorHolder.getCompilerErrors();
-    }
-
     public void withCompilationUnit(CompilationUnit compilationUnit, @Nonnull Runnable runnable)
     {
         CompilerWalkState compilerWalkState = this.macroCompilerWalkStates.get(compilationUnit);
@@ -364,5 +369,10 @@ public class CompilerState
             this.compilerWalkState = new CompilerWalkState(this.domainModelState);
             this.antlrWalkState = new AntlrWalkState();
         }
+    }
+
+    public ImmutableList<RootCompilerError> getCompilerErrors()
+    {
+        return this.compilerErrorHolder.getCompilerErrors();
     }
 }

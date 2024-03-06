@@ -13,16 +13,16 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 public abstract class AbstractContextString
 {
-    protected final int    line;
-    protected final String string;
+    private final int    line;
+    private final String string;
 
-    public AbstractContextString(int line, String string)
+    protected AbstractContextString(int line, String string)
     {
         this.line = line;
         this.string = Objects.requireNonNull(string);
     }
 
-    protected static String padLeft(String string, int width)
+    private static String padLeft(String string, int width)
     {
         return String.format("%" + width + "s║", string);
     }
@@ -30,11 +30,6 @@ public abstract class AbstractContextString
     public int getLine()
     {
         return this.line;
-    }
-
-    public String getString()
-    {
-        return this.string;
     }
 
     public String toString(int lineNumberWidth)
@@ -45,7 +40,7 @@ public abstract class AbstractContextString
                 .makeString("\n");
     }
 
-    protected String toString(String string, int offset, int lineNumberWidth)
+    private String toString(String string, int offset, int lineNumberWidth)
     {
         String lineNumberString       = this.getLineNumberString(this.line + offset);
         String paddedLineNumberString = AbstractContextString.padLeft(lineNumberString, lineNumberWidth);

@@ -10,8 +10,11 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.CompilerState;
+import cool.klass.model.converter.compiler.DomainModelCompilationResult;
+import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.RootCompilerError;
 import cool.klass.model.meta.domain.api.DomainModel;
@@ -69,13 +72,14 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
         MutableList<CompilationUnit> compilationUnits = Lists.mutable.withAll(klassLocations)
                 .collectWith(CompilationUnit::createFromClasspathLocation, classLoader);
 
-        CompilerState compilerState = new CompilerState(compilationUnits);
-        KlassCompiler klassCompiler = new KlassCompiler(compilerState);
-        DomainModel   domainModel   = klassCompiler.compile();
+        CompilerState     compilerState     = new CompilerState(compilationUnits);
+        KlassCompiler     klassCompiler     = new KlassCompiler(compilerState);
+        CompilationResult compilationResult = klassCompiler.compile();
 
-        ImmutableList<RootCompilerError> compilerErrors = compilerState.getCompilerErrors();
-        if (compilerErrors.notEmpty())
+        if (compilationResult instanceof ErrorsCompilationResult)
         {
+            ErrorsCompilationResult          errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
+            ImmutableList<RootCompilerError> compilerErrors          = errorsCompilationResult.getCompilerErrors();
             for (RootCompilerError compilerError : compilerErrors)
             {
                 this.getLog().warn(compilerError.toString());
@@ -83,7 +87,12 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
             throw new MojoExecutionException("There were compiler errors.");
         }
 
-        return domainModel;
+        if (compilationResult instanceof DomainModelCompilationResult)
+        {
+            return ((DomainModelCompilationResult) compilationResult).getDomainModel();
+        }
+
+        throw new AssertionError(compilationResult.getClass().getSimpleName());
     }
 
     @Nonnull

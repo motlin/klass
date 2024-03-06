@@ -276,7 +276,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
     }
 
     @Nonnull
-    public AntlrPropertyModifier getAntlrPropertyModifier(@Nonnull PropertyModifierContext context, int ordinal)
+    private AntlrPropertyModifier getAntlrPropertyModifier(@Nonnull PropertyModifierContext context, int ordinal)
     {
         return new AntlrPropertyModifier(
                 context,

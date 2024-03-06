@@ -82,6 +82,7 @@ public class AntlrOrderByDirection extends AntlrElement
         return this.elementBuilder;
     }
 
+    @Override
     @Nonnull
     public OrderByDirectionDeclarationBuilder getElementBuilder()
     {

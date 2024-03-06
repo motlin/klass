@@ -65,7 +65,7 @@ public class CompilerErrorState
         this.add(errorCode, message, element, element.getSurroundingElementsIncludingThis(), offendingContexts);
     }
 
-    public void add(
+    private void add(
             @Nonnull String errorCode,
             @Nonnull String message,
             @Nonnull IAntlrElement element,
@@ -104,7 +104,7 @@ public class CompilerErrorState
     }
 
     @Nonnull
-    public CauseCompilerError getCauseCompilerError(
+    private CauseCompilerError getCauseCompilerError(
             @Nonnull IAntlrElement element,
             @Nonnull ImmutableList<IAntlrElement> surroundingElements,
             @Nonnull ImmutableList<ParserRuleContext> offendingContexts)
@@ -144,7 +144,7 @@ public class CompilerErrorState
                 .newWith(outerContext);
     }
 
-    public Optional<CauseCompilerError> getCauseCompilerError(@Nonnull IAntlrElement element)
+    private Optional<CauseCompilerError> getCauseCompilerError(@Nonnull IAntlrElement element)
     {
         return element.getMacroElement().map(macroElement -> this.getCauseCompilerError(
                 macroElement,

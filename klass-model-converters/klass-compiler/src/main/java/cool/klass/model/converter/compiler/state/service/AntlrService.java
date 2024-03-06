@@ -260,6 +260,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         return this.elementBuilder;
     }
 
+    @Override
     @Nonnull
     public ServiceBuilder getElementBuilder()
     {

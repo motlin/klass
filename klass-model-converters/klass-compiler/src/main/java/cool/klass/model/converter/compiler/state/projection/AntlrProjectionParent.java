@@ -39,6 +39,7 @@ public abstract class AntlrProjectionParent extends AntlrNamedElement
         this.klass = Objects.requireNonNull(klass);
     }
 
+    @Override
     @Nonnull
     public abstract AbstractProjectionParentBuilder<? extends AbstractProjectionParent> getElementBuilder();
 

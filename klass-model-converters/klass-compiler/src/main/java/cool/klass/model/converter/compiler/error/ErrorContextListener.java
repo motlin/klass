@@ -111,7 +111,7 @@ public class ErrorContextListener extends AbstractErrorListener
     }
 
     @Nonnull
-    public String getIndent(int indents)
+    private String getIndent(int indents)
     {
         return new String(new char[indents]).replace("\0", "    ");
     }

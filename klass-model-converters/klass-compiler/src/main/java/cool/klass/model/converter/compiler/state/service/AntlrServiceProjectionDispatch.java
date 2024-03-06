@@ -106,6 +106,7 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
         return this.elementBuilder;
     }
 
+    @Override
     @Nonnull
     public ServiceProjectionDispatchBuilder getElementBuilder()
     {

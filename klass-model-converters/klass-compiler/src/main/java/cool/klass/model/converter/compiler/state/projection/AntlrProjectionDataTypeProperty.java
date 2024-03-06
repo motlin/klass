@@ -93,6 +93,7 @@ public class AntlrProjectionDataTypeProperty
         // Deliberately empty
     }
 
+    @Override
     @Nonnull
     public ProjectionDataTypePropertyBuilder getElementBuilder()
     {

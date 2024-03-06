@@ -73,7 +73,7 @@ public final class CompilationUnit
     }
 
     @Nonnull
-    public static String slurp(String classpathLocation, @Nonnull ClassLoader classLoader)
+    private static String slurp(String classpathLocation, @Nonnull ClassLoader classLoader)
     {
         InputStream inputStream = classLoader.getResourceAsStream(classpathLocation);
         Objects.requireNonNull(inputStream);
@@ -90,7 +90,7 @@ public final class CompilationUnit
     }
 
     @Nonnull
-    public static CompilationUnit createFromText(
+    private static CompilationUnit createFromText(
             @Nonnull Optional<AntlrElement> macroElement,
             @Nonnull String sourceName,
             @Nonnull String sourceCodeText,

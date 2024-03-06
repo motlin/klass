@@ -37,7 +37,7 @@ public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
         }
     }
 
-    public boolean hasAuditProperty()
+    private boolean hasAuditProperty()
     {
         return this.compilerState
                 .getCompilerWalkState()
