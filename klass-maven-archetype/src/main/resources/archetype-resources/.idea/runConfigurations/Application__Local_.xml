@@ -2,7 +2,7 @@
   <configuration default="false" name="${name} Application (Local)" type="Application" factoryName="Application" singleton="true">
     <option name="MAIN_CLASS_NAME" value="${package}.dropwizard.application.${name}Application" />
     <module name="${artifactId}-dropwizard-application" />
-    <option name="PROGRAM_PARAMETERS" value="server server-local.json" />
+    <option name="PROGRAM_PARAMETERS" value="server config.json5" />
     <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
     <extension name="coverage">
       <pattern>

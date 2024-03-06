@@ -24,7 +24,7 @@
                     <basedir>${project.basedir}</basedir>
                     <workingDirectory>${project.basedir}</workingDirectory>
                     <executable>java</executable>
-                    <commandlineArgs>-jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server config.yml</commandlineArgs>
+                    <commandlineArgs>-jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server config.json5</commandlineArgs>
                 </configuration>
             </plugin>
 
@@ -295,9 +295,21 @@
             <artifactId>liftwizard-bundle-connection-manager-holder</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-logging-config</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <!--endregion-->
 
         <!--region Liftwizard config-->
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-filter-requesturl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-logging-logstash-file</artifactId>
@@ -505,9 +517,8 @@
 
         <!--region Runtime dependencies -->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <scope>runtime</scope>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
         </dependency>
 
         <dependency>
@@ -647,7 +658,7 @@
 
                 <!--TODO: There seems to be a bug in maven from using the file-missing trigger together with exec-maven-plugin's working directory-->
                 <!--<file>-->
-                    <!--<missing>${project.build.directory}/h2db/liftwizard-app-h2.mv.db</missing>-->
+                    <!--<missing>${project.build.directory}/h2db/coverage-example-h2.mv.db</missing>-->
                 <!--</file>-->
             </activation>
             <build>

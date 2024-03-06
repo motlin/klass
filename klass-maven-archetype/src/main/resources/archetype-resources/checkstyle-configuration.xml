@@ -125,9 +125,6 @@
         <module name="SuppressWarningsHolder" />
 
         <!-- Block Checks -->
-        <module name="AvoidNestedBlocks">
-            <property name="allowInSwitchCase" value="true" />
-        </module>
         <module name="EmptyBlock">
             <property name="tokens" value="ARRAY_INIT" />
             <property name="tokens" value="INSTANCE_INIT" />

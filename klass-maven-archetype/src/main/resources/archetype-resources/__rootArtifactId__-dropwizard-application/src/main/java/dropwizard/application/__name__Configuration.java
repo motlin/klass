@@ -5,8 +5,8 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
-import io.liftwizard.dropwizard.configuration.graphql.GraphQLFactoryProvider;
 import com.smoketurner.dropwizard.graphql.GraphQLFactory;
+import io.liftwizard.dropwizard.configuration.graphql.GraphQLFactoryProvider;
 
 public class ${name}Configuration
         extends AbstractKlassConfiguration

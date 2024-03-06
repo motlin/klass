@@ -38,10 +38,10 @@
   "logging": {
     "level": "DEBUG",
     "loggers": {
-      "${package}": "DEBUG",
       "com.gs.fw.common.mithra.batch.sqllogs": "DEBUG",
       "com.gs.fw.common.mithra.connectionmanager": "INFO",
       "com.gs.fw.common.mithra.sqllogs": "DEBUG",
+      "com.stackoverflow": "DEBUG",
       "org.apache.http": "INFO",
       "org.eclipse.jetty": "INFO",
       "org.reflections.Reflections": "INFO",
@@ -64,7 +64,7 @@
       "type": "compiler",
       "sourcePackages": [
         "klass.model.meta.domain",
-        "${package}"
+        "com.stackoverflow"
       ]
     },
     "dataStore": {
@@ -85,8 +85,8 @@
   ],
   "h2": {
     "enabled": true,
-    "webPort": 8082,
-    "tcpPort": 9092,
+    "webPort": 8066,
+    "tcpPort": 9066,
   },
   "cors": {
     "enabled": false
@@ -111,7 +111,7 @@
       "readOnlyByDefault": false,
       "user": "sa",
       "password": "",
-      "url": "jdbc:p6spy:h2:tcp://localhost:9092/\${rootArtifactId}-h2",
+      "url": "jdbc:p6spy:h2:tcp://localhost:9066/stackoverflow-h2",
       "properties": {
         "charSet": "UTF-8"
       },
@@ -124,7 +124,7 @@
       "readOnlyByDefault": false,
       "user": "sa",
       "password": "",
-      "url": "jdbc:p6spy:h2:file:./target/h2db/\${rootArtifactId}-h2",
+      "url": "jdbc:p6spy:h2:file:./target/h2db/stackoverflow-h2",
       "properties": {
         "charSet": "UTF-8"
       },
@@ -147,19 +147,19 @@
       "connectionManagerName": "h2-mem",
       "dataSourceName": "h2-mem",
       "databaseType": "H2",
-      "schemaName": "\${rootArtifactId}-h2"
+      "schemaName": "stackoverflow-h2"
     },
     {
       "connectionManagerName": "h2-tcp",
       "dataSourceName": "h2-tcp",
       "databaseType": "H2",
-      "schemaName": "\${rootArtifactId}-h2"
+      "schemaName": "stackoverflow-h2"
     },
     {
       "connectionManagerName": "h2-file",
       "dataSourceName": "h2-file",
       "databaseType": "H2",
-      "schemaName": "\${rootArtifactId}-h2"
+      "schemaName": "stackoverflow-h2"
     }
   ],
   "jerseyHttpLogging": {
@@ -172,10 +172,10 @@
     "enableTracing": false,
     "queryCache": "maximumSize=10000",
     "schemaFiles": [
-      "\${packageInPathFormat}/graphql/schema/query/\${name}Query.graphqls",
-      "\${packageInPathFormat}/graphql/schema/\${name}Finders.graphqls",
-      "\${packageInPathFormat}/graphql/schema/\${name}.graphqls",
-      "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls",
+      "com/stackoverflow/graphql/schema/query/StackOverflowQuery.graphqls",
+      "com/stackoverflow/graphql/schema/StackOverflowFinders.graphqls",
+      "com/stackoverflow/graphql/schema/StackOverflow.graphqls",
+      "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls"
     ]
   }
 }

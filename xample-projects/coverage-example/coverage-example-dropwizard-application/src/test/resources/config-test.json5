@@ -38,10 +38,10 @@
   "logging": {
     "level": "DEBUG",
     "loggers": {
-      "${package}": "DEBUG",
       "com.gs.fw.common.mithra.batch.sqllogs": "DEBUG",
       "com.gs.fw.common.mithra.connectionmanager": "INFO",
       "com.gs.fw.common.mithra.sqllogs": "DEBUG",
+      "cool.klass.xample.coverage": "DEBUG",
       "org.apache.http": "INFO",
       "org.eclipse.jetty": "INFO",
       "org.reflections.Reflections": "INFO",
@@ -64,7 +64,7 @@
       "type": "compiler",
       "sourcePackages": [
         "klass.model.meta.domain",
-        "${package}"
+        "cool.klass.xample.coverage"
       ]
     },
     "dataStore": {
@@ -85,8 +85,8 @@
   ],
   "h2": {
     "enabled": true,
-    "webPort": 8082,
-    "tcpPort": 9092,
+    "webPort": 8078,
+    "tcpPort": 9078,
   },
   "cors": {
     "enabled": false
@@ -111,7 +111,7 @@
       "readOnlyByDefault": false,
       "user": "sa",
       "password": "",
-      "url": "jdbc:p6spy:h2:tcp://localhost:9092/\${rootArtifactId}-h2",
+      "url": "jdbc:p6spy:h2:tcp://localhost:9078/coverage-example-h2",
       "properties": {
         "charSet": "UTF-8"
       },
@@ -124,7 +124,7 @@
       "readOnlyByDefault": false,
       "user": "sa",
       "password": "",
-      "url": "jdbc:p6spy:h2:file:./target/h2db/\${rootArtifactId}-h2",
+      "url": "jdbc:p6spy:h2:file:./target/h2db/coverage-example-h2",
       "properties": {
         "charSet": "UTF-8"
       },
@@ -147,35 +147,35 @@
       "connectionManagerName": "h2-mem",
       "dataSourceName": "h2-mem",
       "databaseType": "H2",
-      "schemaName": "\${rootArtifactId}-h2"
+      "schemaName": "coverage-example-h2"
     },
     {
       "connectionManagerName": "h2-tcp",
       "dataSourceName": "h2-tcp",
       "databaseType": "H2",
-      "schemaName": "\${rootArtifactId}-h2"
+      "schemaName": "coverage-example-h2"
     },
     {
       "connectionManagerName": "h2-file",
       "dataSourceName": "h2-file",
       "databaseType": "H2",
-      "schemaName": "\${rootArtifactId}-h2"
+      "schemaName": "coverage-example-h2"
     }
   ],
   "jerseyHttpLogging": {
     "maxEntitySize": "1 kilobyte"
   },
   "bootstrap": {
-    "enabled": true
+    "enabled": false
   },
   "graphQL": {
     "enableTracing": false,
     "queryCache": "maximumSize=10000",
     "schemaFiles": [
-      "\${packageInPathFormat}/graphql/schema/query/\${name}Query.graphqls",
-      "\${packageInPathFormat}/graphql/schema/\${name}Finders.graphqls",
-      "\${packageInPathFormat}/graphql/schema/\${name}.graphqls",
-      "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls",
+      "cool/klass/xample/coverage/graphql/schema/query/CoverageExampleQuery.graphqls",
+      "cool/klass/xample/coverage/graphql/schema/CoverageExampleFinders.graphqls",
+      "cool/klass/xample/coverage/graphql/schema/CoverageExample.graphqls",
+      "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls"
     ]
   }
 }

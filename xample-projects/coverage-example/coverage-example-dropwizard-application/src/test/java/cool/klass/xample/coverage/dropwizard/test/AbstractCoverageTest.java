@@ -37,7 +37,7 @@ public class AbstractCoverageTest
     @Rule
     public final DropwizardAppRule<CoverageExampleConfiguration> rule = new DropwizardAppRule<>(
             CoverageExampleApplication.class,
-            ResourceHelpers.resourceFilePath("config-test.json"));
+            ResourceHelpers.resourceFilePath("config-test.json5"));
 
     @Rule
     public final TestRule reladomoTestRule = new ReladomoTestRuleBuilder()

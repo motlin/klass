@@ -26,9 +26,9 @@
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.parameters>true</maven.compiler.parameters>
 
-        <checkstyle.configuration>${maven.multiModuleProjectDirectory}/checkstyle-configuration.xml</checkstyle.configuration>
-        <checkstyle.suppressions>${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</checkstyle.suppressions>
-        <checkstyle.cache>${project.build.directory}/checkstyle-cache</checkstyle.cache>
+        <checkstyle.configuration>\${maven.multiModuleProjectDirectory}/checkstyle-configuration.xml</checkstyle.configuration>
+        <checkstyle.suppressions>\${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</checkstyle.suppressions>
+        <checkstyle.cache>\${project.build.directory}/checkstyle-cache</checkstyle.cache>
 
         <liftwizard.version>0.10.0</liftwizard.version>
     </properties>
@@ -46,7 +46,7 @@
             <dependency>
                 <groupId>io.liftwizard</groupId>
                 <artifactId>liftwizard-dependencies</artifactId>
-                <version>${liftwizard.version}</version>
+                <version>\${liftwizard.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -54,7 +54,7 @@
             <dependency>
                 <groupId>io.liftwizard</groupId>
                 <artifactId>liftwizard-bom</artifactId>
-                <version>${liftwizard.version}</version>
+                <version>\${liftwizard.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -62,7 +62,7 @@
             <dependency>
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-bom</artifactId>
-                <version>${klass.version}</version>
+                <version>\${klass.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

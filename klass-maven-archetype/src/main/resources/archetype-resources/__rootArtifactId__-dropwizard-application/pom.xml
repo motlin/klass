@@ -24,7 +24,7 @@
                     <basedir>${project.basedir}</basedir>
                     <workingDirectory>${project.basedir}</workingDirectory>
                     <executable>java</executable>
-                    <commandlineArgs>-jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server server-local-demo.json</commandlineArgs>
+                    <commandlineArgs>-jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server config.json5</commandlineArgs>
                 </configuration>
             </plugin>
 
@@ -177,6 +177,13 @@
         </dependency>
 
         <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-meta</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-reladomo-ddls</artifactId>
             <version>${project.version}</version>
@@ -186,6 +193,20 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-graphql-schema</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-graphql-schema-query</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-graphql-reladomo-finder</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
@@ -214,6 +235,12 @@
         <!--endregion-->
 
         <!--region Liftwizard runtime dependencies -->
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-reladomo-meta</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!--region Liftwizard bundles -->
         <dependency>
             <groupId>io.liftwizard</groupId>
@@ -268,9 +295,21 @@
             <artifactId>liftwizard-bundle-connection-manager-holder</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-logging-config</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <!--endregion-->
 
         <!--region Liftwizard config-->
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-filter-requesturl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-logging-logstash-file</artifactId>
@@ -357,12 +396,37 @@
             <artifactId>klass-dropwizard-bundle-bootstrap-writer</artifactId>
             <version>${klass.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-reladomo-sample-data</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-meta-interface</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-domain-model-loader</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
         <!--endregion-->
 
         <!--region Klass runtime dependencies -->
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-sample-data</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-reladomo-ddls-workaround</artifactId>
             <version>${klass.version}</version>
             <scope>runtime</scope>
         </dependency>
@@ -401,8 +465,43 @@
         </dependency>
 
         <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-util</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.smoketurner.dropwizard</groupId>
             <artifactId>graphql-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
         <dependency>
@@ -418,9 +517,8 @@
 
         <!--region Runtime dependencies -->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <scope>runtime</scope>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
         </dependency>
 
         <dependency>
@@ -452,6 +550,18 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-auth-filter-impersonation</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-buffered</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-junit-rule-log-marker</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -548,7 +658,7 @@
 
                 <!--TODO: There seems to be a bug in maven from using the file-missing trigger together with exec-maven-plugin's working directory-->
                 <!--<file>-->
-                    <!--<missing>${project.build.directory}/h2db/liftwizard-app-h2.mv.db</missing>-->
+                    <!--<missing>${project.build.directory}/h2db/${artifactId}-h2.mv.db</missing>-->
                 <!--</file>-->
             </activation>
             <build>

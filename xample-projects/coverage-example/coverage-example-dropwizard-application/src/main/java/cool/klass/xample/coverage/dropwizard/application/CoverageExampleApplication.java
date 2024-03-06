@@ -39,6 +39,7 @@ public class CoverageExampleApplication
         super.registerLoggingFilters(environment);
 
         environment.jersey().register(KlassResponseStructuredLoggingFilter.class);
+        environment.jersey().register(JsonViewDynamicFeature.class);
     }
 
     @Override

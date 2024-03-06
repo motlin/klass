@@ -120,8 +120,6 @@
                                     <ignoredUnusedDeclaredDependency>com.google.auto.service:auto-service</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>com.h2database:h2:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-bootstrap-writer:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-config-logging:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-cors:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo-jsonview:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo-response:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-sample-data:jar</ignoredUnusedDeclaredDependency>

@@ -2,18 +2,6 @@
   "server": {
     "detailedJsonProcessingExceptionMapper": true,
     "rootPath": "/api/*",
-    "applicationConnectors": [
-      {
-        "type": "http",
-        "port": 0
-      }
-    ],
-    "adminConnectors": [
-      {
-        "type": "http",
-        "port": 0
-      }
-    ],
     "requestLog": {
       "appenders": [
         {
@@ -36,27 +24,28 @@
     }
   },
   "logging": {
-    "level": "DEBUG",
+    "level": "INFO",
     "loggers": {
       "com.gs.fw.common.mithra.batch.sqllogs": "DEBUG",
       "com.gs.fw.common.mithra.connectionmanager": "INFO",
       "com.gs.fw.common.mithra.sqllogs": "DEBUG",
       "com.stackoverflow": "DEBUG",
       "org.apache.http": "INFO",
-      "org.eclipse.jetty": "INFO"
+      "org.eclipse.jetty": "INFO",
+      "org.reflections.Reflections": "INFO",
     },
     "appenders": [
       {
-        "type"     : "buffered",
-        "timeZone" : "system",
-        "logFormat": "%highlight(%-5level) %cyan(%date{HH:mm:ss}) [%magenta(%thread)] %green(%logger): %message%n%red(%rootException)"
+        "type": "console",
+        "timeZone": "utc",
+        "logFormat": "%highlight(%-5level) %cyan(%date{HH:mm:ss}) [%white(%thread)] %blue(%marker) {%magenta(%mdc)} %green(%logger): %message%n%red(%rootException)",
+        "includeCallerData": true
       }
     ]
   },
   "klass": {
     "clock": {
-      "type": "fixed",
-      "instant": "2000-12-31T23:59:59Z"
+      "type": "system"
     },
     "domainModel": {
       "type": "compiler",
@@ -70,23 +59,19 @@
       "uuid": {
         "type": "system"
       }
-    }
+    },
   },
   "configLogging": {
     "enabled": true
   },
-  "authFilters": [
-    {
-      "type": "impersonation"
-    }
-  ],
+  "authFilters": [],
   "h2": {
     "enabled": true,
-    "webPort": 8089,
-    "tcpPort": 9099
+    "webPort": 8065,
+    "tcpPort": 9065,
   },
   "cors": {
-    "enabled": true
+    "enabled": false
   },
   "dataSources": [
     {
@@ -95,12 +80,12 @@
       "readOnlyByDefault": false,
       "user": "sa",
       "password": "",
-      "url": "jdbc:p6spy:h2:mem:;query_timeout=600000",
+      "url": "jdbc:p6spy:h2:mem:",
       "properties": {
         "charSet": "UTF-8"
       },
       "logValidationErrors": true,
-      "maxWaitForConnection": "1 second"
+      "maxWaitForConnection": "1 second",
     },
     {
       "name": "h2-tcp",
@@ -108,12 +93,12 @@
       "readOnlyByDefault": false,
       "user": "sa",
       "password": "",
-      "url": "jdbc:p6spy:h2:tcp://localhost:9099/liftwizard-app-h2;query_timeout=600000",
+      "url": "jdbc:p6spy:h2:tcp://localhost:9065/stackoverflow-h2",
       "properties": {
         "charSet": "UTF-8"
       },
       "logValidationErrors": true,
-      "maxWaitForConnection": "1 second"
+      "maxWaitForConnection": "1 second",
     },
     {
       "name": "h2-file",
@@ -121,12 +106,12 @@
       "readOnlyByDefault": false,
       "user": "sa",
       "password": "",
-      "url": "jdbc:p6spy:h2:file:./target/h2db/liftwizard-app-h2;query_timeout=600000",
+      "url": "jdbc:p6spy:h2:file:./target/h2db/stackoverflow-h2",
       "properties": {
         "charSet": "UTF-8"
       },
       "logValidationErrors": true,
-      "maxWaitForConnection": "1 second"
+      "maxWaitForConnection": "1 second",
     }
   ],
   "ddlExecutors": [
@@ -134,37 +119,36 @@
       "dataSourceName": "h2-tcp"
     }
   ],
-  "sampleData": {
-    "enabled": false
-  },
   "reladomo": {
     "runtimeConfigurationPaths": [
       "reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml"
-    ],
-    "transactionTimeout": "1 hour"
+    ]
   },
   "connectionManagers": [
     {
       "connectionManagerName": "h2-mem",
       "dataSourceName": "h2-mem",
       "databaseType": "H2",
-      "schemaName": "liftwizard-app-h2"
+      "schemaName": "stackoverflow-h2"
     },
     {
       "connectionManagerName": "h2-tcp",
       "dataSourceName": "h2-tcp",
       "databaseType": "H2",
-      "schemaName": "liftwizard-app-h2"
+      "schemaName": "stackoverflow-h2"
     },
     {
       "connectionManagerName": "h2-file",
       "dataSourceName": "h2-file",
       "databaseType": "H2",
-      "schemaName": "liftwizard-app-h2"
+      "schemaName": "stackoverflow-h2"
     }
   ],
   "jerseyHttpLogging": {
     "maxEntitySize": "1 kilobyte"
+  },
+  "bootstrap": {
+    "enabled": false
   },
   "graphQL": {
     "enableTracing": false,

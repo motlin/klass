@@ -38,7 +38,7 @@ public class QuestionResourceManualTest
     @Rule
     public final DropwizardAppRule<StackOverflowConfiguration> rule = new DropwizardAppRule<>(
             StackOverflowApplication.class,
-            ResourceHelpers.resourceFilePath("config-test.json"));
+            ResourceHelpers.resourceFilePath("config-test.json5"));
 
     @Rule
     public final TestRule reladomoTestRule = new ReladomoTestRuleBuilder()

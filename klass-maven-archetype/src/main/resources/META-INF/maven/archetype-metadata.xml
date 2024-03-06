@@ -36,6 +36,7 @@
     </fileSets>
 
     <modules>
+        <!--region ${rootArtifactId}-domain-model-->
         <module
                 id="${rootArtifactId}-domain-model"
                 dir="__rootArtifactId__-domain-model"
@@ -47,157 +48,9 @@
 
             </fileSets>
         </module>
+        <!--endregion-->
 
-        <module
-                id="${rootArtifactId}-reladomo-definitions"
-                dir="__rootArtifactId__-reladomo-definitions"
-                name="${rootArtifactId}-reladomo-definitions">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-
-        <module
-                id="${rootArtifactId}-reladomo-merge-hooks"
-                dir="__rootArtifactId__-reladomo-merge-hooks"
-                name="${rootArtifactId}-reladomo-merge-hooks">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-
-        <module
-                id="${rootArtifactId}-reladomo-pojos"
-                dir="__rootArtifactId__-reladomo-pojos"
-                name="${rootArtifactId}-reladomo-pojos">
-            <fileSets>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/main/java</directory>
-                </fileSet>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-
-        <module
-                id="${rootArtifactId}-reladomo-readable-interfaces"
-                dir="__rootArtifactId__-reladomo-readable-interfaces"
-                name="${rootArtifactId}-reladomo-readable-interfaces">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-
-        <module
-                id="${rootArtifactId}-reladomo-ddls"
-                dir="__rootArtifactId__-reladomo-ddls"
-                name="${rootArtifactId}-reladomo-ddls">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-
-        <module
-                id="${rootArtifactId}-services"
-                dir="__rootArtifactId__-services"
-                name="${rootArtifactId}-services">
-            <fileSets>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/main/java</directory>
-                </fileSet>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-
-        <module
-                id="${rootArtifactId}-dtos"
-                dir="__rootArtifactId__-dtos"
-                name="${rootArtifactId}-dtos">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-
-        <module
-                id="${rootArtifactId}-graphql-data-fetchers"
-                dir="__rootArtifactId__-graphql-data-fetchers"
-                name="${rootArtifactId}-graphql-data-fetchers">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-
-        <module
-                id="${rootArtifactId}-graphql-runtime-wiring"
-                dir="__rootArtifactId__-graphql-runtime-wiring"
-                name="${rootArtifactId}-graphql-runtime-wiring">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-
-        <module
-                id="${rootArtifactId}-graphql-runtime-wiring-query"
-                dir="__rootArtifactId__-graphql-runtime-wiring-query"
-                name="${rootArtifactId}-graphql-runtime-wiring-query">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-
-        <module
-                id="${rootArtifactId}-graphql-fragment"
-                dir="__rootArtifactId__-graphql-fragment"
-                name="${rootArtifactId}-graphql-fragment">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-
-        <module
-                id="${rootArtifactId}-graphql-schema"
-                dir="__rootArtifactId__-graphql-schema"
-                name="${rootArtifactId}-graphql-schema">
-            <fileSets>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/main/resources</directory>
-                </fileSet>
-            </fileSets>
-        </module>
-
-
-        <module
-                id="${rootArtifactId}-json-views"
-                dir="__rootArtifactId__-json-views"
-                name="${rootArtifactId}-json-views">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-
+        <!--region ${rootArtifactId}-dropwizard-application-->
         <module
                 id="${rootArtifactId}-dropwizard-application"
                 dir="__rootArtifactId__-dropwizard-application"
@@ -207,7 +60,8 @@
                     <directory></directory>
                     <includes>
                         <include>.gitignore</include>
-                        <include>config.yml</include>
+                        <include>config.json5</include>
+                        <include>src/test/resources/config-test.json5</include>
                         <include>README.md</include>
                     </includes>
                 </fileSet>
@@ -223,7 +77,126 @@
                 </fileSet>
             </fileSets>
         </module>
+        <!--endregion-->
 
+        <!--region ${rootArtifactId}-dtos-->
+        <module
+                id="${rootArtifactId}-dtos"
+                dir="__rootArtifactId__-dtos"
+                name="${rootArtifactId}-dtos">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-graphql-data-fetchers-->
+        <module
+                id="${rootArtifactId}-graphql-data-fetchers"
+                dir="__rootArtifactId__-graphql-data-fetchers"
+                name="${rootArtifactId}-graphql-data-fetchers">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-graphql-fragment-->
+        <module
+                id="${rootArtifactId}-graphql-fragment"
+                dir="__rootArtifactId__-graphql-fragment"
+                name="${rootArtifactId}-graphql-fragment">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-graphql-reladomo-finder-->
+        <module
+                id="${rootArtifactId}-graphql-reladomo-finder"
+                dir="__rootArtifactId__-graphql-reladomo-finder"
+                name="${rootArtifactId}-graphql-reladomo-finder">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-graphql-runtime-wiring-->
+        <module
+                id="${rootArtifactId}-graphql-runtime-wiring"
+                dir="__rootArtifactId__-graphql-runtime-wiring"
+                name="${rootArtifactId}-graphql-runtime-wiring">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-graphql-runtime-wiring-query-->
+        <module
+                id="${rootArtifactId}-graphql-runtime-wiring-query"
+                dir="__rootArtifactId__-graphql-runtime-wiring-query"
+                name="${rootArtifactId}-graphql-runtime-wiring-query">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-graphql-schema-->
+        <module
+                id="${rootArtifactId}-graphql-schema"
+                dir="__rootArtifactId__-graphql-schema"
+                name="${rootArtifactId}-graphql-schema">
+            <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/resources</directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-graphql-schema-query-->
+        <module
+                id="${rootArtifactId}-graphql-schema-query"
+                dir="__rootArtifactId__-graphql-schema-query"
+                name="${rootArtifactId}-graphql-schema-query">
+            <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/resources</directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-json-views-->
+        <module
+                id="${rootArtifactId}-json-views"
+                dir="__rootArtifactId__-json-views"
+                name="${rootArtifactId}-json-views">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-klass-html-->
         <module
                 id="${rootArtifactId}-klass-html"
                 dir="__rootArtifactId__-klass-html"
@@ -234,7 +207,9 @@
                 </fileSet>
             </fileSets>
         </module>
+        <!--endregion-->
 
+        <!--region ${rootArtifactId}-klass-projections-->
         <module
                 id="${rootArtifactId}-klass-projections"
                 dir="__rootArtifactId__-klass-projections"
@@ -245,7 +220,9 @@
                 </fileSet>
             </fileSets>
         </module>
+        <!--endregion-->
 
+        <!--region ${rootArtifactId}-klass-services-->
         <module
                 id="${rootArtifactId}-klass-services"
                 dir="__rootArtifactId__-klass-services"
@@ -256,7 +233,9 @@
                 </fileSet>
             </fileSets>
         </module>
+        <!--endregion-->
 
+        <!--region ${rootArtifactId}-meta-model-constants-->
         <module
                 id="${rootArtifactId}-meta-model-constants"
                 dir="__rootArtifactId__-meta-model-constants"
@@ -267,7 +246,106 @@
                 </fileSet>
             </fileSets>
         </module>
+        <!--endregion-->
 
+        <!--region ${rootArtifactId}-reladomo-ddls-->
+        <module
+                id="${rootArtifactId}-reladomo-ddls"
+                dir="__rootArtifactId__-reladomo-ddls"
+                name="${rootArtifactId}-reladomo-ddls">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-reladomo-definitions-->
+        <module
+                id="${rootArtifactId}-reladomo-definitions"
+                dir="__rootArtifactId__-reladomo-definitions"
+                name="${rootArtifactId}-reladomo-definitions">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-reladomo-merge-hooks-->
+        <module
+                id="${rootArtifactId}-reladomo-merge-hooks"
+                dir="__rootArtifactId__-reladomo-merge-hooks"
+                name="${rootArtifactId}-reladomo-merge-hooks">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-reladomo-pojos-->
+        <module
+                id="${rootArtifactId}-reladomo-pojos"
+                dir="__rootArtifactId__-reladomo-pojos"
+                name="${rootArtifactId}-reladomo-pojos">
+            <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/java</directory>
+                </fileSet>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-reladomo-readable-interfaces-->
+        <module
+                id="${rootArtifactId}-reladomo-readable-interfaces"
+                dir="__rootArtifactId__-reladomo-readable-interfaces"
+                name="${rootArtifactId}-reladomo-readable-interfaces">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-reladomo-runtime-configuration-->
+        <module
+                id="${rootArtifactId}-reladomo-runtime-configuration"
+                dir="__rootArtifactId__-reladomo-runtime-configuration"
+                name="${rootArtifactId}-reladomo-runtime-configuration">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-services-->
+        <module
+                id="${rootArtifactId}-services"
+                dir="__rootArtifactId__-services"
+                name="${rootArtifactId}-services">
+            <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/java</directory>
+                </fileSet>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
+        <!--region ${rootArtifactId}-uml-nomnoml-->
         <module
                 id="${rootArtifactId}-uml-nomnoml"
                 dir="__rootArtifactId__-uml-nomnoml"
@@ -278,6 +356,7 @@
                 </fileSet>
             </fileSets>
         </module>
+        <!--endregion-->
 
     </modules>
 

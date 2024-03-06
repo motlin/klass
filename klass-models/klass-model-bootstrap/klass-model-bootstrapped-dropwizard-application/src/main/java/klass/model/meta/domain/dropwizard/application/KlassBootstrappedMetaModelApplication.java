@@ -2,17 +2,15 @@ package klass.model.meta.domain.dropwizard.application;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.dropwizard.bundle.reladomo.jsonview.ReladomoJsonViewBundle;
-import cool.klass.dropwizard.bundle.reladomo.response.ReladomoResponseBundle;
-import io.dropwizard.setup.Bootstrap;
-import io.liftwizard.dropwizard.bundle.ddl.executor.DdlExecutorBundle;
-import io.liftwizard.dropwizard.bundle.h2.H2Bundle;
-import io.liftwizard.dropwizard.bundle.named.data.source.NamedDataSourceBundle;
-import io.liftwizard.dropwizard.bundle.reladomo.ReladomoBundle;
-import io.liftwizard.dropwizard.bundle.reladomo.connection.manager.ConnectionManagerBundle;
-import io.liftwizard.dropwizard.bundle.reladomo.connection.manager.holder.ConnectionManagerHolderBundle;
+import cool.klass.dropwizard.configuration.KlassFactory;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
+import cool.klass.servlet.filter.mdc.jsonview.JsonViewDynamicFeature;
+import cool.klass.servlet.logging.structured.klass.response.KlassResponseStructuredLoggingFilter;
+import io.dropwizard.setup.Environment;
 
-public class KlassBootstrappedMetaModelApplication extends AbstractKlassBootstrappedMetaModelApplication
+public class KlassBootstrappedMetaModelApplication
+        extends AbstractKlassBootstrappedMetaModelApplication
 {
     public static void main(String[] args) throws Exception
     {
@@ -20,22 +18,37 @@ public class KlassBootstrappedMetaModelApplication extends AbstractKlassBootstra
     }
 
     @Override
-    protected void initializeDynamicBundles(@Nonnull Bootstrap<KlassBootstrappedMetaModelConfiguration> bootstrap)
+    public Class<KlassBootstrappedMetaModelConfiguration> getConfigurationClass()
     {
+        return super.getConfigurationClass();
     }
 
     @Override
-    protected void initializeBundles(@Nonnull Bootstrap<KlassBootstrappedMetaModelConfiguration> bootstrap)
+    protected void registerLoggingFilters(@Nonnull Environment environment)
     {
-        super.initializeBundles(bootstrap);
+        super.registerLoggingFilters(environment);
 
-        bootstrap.addBundle(new H2Bundle());
-        bootstrap.addBundle(new NamedDataSourceBundle());
-        bootstrap.addBundle(new DdlExecutorBundle());
-        bootstrap.addBundle(new ConnectionManagerBundle());
-        bootstrap.addBundle(new ConnectionManagerHolderBundle());
-        bootstrap.addBundle(new ReladomoBundle());
-        bootstrap.addBundle(new ReladomoJsonViewBundle());
-        bootstrap.addBundle(new ReladomoResponseBundle());
+        environment.jersey().register(KlassResponseStructuredLoggingFilter.class);
+    }
+
+    @Override
+    protected void registerJacksonModules(@Nonnull Environment environment)
+    {
+        super.registerJacksonModules(environment);
+
+        environment.getObjectMapper().registerModule(new KlassMetaModelJacksonModule());
+    }
+
+    @Override
+    public void run(
+            @Nonnull KlassBootstrappedMetaModelConfiguration configuration,
+            @Nonnull Environment environment) throws Exception
+    {
+        super.run(configuration, environment);
+
+        KlassFactory klassFactory = configuration.getKlassFactory();
+        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel();
+
+        environment.jersey().register(new JsonViewDynamicFeature(domainModel));
     }
 }

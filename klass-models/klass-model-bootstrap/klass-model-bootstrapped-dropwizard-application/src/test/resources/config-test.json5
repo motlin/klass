@@ -1,21 +1,21 @@
 // klass-models/klass-model-bootstrap/klass-model-bootstrapped-dropwizard-application/src/test/resources/config-test.json5
 {
-  "server"            : {
+  "server": {
     "detailedJsonProcessingExceptionMapper": true,
-    "applicationConnectors"                : [
+    "applicationConnectors": [
       {
         "type": "http",
         "port": 0
       }
     ],
-    "adminConnectors"                      : [
+    "adminConnectors": [
       {
         "type": "http",
         "port": 0
       }
     ],
-    "rootPath"                             : "/api/*",
-    "requestLog"                           : {
+    "rootPath": "/api/*",
+    "requestLog": {
       "appenders": [
         {
           "type": "console"
@@ -23,34 +23,34 @@
       ]
     }
   },
-  "logging"           : {
-    "level"    : "DEBUG",
-    "loggers"  : {
-      "klass.model.meta.domain"                  : "INFO",
+  "logging": {
+    "level": "DEBUG",
+    "loggers": {
+      "klass.model.meta.domain": "INFO",
       "com.gs.fw.common.mithra.connectionmanager": "INFO",
-      "org.eclipse.jetty"                        : "INFO",
-      "org.apache.http"                          : "INFO",
-      "org.hibernate.validator.internal"         : "INFO"
+      "org.eclipse.jetty": "INFO",
+      "org.apache.http": "INFO",
+      "org.hibernate.validator.internal": "INFO"
     },
     "appenders": [
       {
-        "type"     : "buffered",
-        "timeZone" : "system",
+        "type": "buffered",
+        "timeZone": "system",
         "logFormat": "%highlight(%-5level) %cyan(%date{HH:mm:ss}) [%magenta(%thread)] %green(%logger): %message%n%red(%rootException)"
       }
     ]
   },
-  "klass"             : {
-    "clock"      : {
+  "klass": {
+    "clock": {
       "type": "system"
     },
     "domainModel": {
-      "type"          : "compiler",
+      "type": "compiler",
       "sourcePackages": [
         "klass.model.meta.domain"
       ]
     },
-    "dataStore"  : {
+    "dataStore": {
       "type": "reladomo",
       "uuid": {
         "type": "seed",
@@ -58,66 +58,66 @@
       }
     }
   },
-  "configLogging"     : {
+  "configLogging": {
     "enabled": false
   },
-  "authFilters"       : [
+  "authFilters": [
     {
       "type": "impersonation"
     }
   ],
-  "h2"                : {
+  "h2": {
     "enabled": true,
-    webPort  : 8083,
-    tcpPort  : 9093,
+    "webPort": 8072,
+    "tcpPort": 9072,
   },
-  "dataSources"       : [
+  "dataSources": [
     {
-      "name"                  : "h2-mem",
-      "driverClass"           : "com.p6spy.engine.spy.P6SpyDriver",
-      "readOnlyByDefault"     : false,
-      "user"                  : "sa",
-      "password"              : "",
-      "url"                   : "jdbc:p6spy:h2:mem:",
-      "properties"            : {
+      "name": "h2-mem",
+      "driverClass": "com.p6spy.engine.spy.P6SpyDriver",
+      "readOnlyByDefault": false,
+      "user": "sa",
+      "password": "",
+      "url": "jdbc:p6spy:h2:mem:",
+      "properties": {
         "charSet": "UTF-8"
       },
-      "logValidationErrors"   : true,
-      "maxWaitForConnection"  : "1 second",
+      "logValidationErrors": true,
+      "maxWaitForConnection": "1 second",
     },
     {
-      "name"                  : "h2-tcp",
-      "driverClass"           : "com.p6spy.engine.spy.P6SpyDriver",
-      "readOnlyByDefault"     : false,
-      "user"                  : "sa",
-      "password"              : "",
-      "url"                   : "jdbc:p6spy:h2:tcp://localhost:9093/liftwizard-app-h2",
-      "properties"            : {
+      "name": "h2-tcp",
+      "driverClass": "com.p6spy.engine.spy.P6SpyDriver",
+      "readOnlyByDefault": false,
+      "user": "sa",
+      "password": "",
+      "url": "jdbc:p6spy:h2:tcp://localhost:9072/klass-bootstrapped-h2",
+      "properties": {
         "charSet": "UTF-8"
       },
-      "logValidationErrors"   : true,
-      "maxWaitForConnection"  : "1 second",
+      "logValidationErrors": true,
+      "maxWaitForConnection": "1 second",
     },
     {
-      "name"                  : "h2-file",
-      "driverClass"           : "com.p6spy.engine.spy.P6SpyDriver",
-      "readOnlyByDefault"     : false,
-      "user"                  : "sa",
-      "password"              : "",
-      "url"                   : "jdbc:p6spy:h2:file:./target/h2db/liftwizard-app-h2",
-      "properties"            : {
+      "name": "h2-file",
+      "driverClass": "com.p6spy.engine.spy.P6SpyDriver",
+      "readOnlyByDefault": false,
+      "user": "sa",
+      "password": "",
+      "url": "jdbc:p6spy:h2:file:./target/h2db/klass-bootstrapped-h2",
+      "properties": {
         "charSet": "UTF-8"
       },
-      "logValidationErrors"   : true,
-      "maxWaitForConnection"  : "1 second",
+      "logValidationErrors": true,
+      "maxWaitForConnection": "1 second",
     }
   ],
-  "ddlExecutors"      : [
+  "ddlExecutors": [
     {
       "dataSourceName": "h2-tcp"
     }
   ],
-  "reladomo"          : {
+  "reladomo": {
     "runtimeConfigurationPaths": [
       "reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml"
     ]
@@ -125,21 +125,21 @@
   "connectionManagers": [
     {
       "connectionManagerName": "h2-mem",
-      "dataSourceName"       : "h2-mem",
-      "databaseType"         : "H2",
-      "schemaName"           : "liftwizard-app-h2"
+      "dataSourceName": "h2-mem",
+      "databaseType": "H2",
+      "schemaName": "klass-bootstrapped-h2"
     },
     {
       "connectionManagerName": "h2-tcp",
-      "dataSourceName"       : "h2-tcp",
-      "databaseType"         : "H2",
-      "schemaName"           : "liftwizard-app-h2"
+      "dataSourceName": "h2-tcp",
+      "databaseType": "H2",
+      "schemaName": "klass-bootstrapped-h2"
     },
     {
       "connectionManagerName": "h2-file",
-      "dataSourceName"       : "h2-file",
-      "databaseType"         : "H2",
-      "schemaName"           : "liftwizard-app-h2"
+      "dataSourceName": "h2-file",
+      "databaseType": "H2",
+      "schemaName": "klass-bootstrapped-h2"
     }
   ],
 }

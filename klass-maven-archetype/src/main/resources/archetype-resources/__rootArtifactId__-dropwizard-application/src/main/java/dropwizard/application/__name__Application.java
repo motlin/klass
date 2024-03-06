@@ -5,10 +5,10 @@ import javax.annotation.Nonnull;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
 import cool.klass.servlet.filter.mdc.jsonview.JsonViewDynamicFeature;
 import cool.klass.servlet.logging.structured.klass.response.KlassResponseStructuredLoggingFilter;
-import io.liftwizard.dropwizard.bundle.graphql.LiftwizardGraphQLBundle;
 import ${package}.graphql.runtime.wiring.${name}RuntimeWiringBuilder;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.liftwizard.dropwizard.bundle.graphql.LiftwizardGraphQLBundle;
 
 public class ${name}Application
         extends Abstract${name}Application
@@ -56,6 +56,10 @@ public class ${name}Application
             @Nonnull ${name}Configuration configuration,
             @Nonnull Environment environment) throws Exception
     {
+        DomainModel domainModel = configuration.getKlassFactory().getDomainModelFactory().createDomainModel();
+
+        environment.jersey().register(new JsonViewDynamicFeature(domainModel));
+
         super.run(configuration, environment);
     }
 }
