@@ -42,13 +42,19 @@ public class GraphQLSchemaGenerator
         KlassGraphQLModelConverter klassGraphQLModelConverter = new KlassGraphQLModelConverter(this.domainModel);
         GraphQLDomainModel         graphQLDomainModel         = klassGraphQLModelConverter.convert();
 
+        String topLevelElementsCode = graphQLDomainModel.getTopLevelElements()
+                .collect(this::getSourceCode)
+                .makeString("");
+
         String sourceCode = ""
                 + "# Generated at " + this.now + "\n"
                 + "# by cool.klass.generator.grahql.schema.GraphQLSchemaGenerator\n"
                 + "\n"
-                + graphQLDomainModel.getTopLevelElements()
-                .collect(this::getSourceCode)
-                .makeString("");
+                + "schema {\n"
+                + "    query: Query\n"
+                + "}\n"
+                + "\n"
+                + topLevelElementsCode;
 
         Path schemaOutputPath = this.getOutputPath(outputPath);
         this.printStringToFile(schemaOutputPath, sourceCode);
