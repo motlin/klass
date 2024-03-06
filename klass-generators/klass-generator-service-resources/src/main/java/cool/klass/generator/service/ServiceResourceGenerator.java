@@ -781,7 +781,7 @@ public class ServiceResourceGenerator
             @Nonnull Optional<Criteria> queryCriteria,
             String klassName)
     {
-        if (!queryCriteria.isPresent())
+        if (queryCriteria.isEmpty())
         {
             return "";
         }

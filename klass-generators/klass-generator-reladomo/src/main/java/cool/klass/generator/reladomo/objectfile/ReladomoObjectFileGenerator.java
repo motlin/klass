@@ -164,7 +164,7 @@ public class ReladomoObjectFileGenerator
 
     private ImmutableList<DataTypeProperty> getDataTypeProperties(@Nonnull Klass klass)
     {
-        if (!klass.getSuperClass().isPresent())
+        if (klass.getSuperClass().isEmpty())
         {
             return klass.getDataTypeProperties();
         }

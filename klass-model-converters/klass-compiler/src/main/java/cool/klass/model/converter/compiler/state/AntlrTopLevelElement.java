@@ -37,6 +37,7 @@ public interface AntlrTopLevelElement
     @Nonnull
     TopLevelElementBuilderWithSourceCode getElementBuilder();
 
+    @Nonnull
     default Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.empty();

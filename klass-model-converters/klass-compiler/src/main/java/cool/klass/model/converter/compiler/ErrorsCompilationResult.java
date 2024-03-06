@@ -31,6 +31,7 @@ public class ErrorsCompilationResult
         return this.sourceCodes;
     }
 
+    @Nonnull
     public ImmutableList<RootCompilerError> getCompilerErrors()
     {
         return this.compilerErrors;

@@ -23,6 +23,7 @@ public class DomainModelCompilationResult
         return this.domainModel;
     }
 
+    @Nonnull
     @Override
     public ImmutableList<SourceCode> getSourceCodes()
     {

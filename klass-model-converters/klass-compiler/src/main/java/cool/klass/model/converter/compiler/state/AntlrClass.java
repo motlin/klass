@@ -542,7 +542,7 @@ public class AntlrClass
 
     private void reportExtendsConcrete(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (!this.superClassState.isPresent()
+        if (this.superClassState.isEmpty()
                 || this.superClassState.equals(Optional.of(NOT_FOUND)))
         {
             return;
@@ -565,7 +565,7 @@ public class AntlrClass
     private void reportTransientInheritance(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.isTransient()
-                || !this.superClassState.isPresent()
+                || this.superClassState.isEmpty()
                 || !this.superClassState.get().isTransient())
         {
             return;
@@ -597,7 +597,7 @@ public class AntlrClass
     @Override
     protected void reportCircularInheritance(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (!this.superClassState.isPresent())
+        if (this.superClassState.isEmpty())
         {
             return;
         }
@@ -617,7 +617,7 @@ public class AntlrClass
 
     private boolean extendsClass(@Nonnull AntlrClass antlrClass, @Nonnull MutableSet<AntlrClass> visitedClasses)
     {
-        if (!this.superClassState.isPresent())
+        if (this.superClassState.isEmpty())
         {
             return false;
         }
@@ -637,7 +637,7 @@ public class AntlrClass
     }
 
     @Override
-    protected boolean isInterfaceRedundant(int index, AntlrInterface interfaceState)
+    protected boolean isInterfaceRedundant(int index, @Nonnull AntlrInterface interfaceState)
     {
         return this.superClassState.isPresent() && this.superClassState.get().implementsInterface(interfaceState)
                 || this.interfaceNotAtIndexImplements(index, interfaceState);
@@ -676,7 +676,7 @@ public class AntlrClass
             return false;
         }
 
-        if (!this.superClassState.isPresent())
+        if (this.superClassState.isEmpty())
         {
             return false;
         }

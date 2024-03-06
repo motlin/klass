@@ -43,7 +43,7 @@ public class KlassSourceCodeHtmlGenerator
     {
         this.sourceCodes
                 // TODO: Graft in macros
-                .select(sourceCode -> !sourceCode.getMacroSourceCode().isPresent())
+                .select(sourceCode -> sourceCode.getMacroSourceCode().isEmpty())
                 .forEachWith(this::writeHtmlFile, outputPath);
     }
 

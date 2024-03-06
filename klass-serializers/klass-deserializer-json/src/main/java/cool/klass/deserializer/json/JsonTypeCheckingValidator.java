@@ -68,7 +68,7 @@ public final class JsonTypeCheckingValidator
             JsonNode           jsonNode         = entry.getValue();
             Optional<Property> optionalProperty = klass.getPropertyByName(fieldName);
 
-            if (!optionalProperty.isPresent())
+            if (optionalProperty.isEmpty())
             {
                 this.handleMissingProperty(klass, fieldName, jsonNode);
                 return;

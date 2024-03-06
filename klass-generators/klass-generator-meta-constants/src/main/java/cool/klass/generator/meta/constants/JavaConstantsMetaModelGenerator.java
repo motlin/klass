@@ -806,7 +806,7 @@ public class JavaConstantsMetaModelGenerator
 
     private String getSuperClassSourceCode(@Nonnull Klass klass)
     {
-        if (!klass.getSuperClass().isPresent())
+        if (klass.getSuperClass().isEmpty())
         {
             return "Optional.empty()";
         }

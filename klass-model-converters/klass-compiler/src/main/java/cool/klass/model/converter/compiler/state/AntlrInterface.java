@@ -226,7 +226,7 @@ public class AntlrInterface extends AntlrClassifier
         // Only need to check declared modifiers
         Optional<AntlrModifier> maybeTransientModifier = this.modifierStates.detectOptional(AntlrModifier::isTransient);
 
-        if (!maybeTransientModifier.isPresent())
+        if (maybeTransientModifier.isEmpty())
         {
             return;
         }
@@ -282,7 +282,7 @@ public class AntlrInterface extends AntlrClassifier
     }
 
     @Override
-    protected boolean isInterfaceRedundant(int index, AntlrInterface interfaceState)
+    protected boolean isInterfaceRedundant(int index, @Nonnull AntlrInterface interfaceState)
     {
         return this.interfaceNotAtIndexImplements(index, interfaceState);
     }

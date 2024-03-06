@@ -191,7 +191,7 @@ public interface Klass
 
         Klass           klass              = (Klass) classifier;
         Optional<Klass> optionalSuperClass = klass.getSuperClass();
-        if (!optionalSuperClass.isPresent())
+        if (optionalSuperClass.isEmpty())
         {
             return false;
         }
@@ -219,7 +219,7 @@ public interface Klass
         }
 
         Optional<Klass> optionalSuperClass = this.getSuperClass();
-        if (!optionalSuperClass.isPresent())
+        if (optionalSuperClass.isEmpty())
         {
             return false;
         }

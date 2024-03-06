@@ -47,7 +47,6 @@ public interface IAntlrElement
         return result.toImmutable();
     }
 
-    @Nonnull
     default void gatherSurroundingElements(@Nonnull MutableList<IAntlrElement> result)
     {
         result.add(this);
