@@ -136,12 +136,15 @@ public final class GraphQLFragmentSourceCodeGenerator
             return "    ..." + referenceProperty.getType().getName() + "Fragment\n";
         }
 
-        return referenceProperty
+        String typeNameString = referenceProperty.getType().isAbstract() ? "    __typename\n" : "";
+
+        String keyPropertiesSourceCode = referenceProperty
                 .getType()
                 .getKeyProperties()
                 .reject(dataTypeProperty -> dataTypeProperty.isForeignKey() && !dataTypeProperty.isForeignKeyToSelf())
                 .collect(dataTypeProperty -> String.format("    %s\n", dataTypeProperty.getName()))
                 .makeString("");
+        return typeNameString + keyPropertiesSourceCode;
     }
 
     private static boolean isOneRequiredToOneOptional(ReferenceProperty referenceProperty)
