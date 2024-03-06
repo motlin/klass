@@ -219,13 +219,9 @@ public class KlassBootstrapWriter
                 .collect(this::handleEnumerationProperty, new EnumerationPropertyList())
                 .insertAll();
 
-        ImmutableList<Criteria> associationCriteria = this.domainModel
-                .getAssociations()
-                .collect(Association::getCriteria);
-        ImmutableList<Criteria> serviceCriteria = this.domainModel
-                .getServiceGroups()
-                .flatCollect(ServiceGroup::getUrls)
-                .flatCollect(Url::getServices)
+        ImmutableList<Url> urls = this.domainModel.getServiceGroups().flatCollect(ServiceGroup::getUrls);
+        ImmutableList<Service> services = urls.flatCollect(Url::getServices);
+        ImmutableList<Criteria> serviceCriteria = services
                 .flatCollect(each -> Lists.immutable.with(
                         each.getQueryCriteria(),
                         each.getAuthorizeCriteria(),
@@ -234,6 +230,9 @@ public class KlassBootstrapWriter
                 .reject(Optional::isEmpty)
                 .collect(Optional::get);
 
+        ImmutableList<Criteria> associationCriteria = this.domainModel
+                .getAssociations()
+                .collect(Association::getCriteria);
         ImmutableList<Criteria> allCriteria = associationCriteria.newWithAll(serviceCriteria);
 
         ImmutableList<AssociationEnd> associationEnds = this.domainModel
@@ -337,17 +336,13 @@ public class KlassBootstrapWriter
                 .collect(this::handleServiceGroup, new klass.model.meta.domain.ServiceGroupList())
                 .insertAll();
 
-        this.domainModel
-                .getServiceGroups()
-                .flatCollect(ServiceGroup::getUrls)
+        urls
                 .collect(this::handleUrl, new klass.model.meta.domain.UrlList())
                 .insertAll();
 
         MutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter = Maps.mutable.empty();
 
-        this.domainModel
-                .getServiceGroups()
-                .flatCollect(ServiceGroup::getUrls)
+        urls
                 .flatCollect(
                         url -> url
                                 .getPathParameters()
@@ -361,9 +356,7 @@ public class KlassBootstrapWriter
                         new klass.model.meta.domain.UrlParameterList())
                 .insertAll();
 
-        this.domainModel
-                .getServiceGroups()
-                .flatCollect(ServiceGroup::getUrls)
+        urls
                 .flatCollect(
                         url -> url
                                 .getQueryParameters()
@@ -377,15 +370,28 @@ public class KlassBootstrapWriter
                         new klass.model.meta.domain.UrlParameterList())
                 .insertAll();
 
+        ImmutableList<Parameter> parameters = urls.flatCollect(Url::getParameters);
+
+        parameters
+                .select(each -> each.getType() instanceof PrimitiveType)
+                .collect(
+                        each -> this.handleUrlPrimitiveParameter(each, bootstrappedParametersByParameter),
+                        new klass.model.meta.domain.PrimitiveParameterList())
+                .insertAll();
+
+        parameters
+                .select(each -> each.getType() instanceof Enumeration)
+                .collect(
+                        each -> this.handleUrlEnumerationParameter(each, bootstrappedParametersByParameter),
+                        new klass.model.meta.domain.EnumerationParameterList())
+                .insertAll();
+
         var expressionValueVisitor3 = new BootstrapExpressionValueVisitor3(expressionValuesByExpressionValue, bootstrappedParametersByParameter.toImmutable());
         var criteriaVisitor5        = new BootstrapExpressionValueCriteriaVisitor(expressionValueVisitor3);
 
         serviceCriteria.each(criteria -> criteria.visit(criteriaVisitor5));
 
-        this.domainModel
-                .getServiceGroups()
-                .flatCollect(ServiceGroup::getUrls)
-                .flatCollect(Url::getServices)
+        services
                 .collectWith(this::handleService, criteriaByCriteria, new klass.model.meta.domain.ServiceList())
                 .insertAll();
     }
@@ -884,6 +890,34 @@ public class KlassBootstrapWriter
         bootstrappedParametersByParameter.put(parameter, bootstrappedParameter);
 
         return bootstrappedUrlParameter;
+    }
+
+    private PrimitiveParameter handleUrlPrimitiveParameter(
+            @Nonnull Parameter parameter,
+            @Nonnull MutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter)
+    {
+        var bootstrappedParameter = bootstrappedParametersByParameter.get(parameter);
+
+        PrimitiveType      primitiveType                  = (PrimitiveType) parameter.getType();
+        PrimitiveParameter bootstrappedPrimitiveParameter = new PrimitiveParameter();
+        bootstrappedPrimitiveParameter.setPrimitiveType(primitiveType.getPrettyName());
+        bootstrappedPrimitiveParameter.setId(bootstrappedParameter.getId());
+
+        return bootstrappedPrimitiveParameter;
+    }
+
+    private EnumerationParameter handleUrlEnumerationParameter(
+            @Nonnull Parameter parameter,
+            @Nonnull MutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter)
+    {
+        var bootstrappedParameter = bootstrappedParametersByParameter.get(parameter);
+
+        Enumeration          enumeration                      = (Enumeration) parameter.getType();
+        EnumerationParameter bootstrappedEnumerationParameter = new EnumerationParameter();
+        bootstrappedEnumerationParameter.setEnumerationName(enumeration.getName());
+        bootstrappedEnumerationParameter.setId(bootstrappedParameter.getId());
+
+        return bootstrappedEnumerationParameter;
     }
 
     private klass.model.meta.domain.Service handleService(
