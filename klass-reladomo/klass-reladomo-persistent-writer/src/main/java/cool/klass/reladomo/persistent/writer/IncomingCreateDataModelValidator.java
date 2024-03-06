@@ -39,9 +39,11 @@ public class IncomingCreateDataModelValidator
     @Nonnull
     private final Klass                      klass;
     @Nonnull
-    private final ObjectNode                 incomingJson;
+    private final ObjectNode                 objectNode;
     @Nonnull
     private final MutableList<String>        errors;
+    @Nonnull
+    private final MutableList<String>        warnings;
     @Nonnull
     private final MutableStack<ErrorContext> errorContextStack;
     @Nonnull
@@ -53,8 +55,9 @@ public class IncomingCreateDataModelValidator
     public IncomingCreateDataModelValidator(
             @Nonnull DataStore dataStore,
             @Nonnull Klass klass,
-            @Nonnull ObjectNode incomingJson,
+            @Nonnull ObjectNode objectNode,
             @Nonnull MutableList<String> errors,
+            @Nonnull MutableList<String> warnings,
             @Nonnull MutableStack<ErrorContext> errorContextStack,
             @Nonnull MutableStack<String> contextStack,
             @Nonnull Optional<AssociationEnd> pathHere,
@@ -62,8 +65,9 @@ public class IncomingCreateDataModelValidator
     {
         this.dataStore = Objects.requireNonNull(dataStore);
         this.klass = Objects.requireNonNull(klass);
-        this.incomingJson = Objects.requireNonNull(incomingJson);
+        this.objectNode = Objects.requireNonNull(objectNode);
         this.errors = Objects.requireNonNull(errors);
+        this.warnings = Objects.requireNonNull(warnings);
         this.errorContextStack = Objects.requireNonNull(errorContextStack);
         this.contextStack = Objects.requireNonNull(contextStack);
         this.pathHere = Objects.requireNonNull(pathHere);
@@ -74,13 +78,15 @@ public class IncomingCreateDataModelValidator
             DataStore dataStore,
             Klass klass,
             ObjectNode incomingJson,
-            MutableList<String> errors)
+            MutableList<String> errors,
+            MutableList<String> warnings)
     {
         IncomingCreateDataModelValidator validator = new IncomingCreateDataModelValidator(
                 dataStore,
                 klass,
                 incomingJson,
                 errors,
+                warnings,
                 Stacks.mutable.empty(),
                 Stacks.mutable.empty(),
                 Optional.empty(),
@@ -92,14 +98,14 @@ public class IncomingCreateDataModelValidator
     {
         if (this.isRoot)
         {
-            ImmutableList<Object> keysFromJsonNode = this.getKeysFromJsonNode(this.incomingJson, this.klass);
+            ImmutableList<Object> keysFromJsonNode = this.getKeysFromJsonNode(this.objectNode, this.klass);
             this.errorContextStack.push(new KlassErrorContext(this.klass, keysFromJsonNode));
             this.contextStack.push(this.klass.getName());
         }
         try
         {
-            this.synchronizeDataTypeProperties(this.klass, this.incomingJson);
-            this.synchronizeAssociationEnds(this.klass, this.pathHere, this.incomingJson);
+            this.synchronizeDataTypeProperties();
+            this.synchronizeAssociationEnds();
         }
         finally
         {
@@ -112,21 +118,140 @@ public class IncomingCreateDataModelValidator
     }
 
     //region DataTypeProperties
-    private void synchronizeDataTypeProperties(
-            @Nonnull Klass klass,
-            @Nonnull ObjectNode incomingJson)
+    private void synchronizeDataTypeProperties()
     {
-        ImmutableList<DataTypeProperty> plainProperties = klass.getDataTypeProperties()
-                .reject(DataTypeProperty::isID)
-                .reject(DataTypeProperty::isKey)
-                .reject(DataTypeProperty::isTemporal)
-                .reject(DataTypeProperty::isAudit)
-                .reject(DataTypeProperty::isForeignKey);
+        ImmutableList<DataTypeProperty> dataTypeProperties = this.klass.getDataTypeProperties();
+        for (DataTypeProperty dataTypeProperty : dataTypeProperties)
+        {
+            this.synchronizeDataTypeProperty(dataTypeProperty);
+        }
+    }
 
-        this.handleIdProperties(klass.getDataTypeProperties().select(DataTypeProperty::isID));
-        this.checkPresentPropertiesMatch(klass.getDataTypeProperties().select(DataTypeProperty::isTemporal));
-        this.checkPresentPropertiesMatch(klass.getDataTypeProperties().select(DataTypeProperty::isAudit));
-        this.checkRequiredPropertiesPresent(plainProperties);
+    private void synchronizeDataTypeProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    {
+        if (dataTypeProperty.isID())
+        {
+            this.handleIdProperty(dataTypeProperty);
+        }
+        else if (dataTypeProperty.isKey())
+        {
+            this.handleKeyProperty(dataTypeProperty);
+        }
+        else if (dataTypeProperty.isDerived())
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "derived");
+        }
+        else if (dataTypeProperty.isTemporal())
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "temporal");
+        }
+        else if (dataTypeProperty.isAudit())
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "audit");
+        }
+        else if (dataTypeProperty.isForeignKey())
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "foreign key");
+        }
+        else
+        {
+            this.handlePlainProperty(dataTypeProperty);
+        }
+    }
+
+    private void handleIdProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    {
+        this.handleWarnIfPresent(dataTypeProperty, "id");
+    }
+
+    private void handleKeyProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    {
+        // TODO: Handle foreign key properties that are also key properties at the root
+
+        if (this.isForeignKeyWithOpposite(dataTypeProperty))
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "foreign key");
+            return;
+        }
+
+        if (this.isRoot)
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "root key");
+            return;
+        }
+
+        this.handlePlainProperty(dataTypeProperty);
+    }
+
+    private boolean isForeignKeyWithOpposite(@Nonnull DataTypeProperty keyProperty)
+    {
+        return keyProperty.getKeysMatchingThisForeignKey()
+                .valuesView()
+                .anySatisfyWith(this::isOppositeKey, keyProperty);
+    }
+
+    private boolean isOppositeKey(
+            @Nonnull DataTypeProperty dataTypeProperty,
+            @Nonnull DataTypeProperty keyProperty)
+    {
+        return dataTypeProperty.getKeysMatchingThisForeignKey().containsValue(keyProperty);
+    }
+
+    private void handleWarnIfPresent(DataTypeProperty property, String propertyKind)
+    {
+        JsonNode jsonNode = this.objectNode.path(property.getName());
+        if (jsonNode.isMissingNode())
+        {
+            return;
+        }
+
+        if (jsonNode.isNull())
+        {
+            String warning = String.format(
+                    "Warning at %s. Didn't expect to receive value for %s property '%s.%s: %s%s' but value was null.",
+                    this.getContextString(),
+                    propertyKind,
+                    property.getOwningClassifier().getName(),
+                    property.getName(),
+                    property.getType().toString(),
+                    property.isOptional() ? "?" : "");
+            this.warnings.add(warning);
+            return;
+        }
+
+        String warning = String.format(
+                "Warning at %s. Didn't expect to receive value for %s property '%s.%s: %s%s' but value was %s: %s.",
+                this.getContextString(),
+                propertyKind,
+                property.getOwningClassifier().getName(),
+                property.getName(),
+                property.getType().toString(),
+                property.isOptional() ? "?" : "",
+                jsonNode.getNodeType().toString().toLowerCase(),
+                jsonNode);
+        this.warnings.add(warning);
+    }
+
+    private void handlePlainProperty(@Nonnull DataTypeProperty property)
+    {
+        if (!property.isRequired())
+        {
+            return;
+        }
+
+        JsonNode jsonNode = this.objectNode.path(property.getName());
+        if (jsonNode.isMissingNode() || jsonNode.isNull())
+        {
+            String error = String.format(
+                    "Error at %s. Expected value for required property '%s.%s: %s%s' but value was %s.",
+                    this.getContextString(),
+                    property.getOwningClassifier().getName(),
+                    property.getName(),
+                    property.getType().toString(),
+                    property.isOptional() ? "?" : "",
+                    jsonNode.getNodeType().toString().toLowerCase());
+            this.errors.add(error);
+        }
     }
 
     private void handleIdProperties(@Nonnull ImmutableList<DataTypeProperty> idProperties)
@@ -147,7 +272,7 @@ public class IncomingCreateDataModelValidator
 
             try
             {
-                JsonNode jsonNode = this.incomingJson.path(dataTypeProperty.getName());
+                JsonNode jsonNode = this.objectNode.path(dataTypeProperty.getName());
                 if (!jsonNode.isMissingNode() && !jsonNode.isNull())
                 {
                     if (dataTypeProperty.isTemporal())
@@ -189,29 +314,12 @@ public class IncomingCreateDataModelValidator
         }
     }
 
-    private void handlePlainProperty(@Nonnull DataTypeProperty property)
-    {
-        JsonNode jsonNode = this.incomingJson.path(property.getName());
-        if (jsonNode.isMissingNode() || jsonNode.isNull())
-        {
-            String error = String.format(
-                    "Error at %s. Expected value for required property '%s.%s: %s%s' but value was %s.",
-                    this.getContextString(),
-                    property.getOwningClassifier().getName(),
-                    property.getName(),
-                    property.getType().toString(),
-                    property.isOptional() ? "?" : "",
-                    jsonNode.getNodeType().toString().toLowerCase());
-            this.errors.add(error);
-        }
-    }
-
     public String getContextString()
     {
         return this.errorContextStack
                 .toList()
                 .asReversed()
-                .makeString("->");
+                .makeString(".");
     }
 
     @Nonnull
@@ -240,42 +348,39 @@ public class IncomingCreateDataModelValidator
     //endregion
 
     //region AssociationEnds
-    public void synchronizeAssociationEnds(
-            @Nonnull Klass klass,
-            @Nonnull Optional<AssociationEnd> pathHere,
-            @Nonnull ObjectNode jsonNode)
+    public void synchronizeAssociationEnds()
     {
-        PartitionImmutableList<AssociationEnd> forwardOwnedAssociationEnds = klass.getAssociationEnds()
-                .reject(associationEnd -> pathHere.equals(Optional.of(associationEnd.getOpposite())))
+        PartitionImmutableList<AssociationEnd> forwardOwnedAssociationEnds = this.klass.getAssociationEnds()
+                .reject(associationEnd -> this.pathHere.equals(Optional.of(associationEnd.getOpposite())))
                 .partition(AssociationEnd::isOwned);
 
         for (AssociationEnd associationEnd : forwardOwnedAssociationEnds.getSelected())
         {
             Multiplicity multiplicity = associationEnd.getMultiplicity();
 
-            JsonNode childJsonNode = jsonNode.path(associationEnd.getName());
+            JsonNode childJsonNode = this.objectNode.path(associationEnd.getName());
             if (multiplicity.isToOne())
             {
-                this.handleToOne(associationEnd, childJsonNode, jsonNode);
+                this.handleToOne(associationEnd, childJsonNode);
             }
             else
             {
-                this.handleToMany(associationEnd, childJsonNode, jsonNode);
+                this.handleToMany(associationEnd, childJsonNode);
             }
         }
 
         for (AssociationEnd associationEnd : forwardOwnedAssociationEnds.getRejected())
         {
             Multiplicity multiplicity  = associationEnd.getMultiplicity();
-            JsonNode     childJsonNode = jsonNode.path(associationEnd.getName());
+            JsonNode     childJsonNode = this.objectNode.path(associationEnd.getName());
 
             if (multiplicity.isToOne())
             {
-                this.handleToOneOutsideProjection(associationEnd, childJsonNode, jsonNode);
+                this.handleToOneOutsideProjection(associationEnd, childJsonNode, this.objectNode);
             }
             else
             {
-                this.handleToManyOutsideProjection(associationEnd, childJsonNode, jsonNode);
+                this.handleToManyOutsideProjection(associationEnd, childJsonNode, this.objectNode);
             }
         }
     }
@@ -395,7 +500,7 @@ public class IncomingCreateDataModelValidator
     {
         Multiplicity multiplicity = associationEnd.getMultiplicity();
 
-        JsonNode jsonNode = this.incomingJson.path(associationEnd.getName());
+        JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
 
         if ((jsonNode.isMissingNode() || jsonNode.isNull()) && multiplicity.isRequired())
         {
@@ -404,18 +509,17 @@ public class IncomingCreateDataModelValidator
 
         if (multiplicity.isToOne())
         {
-            this.handleToOne(associationEnd, jsonNode, incomingJson);
+            this.handleToOne(associationEnd, jsonNode);
         }
         else
         {
-            this.handleToMany(associationEnd, jsonNode, incomingJson);
+            this.handleToMany(associationEnd, jsonNode);
         }
     }
 
     public void handleToOne(
             @Nonnull AssociationEnd associationEnd,
-            JsonNode childJsonNode,
-            JsonNode parentJsonNode)
+            JsonNode childJsonNode)
     {
         String associationEndName = associationEnd.getName();
         this.contextStack.push(associationEndName);
@@ -423,7 +527,7 @@ public class IncomingCreateDataModelValidator
         ImmutableList<Object> keys = this.getKeysFromJsonNode(
                 childJsonNode,
                 associationEnd,
-                parentJsonNode);
+                this.objectNode);
 
         this.errorContextStack.push(new AssociationEndErrorContext(associationEnd, keys));
         try
@@ -434,6 +538,7 @@ public class IncomingCreateDataModelValidator
                     associationEnd.getType(),
                     childObjectNode,
                     this.errors,
+                    this.warnings,
                     this.errorContextStack,
                     this.contextStack,
                     Optional.of(associationEnd),
@@ -449,8 +554,7 @@ public class IncomingCreateDataModelValidator
 
     public void handleToMany(
             @Nonnull AssociationEnd associationEnd,
-            JsonNode incomingChildInstances,
-            JsonNode parentJsonNode)
+            JsonNode incomingChildInstances)
     {
         ImmutableList<JsonNode> incomingInstancesForInsert = this.filterIncomingInstancesForInsert(
                 incomingChildInstances,
@@ -464,7 +568,7 @@ public class IncomingCreateDataModelValidator
         MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey = this.indexIncomingJsonInstances(
                 incomingInstancesForUpdate,
                 associationEnd,
-                parentJsonNode);
+                this.objectNode);
 
         for (int index = 0; index < incomingChildInstances.size(); index++)
         {
@@ -477,7 +581,7 @@ public class IncomingCreateDataModelValidator
             ImmutableList<Object> keysFromJsonNode = this.getKeysFromJsonNode(
                     childJsonNode,
                     associationEnd,
-                    parentJsonNode);
+                    this.objectNode);
 
             AssociationEndWithIndexErrorContext associationEndWithIndex = new AssociationEndWithIndexErrorContext(
                     associationEnd,
@@ -501,6 +605,7 @@ public class IncomingCreateDataModelValidator
                         associationEnd.getType(),
                         childObjectNode,
                         this.errors,
+                        this.warnings,
                         this.errorContextStack,
                         this.contextStack,
                         Optional.of(associationEnd),
