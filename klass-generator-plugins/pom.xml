@@ -53,6 +53,7 @@
         <module>klass-generator-reladomo-database-plugin</module>
         <module>klass-generator-reladomo-merge-hooks-plugin</module>
         <module>klass-generator-reladomo-plugin</module>
+        <module>klass-generator-reladomo-readable-interface-plugin</module>
         <module>klass-generator-service-resources-plugin</module>
         <module>klass-generator-uml-nomnoml-plugin</module>
         <module>klass-generator-xsd2bean-plugin</module>
