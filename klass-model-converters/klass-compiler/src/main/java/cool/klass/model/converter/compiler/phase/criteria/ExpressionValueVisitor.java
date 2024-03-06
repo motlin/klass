@@ -10,8 +10,8 @@ import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
-import cool.klass.model.converter.compiler.state.value.AntlrThisMemberValue;
-import cool.klass.model.converter.compiler.state.value.AntlrTypeMemberValue;
+import cool.klass.model.converter.compiler.state.value.AntlrThisMemberReferencePath;
+import cool.klass.model.converter.compiler.state.value.AntlrTypeMemberReferencePath;
 import cool.klass.model.converter.compiler.state.value.AntlrVariableReference;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrLiteralListValue;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrLiteralValue;
@@ -24,8 +24,8 @@ import cool.klass.model.meta.grammar.KlassParser.LiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralListContext;
 import cool.klass.model.meta.grammar.KlassParser.MemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.NativeLiteralContext;
-import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferencePathContext;
+import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferencePathContext;
 import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
 import cool.klass.model.meta.grammar.KlassVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -97,7 +97,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
 
     @Nonnull
     @Override
-    public AntlrThisMemberValue visitThisMemberReference(@Nonnull ThisMemberReferenceContext ctx)
+    public AntlrThisMemberReferencePath visitThisMemberReferencePath(@Nonnull ThisMemberReferencePathContext ctx)
     {
         MemberReferenceContext memberReferenceContext = ctx.memberReference();
 
@@ -115,7 +115,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         String                   memberName            = memberReferenceContext.identifier().getText();
         AntlrDataTypeProperty<?> dataTypePropertyState = currentClassState.getDataTypePropertyByName(memberName);
 
-        return new AntlrThisMemberValue(
+        return new AntlrThisMemberReferencePath(
                 ctx,
                 this.compilationUnit,
                 false,
@@ -126,7 +126,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
 
     @Nonnull
     @Override
-    public AntlrTypeMemberValue visitTypeMemberReference(@Nonnull TypeMemberReferenceContext ctx)
+    public AntlrTypeMemberReferencePath visitTypeMemberReferencePath(@Nonnull TypeMemberReferencePathContext ctx)
     {
         ClassReferenceContext classReferenceContext = ctx.classReference();
         String                className             = classReferenceContext.identifier().getText();
@@ -148,7 +148,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         String                   memberName            = memberReferenceContext.identifier().getText();
         AntlrDataTypeProperty<?> dataTypePropertyState = currentClassState.getDataTypePropertyByName(memberName);
 
-        return new AntlrTypeMemberValue(
+        return new AntlrTypeMemberReferencePath(
                 ctx,
                 this.compilationUnit,
                 false,

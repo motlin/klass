@@ -113,9 +113,8 @@ associationEndModifier: 'owned';
 versions: 'versions' '(' classReference ')';
 
 // order by
-orderByDeclaration: 'orderBy' ':' orderByProperty (',' orderByProperty)*;
-// TODO: Rename for consistency. Either orderByMember or orderByMemberPath or something like that
-orderByProperty: thisMemberReference orderByDirection?;
+orderByDeclaration: 'orderBy' ':' orderByMemberReferencePath (',' orderByMemberReferencePath)*;
+orderByMemberReferencePath: thisMemberReferencePath orderByDirection?;
 orderByDirection: 'ascending' | 'descending';
 
 // criteria
@@ -131,12 +130,12 @@ criteriaExpression
 expressionValue
     : literal
     | literalList
-    | thisMemberReference
-    | typeMemberReference
+    | thisMemberReferencePath
+    | typeMemberReferencePath
     | nativeLiteral
     | variableReference
     ;
-expressionMemberReference: thisMemberReference | typeMemberReference;
+expressionMemberReference: thisMemberReferencePath | typeMemberReferencePath;
 literalList: '(' literal (',' literal)* ')';
 nativeLiteral: 'user';
 operator
@@ -161,10 +160,8 @@ memberReference: identifier;
 associationEndReference: identifier;
 variableReference: identifier;
 
-// TODO: Rename thisMemberReferencePath
-thisMemberReference: 'this' ('.' associationEndReference)* '.' memberReference;
-// TODO: Rename typeMemberReferencePath
-typeMemberReference: classReference ('.' associationEndReference)* '.' memberReference;
+thisMemberReferencePath: 'this' ('.' associationEndReference)* '.' memberReference;
+typeMemberReferencePath: classReference ('.' associationEndReference)* '.' memberReference;
 
 identifier
     : keywordValidAsIdentifier

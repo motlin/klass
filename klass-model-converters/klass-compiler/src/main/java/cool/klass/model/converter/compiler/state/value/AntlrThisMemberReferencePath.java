@@ -12,19 +12,19 @@ import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
-import cool.klass.model.meta.domain.value.TypeMemberExpressionValue.TypeMemberExpressionValueBuilder;
+import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
+import cool.klass.model.meta.domain.value.ThisMemberExpressionValue.ThisMemberExpressionValueBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferencePathContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrTypeMemberValue extends AntlrMemberExpressionValue
+public class AntlrThisMemberReferencePath extends AntlrMemberExpressionValue
 {
-    public AntlrTypeMemberValue(
-            @Nonnull TypeMemberReferenceContext elementContext,
+    public AntlrThisMemberReferencePath(
+            @Nonnull ThisMemberReferencePathContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
             @Nonnull AntlrClass classState,
@@ -36,12 +36,15 @@ public class AntlrTypeMemberValue extends AntlrMemberExpressionValue
 
     @Nonnull
     @Override
-    public TypeMemberExpressionValueBuilder build()
+    public ThisMemberExpressionValueBuilder build()
     {
-        return new TypeMemberExpressionValueBuilder(
+        ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates.collect(
+                AntlrAssociationEnd::getAssociationEndBuilder);
+
+        return new ThisMemberExpressionValueBuilder(
                 this.elementContext,
                 this.classState.getKlassBuilder(),
-                this.associationEndStates.collect(AntlrAssociationEnd::getAssociationEndBuilder),
+                associationEndBuilders,
                 this.dataTypePropertyState.getPropertyBuilder());
     }
 
@@ -50,23 +53,8 @@ public class AntlrTypeMemberValue extends AntlrMemberExpressionValue
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull ImmutableList<ParserRuleContext> parserRuleContexts)
     {
-        // TODO: This error message is firing for ambiguity, not just NOT_FOUND.
-
-        if (this.classState == AntlrClass.AMBIGUOUS || this.classState == AntlrClass.NOT_FOUND)
-        {
-            ClassReferenceContext offendingToken = this.getElementContext().classReference();
-
-            // TODO: This error message is firing for ambiguity, not just NOT_FOUND.
-            String message = String.format(
-                    "ERR_MEM_TYP: Cannot find class '%s'.",
-                    offendingToken.getText());
-
-            compilerErrorHolder.add(message, offendingToken);
-            return;
-        }
-
         List<AssociationEndReferenceContext> associationEndReferenceContexts = this.getElementContext().associationEndReference();
-        AntlrClass currentClassState = this.reportErrorsAssociationEnds(
+        AntlrClass currentClassState = reportErrorsAssociationEnds(
                 compilerErrorHolder,
                 parserRuleContexts,
                 associationEndReferenceContexts);
@@ -79,7 +67,7 @@ public class AntlrTypeMemberValue extends AntlrMemberExpressionValue
         {
             IdentifierContext identifier = this.getElementContext().memberReference().identifier();
             String message = String.format(
-                    "ERR_MEM_MEM: Cannot find member '%s.%s'.",
+                    "Cannot find member '%s.%s'.",
                     currentClassState.getName(),
                     identifier.getText());
             compilerErrorHolder.add(
@@ -91,6 +79,12 @@ public class AntlrTypeMemberValue extends AntlrMemberExpressionValue
 
     @Nonnull
     @Override
+    public ThisMemberReferencePathContext getElementContext()
+    {
+        return (ThisMemberReferencePathContext) super.getElementContext();
+    }
+
+    @Override
     public ImmutableList<AntlrType> getPossibleTypes()
     {
         AntlrType type = this.dataTypePropertyState.getType();
@@ -99,12 +93,5 @@ public class AntlrTypeMemberValue extends AntlrMemberExpressionValue
             return Lists.immutable.empty();
         }
         return Lists.immutable.with(type);
-    }
-
-    @Nonnull
-    @Override
-    public TypeMemberReferenceContext getElementContext()
-    {
-        return (TypeMemberReferenceContext) super.getElementContext();
     }
 }

@@ -47,7 +47,7 @@ import cool.klass.model.meta.grammar.KlassParser.OperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.OptionalMarkerContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDirectionContext;
-import cool.klass.model.meta.grammar.KlassParser.OrderByPropertyContext;
+import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationContext;
@@ -77,9 +77,9 @@ import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 import cool.klass.model.meta.grammar.KlassParser.StringOperatorContext;
-import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferencePathContext;
 import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferencePathContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlConstantContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
@@ -892,17 +892,17 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
-    public void enterOrderByProperty(OrderByPropertyContext ctx)
+    public void enterOrderByMemberReferencePath(OrderByMemberReferencePathContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterOrderByProperty() not implemented yet");
+                + ".enterOrderByMemberReferencePath() not implemented yet");
     }
 
     @Override
-    public void exitOrderByProperty(OrderByPropertyContext ctx)
+    public void exitOrderByMemberReferencePath(OrderByMemberReferencePathContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitOrderByProperty() not implemented yet");
+                + ".exitOrderByMemberReferencePath() not implemented yet");
     }
 
     @Override
@@ -1186,31 +1186,31 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
-    public void enterThisMemberReference(ThisMemberReferenceContext ctx)
+    public void enterThisMemberReferencePath(ThisMemberReferencePathContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterThisMemberReference() not implemented yet");
+                + ".enterThisMemberReferencePath() not implemented yet");
     }
 
     @Override
-    public void exitThisMemberReference(ThisMemberReferenceContext ctx)
+    public void exitThisMemberReferencePath(ThisMemberReferencePathContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitThisMemberReference() not implemented yet");
+                + ".exitThisMemberReferencePath() not implemented yet");
     }
 
     @Override
-    public void enterTypeMemberReference(TypeMemberReferenceContext ctx)
+    public void enterTypeMemberReferencePath(TypeMemberReferencePathContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterTypeMemberReference() not implemented yet");
+                + ".enterTypeMemberReferencePath() not implemented yet");
     }
 
     @Override
-    public void exitTypeMemberReference(TypeMemberReferenceContext ctx)
+    public void exitTypeMemberReferencePath(TypeMemberReferencePathContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitTypeMemberReference() not implemented yet");
+                + ".exitTypeMemberReferencePath() not implemented yet");
     }
 
     @Override

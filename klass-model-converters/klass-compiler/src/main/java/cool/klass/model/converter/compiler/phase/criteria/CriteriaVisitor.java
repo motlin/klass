@@ -32,7 +32,7 @@ import cool.klass.model.meta.grammar.KlassParser.LiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralListContext;
 import cool.klass.model.meta.grammar.KlassParser.NativeLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.StringOperatorContext;
-import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferencePathContext;
 import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
 import cool.klass.model.meta.grammar.KlassVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -217,10 +217,10 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
 
     @Nonnull
     @Override
-    public AntlrCriteria visitTypeMemberReference(TypeMemberReferenceContext ctx)
+    public AntlrCriteria visitTypeMemberReferencePath(TypeMemberReferencePathContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".visitTypeMemberReference() not implemented yet");
+                + ".visitTypeMemberReferencePath() not implemented yet");
     }
 
     @Nonnull

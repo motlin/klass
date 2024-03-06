@@ -18,7 +18,7 @@ public class AntlrOrderBy extends AntlrElement
     private final AntlrClass thisContext;
 
     @Nonnull
-    private final MutableList<AntlrOrderByProperty> orderByPropertyStates = Lists.mutable.empty();
+    private final MutableList<AntlrOrderByMemberReferencePath> orderByMemberReferencePathStates = Lists.mutable.empty();
 
     public AntlrOrderBy(
             @Nonnull ParserRuleContext elementContext,
@@ -32,11 +32,11 @@ public class AntlrOrderBy extends AntlrElement
 
     public int getNumProperties()
     {
-        return this.orderByPropertyStates.size();
+        return this.orderByMemberReferencePathStates.size();
     }
 
-    public void enterOrderByProperty(AntlrOrderByProperty orderByPropertyState)
+    public void enterOrderByMemberReferencePath(AntlrOrderByMemberReferencePath orderByMemberReferencePathState)
     {
-        this.orderByPropertyStates.add(orderByPropertyState);
+        this.orderByMemberReferencePathStates.add(orderByMemberReferencePathState);
     }
 }

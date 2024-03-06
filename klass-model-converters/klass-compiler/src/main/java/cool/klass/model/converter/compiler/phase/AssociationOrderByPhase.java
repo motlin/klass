@@ -13,14 +13,14 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByDirection;
-import cool.klass.model.converter.compiler.state.order.AntlrOrderByProperty;
+import cool.klass.model.converter.compiler.state.order.AntlrOrderByMemberReferencePath;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
-import cool.klass.model.converter.compiler.state.value.AntlrThisMemberValue;
+import cool.klass.model.converter.compiler.state.value.AntlrThisMemberReferencePath;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.OrderByPropertyContext;
-import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
+import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferencePathContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.MutableMap;
 
@@ -92,50 +92,50 @@ public class AssociationOrderByPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterOrderByProperty(OrderByPropertyContext ctx)
+    public void enterOrderByMemberReferencePath(OrderByMemberReferencePathContext ctx)
     {
         if (this.associationEndState == null)
         {
             return;
         }
 
-        AntlrOrderByProperty orderByPropertyState = this.convertOrderByProperty(ctx);
-        this.orderByState.enterOrderByProperty(orderByPropertyState);
+        AntlrOrderByMemberReferencePath orderByMemberReferencePathState = this.convertOrderByMemberReferencePath(ctx);
+        this.orderByState.enterOrderByMemberReferencePath(orderByMemberReferencePathState);
     }
 
-    private AntlrOrderByProperty convertOrderByProperty(OrderByPropertyContext orderByPropertyContext)
+    private AntlrOrderByMemberReferencePath convertOrderByMemberReferencePath(OrderByMemberReferencePathContext orderByMemberReferencePathContext)
     {
-        AntlrThisMemberValue  thisMemberValue  = this.getAntlrThisMemberValue(orderByPropertyContext);
-        AntlrOrderByDirection orderByDirection = this.getAntlrOrderByDirection(orderByPropertyContext);
+        AntlrThisMemberReferencePath thisMemberReferencePath  = this.getAntlrThisMemberReferencePath(orderByMemberReferencePathContext);
+        AntlrOrderByDirection        orderByDirection = this.getAntlrOrderByDirection(orderByMemberReferencePathContext);
 
-        return new AntlrOrderByProperty(
-                orderByPropertyContext,
+        return new AntlrOrderByMemberReferencePath(
+                orderByMemberReferencePathContext,
                 this.currentCompilationUnit,
                 false,
                 this.orderByState,
                 this.orderByState.getNumProperties(),
-                thisMemberValue,
+                thisMemberReferencePath,
                 orderByDirection);
     }
 
     @Nonnull
-    private AntlrThisMemberValue getAntlrThisMemberValue(OrderByPropertyContext orderByPropertyContext)
+    private AntlrThisMemberReferencePath getAntlrThisMemberReferencePath(OrderByMemberReferencePathContext orderByMemberReferencePathContext)
     {
         ExpressionValueVisitor expressionValueVisitor = new ExpressionValueVisitor(
                 this.currentCompilationUnit,
                 this.thisContext,
                 this.domainModelState);
 
-        ThisMemberReferenceContext thisMemberReferenceContext = orderByPropertyContext.thisMemberReference();
+        ThisMemberReferencePathContext thisMemberReferencePathContext = orderByMemberReferencePathContext.thisMemberReferencePath();
 
-        return expressionValueVisitor.visitThisMemberReference(thisMemberReferenceContext);
+        return expressionValueVisitor.visitThisMemberReferencePath(thisMemberReferencePathContext);
     }
 
     @Nonnull
-    private AntlrOrderByDirection getAntlrOrderByDirection(OrderByPropertyContext orderByPropertyContext)
+    private AntlrOrderByDirection getAntlrOrderByDirection(OrderByMemberReferencePathContext orderByMemberReferencePathContext)
     {
         return new AntlrOrderByDirection(
-                orderByPropertyContext.orderByDirection(),
+                orderByMemberReferencePathContext.orderByDirection(),
                 this.currentCompilationUnit,
                 false);
     }
