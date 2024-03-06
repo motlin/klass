@@ -48,7 +48,11 @@ public class ReladomoJsonViewSerializer
             @Nonnull SerializerProvider serializers) throws IOException
     {
         Class<?> activeViewClass = serializers.getActiveView();
-        Objects.requireNonNull(activeViewClass);
+        Objects.requireNonNull(
+                activeViewClass,
+                () -> String.format(
+                        "Could not find json serializer for %s. Usually this is caused by a missing @JsonView() annotation.",
+                        mithraObject.getClass().getCanonicalName()));
 
         if (!KlassJsonView.class.isAssignableFrom(activeViewClass))
         {
