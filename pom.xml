@@ -623,7 +623,8 @@
                                             <unCheckedPluginList>
                                                 cool.klass:klass-generator-dropwizard-plugin,
                                                 cool.klass:klass-generator-reladomo-plugin,
-                                                cool.klass:klass-generator-service-resources-plugin
+                                                cool.klass:klass-generator-service-resources-plugin,
+                                                cool.klass:klass-compiler-plugin
                                             </unCheckedPluginList>
                                         </requirePluginVersions>
                                         <bannedDependencies>

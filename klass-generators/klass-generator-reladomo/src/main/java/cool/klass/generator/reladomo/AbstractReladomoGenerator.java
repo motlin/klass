@@ -43,7 +43,14 @@ public class AbstractReladomoGenerator
                                 + "        initializePrimitivesToNull=\"true\"\n"
                                 + "        objectType=\"transactional\"\n"
                                 + "        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
-                                + "        xsi:noNamespaceSchemaLocation=\"https://raw.githubusercontent.com/goldmansachs/reladomo/master/reladomogen/src/main/xsd/mithraobject.xsd\">\n");
+                                + "        xsi:noNamespaceSchemaLocation=\"https://raw.githubusercontent.com/goldmansachs/reladomo/master/reladomogen/src/main/xsd/mithraobject.xsd\">\n")
+                .replaceAll(
+                        "<(MithraRuntime)>\n",
+                        ""
+                                + "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
+                                + "<$1\n"
+                                + "        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+                                + "        xsi:noNamespaceSchemaLocation=\"https://raw.githubusercontent.com/goldmansachs/reladomo/master/reladomo/src/main/xsd/mithraruntime.xsd\">\n");
     }
 
     protected void printStringToFile(@Nonnull Path path, String contents)

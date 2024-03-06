@@ -27,7 +27,7 @@ public final class ReladomoConfig
         Config reladomoConfig = config.getConfig("reladomo");
 
         int          transactionTimeoutSeconds = reladomoConfig.getInt("transactionTimeoutSeconds");
-        List<String> reladomoRuntimeConfigXmls = reladomoConfig.getStringList("reladomoRuntimeConfigXml");
+        List<String> reladomoRuntimeConfigurationPaths = reladomoConfig.getStringList("reladomoRuntimeConfigurationPaths");
 
         if (LOGGER.isDebugEnabled())
         {
@@ -42,14 +42,14 @@ public final class ReladomoConfig
         mithraManager.setTransactionTimeout(transactionTimeoutSeconds);
         // Notification should be configured here. Refer to notification/Notification.html under reladomo-javadoc.jar.
 
-        reladomoRuntimeConfigXmls.forEach(ReladomoConfig::loadReladomoConfigurationXml);
+        reladomoRuntimeConfigurationPaths.forEach(ReladomoConfig::loadReladomoRuntimeConfigurationPath);
     }
 
-    private static void loadReladomoConfigurationXml(String reladomoRuntimeConfigXml)
+    private static void loadReladomoRuntimeConfigurationPath(String reladomoRuntimeConfigurationPath)
     {
-        LOGGER.info("Loading Reladomo configuration XML: {}", reladomoRuntimeConfigXml);
+        LOGGER.info("Loading Reladomo configuration XML: {}", reladomoRuntimeConfigurationPath);
         try (InputStream inputStream = ReladomoConfig.class.getClassLoader()
-                .getResourceAsStream(reladomoRuntimeConfigXml))
+                .getResourceAsStream(reladomoRuntimeConfigurationPath))
         {
             MithraManagerProvider.getMithraManager().readConfiguration(inputStream);
         }

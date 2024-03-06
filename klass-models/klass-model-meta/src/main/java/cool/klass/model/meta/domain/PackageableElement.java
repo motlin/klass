@@ -29,6 +29,12 @@ public abstract class PackageableElement extends NamedElement
         return this.packageName;
     }
 
+    @Nonnull
+    public String getFullyQualifiedName()
+    {
+        return this.packageName + '.' + this.getName();
+    }
+
     public abstract static class PackageableElementBuilder extends NamedElementBuilder
     {
         // TODO: package context instead of package name?

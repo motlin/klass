@@ -158,6 +158,60 @@
 
             <plugin>
                 <groupId>cool.klass</groupId>
+                <artifactId>klass-generator-reladomo-plugin</artifactId>
+                <version>${klass.version}</version>
+
+                <configuration>
+                    <rootPackageName>${app.rootPackageName}</rootPackageName>
+s                    <klassSourcePackages>
+                        <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
+                        <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
+                    </klassSourcePackages>
+                </configuration>
+
+                <executions>
+
+                    <execution>
+                        <id>generate-production-runtime-configuration</id>
+                        <goals>
+                            <goal>generate-reladomo-runtime-configuration</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/generated-resources/reladomo-runtime-configuration</outputDirectory>
+                            <outputFilename>ReladomoRuntimeConfiguration.xml</outputFilename>
+                            <connectionManagerFullyQualifiedName>cool.klass.reladomo.connectionmanager.h2.H2ConnectionManager</connectionManagerFullyQualifiedName>
+                            <isTest>false</isTest>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-test-runtime-configuration</id>
+                        <goals>
+                            <goal>generate-reladomo-runtime-configuration</goal>
+                        </goals>
+                    </execution>
+
+                </executions>
+
+                <dependencies>
+
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>${app.artifactId}-domain-model</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>cool.klass</groupId>
+                        <artifactId>klass-model-bootstrapped-meta</artifactId>
+                        <version>${klass.version}</version>
+                    </dependency>
+
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>cool.klass</groupId>
                 <artifactId>klass-generator-dropwizard-plugin</artifactId>
                 <version>${klass.version}</version>
                 <configuration>

@@ -50,6 +50,7 @@ public class GenerateReladomoClassListMojo extends AbstractGenerateMojo
 
         Resource resource = new Resource();
         resource.setDirectory(this.outputDirectory.getAbsolutePath());
+        // TODO: Should be based on the output path
         resource.setTargetPath("reladomo");
         this.mavenProject.addResource(resource);
     }
