@@ -1,23 +1,29 @@
 package dummy
 
-class Dummy
+class ExampleType1
 {
     id: Long id key;
     parentId: Long? private;
 }
 
-association DummyAssociation
+class ExampleType2
 {
-    parent: Dummy[0..1] owned;
-    children: Dummy[0..*];
-
-    relationship this.id == Dummy.parentId
+    id: Long id key;
+    parentId: Long? private;
 }
 
-association DummyAssociation2
+association Association1
 {
-    children2: Dummy[0..*];
-    parent2: Dummy[0..1] owned;
+    parent: ExampleType1[0..1] owned;
+    children: ExampleType1[0..*];
 
-    relationship this.parentId == Dummy.id
+    relationship this.id == ExampleType1.parentId
+}
+
+association Association2
+{
+    children: ExampleType2[0..*];
+    parent: ExampleType2[0..1] owned;
+
+    relationship this.parentId == ExampleType2.id
 }
