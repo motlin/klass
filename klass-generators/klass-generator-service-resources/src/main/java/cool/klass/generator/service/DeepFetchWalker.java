@@ -2,6 +2,8 @@ package cool.klass.generator.service;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -45,7 +47,7 @@ public class DeepFetchWalker
         return deepFetchWalker.getResult();
     }
 
-    private void handleAssociationEnd(AssociationEnd associationEnd)
+    private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd)
     {
         this.associationEndStack.push(associationEnd);
         this.stringStack.push(associationEnd.getName());
@@ -65,7 +67,7 @@ public class DeepFetchWalker
         this.stringStack.pop();
     }
 
-    private boolean isLeaf(AssociationEnd associationEnd)
+    private boolean isLeaf(@Nonnull AssociationEnd associationEnd)
     {
         return associationEnd.getType()
                 .getAssociationEnds()

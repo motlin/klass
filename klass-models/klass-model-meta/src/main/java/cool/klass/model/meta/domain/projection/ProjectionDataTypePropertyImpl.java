@@ -44,6 +44,7 @@ public final class ProjectionDataTypePropertyImpl
         this.property = Objects.requireNonNull(property);
     }
 
+    @Nonnull
     @Override
     public Optional<ProjectionParent> getParent()
     {

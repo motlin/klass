@@ -2,6 +2,8 @@ package cool.klass.model.converter.graphql.schema.writer;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.graphql.domain.GraphQLClass;
 import cool.klass.model.graphql.domain.GraphQLDomainModel;
 import cool.klass.model.graphql.domain.GraphQLElement;
@@ -34,6 +36,7 @@ public class KlassGraphQLModelConverter
         this.domainModel = Objects.requireNonNull(domainModel);
     }
 
+    @Nonnull
     public GraphQLDomainModel convert()
     {
         ImmutableList<GraphQLElement> topLevelElements = this.domainModel.getTopLevelElements()
@@ -45,6 +48,7 @@ public class KlassGraphQLModelConverter
         return new GraphQLDomainModel(topLevelElements);
     }
 
+    @Nonnull
     public static GraphQLElement convertTopLevelElement(PackageableElement packageableElement)
     {
         if (packageableElement instanceof Enumeration)
@@ -65,26 +69,30 @@ public class KlassGraphQLModelConverter
         throw new AssertionError(packageableElement.getClass().getSimpleName());
     }
 
-    private static GraphQLElement convertEnumeration(Enumeration enumeration)
+    @Nonnull
+    private static GraphQLElement convertEnumeration(@Nonnull Enumeration enumeration)
     {
         return new GraphQLEnumeration(
                 enumeration.getName(),
                 enumeration.getEnumerationLiterals().collect(KlassGraphQLModelConverter::convertEnumerationLiteral));
     }
 
-    private static GraphQLEnumerationLiteral convertEnumerationLiteral(EnumerationLiteral enumerationLiteral)
+    @Nonnull
+    private static GraphQLEnumerationLiteral convertEnumerationLiteral(@Nonnull EnumerationLiteral enumerationLiteral)
     {
         return new GraphQLEnumerationLiteral(enumerationLiteral.getName());
     }
 
-    public static GraphQLInterface convertInterface(Interface anInterface)
+    @Nonnull
+    public static GraphQLInterface convertInterface(@Nonnull Interface anInterface)
     {
         return new GraphQLInterface(
                 anInterface.getName(),
                 anInterface.getProperties().collect(KlassGraphQLModelConverter::convertProperty));
     }
 
-    public static GraphQLClass convertClass(Klass klass)
+    @Nonnull
+    public static GraphQLClass convertClass(@Nonnull Klass klass)
     {
         return new GraphQLClass(
                 klass.getName(),
@@ -92,7 +100,8 @@ public class KlassGraphQLModelConverter
                 klass.getInterfaces().collect(NamedElement::getName));
     }
 
-    private static GraphQLField convertProperty(Property property)
+    @Nonnull
+    private static GraphQLField convertProperty(@Nonnull Property property)
     {
         return new GraphQLField(
                 property.getName(),

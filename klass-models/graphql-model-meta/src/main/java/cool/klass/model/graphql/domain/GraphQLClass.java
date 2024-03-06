@@ -1,5 +1,7 @@
 package cool.klass.model.graphql.domain;
 
+import javax.annotation.Nonnull;
+
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class GraphQLClass extends GraphQLClassifier
@@ -16,7 +18,7 @@ public class GraphQLClass extends GraphQLClassifier
     }
 
     @Override
-    public void visit(GraphQLElementVisitor visitor)
+    public void visit(@Nonnull GraphQLElementVisitor visitor)
     {
         visitor.visitClass(this);
     }

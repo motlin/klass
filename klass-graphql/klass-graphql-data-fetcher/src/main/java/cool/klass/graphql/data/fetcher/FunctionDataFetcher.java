@@ -3,6 +3,9 @@ package cool.klass.graphql.data.fetcher;
 import java.util.Objects;
 import java.util.function.Function;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -18,8 +21,9 @@ public class FunctionDataFetcher<Input, Output> implements DataFetcher<Output>
         this.function = Objects.requireNonNull(function);
     }
 
+    @Nullable
     @Override
-    public Output get(DataFetchingEnvironment environment)
+    public Output get(@Nonnull DataFetchingEnvironment environment)
     {
         Input source = environment.getSource();
         if (source == null)

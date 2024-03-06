@@ -2,6 +2,9 @@ package cool.klass.data.store;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
@@ -18,12 +21,15 @@ public interface DataStore
 
     Object getToOne(Object persistentSourceInstance, AssociationEnd associationEnd);
 
+    @Nonnull
     List<Object> getToMany(Object persistentSourceInstance, AssociationEnd associationEnd);
 
+    @Nullable
     Object getDataTypeProperty(Object persistentInstance, DataTypeProperty dataTypeProperty);
 
     void setDataTypeProperty(Object persistentInstance, DataTypeProperty dataTypeProperty, Object newValue);
 
+    @Nonnull
     Object instantiate(Klass klass, ImmutableList<Object> keys);
 
     void insert(Object persistentInstance);

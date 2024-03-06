@@ -131,7 +131,7 @@ public class RequiredPropertiesValidator
     }
 
     public void handleToMany(
-            AssociationEnd associationEnd,
+            @Nonnull AssociationEnd associationEnd,
             JsonNode jsonNode)
     {
         if (!(jsonNode instanceof ArrayNode))
@@ -176,7 +176,7 @@ public class RequiredPropertiesValidator
         validator.validate();
     }
 
-	@Nonnull
+    @Nonnull
     private OperationMode getNextMode(OperationMode operationMode, @Nonnull AssociationEnd associationEnd)
     {
         if (operationMode == OperationMode.CREATE && associationEnd.isOwned())
@@ -223,14 +223,14 @@ public class RequiredPropertiesValidator
         return;
     }
 
-    private void handleKeyProperties(ImmutableList<DataTypeProperty> keyProperties)
+    private void handleKeyProperties(@Nonnull ImmutableList<DataTypeProperty> keyProperties)
     {
         keyProperties
                 .reject(this::isForeignKeyWithoutOpposite)
                 .each(this::handlePlainProperty);
     }
 
-    private boolean isForeignKeyWithoutOpposite(DataTypeProperty keyProperty)
+    private boolean isForeignKeyWithoutOpposite(@Nonnull DataTypeProperty keyProperty)
     {
         return keyProperty.getKeysMatchingThisForeignKey()
                 .valuesView()
@@ -238,13 +238,13 @@ public class RequiredPropertiesValidator
     }
 
     private boolean isOppositeKey(
-            DataTypeProperty dataTypeProperty,
+            @Nonnull DataTypeProperty dataTypeProperty,
             DataTypeProperty keyProperty)
     {
         return dataTypeProperty.getKeysMatchingThisForeignKey().containsValue(keyProperty);
     }
 
-    private void handlePlainProperties(ImmutableList<DataTypeProperty> plainProperties)
+    private void handlePlainProperties(@Nonnull ImmutableList<DataTypeProperty> plainProperties)
     {
         for (DataTypeProperty property : plainProperties)
         {

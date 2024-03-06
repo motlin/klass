@@ -24,6 +24,7 @@ public interface Interface extends Classifier
                 .newWithAll(this.getDeclaredDataTypeProperties());
     }
 
+    @Nonnull
     @Override
     default String getSourceCodeWithInference()
     {

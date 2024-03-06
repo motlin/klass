@@ -1,5 +1,7 @@
 package cool.klass.generator.grahql.schema;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.graphql.domain.GraphQLClass;
 import cool.klass.model.graphql.domain.GraphQLElementVisitor;
 import cool.klass.model.graphql.domain.GraphQLEnumeration;
@@ -13,24 +15,25 @@ public class GraphQLElementToSchemaSourceVisitor implements GraphQLElementVisito
     private String sourceCode;
 
     @Override
-    public void visitEnumeration(GraphQLEnumeration graphQLEnumeration)
+    public void visitEnumeration(@Nonnull GraphQLEnumeration graphQLEnumeration)
     {
         this.sourceCode = this.getEnumerationSourceCode(graphQLEnumeration);
     }
 
     @Override
-    public void visitInterface(GraphQLInterface graphQLInterface)
+    public void visitInterface(@Nonnull GraphQLInterface graphQLInterface)
     {
         this.sourceCode = this.getInterfaceSourceCode(graphQLInterface);
     }
 
     @Override
-    public void visitClass(GraphQLClass graphQLClass)
+    public void visitClass(@Nonnull GraphQLClass graphQLClass)
     {
         this.sourceCode = this.getClassSourceCode(graphQLClass);
     }
 
-    private String getEnumerationSourceCode(GraphQLEnumeration graphQLEnumeration)
+    @Nonnull
+    private String getEnumerationSourceCode(@Nonnull GraphQLEnumeration graphQLEnumeration)
     {
         String enumerationLiteralsSourceCode = graphQLEnumeration
                 .getEnumerationLiterals()
@@ -45,7 +48,8 @@ public class GraphQLElementToSchemaSourceVisitor implements GraphQLElementVisito
                 + '\n';
     }
 
-    private String getInterfaceSourceCode(GraphQLInterface graphQLInterface)
+    @Nonnull
+    private String getInterfaceSourceCode(@Nonnull GraphQLInterface graphQLInterface)
     {
         String fieldsSourceCode = graphQLInterface
                 .getFields()
@@ -60,7 +64,8 @@ public class GraphQLElementToSchemaSourceVisitor implements GraphQLElementVisito
                 + '\n';
     }
 
-    private String getClassSourceCode(GraphQLClass graphQLClass)
+    @Nonnull
+    private String getClassSourceCode(@Nonnull GraphQLClass graphQLClass)
     {
         String fieldsSourceCode = graphQLClass
                 .getFields()
@@ -78,7 +83,7 @@ public class GraphQLElementToSchemaSourceVisitor implements GraphQLElementVisito
                 + '\n';
     }
 
-    private static String getFieldSourceCode(GraphQLField graphQLField)
+    private static String getFieldSourceCode(@Nonnull GraphQLField graphQLField)
     {
         return String.format(
                 "%s: %s%s%s%s",

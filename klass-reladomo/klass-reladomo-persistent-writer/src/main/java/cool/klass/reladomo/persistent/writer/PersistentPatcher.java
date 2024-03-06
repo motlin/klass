@@ -1,5 +1,7 @@
 package cool.klass.reladomo.persistent.writer;
 
+import javax.annotation.Nonnull;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.OperationMode;
@@ -49,6 +51,7 @@ public class PersistentPatcher extends PersistentSynchronizer
                 + ".handleToOneOutsideProjection() not implemented yet");
     }
 
+    @Nonnull
     @Override
     protected PersistentSynchronizer determineNextMode(OperationMode nextMode)
     {

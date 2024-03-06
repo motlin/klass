@@ -42,7 +42,7 @@ public class GraphQLRuntimeWiringGenerator
                 .forEachWith(this::writeTypeRuntimeWiringFile, outputPath);
     }
 
-    private void writeTypeRuntimeWiringFile(Klass klass, Path outputPath)
+    private void writeTypeRuntimeWiringFile(@Nonnull Klass klass, @Nonnull Path outputPath)
     {
         Path   runtimeWiringOutputPath = this.getRuntimeWiringOutputPath(outputPath, klass);
         String classSourceCode         = this.getTypeRuntimeWiringSourceCode(klass);
@@ -122,7 +122,7 @@ public class GraphQLRuntimeWiringGenerator
         return sourceCode;
     }
 
-    private String getDataFetcherSourceCode(Property property, Classifier owningClassifier)
+    private String getDataFetcherSourceCode(@Nonnull Property property, Classifier owningClassifier)
     {
         DataFetcherSourceCodePropertyVisitor visitor = new DataFetcherSourceCodePropertyVisitor(owningClassifier, property);
         property.visit(visitor);

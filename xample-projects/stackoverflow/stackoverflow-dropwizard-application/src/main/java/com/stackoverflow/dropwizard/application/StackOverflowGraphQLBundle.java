@@ -1,5 +1,7 @@
 package com.stackoverflow.dropwizard.application;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.data.store.DataStore;
 import com.smoketurner.dropwizard.graphql.GraphQLBundle;
 import com.smoketurner.dropwizard.graphql.GraphQLFactory;
@@ -18,15 +20,16 @@ public class StackOverflowGraphQLBundle extends GraphQLBundle<StackOverflowConfi
     }
 
     @Override
-    public void initialize(Bootstrap<?> bootstrap)
+    public void initialize(@Nonnull Bootstrap<?> bootstrap)
     {
         // TODO: Need trailing slash after /graphiql?
         AssetsBundle assetsBundle = new AssetsBundle("/assets", "/graphiql", "index.htm", "graphiql");
         bootstrap.addBundle(assetsBundle);
     }
 
+    @Nonnull
     @Override
-    public GraphQLFactory getGraphQLFactory(StackOverflowConfiguration configuration)
+    public GraphQLFactory getGraphQLFactory(@Nonnull StackOverflowConfiguration configuration)
     {
         // the RuntimeWiring must be configured prior to the run()
         // methods being called so the schema is connected properly.

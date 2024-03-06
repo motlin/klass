@@ -32,6 +32,7 @@ public class ReladomoTestRule implements TestRule
         this.testDataFileNames = testDataFileNames;
     }
 
+    @Nonnull
     public ReladomoTestRule transactionTimeout(int transactionTimeout, TimeUnit timeUnit)
     {
         this.transactionTimeout = transactionTimeout;
@@ -66,7 +67,7 @@ public class ReladomoTestRule implements TestRule
         };
     }
 
-    private void before(String[] testDataFileNames)
+    private void before(@Nonnull String[] testDataFileNames)
     {
         this.mithraTestResource = new MithraTestResource(this.runtimeConfigFilename);
         // TODO: Make the test database name configurable

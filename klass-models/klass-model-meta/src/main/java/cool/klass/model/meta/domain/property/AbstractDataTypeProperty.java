@@ -308,8 +308,8 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
         }
 
         public static <InputKey, InputValue, OutputKey, OutputValue> ImmutableListMultimap<OutputKey, OutputValue> collectKeyMultiValues(
-                ListMultimap<InputKey, InputValue> multimap,
-                Function<? super InputKey, ? extends OutputKey> keyFunction,
+                @Nonnull ListMultimap<InputKey, InputValue> multimap,
+                @Nonnull Function<? super InputKey, ? extends OutputKey> keyFunction,
                 Function<? super InputValue, ? extends OutputValue> valueFunction)
         {
             MutableListMultimap<OutputKey, OutputValue> result = Multimaps.mutable.list.empty();

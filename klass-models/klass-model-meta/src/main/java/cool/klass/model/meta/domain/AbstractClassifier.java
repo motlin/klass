@@ -3,7 +3,6 @@ package cool.klass.model.meta.domain;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.ClassModifierImpl.ClassModifierBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
@@ -29,7 +28,7 @@ public abstract class AbstractClassifier
             ParserRuleContext nameContext,
             String name,
             int ordinal,
-            String packageName)
+            @Nonnull String packageName)
     {
         super(elementContext, inferred, nameContext, name, ordinal, packageName);
     }
@@ -86,9 +85,7 @@ public abstract class AbstractClassifier
             extends PackageableElementBuilder<BuiltElement>
             implements TypeGetter, TopLevelElementBuilder
     {
-        @Nullable
         protected ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders;
-        @Nullable
         protected ImmutableList<ClassModifierBuilder>             classModifierBuilders;
         protected ImmutableList<InterfaceBuilder>                 interfaceBuilders;
 

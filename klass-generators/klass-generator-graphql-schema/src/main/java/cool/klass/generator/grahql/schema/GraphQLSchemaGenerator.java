@@ -67,7 +67,7 @@ public class GraphQLSchemaGenerator
         return outputDirectory.resolve(fileName);
     }
 
-    private String getSourceCode(GraphQLElement graphQLElement)
+    private String getSourceCode(@Nonnull GraphQLElement graphQLElement)
     {
         GraphQLElementToSchemaSourceVisitor visitor = new GraphQLElementToSchemaSourceVisitor();
         graphQLElement.visit(visitor);

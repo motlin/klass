@@ -34,7 +34,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
-            InheritanceType inheritanceType,
+            @Nonnull InheritanceType inheritanceType,
             boolean isUser,
             boolean isTransient)
     {

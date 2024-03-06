@@ -35,7 +35,7 @@ public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
 
     public static klass.model.meta.domain.ExpressionValue convert(
             ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameterId,
-            ExpressionValue expressionValue)
+            @Nonnull ExpressionValue expressionValue)
     {
         BootstrapExpressionValueVisitor visitor = new BootstrapExpressionValueVisitor(
                 bootstrappedParametersByParameterId);
@@ -65,8 +65,8 @@ public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     private void handleMemberReferencePath(
-            MemberReferencePath memberExpressionValue,
-            MemberReferencePathAbstract bootstrappedMemberReferencePath)
+            @Nonnull MemberReferencePath memberExpressionValue,
+            @Nonnull MemberReferencePathAbstract bootstrappedMemberReferencePath)
     {
         Klass            klass    = memberExpressionValue.getKlass();
         DataTypeProperty property = memberExpressionValue.getProperty();

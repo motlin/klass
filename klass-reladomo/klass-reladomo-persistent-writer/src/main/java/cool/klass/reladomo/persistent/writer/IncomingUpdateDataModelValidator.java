@@ -4,6 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -93,7 +95,7 @@ public class IncomingUpdateDataModelValidator
         }
     }
 
-    public void handleAssociationEnd(AssociationEnd associationEnd)
+    public void handleAssociationEnd(@Nonnull AssociationEnd associationEnd)
     {
         Multiplicity multiplicity = associationEnd.getMultiplicity();
 
@@ -115,7 +117,7 @@ public class IncomingUpdateDataModelValidator
     }
 
     public void handleToOne(
-            AssociationEnd associationEnd,
+            @Nonnull AssociationEnd associationEnd,
             JsonNode jsonNode)
     {
         this.contextStack.push(associationEnd.getName());
@@ -136,7 +138,7 @@ public class IncomingUpdateDataModelValidator
     }
 
     public void handleToMany(
-            AssociationEnd associationEnd,
+            @Nonnull AssociationEnd associationEnd,
             JsonNode incomingChildInstances)
     {
         if (!(incomingChildInstances instanceof ArrayNode))
@@ -199,8 +201,9 @@ public class IncomingUpdateDataModelValidator
         }
     }
 
+    @Nonnull
     private MapIterable<ImmutableList<Object>, Object> getPersistentChildInstancesByKey(
-            MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey, AssociationEnd associationEnd)
+            @Nonnull MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey, @Nonnull AssociationEnd associationEnd)
     {
         List<Object> persistentChildInstances = this.dataStore.getToMany(this.persistentInstance, associationEnd);
         MutableList<Object> nonTerminatedPersistentChildInstances = ListAdapter.adapt(persistentChildInstances)
@@ -232,7 +235,7 @@ public class IncomingUpdateDataModelValidator
                         associationEnd);
     }
 
-    private void emitNonArrayError(AssociationEnd associationEnd, JsonNode incomingChildInstances)
+    private void emitNonArrayError(@Nonnull AssociationEnd associationEnd, @Nonnull JsonNode incomingChildInstances)
     {
         this.contextStack.push(associationEnd.getName());
         String error = String.format(
@@ -243,9 +246,10 @@ public class IncomingUpdateDataModelValidator
         this.contextStack.pop();
     }
 
+    @Nonnull
     private MapIterable<ImmutableList<Object>, Object> indexPersistentInstances(
-            List<Object> persistentInstances,
-            Klass klass)
+            @Nonnull List<Object> persistentInstances,
+            @Nonnull Klass klass)
     {
         // TODO: Change to use groupByUniqueKey after EC 10.0 is released.
 
@@ -265,14 +269,14 @@ public class IncomingUpdateDataModelValidator
 
     private boolean needsTermination(
             Object persistentChildInstance,
-            Klass klass,
-            MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey)
+            @Nonnull Klass klass,
+            @Nonnull MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey)
     {
         ImmutableList<Object> keys = this.getKeysFromPersistentInstance(persistentChildInstance, klass);
         return !incomingChildInstancesByKey.containsKey(keys);
     }
 
-    protected ImmutableList<Object> getKeysFromPersistentInstance(Object persistentInstance, Klass klass)
+    protected ImmutableList<Object> getKeysFromPersistentInstance(Object persistentInstance, @Nonnull Klass klass)
     {
         return klass
                 .getKeyProperties()
@@ -280,7 +284,7 @@ public class IncomingUpdateDataModelValidator
     }
 
     public void handleAssociationEnd(
-            AssociationEnd associationEnd,
+            @Nonnull AssociationEnd associationEnd,
             ObjectNode objectNode,
             Object persistentInstance)
     {
@@ -310,7 +314,7 @@ public class IncomingUpdateDataModelValidator
         this.checkRequiredPropertiesPresent(plainProperties);
     }
 
-    private void handleIdProperties(ImmutableList<DataTypeProperty> idProperties)
+    private void handleIdProperties(@Nonnull ImmutableList<DataTypeProperty> idProperties)
     {
         this.checkPresentPropertiesMatch(idProperties);
         if (!this.isRoot)
@@ -319,7 +323,7 @@ public class IncomingUpdateDataModelValidator
         }
     }
 
-    private void checkPresentPropertiesMatch(ImmutableList<DataTypeProperty> properties)
+    private void checkPresentPropertiesMatch(@Nonnull ImmutableList<DataTypeProperty> properties)
     {
         for (DataTypeProperty dataTypeProperty : properties)
         {
@@ -340,7 +344,7 @@ public class IncomingUpdateDataModelValidator
         }
     }
 
-    private void checkPresentPropertyMatches(DataTypeProperty property)
+    private void checkPresentPropertyMatches(@Nonnull DataTypeProperty property)
     {
         Object persistentValue = this.dataStore.getDataTypeProperty(this.persistentInstance, property);
         Object incomingValue   = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(property, this.objectNode);
@@ -360,7 +364,7 @@ public class IncomingUpdateDataModelValidator
         }
     }
 
-    private void checkRequiredPropertiesPresent(ImmutableList<DataTypeProperty> plainProperties)
+    private void checkRequiredPropertiesPresent(@Nonnull ImmutableList<DataTypeProperty> plainProperties)
     {
         for (DataTypeProperty property : plainProperties)
         {
@@ -377,7 +381,7 @@ public class IncomingUpdateDataModelValidator
         }
     }
 
-    private void handlePlainProperty(DataTypeProperty property)
+    private void handlePlainProperty(@Nonnull DataTypeProperty property)
     {
         JsonNode jsonNode = this.objectNode.path(property.getName());
         if (jsonNode.isMissingNode() || jsonNode.isNull())
@@ -402,9 +406,10 @@ public class IncomingUpdateDataModelValidator
                 .makeString(".");
     }
 
+    @Nonnull
     private MapIterable<ImmutableList<Object>, JsonNode> indexIncomingJsonInstances(
-            Iterable<JsonNode> incomingInstances,
-            AssociationEnd associationEnd)
+            @Nonnull Iterable<JsonNode> incomingInstances,
+            @Nonnull AssociationEnd associationEnd)
     {
         MutableOrderedMap<ImmutableList<Object>, JsonNode> result = OrderedMapAdapter.adapt(new LinkedHashMap<>());
         for (JsonNode incomingInstance : incomingInstances)
@@ -425,7 +430,7 @@ public class IncomingUpdateDataModelValidator
 
     private boolean jsonNodeNeedsIdInferredOnInsert(
             JsonNode jsonNode,
-            AssociationEnd associationEnd)
+            @Nonnull AssociationEnd associationEnd)
     {
         return associationEnd
                 .getType()
@@ -437,8 +442,8 @@ public class IncomingUpdateDataModelValidator
     }
 
     private ImmutableList<Object> getKeysFromJsonNode(
-            JsonNode jsonNode,
-            AssociationEnd associationEnd)
+            @Nonnull JsonNode jsonNode,
+            @Nonnull AssociationEnd associationEnd)
     {
         return associationEnd
                 .getType()
@@ -450,9 +455,9 @@ public class IncomingUpdateDataModelValidator
     }
 
     private boolean jsonNodeNeedsIdInferredOnInsert(
-            DataTypeProperty keyProperty,
+            @Nonnull DataTypeProperty keyProperty,
             JsonNode jsonNode,
-            AssociationEnd associationEnd)
+            @Nonnull AssociationEnd associationEnd)
     {
         ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
 
@@ -481,9 +486,9 @@ public class IncomingUpdateDataModelValidator
     }
 
     private Object getKeyFromJsonNode(
-            DataTypeProperty keyProperty,
-            JsonNode jsonNode,
-            AssociationEnd associationEnd)
+            @Nonnull DataTypeProperty keyProperty,
+            @Nonnull JsonNode jsonNode,
+            @Nonnull AssociationEnd associationEnd)
     {
         ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
 

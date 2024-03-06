@@ -1,5 +1,7 @@
 package cool.klass.reladomo.sample.data;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
@@ -16,7 +18,7 @@ public abstract class AbstractKlassDataGenerator
 
     protected abstract Object getNonNullValue(DataTypeProperty dataTypeProperty);
 
-    public void generateIfRequired(Klass klass)
+    public void generateIfRequired(@Nonnull Klass klass)
     {
         Object persistentInstance = this.instantiate(klass);
 
@@ -28,10 +30,11 @@ public abstract class AbstractKlassDataGenerator
         this.dataStore.insert(persistentInstance);
     }
 
-    private Object instantiate(Klass klass)
+    @Nonnull
+    private Object instantiate(@Nonnull Klass klass)
     {
         ImmutableList<DataTypeProperty> keyProperties = klass.getKeyProperties().reject(DataTypeProperty::isID);
-        ImmutableList<Object> keyValues = keyProperties.collect(this::getNonNullValue);
+        ImmutableList<Object>           keyValues     = keyProperties.collect(this::getNonNullValue);
 
         if (klass.isValidTemporal())
         {
@@ -42,7 +45,7 @@ public abstract class AbstractKlassDataGenerator
 
     protected abstract void generateIfRequired(Object persistentInstance, DataTypeProperty dataTypeProperty);
 
-    protected final void generate(Object persistentInstance, DataTypeProperty dataTypeProperty)
+    protected final void generate(Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty)
     {
         if (dataTypeProperty.isVersion())
         {

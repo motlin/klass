@@ -2,6 +2,9 @@ package cool.klass.deserializer.json;
 
 import java.util.Optional;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
@@ -23,14 +26,15 @@ public class JsonDataTypeValueVisitor implements PropertyVisitor
         this.jsonDataTypeValue = jsonDataTypeValue;
     }
 
-    public static boolean dataTypePropertyIsNullInJson(DataTypeProperty dataTypeProperty, ObjectNode incomingJson)
+    public static boolean dataTypePropertyIsNullInJson(@Nonnull DataTypeProperty dataTypeProperty, @Nonnull ObjectNode incomingJson)
     {
         JsonNode jsonDataTypeValue = incomingJson.path(dataTypeProperty.getName());
         return jsonDataTypeValue.isMissingNode() || jsonDataTypeValue.isNull();
     }
 
     // TODO: Needs temporal context
-    public static Object extractDataTypePropertyFromJson(DataTypeProperty dataTypeProperty, ObjectNode incomingJson)
+    @Nullable
+    public static Object extractDataTypePropertyFromJson(@Nonnull DataTypeProperty dataTypeProperty, @Nonnull ObjectNode incomingJson)
     {
         JsonNode jsonDataTypeValue = incomingJson.path(dataTypeProperty.getName());
         if (jsonDataTypeValue.isMissingNode() || jsonDataTypeValue.isNull())
@@ -49,7 +53,7 @@ public class JsonDataTypeValueVisitor implements PropertyVisitor
     }
 
     @Override
-    public void visitPrimitiveProperty(PrimitiveProperty primitiveProperty)
+    public void visitPrimitiveProperty(@Nonnull PrimitiveProperty primitiveProperty)
     {
         JsonPrimitiveTypeValueVisitor visitor = new JsonPrimitiveTypeValueVisitor(this.jsonDataTypeValue);
         primitiveProperty.getType().visit(visitor);
@@ -57,7 +61,7 @@ public class JsonDataTypeValueVisitor implements PropertyVisitor
     }
 
     @Override
-    public void visitEnumerationProperty(EnumerationProperty enumerationProperty)
+    public void visitEnumerationProperty(@Nonnull EnumerationProperty enumerationProperty)
     {
         if (!this.jsonDataTypeValue.isTextual())
         {

@@ -59,6 +59,7 @@ public class DdlExecutorBundle implements PrioritizedBundle
         DatabaseDdlExecutor.executeSql(connectionManager.getConnection());
     }
 
+    @Nonnull
     protected SourcelessConnectionManager getConnectionManager(String connectionManagerFullyQualifiedName)
     {
         try

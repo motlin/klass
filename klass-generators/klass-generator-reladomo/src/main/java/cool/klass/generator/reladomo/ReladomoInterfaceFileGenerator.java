@@ -45,7 +45,7 @@ public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
         }
     }
 
-    private void writeObjectFile(Path outputPath, @Nonnull Interface anInterface) throws IOException
+    private void writeObjectFile(@Nonnull Path outputPath, @Nonnull Interface anInterface) throws IOException
     {
         MithraGeneratorMarshaller mithraGeneratorMarshaller = new MithraGeneratorMarshaller();
         mithraGeneratorMarshaller.setIndent(true);
@@ -99,7 +99,7 @@ public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
         return mithraInterface;
     }
 
-    private List<RelationshipInterfaceType> convertRelationships(ImmutableList<AssociationEnd> associationEnds)
+    private List<RelationshipInterfaceType> convertRelationships(@Nonnull ImmutableList<AssociationEnd> associationEnds)
     {
         return associationEnds
                 .select(associationEnd ->
@@ -109,7 +109,7 @@ public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private RelationshipInterfaceType convertRelationship(AssociationEnd associationEnd)
+    private RelationshipInterfaceType convertRelationship(@Nonnull AssociationEnd associationEnd)
     {
         AssociationEnd            opposite         = associationEnd.getOpposite();
         RelationshipInterfaceType relationshipType = new RelationshipInterfaceType();
@@ -121,8 +121,8 @@ public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
     }
 
     private CardinalityType getCardinality(
-            AssociationEnd associationEnd,
-            AssociationEnd opposite)
+            @Nonnull AssociationEnd associationEnd,
+            @Nonnull AssociationEnd opposite)
     {
         Multiplicity multiplicity         = associationEnd.getMultiplicity();
         Multiplicity oppositeMultiplicity = opposite.getMultiplicity();
@@ -151,7 +151,8 @@ public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
         throw new AssertionError();
     }
 
-    private String getRelationshipString(Criteria criteria)
+    @Nonnull
+    private String getRelationshipString(@Nonnull Criteria criteria)
     {
         StringBuilder   stringBuilder = new StringBuilder();
         CriteriaVisitor visitor       = new CriteriaToRelationshipVisitor(stringBuilder);
@@ -165,7 +166,7 @@ public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
         return cardinalityType.with(attributeValue, cardinalityType);
     }
 
-    private String convertOrderBy(OrderBy orderBy)
+    private String convertOrderBy(@Nonnull OrderBy orderBy)
     {
         return orderBy.getOrderByMemberReferencePaths()
                 .select(this::isConvertibleToOrderBy)
@@ -173,20 +174,21 @@ public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
                 .makeString();
     }
 
-    private boolean isConvertibleToOrderBy(OrderByMemberReferencePath each)
+    private boolean isConvertibleToOrderBy(@Nonnull OrderByMemberReferencePath each)
     {
         // Reladomo only supports simple property orderBys, like (title asc), not paths like (question.title asc)
         return each.getThisMemberReferencePath().getAssociationEnds().isEmpty();
     }
 
-    private String convertOrderByMemberReferencePath(OrderByMemberReferencePath orderByMemberReferencePath)
+    private String convertOrderByMemberReferencePath(@Nonnull OrderByMemberReferencePath orderByMemberReferencePath)
     {
         String propertyName           = orderByMemberReferencePath.getThisMemberReferencePath().getProperty().getName();
         String orderByDirectionString = this.getOrderByDirectionString(orderByMemberReferencePath);
         return String.format("%s %s", propertyName, orderByDirectionString);
     }
 
-    private String getOrderByDirectionString(OrderByMemberReferencePath orderByMemberReferencePath)
+    @Nonnull
+    private String getOrderByDirectionString(@Nonnull OrderByMemberReferencePath orderByMemberReferencePath)
     {
         OrderByDirection orderByDirection = orderByMemberReferencePath.getOrderByDirectionDeclaration().getOrderByDirection();
         switch (orderByDirection)
@@ -209,8 +211,8 @@ public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
     }
 
     private void convertToAsOfAttributeType(
-            DataTypeProperty dataTypeProperty,
-            AsOfAttributeInterfaceType asOfAttributeType)
+            @Nonnull DataTypeProperty dataTypeProperty,
+            @Nonnull AsOfAttributeInterfaceType asOfAttributeType)
     {
         String propertyName = dataTypeProperty.getName();
         // TODO: Use actual temporal properties
@@ -251,7 +253,7 @@ public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
         return attributeType;
     }
 
-    private void convertToAttributeType(DataTypeProperty dataTypeProperty, AttributeInterfaceType attributeType)
+    private void convertToAttributeType(@Nonnull DataTypeProperty dataTypeProperty, @Nonnull AttributeInterfaceType attributeType)
     {
         String propertyName = dataTypeProperty.getName();
         attributeType.setName(propertyName);

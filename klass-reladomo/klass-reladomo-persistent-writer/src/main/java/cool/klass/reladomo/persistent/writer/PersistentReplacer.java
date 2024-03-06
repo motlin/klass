@@ -1,5 +1,7 @@
 package cool.klass.reladomo.persistent.writer;
 
+import javax.annotation.Nonnull;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.OperationMode;
@@ -32,7 +34,7 @@ public class PersistentReplacer extends PersistentSynchronizer
 
     @Override
     protected void handleVersion(
-            AssociationEnd associationEnd,
+            @Nonnull AssociationEnd associationEnd,
             Object persistentInstance,
             JsonNode jsonNode)
     {
@@ -51,9 +53,9 @@ public class PersistentReplacer extends PersistentSynchronizer
 
     @Override
     protected void handleToOneOutsideProjection(
-            AssociationEnd associationEnd,
+            @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
-            JsonNode incomingChildInstance)
+            @Nonnull JsonNode incomingChildInstance)
     {
         if (associationEnd.isOwned())
         {
@@ -93,6 +95,7 @@ public class PersistentReplacer extends PersistentSynchronizer
         // TODO: Return a flag indicating a mutation happened
     }
 
+    @Nonnull
     @Override
     protected PersistentSynchronizer determineNextMode(OperationMode nextMode)
     {

@@ -46,9 +46,10 @@ public class JsonViewGenerator
         }
     }
 
+    @Nonnull
     private Path getJsonViewOutputPath(
             @Nonnull Path outputPath,
-            Projection packageableElement)
+            @Nonnull Projection packageableElement)
     {
         String packageRelativePath = packageableElement.getPackageName()
                 .replaceAll("\\.", "/");
@@ -69,7 +70,8 @@ public class JsonViewGenerator
         }
     }
 
-    private String getJsonViewSourceCode(Projection projection)
+    @Nonnull
+    private String getJsonViewSourceCode(@Nonnull Projection projection)
     {
         // @formatter:off
         //language=JAVA

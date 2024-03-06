@@ -49,14 +49,14 @@ public class GraphQLDataFetcherGenerator
         concreteClasses.forEachWith(this::writeDataFetcherByKeyFile, outputPath);
     }
 
-    private void writeAllDataFetcherFile(Klass klass, Path outputPath)
+    private void writeAllDataFetcherFile(@Nonnull Klass klass, @Nonnull Path outputPath)
     {
         Path   dataFetcherOutputPath = this.getAllDataFetcherOutputPath(outputPath, klass);
         String classSourceCode       = this.getAllDataFetcherSourceCode(klass);
         this.printStringToFile(dataFetcherOutputPath, classSourceCode);
     }
 
-    private void writeDataFetcherByKeyFile(Klass klass, Path outputPath)
+    private void writeDataFetcherByKeyFile(@Nonnull Klass klass, @Nonnull Path outputPath)
     {
         Path   dataFetcherOutputPath = this.getDataFetcherByKeyOutputPath(outputPath, klass);
         String classSourceCode       = this.getDataFetcherByKeySourceCode(klass);
@@ -193,7 +193,7 @@ public class GraphQLDataFetcherGenerator
         return sourceCode;
     }
 
-    private String getArgumentSourceCode(DataTypeProperty dataTypeProperty)
+    private String getArgumentSourceCode(@Nonnull DataTypeProperty dataTypeProperty)
     {
         GraphQLScalarDataTypePropertyVisitor visitor = new GraphQLScalarDataTypePropertyVisitor();
         dataTypeProperty.visit(visitor);
@@ -206,8 +206,8 @@ public class GraphQLDataFetcherGenerator
     }
 
     private String getOperationSourceCode(
-            DataTypeProperty dataTypeProperty,
-            Klass klass)
+            @Nonnull DataTypeProperty dataTypeProperty,
+            @Nonnull Klass klass)
     {
         return String.format(
                 "                .and(%1$sFinder.%2$s().eq(%2$s))",
@@ -225,7 +225,7 @@ public class GraphQLDataFetcherGenerator
         }
 
         @Override
-        public void visitPrimitiveProperty(PrimitiveProperty primitiveProperty)
+        public void visitPrimitiveProperty(@Nonnull PrimitiveProperty primitiveProperty)
         {
             this.sourceCode = primitiveProperty.getType().getJavaClass().getSimpleName();
         }

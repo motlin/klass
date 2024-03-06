@@ -7,7 +7,7 @@ import cool.klass.model.meta.domain.api.PackageableElement;
 public interface Projection extends PackageableElement, ProjectionParent
 {
     @Override
-    default void visit(ProjectionVisitor visitor)
+    default void visit(@Nonnull ProjectionVisitor visitor)
     {
         visitor.visitProjection(this);
     }

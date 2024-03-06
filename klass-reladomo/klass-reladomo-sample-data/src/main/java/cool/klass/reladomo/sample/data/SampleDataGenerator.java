@@ -19,7 +19,9 @@ public class SampleDataGenerator
     private final Instant               systemTime;
     private final ImmutableList<String> skippedPackages;
 
+    @Nonnull
     private final KlassRequiredDataGenerator requiredDataGenerator;
+    @Nonnull
     private final KlassOptionalDataGenerator optionalDataGenerator;
 
     public SampleDataGenerator(
@@ -53,7 +55,7 @@ public class SampleDataGenerator
                 || klass.getInheritanceType() == InheritanceType.TABLE_PER_CLASS;
     }
 
-    private void generate(Klass klass)
+    private void generate(@Nonnull Klass klass)
     {
         if (this.skippedPackages.contains(klass.getPackageName()))
         {

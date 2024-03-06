@@ -124,6 +124,7 @@ public interface Klass extends Classifier
         return this.getClassModifiers().anySatisfy(ClassModifier::isTransient);
     }
 
+    @Nonnull
     @Override
     default String getSourceCodeWithInference()
     {
@@ -162,7 +163,7 @@ public interface Klass extends Classifier
     }
 
     @Override
-    default boolean isStrictSuperTypeOf(Classifier classifier)
+    default boolean isStrictSuperTypeOf(@Nonnull Classifier classifier)
     {
         if (Classifier.super.isStrictSuperTypeOf(classifier))
         {

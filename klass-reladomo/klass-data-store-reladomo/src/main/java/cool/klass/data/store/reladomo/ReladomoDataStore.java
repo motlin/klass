@@ -10,6 +10,9 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import com.gs.fw.common.mithra.MithraDatedTransactionalObject;
@@ -66,7 +69,7 @@ public class ReladomoDataStore implements DataStore
     }
 
     @Override
-    public void runInTransaction(TransactionalCommand transactionalCommand)
+    public void runInTransaction(@Nonnull TransactionalCommand transactionalCommand)
     {
         MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
         {
@@ -77,7 +80,7 @@ public class ReladomoDataStore implements DataStore
     }
 
     @Override
-    public void runInTransaction(Runnable runnable)
+    public void runInTransaction(@Nonnull Runnable runnable)
     {
         MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
         {
@@ -87,7 +90,7 @@ public class ReladomoDataStore implements DataStore
     }
 
     @Override
-    public Object findByKey(Klass klass, ImmutableList<Object> keys)
+    public Object findByKey(@Nonnull Klass klass, @Nonnull ImmutableList<Object> keys)
     {
         RelatedFinder<?>                finder        = this.getRelatedFinder(klass);
         ImmutableList<DataTypeProperty> keyProperties = klass.getKeyProperties();
@@ -104,8 +107,8 @@ public class ReladomoDataStore implements DataStore
     }
 
     private Operation getOperation(
-            RelatedFinder<?> finder,
-            DataTypeProperty keyProperty,
+            @Nonnull RelatedFinder<?> finder,
+            @Nonnull DataTypeProperty keyProperty,
             Object key)
     {
         Attribute        attribute = finder.getAttributeByName(keyProperty.getName());
@@ -114,8 +117,9 @@ public class ReladomoDataStore implements DataStore
         return visitor.getResult();
     }
 
+    @Nonnull
     @Override
-    public Object instantiate(Klass klass, ImmutableList<Object> keys)
+    public Object instantiate(@Nonnull Klass klass, @Nonnull ImmutableList<Object> keys)
     {
         keys.each(Objects::requireNonNull);
 
@@ -124,7 +128,8 @@ public class ReladomoDataStore implements DataStore
         return newInstance;
     }
 
-    private Object instantiateNewInstance(Klass klass)
+    @Nonnull
+    private Object instantiateNewInstance(@Nonnull Klass klass)
     {
         try
         {
@@ -137,7 +142,8 @@ public class ReladomoDataStore implements DataStore
         }
     }
 
-    private Object instantiateNewInstance(Klass klass, Instant validTime)
+    @Nonnull
+    private Object instantiateNewInstance(@Nonnull Klass klass, @Nonnull Instant validTime)
     {
         try
         {
@@ -153,7 +159,7 @@ public class ReladomoDataStore implements DataStore
         }
     }
 
-    public void setKeys(Klass klass, Object newInstance, ImmutableList<Object> keys)
+    public void setKeys(@Nonnull Klass klass, @Nonnull Object newInstance, @Nonnull ImmutableList<Object> keys)
     {
         this.generateAndSetId(newInstance, klass);
 
@@ -170,7 +176,7 @@ public class ReladomoDataStore implements DataStore
         }
     }
 
-    private void generateAndSetId(Object persistentInstance, Klass klass)
+    private void generateAndSetId(@Nonnull Object persistentInstance, @Nonnull Klass klass)
     {
         ImmutableList<DataTypeProperty> idProperties = klass.getDataTypeProperties().select(DataTypeProperty::isID);
         if (idProperties.isEmpty())
@@ -192,8 +198,9 @@ public class ReladomoDataStore implements DataStore
         }
     }
 
+    @Nullable
     @Override
-    public Object getDataTypeProperty(Object persistentInstance, DataTypeProperty dataTypeProperty)
+    public Object getDataTypeProperty(Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty)
     {
         RelatedFinder<?> finder    = this.getRelatedFinder((MithraObject) persistentInstance);
         Attribute        attribute = finder.getAttributeByName(dataTypeProperty.getName());
@@ -246,7 +253,7 @@ public class ReladomoDataStore implements DataStore
     }
 
     @Override
-    public void setDataTypeProperty(Object persistentInstance, DataTypeProperty dataTypeProperty, Object newValue)
+    public void setDataTypeProperty(Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty, @Nullable Object newValue)
     {
         RelatedFinder<?> finder    = this.getRelatedFinder((MithraObject) persistentInstance);
         Attribute        attribute = finder.getAttributeByName(dataTypeProperty.getName());
@@ -276,7 +283,7 @@ public class ReladomoDataStore implements DataStore
     }
 
     @Override
-    public Object getToOne(Object persistentSourceInstance, AssociationEnd associationEnd)
+    public Object getToOne(Object persistentSourceInstance, @Nonnull AssociationEnd associationEnd)
     {
         RelatedFinder<?> finder = this.getRelatedFinder(associationEnd.getOwningClassifier());
         AbstractRelatedFinder relationshipFinder = (AbstractRelatedFinder) finder
@@ -285,8 +292,9 @@ public class ReladomoDataStore implements DataStore
         return relationshipFinder.valueOf(persistentSourceInstance);
     }
 
+    @Nonnull
     @Override
-    public List<Object> getToMany(Object persistentSourceInstance, AssociationEnd associationEnd)
+    public List<Object> getToMany(Object persistentSourceInstance, @Nonnull AssociationEnd associationEnd)
     {
         return (List<Object>) this.getToOne(persistentSourceInstance, associationEnd);
     }
@@ -294,7 +302,7 @@ public class ReladomoDataStore implements DataStore
     @Override
     public void setToOne(
             Object persistentSourceInstance,
-            AssociationEnd associationEnd,
+            @Nonnull AssociationEnd associationEnd,
             Object persistentTargetInstance)
     {
         Objects.requireNonNull(persistentTargetInstance);
@@ -354,7 +362,7 @@ public class ReladomoDataStore implements DataStore
     }
 
     @Override
-    public boolean isInstanceOf(Object persistentInstance, Classifier classifier)
+    public boolean isInstanceOf(@Nonnull Object persistentInstance, @Nonnull Classifier classifier)
     {
         try
         {
@@ -368,12 +376,13 @@ public class ReladomoDataStore implements DataStore
         }
     }
 
-    private RelatedFinder<?> getRelatedFinder(MithraObject mithraObject)
+    private RelatedFinder<?> getRelatedFinder(@Nonnull MithraObject mithraObject)
     {
         return mithraObject.zGetPortal().getFinder();
     }
 
-    private RelatedFinder<?> getRelatedFinder(Klass klass)
+    @Nonnull
+    private RelatedFinder<?> getRelatedFinder(@Nonnull Klass klass)
     {
         try
         {
@@ -382,7 +391,7 @@ public class ReladomoDataStore implements DataStore
             Method   getFinderMethod = finderClass.getMethod("getFinderInstance");
             return (RelatedFinder<?>) getFinderMethod.invoke(null);
         }
-        catch (ReflectiveOperationException | IllegalArgumentException | SecurityException e)
+        catch (@Nonnull ReflectiveOperationException | IllegalArgumentException | SecurityException e)
         {
             throw new RuntimeException(e);
         }

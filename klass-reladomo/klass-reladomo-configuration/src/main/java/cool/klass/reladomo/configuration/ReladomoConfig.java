@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -25,7 +27,7 @@ public final class ReladomoConfig
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    public static void configure(ObjectMapper objectMapper, JsonSerializer<MithraObject> jsonSerializer)
+    public static void configure(@Nonnull ObjectMapper objectMapper, JsonSerializer<MithraObject> jsonSerializer)
     {
         Config config         = ConfigFactory.load();
         Config reladomoConfig = config.getConfig("klass.data.reladomo");

@@ -64,7 +64,7 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
     }
 
     @Override
-    public void initialize(Bootstrap<T> bootstrap)
+    public void initialize(@Nonnull Bootstrap<T> bootstrap)
     {
         super.initialize(bootstrap);
 
@@ -80,7 +80,7 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
         this.initializeDynamicBundles(bootstrap);
     }
 
-    private void logConfig(Config klassConfig)
+    private void logConfig(@Nonnull Config klassConfig)
     {
         if (LOGGER.isInfoEnabled())
         {
@@ -122,7 +122,7 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
         }
     }
 
-    private DomainModel loadDomainModel(Config klassConfig)
+    private DomainModel loadDomainModel(@Nonnull Config klassConfig)
     {
         List<String>      klassSourcePackages = klassConfig.getStringList("domain.sourcePackages");
         DomainModelLoader domainModelLoader   = new DomainModelLoader(Lists.immutable.withAll(klassSourcePackages));

@@ -53,7 +53,7 @@ public final class JsonTypeCheckingValidator
         this.validateIncomingData(this.objectNode, this.klass);
     }
 
-    private void validateIncomingData(ObjectNode objectNode, @Nonnull Klass klass)
+    private void validateIncomingData(@Nonnull ObjectNode objectNode, @Nonnull Klass klass)
     {
         objectNode.fields().forEachRemaining(entry ->
         {
@@ -109,7 +109,7 @@ public final class JsonTypeCheckingValidator
             this.jsonNode = jsonNode;
         }
 
-        private void visitPropertyWithContext(Runnable runnable)
+        private void visitPropertyWithContext(@Nonnull Runnable runnable)
         {
             JsonTypeCheckingValidator.this.contextStack.push(this.fieldName);
 
@@ -129,7 +129,7 @@ public final class JsonTypeCheckingValidator
             this.visitPropertyWithContext(() -> this.handlePrimitiveProperty(primitiveProperty));
         }
 
-        public void handlePrimitiveProperty(PrimitiveProperty primitiveProperty)
+        public void handlePrimitiveProperty(@Nonnull PrimitiveProperty primitiveProperty)
         {
             PrimitiveType primitiveType = primitiveProperty.getType();
             primitiveType.visit(new JsonTypeCheckingPrimitiveTypeVisitor(
@@ -189,7 +189,7 @@ public final class JsonTypeCheckingValidator
         }
 
         @Override
-        public void visitAssociationEnd(AssociationEnd associationEnd)
+        public void visitAssociationEnd(@Nonnull AssociationEnd associationEnd)
         {
             Multiplicity multiplicity = associationEnd.getMultiplicity();
             if (multiplicity.isToOne())

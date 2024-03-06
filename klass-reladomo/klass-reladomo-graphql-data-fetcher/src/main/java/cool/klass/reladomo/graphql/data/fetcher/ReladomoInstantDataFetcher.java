@@ -5,6 +5,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.gs.fw.common.mithra.attribute.TimestampAttribute;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -18,8 +21,9 @@ public class ReladomoInstantDataFetcher<Input> implements DataFetcher<Instant>
         this.timestampAttribute = timestampAttribute;
     }
 
+    @Nullable
     @Override
-    public Instant get(DataFetchingEnvironment environment)
+    public Instant get(@Nonnull DataFetchingEnvironment environment)
     {
         Input persistentInstance = environment.getSource();
         if (persistentInstance == null)

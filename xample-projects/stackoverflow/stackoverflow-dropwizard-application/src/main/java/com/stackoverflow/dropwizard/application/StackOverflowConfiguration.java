@@ -12,6 +12,7 @@ public class StackOverflowConfiguration extends Configuration
     @Nonnull
     private @Valid GraphQLFactory graphQL = new GraphQLFactory();
 
+    @Nonnull
     @JsonProperty("graphQL")
     public GraphQLFactory getGraphQLFactory()
     {
@@ -19,7 +20,7 @@ public class StackOverflowConfiguration extends Configuration
     }
 
     @JsonProperty("graphQL")
-    public void setGraphQLFactory(GraphQLFactory factory)
+    public void setGraphQLFactory(@Nonnull GraphQLFactory factory)
     {
         this.graphQL = factory;
     }

@@ -212,6 +212,7 @@ public final class DomainModelImpl implements DomainModel
             this.serviceGroupBuilders = Objects.requireNonNull(serviceGroupBuilders);
         }
 
+        @Nonnull
         public DomainModelImpl build()
         {
             ImmutableList<Enumeration> enumerations = this.enumerationBuilders.<Enumeration>collect(EnumerationBuilder::build).toImmutable();

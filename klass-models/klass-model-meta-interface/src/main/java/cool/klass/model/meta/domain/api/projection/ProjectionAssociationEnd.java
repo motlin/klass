@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 public interface ProjectionAssociationEnd extends ProjectionWithAssociationEnd
 {
     @Override
-    default void visit(ProjectionVisitor visitor)
+    default void visit(@Nonnull ProjectionVisitor visitor)
     {
         visitor.visitProjectionAssociationEnd(this);
     }

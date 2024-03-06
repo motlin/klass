@@ -177,12 +177,12 @@ public class ServiceResourceGenerator
         // @formatter:on
     }
 
-    private boolean hasDropwizardParamWrapper(Url url)
+    private boolean hasDropwizardParamWrapper(@Nonnull Url url)
     {
         return url.getParameters().anySatisfy(this::hasDropwizardParamWrapper);
     }
 
-    private boolean hasDropwizardParamWrapper(Parameter parameter)
+    private boolean hasDropwizardParamWrapper(@Nonnull Parameter parameter)
     {
         DataType dataType = parameter.getType();
         if (!(dataType instanceof PrimitiveType))
@@ -196,7 +196,7 @@ public class ServiceResourceGenerator
     }
 
     @Nonnull
-    private String getServiceSourceCode(Service service, int index)
+    private String getServiceSourceCode(@Nonnull Service service, int index)
     {
         if (service.getVerb() == Verb.GET)
         {
@@ -222,7 +222,7 @@ public class ServiceResourceGenerator
     }
 
     @Nonnull
-    private String getGetSourceCode(Service service, int index)
+    private String getGetSourceCode(@Nonnull Service service, int index)
     {
         Url url = service.getUrl();
 
@@ -339,7 +339,7 @@ public class ServiceResourceGenerator
     }
 
     @Nonnull
-    private String getPutSourceCode(Service service, int index)
+    private String getPutSourceCode(@Nonnull Service service, int index)
     {
         Url url = service.getUrl();
 
@@ -557,7 +557,7 @@ public class ServiceResourceGenerator
     @Nonnull
     private String getOperation(
             String finderName,
-            Optional<Criteria> optionalCriteria,
+            @Nonnull Optional<Criteria> optionalCriteria,
             String criteriaName)
     {
         return optionalCriteria
@@ -568,7 +568,7 @@ public class ServiceResourceGenerator
     @Nonnull
     private String getOptionalOperation(
             String finderName,
-            Optional<Criteria> optionalCriteria,
+            @Nonnull Optional<Criteria> optionalCriteria,
             String criteriaName)
     {
         return optionalCriteria
@@ -577,7 +577,7 @@ public class ServiceResourceGenerator
     }
 
     private String checkPredicate(
-            Optional<Criteria> optionalCriteria,
+            @Nonnull Optional<Criteria> optionalCriteria,
             String criteriaName,
             String flagName,
             String exceptionName)
@@ -587,8 +587,9 @@ public class ServiceResourceGenerator
                 .orElse("");
     }
 
+    @Nonnull
     private String getExecuteOperationSourceCode(
-            Optional<Criteria> queryCriteria,
+            @Nonnull Optional<Criteria> queryCriteria,
             @Nonnull Optional<Criteria> versionCriteria,
             String klassName)
     {
@@ -604,7 +605,8 @@ public class ServiceResourceGenerator
                 versionClause);
     }
 
-    private String getOrderBysSourceCode(OrderBy orderBy)
+    @Nonnull
+    private String getOrderBysSourceCode(@Nonnull OrderBy orderBy)
     {
         ImmutableList<String> orderBySourceCodeClauses = orderBy.getOrderByMemberReferencePaths().collect(this::getOrderBySourceCode);
 
@@ -627,13 +629,14 @@ public class ServiceResourceGenerator
         return "\n        result.setOrderBy(" + stringBuilder + ");\n";
     }
 
-    private String getOrderBySourceCode(OrderByMemberReferencePath orderByMemberReferencePath)
+    @Nonnull
+    private String getOrderBySourceCode(@Nonnull OrderByMemberReferencePath orderByMemberReferencePath)
     {
         return this.getThisMemberReferencePathSourceCode(orderByMemberReferencePath.getThisMemberReferencePath())
                 + this.getOrderByDirectionDeclarationSourceCode(orderByMemberReferencePath.getOrderByDirectionDeclaration());
     }
 
-    private String getThisMemberReferencePathSourceCode(ThisMemberReferencePath thisMemberReferencePath)
+    private String getThisMemberReferencePathSourceCode(@Nonnull ThisMemberReferencePath thisMemberReferencePath)
     {
         if (thisMemberReferencePath.getAssociationEnds().notEmpty())
         {
@@ -646,7 +649,8 @@ public class ServiceResourceGenerator
                 thisMemberReferencePath.getProperty().getName());
     }
 
-    private String getOrderByDirectionDeclarationSourceCode(OrderByDirectionDeclaration orderByDirectionDeclaration)
+    @Nonnull
+    private String getOrderByDirectionDeclarationSourceCode(@Nonnull OrderByDirectionDeclaration orderByDirectionDeclaration)
     {
         OrderByDirection orderByDirection = orderByDirectionDeclaration.getOrderByDirection();
         switch (orderByDirection)
@@ -696,6 +700,7 @@ public class ServiceResourceGenerator
                 + "                : " + operation + ";\n";
     }
 
+    @Nonnull
     private String checkPredicate(String criteriaName, String flagName, String exceptionName)
     {
         // @formatter:off
@@ -710,7 +715,7 @@ public class ServiceResourceGenerator
     }
 
     @Nonnull
-    private String getOperation(String finderName, Criteria criteria)
+    private String getOperation(String finderName, @Nonnull Criteria criteria)
     {
         StringBuilder stringBuilder = new StringBuilder();
         criteria.visit(new OperationCriteriaVisitor(finderName, stringBuilder));

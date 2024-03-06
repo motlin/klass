@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.CompilerState;
@@ -39,7 +38,7 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     protected MavenProject mavenProject;
 
-    @Nullable
+    @Nonnull
     protected DomainModel getDomainModel() throws MojoExecutionException
     {
         if (this.klassSourcePackages.isEmpty())
@@ -58,7 +57,9 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
 
         ClassLoader classLoader = this.getClassLoader();
 
-        ImmutableList<URL> urls = klassSourcePackagesImmutable.flatCollectWith(ClasspathHelper::forPackage, classLoader);
+        ImmutableList<URL> urls = klassSourcePackagesImmutable.flatCollectWith(
+                ClasspathHelper::forPackage,
+                classLoader);
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .setScanners(new ResourcesScanner())
                 .setUrls(urls.castToList());
@@ -86,6 +87,7 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
         return domainModel;
     }
 
+    @Nonnull
     private ClassLoader getClassLoader() throws MojoExecutionException
     {
         try
@@ -108,7 +110,7 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
     }
 
     @Nonnull
-    private URL getUrl(String classpathElement) throws MojoExecutionException
+    private URL getUrl(@Nonnull String classpathElement) throws MojoExecutionException
     {
         try
         {

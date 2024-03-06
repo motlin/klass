@@ -32,7 +32,7 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
 
     public static klass.model.meta.domain.Criteria convert(
             ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter,
-            Criteria criteria)
+            @Nonnull Criteria criteria)
     {
         BootstrapCriteriaVisitor visitor = new BootstrapCriteriaVisitor(bootstrappedParametersByParameter);
         criteria.visit(visitor);
@@ -107,8 +107,8 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
     }
 
     private void handleBinaryCriteria(
-            klass.model.meta.domain.BinaryCriteria bootstrappedCriteria,
-            BinaryCriteria binaryCriteria)
+            @Nonnull klass.model.meta.domain.BinaryCriteria bootstrappedCriteria,
+            @Nonnull BinaryCriteria binaryCriteria)
     {
         klass.model.meta.domain.Criteria bootstrappedLeft = BootstrapCriteriaVisitor.convert(
                 this.bootstrappedParametersByParameter,
@@ -124,8 +124,8 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
     }
 
     private void handleCriteria(
-            klass.model.meta.domain.Criteria bootstrappedCriteria,
-            Criteria criteria)
+            @Nonnull klass.model.meta.domain.Criteria bootstrappedCriteria,
+            @Nonnull Criteria criteria)
     {
         KlassBootstrapWriter.handleElement(bootstrappedCriteria, criteria);
         bootstrappedCriteria.insert();

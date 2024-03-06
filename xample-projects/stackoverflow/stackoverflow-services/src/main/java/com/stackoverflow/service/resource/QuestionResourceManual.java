@@ -332,7 +332,7 @@ public class QuestionResourceManual
     @POST
     @Path("/api/question")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response method5(ObjectNode incomingInstance, @Context UriInfo uriInfo)
+    public Response method5(@Nonnull ObjectNode incomingInstance, @Nonnull @Context UriInfo uriInfo)
     {
         MutableList<String> errors = Lists.mutable.empty();
         JsonTypeCheckingValidator.validate(incomingInstance, StackOverflowDomainModel.Question, errors);

@@ -253,6 +253,7 @@ public class JavaConstantsMetaModelGenerator
                 .makeString("");
     }
 
+    @Nonnull
     private String getTopLevelElementSourceCode(PackageableElement topLevelElement)
     {
         if (topLevelElement instanceof ServiceGroup)
@@ -266,6 +267,7 @@ public class JavaConstantsMetaModelGenerator
                 topLevelElement.getName());
     }
 
+    @Nonnull
     private String getTypeName(Element element)
     {
         if (element instanceof Enumeration)
@@ -391,7 +393,7 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getEnumerationSourceCode(Enumeration enumeration)
+    private String getEnumerationSourceCode(@Nonnull Enumeration enumeration)
     {
         String packageName = enumeration.getPackageName() + ".meta.constants";
 
@@ -476,7 +478,8 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:on
     }
 
-    private String getEnumerationLiteralsSourceCode(Enumeration enumeration)
+    @Nonnull
+    private String getEnumerationLiteralsSourceCode(@Nonnull Enumeration enumeration)
     {
         return enumeration.getEnumerationLiterals()
                 .collect(this::getEnumerationLiteralSourceCode)
@@ -487,7 +490,8 @@ public class JavaConstantsMetaModelGenerator
                 .replaceAll("(?m)^(?!$)", "    ");
     }
 
-    private String getEnumerationLiteralSourceCode(EnumerationLiteral enumerationLiteral)
+    @Nonnull
+    private String getEnumerationLiteralSourceCode(@Nonnull EnumerationLiteral enumerationLiteral)
     {
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, enumerationLiteral.getName());
 
@@ -552,14 +556,15 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:on
     }
 
-    private String getEnumerationLiteralConstantsSourceCode(Enumeration enumeration)
+    private String getEnumerationLiteralConstantsSourceCode(@Nonnull Enumeration enumeration)
     {
         return enumeration.getEnumerationLiterals()
                 .collect(this::getEnumerationLiteralConstantSourceCode)
                 .makeString("");
     }
 
-    private String getEnumerationLiteralConstantSourceCode(EnumerationLiteral enumerationLiteral)
+    @Nonnull
+    private String getEnumerationLiteralConstantSourceCode(@Nonnull EnumerationLiteral enumerationLiteral)
     {
         String name          = enumerationLiteral.getName();
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, name);
@@ -573,7 +578,7 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getInterfaceSourceCode(Interface eachInterface)
+    private String getInterfaceSourceCode(@Nonnull Interface eachInterface)
     {
         // @formatter:off
         //language=JAVA
@@ -671,7 +676,7 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getClassSourceCode(Klass klass)
+    private String getClassSourceCode(@Nonnull Klass klass)
     {
         // @formatter:off
         //language=JAVA
@@ -816,12 +821,12 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getDomainModelConstant(NamedElement namedElement)
+    private String getDomainModelConstant(@Nonnull NamedElement namedElement)
     {
         return String.format("%sDomainModel.%s", this.applicationName, namedElement.getName());
     }
 
-    private String getSuperClassSourceCode(Klass klass)
+    private String getSuperClassSourceCode(@Nonnull Klass klass)
     {
         if (!klass.getSuperClass().isPresent())
         {
@@ -834,7 +839,7 @@ public class JavaConstantsMetaModelGenerator
                 klass.getSuperClass().get().getName());
     }
 
-    private String getAssociationEndsSourceCode(Klass klass)
+    private String getAssociationEndsSourceCode(@Nonnull Klass klass)
     {
         return klass.getDeclaredAssociationEnds()
                 .collect(this::getAssociationEndSourceCode)
@@ -842,7 +847,7 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getOptionalAssociationEndSourceCode(Optional<AssociationEnd> optionalAssociationEnd)
+    private String getOptionalAssociationEndSourceCode(@Nonnull Optional<AssociationEnd> optionalAssociationEnd)
     {
         return optionalAssociationEnd
                 .map(associationEnd -> String.format(
@@ -851,7 +856,7 @@ public class JavaConstantsMetaModelGenerator
                 .orElse("Optional.empty()");
     }
 
-    private String getDataTypePropertiesSourceCode(Classifier classifier)
+    private String getDataTypePropertiesSourceCode(@Nonnull Classifier classifier)
     {
         return classifier.getDeclaredDataTypeProperties()
                 .collect(this::getDataTypePropertySourceCode)
@@ -874,7 +879,8 @@ public class JavaConstantsMetaModelGenerator
         throw new AssertionError();
     }
 
-    private String getPrimitivePropertySourceCode(PrimitiveProperty primitiveProperty)
+    @Nonnull
+    private String getPrimitivePropertySourceCode(@Nonnull PrimitiveProperty primitiveProperty)
     {
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, primitiveProperty.getName());
 
@@ -1010,7 +1016,7 @@ public class JavaConstantsMetaModelGenerator
                 + "    }\n";
     }
 
-    private String getKeysMatchingThisForeignKey(DataTypeProperty dataTypeProperty)
+    private String getKeysMatchingThisForeignKey(@Nonnull DataTypeProperty dataTypeProperty)
     {
         return dataTypeProperty
                 .getKeysMatchingThisForeignKey()
@@ -1019,7 +1025,7 @@ public class JavaConstantsMetaModelGenerator
                 .makeString("");
     }
 
-    private String getForeignKeySourceCode(Pair<AssociationEnd, RichIterable<DataTypeProperty>> each)
+    private String getForeignKeySourceCode(@Nonnull Pair<AssociationEnd, RichIterable<DataTypeProperty>> each)
     {
         return String.format(
                 "            result.put(%s, %s);\n",
@@ -1027,7 +1033,7 @@ public class JavaConstantsMetaModelGenerator
                 each.getTwo().collect(this::getForeignKeySourceCode).makeString());
     }
 
-    private String getForeignKeySourceCode(Property property)
+    private String getForeignKeySourceCode(@Nonnull Property property)
     {
         return String.format(
                 "%sDomainModel.%s.%s",
@@ -1036,7 +1042,8 @@ public class JavaConstantsMetaModelGenerator
                 property.getName());
     }
 
-    private String getPropertyModifiersSourceCode(ImmutableList<PropertyModifier> propertyModifiers)
+    @Nonnull
+    private String getPropertyModifiersSourceCode(@Nonnull ImmutableList<PropertyModifier> propertyModifiers)
     {
         if (propertyModifiers.isEmpty())
         {
@@ -1055,7 +1062,8 @@ public class JavaConstantsMetaModelGenerator
                 + "            return Lists.immutable.with(" + variableNames.makeString() + ");\n";
     }
 
-    private String getPropertyModifierSourceCode(PropertyModifier propertyModifier)
+    @Nonnull
+    private String getPropertyModifierSourceCode(@Nonnull PropertyModifier propertyModifier)
     {
         // @formatter:off
         return ""
@@ -1099,7 +1107,8 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:on
     }
 
-    private String getEnumerationPropertySourceCode(EnumerationProperty enumerationProperty)
+    @Nonnull
+    private String getEnumerationPropertySourceCode(@Nonnull EnumerationProperty enumerationProperty)
     {
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, enumerationProperty.getName());
 
@@ -1219,7 +1228,7 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:on
     }
 
-    private String getMemberConstantsSourceCode(Classifier classifier)
+    private String getMemberConstantsSourceCode(@Nonnull Classifier classifier)
     {
         // TODO: Change from properties to members
         return classifier.getDeclaredDataTypeProperties()
@@ -1227,7 +1236,8 @@ public class JavaConstantsMetaModelGenerator
                 .makeString("");
     }
 
-    private String getDataTypePropertyConstantSourceCode(DataTypeProperty dataTypeProperty)
+    @Nonnull
+    private String getDataTypePropertyConstantSourceCode(@Nonnull DataTypeProperty dataTypeProperty)
     {
         String name          = dataTypeProperty.getName();
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, name);
@@ -1248,7 +1258,7 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getAssociationSourceCode(Association association)
+    private String getAssociationSourceCode(@Nonnull Association association)
     {
         // @formatter:off
         //language=JAVA
@@ -1346,7 +1356,8 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:on
     }
 
-    private String getAssociationEndSourceCode(AssociationEnd associationEnd)
+    @Nonnull
+    private String getAssociationEndSourceCode(@Nonnull AssociationEnd associationEnd)
     {
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, associationEnd.getName());
 
@@ -1444,7 +1455,7 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:on
     }
 
-    private String getAssociationEndModifierConstantsSourceCode(AssociationEnd associationEnd)
+    private String getAssociationEndModifierConstantsSourceCode(@Nonnull AssociationEnd associationEnd)
     {
         return associationEnd
                 .getAssociationEndModifiers()
@@ -1452,7 +1463,8 @@ public class JavaConstantsMetaModelGenerator
                 .makeString("");
     }
 
-    private String getAssociationEndModifierConstantSourceCode(AssociationEndModifier associationEndModifier)
+    @Nonnull
+    private String getAssociationEndModifierConstantSourceCode(@Nonnull AssociationEndModifier associationEndModifier)
     {
         // @formatter:off
         //language=JAVA
@@ -1495,20 +1507,22 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:on
     }
 
-    private String getAssociationEndConstantsSourceCode(Klass klass)
+    private String getAssociationEndConstantsSourceCode(@Nonnull Klass klass)
     {
         return klass.getDeclaredAssociationEnds()
                 .collect(this::getAssociationEndConstantSourceCode)
                 .makeString("");
     }
 
-    private String getAssociationEndConstantsSourceCode(Association association)
+    @Nonnull
+    private String getAssociationEndConstantsSourceCode(@Nonnull Association association)
     {
         return this.getAssociationEndConstantSourceCode(association.getSourceAssociationEnd(), "source")
                 + this.getAssociationEndConstantSourceCode(association.getTargetAssociationEnd(), "target");
     }
 
-    private String getAssociationEndConstantSourceCode(AssociationEnd associationEnd)
+    @Nonnull
+    private String getAssociationEndConstantSourceCode(@Nonnull AssociationEnd associationEnd)
     {
         String name          = associationEnd.getName();
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, name);
@@ -1522,7 +1536,7 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getAssociationEndConstantSourceCode(AssociationEnd associationEnd, String sideName)
+    private String getAssociationEndConstantSourceCode(@Nonnull AssociationEnd associationEnd, String sideName)
     {
         String name          = associationEnd.getName();
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, name);
@@ -1538,7 +1552,7 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getProjectionSourceCode(Projection projection)
+    private String getProjectionSourceCode(@Nonnull Projection projection)
     {
         // @formatter:off
         //language=JAVA
@@ -1632,14 +1646,15 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:on
     }
 
-    private String getProjectionChildrenConstantsSourceCode(ProjectionParent projectionParent)
+    private String getProjectionChildrenConstantsSourceCode(@Nonnull ProjectionParent projectionParent)
     {
         return projectionParent.getChildren()
                 .collect(this::getProjectionChildConstantSourceCode)
                 .makeString("");
     }
 
-    private String getProjectionChildConstantSourceCode(ProjectionElement projectionElement)
+    @Nonnull
+    private String getProjectionChildConstantSourceCode(@Nonnull ProjectionElement projectionElement)
     {
         String name          = projectionElement.getName();
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, name) + projectionElement.getDepth();
@@ -1652,8 +1667,9 @@ public class JavaConstantsMetaModelGenerator
                 name);
     }
 
+    @Nonnull
     private String getProjectionChildrenSourceCode(
-            ProjectionParent projectionParent,
+            @Nonnull ProjectionParent projectionParent,
             String projectionParentName)
     {
         return projectionParent.getChildren()
@@ -1684,8 +1700,9 @@ public class JavaConstantsMetaModelGenerator
         throw new AssertionError(projectionElement.getClass().getSimpleName());
     }
 
+    @Nonnull
     private String getProjectionDataTypePropertySourceCode(
-            ProjectionDataTypeProperty projectionDataTypeProperty,
+            @Nonnull ProjectionDataTypeProperty projectionDataTypeProperty,
             String projectionParentName)
     {
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionDataTypeProperty.getName()) + projectionDataTypeProperty.getDepth();
@@ -1756,8 +1773,9 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:on
     }
 
+    @Nonnull
     private String getProjectionAssociationEndSourceCode(
-            ProjectionAssociationEnd projectionAssociationEnd,
+            @Nonnull ProjectionAssociationEnd projectionAssociationEnd,
             String projectionParentName)
     {
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionAssociationEnd.getName()) + projectionAssociationEnd.getDepth();
@@ -1830,8 +1848,9 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:on
     }
 
+    @Nonnull
     private String getProjectionProjectionReferenceSourceCode(
-            ProjectionProjectionReference projectionProjectionReference,
+            @Nonnull ProjectionProjectionReference projectionProjectionReference,
             String projectionParentName)
     {
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionProjectionReference.getName()) + projectionProjectionReference.getDepth();

@@ -15,7 +15,7 @@ public interface ProjectionDataTypeProperty extends ProjectionChild
     }
 
     @Override
-    default void visit(ProjectionVisitor visitor)
+    default void visit(@Nonnull ProjectionVisitor visitor)
     {
         visitor.visitProjectionDataTypeProperty(this);
     }

@@ -2,6 +2,8 @@ package cool.klass.dropwizard.bundle.reladomo;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.bundle.api.DataBundle;
@@ -37,7 +39,7 @@ public class ReladomoBundle implements DataBundle
     }
 
     @Override
-    public void run(Environment environment)
+    public void run(@Nonnull Environment environment)
     {
         ReladomoConfig.configure(
                 environment.getObjectMapper(),

@@ -88,7 +88,7 @@ public class KlassBootstrapWriter
         this.domainModel.getServiceGroups().each(this::handleServiceGroup);
     }
 
-    private void handleEnumeration(Enumeration enumeration)
+    private void handleEnumeration(@Nonnull Enumeration enumeration)
     {
         klass.model.meta.domain.Enumeration bootstrappedEnumeration = new klass.model.meta.domain.Enumeration();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedEnumeration, enumeration);
@@ -102,7 +102,7 @@ public class KlassBootstrapWriter
 
     private void handleEnumerationLiteral(
             klass.model.meta.domain.Enumeration bootstrappedEnumeration,
-            EnumerationLiteral enumerationLiteral)
+            @Nonnull EnumerationLiteral enumerationLiteral)
     {
         klass.model.meta.domain.EnumerationLiteral bootstrappedEnumerationLiteral = new klass.model.meta.domain.EnumerationLiteral();
         KlassBootstrapWriter.handleNamedElement(bootstrappedEnumerationLiteral, enumerationLiteral);
@@ -111,7 +111,7 @@ public class KlassBootstrapWriter
         bootstrappedEnumerationLiteral.insert();
     }
 
-    private void handleInterface(Interface anInterface)
+    private void handleInterface(@Nonnull Interface anInterface)
     {
         klass.model.meta.domain.Interface bootstrappedInterface = new klass.model.meta.domain.Interface();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedInterface, anInterface);
@@ -123,7 +123,7 @@ public class KlassBootstrapWriter
         this.handleDataTypeProperties(anInterface);
     }
 
-    private void handleClass(Klass klass)
+    private void handleClass(@Nonnull Klass klass)
     {
         klass.model.meta.domain.Klass bootstrappedClass = new klass.model.meta.domain.Klass();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedClass, klass);
@@ -140,7 +140,7 @@ public class KlassBootstrapWriter
         this.handleDataTypeProperties(klass);
     }
 
-    private void handleAssociation(Association association)
+    private void handleAssociation(@Nonnull Association association)
     {
         klass.model.meta.domain.Criteria bootstrappedCriteria = BootstrapCriteriaVisitor.convert(Maps.immutable.empty(), association.getCriteria());
 
@@ -156,7 +156,7 @@ public class KlassBootstrapWriter
         this.bootstrapAssociationEnd(targetAssociationEnd, "target");
     }
 
-    private void handleProjection(Projection projection)
+    private void handleProjection(@Nonnull Projection projection)
     {
         klass.model.meta.domain.ServiceProjection bootstrappedProjection = new klass.model.meta.domain.ServiceProjection();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedProjection, projection);
@@ -167,13 +167,13 @@ public class KlassBootstrapWriter
     }
 
     private void handleProjection(
-            ProjectionElement projectionElement,
-            klass.model.meta.domain.ProjectionElement bootstrappedProjectionParent)
+            @Nonnull ProjectionElement projectionElement,
+            @Nonnull klass.model.meta.domain.ProjectionElement bootstrappedProjectionParent)
     {
         projectionElement.visit(new ProjectionVisitor()
         {
             @Override
-            public void visitProjection(Projection projection)
+            public void visitProjection(@Nonnull Projection projection)
             {
                 klass.model.meta.domain.ServiceProjection bootstrappedProjection = new klass.model.meta.domain.ServiceProjection();
                 KlassBootstrapWriter.handlePackageableElement(bootstrappedProjection, projection);
@@ -184,7 +184,7 @@ public class KlassBootstrapWriter
             }
 
             @Override
-            public void visitProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
+            public void visitProjectionAssociationEnd(@Nonnull ProjectionAssociationEnd projectionAssociationEnd)
             {
                 klass.model.meta.domain.ProjectionAssociationEnd bootstrappedProjection = new klass.model.meta.domain.ProjectionAssociationEnd();
                 this.handleProjectionWithAssociationEnd(projectionAssociationEnd, bootstrappedProjection);
@@ -194,7 +194,7 @@ public class KlassBootstrapWriter
             }
 
             @Override
-            public void visitProjectionProjectionReference(ProjectionProjectionReference projectionProjectionReference)
+            public void visitProjectionProjectionReference(@Nonnull ProjectionProjectionReference projectionProjectionReference)
             {
                 klass.model.meta.domain.ProjectionProjectionReference bootstrappedProjection = new klass.model.meta.domain.ProjectionProjectionReference();
                 this.handleProjectionWithAssociationEnd(projectionProjectionReference, bootstrappedProjection);
@@ -203,8 +203,8 @@ public class KlassBootstrapWriter
             }
 
             private void handleProjectionWithAssociationEnd(
-                    ProjectionWithAssociationEnd projectionWithAssociationEnd,
-                    ProjectionWithAssociationEndAbstract bootstrappedProjectionWithAssociationEnd)
+                    @Nonnull ProjectionWithAssociationEnd projectionWithAssociationEnd,
+                    @Nonnull ProjectionWithAssociationEndAbstract bootstrappedProjectionWithAssociationEnd)
             {
                 KlassBootstrapWriter.handleNamedElement(
                         bootstrappedProjectionWithAssociationEnd,
@@ -215,7 +215,7 @@ public class KlassBootstrapWriter
             }
 
             @Override
-            public void visitProjectionDataTypeProperty(ProjectionDataTypeProperty projectionDataTypeProperty)
+            public void visitProjectionDataTypeProperty(@Nonnull ProjectionDataTypeProperty projectionDataTypeProperty)
             {
                 klass.model.meta.domain.ProjectionDataTypeProperty bootstrappedProjection = new klass.model.meta.domain.ProjectionDataTypeProperty();
                 KlassBootstrapWriter.handleNamedElement(bootstrappedProjection, projectionDataTypeProperty);
@@ -227,7 +227,7 @@ public class KlassBootstrapWriter
         });
     }
 
-    private void handleProjectionChildren(ProjectionParent projectionParent, klass.model.meta.domain.ProjectionElement bootstrappedProjection)
+    private void handleProjectionChildren(@Nonnull ProjectionParent projectionParent, @Nonnull klass.model.meta.domain.ProjectionElement bootstrappedProjection)
     {
         for (ProjectionChild projectionChild : projectionParent.getChildren())
         {
@@ -235,7 +235,7 @@ public class KlassBootstrapWriter
         }
     }
 
-    private void handleServiceGroup(ServiceGroup serviceGroup)
+    private void handleServiceGroup(@Nonnull ServiceGroup serviceGroup)
     {
         klass.model.meta.domain.ServiceGroup bootstrappedServiceGroup = new klass.model.meta.domain.ServiceGroup();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedServiceGroup, serviceGroup);
@@ -248,7 +248,7 @@ public class KlassBootstrapWriter
         }
     }
 
-    private void handleUrl(ServiceGroup serviceGroup, Url url)
+    private void handleUrl(@Nonnull ServiceGroup serviceGroup, @Nonnull Url url)
     {
         klass.model.meta.domain.Url bootstrappedUrl = new klass.model.meta.domain.Url();
         KlassBootstrapWriter.handleElement(bootstrappedUrl, url);
@@ -276,9 +276,9 @@ public class KlassBootstrapWriter
 
     private void handleUrlParameter(
             klass.model.meta.domain.Url bootstrappedUrl,
-            Parameter parameter,
+            @Nonnull Parameter parameter,
             String urlParameterType,
-            MutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter)
+            @Nonnull MutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter)
     {
         klass.model.meta.domain.Parameter bootstrappedParameter = this.initializeBootstrappedParameter(parameter.getType());
         handleNamedElement(bootstrappedParameter, parameter);
@@ -295,6 +295,7 @@ public class KlassBootstrapWriter
         bootstrappedParametersByParameter.put(parameter, bootstrappedParameter);
     }
 
+    @Nonnull
     private klass.model.meta.domain.Parameter initializeBootstrappedParameter(DataType dataType)
     {
         if (dataType instanceof PrimitiveType)
@@ -317,9 +318,9 @@ public class KlassBootstrapWriter
     }
 
     private void handleService(
-            ServiceGroup serviceGroup,
-            Url url,
-            Service service,
+            @Nonnull ServiceGroup serviceGroup,
+            @Nonnull Url url,
+            @Nonnull Service service,
             ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter)
     {
         Optional<klass.model.meta.domain.Criteria> optionalBootstrappedQueryCriteria = service.getQueryCriteria()
@@ -350,7 +351,7 @@ public class KlassBootstrapWriter
         bootstrappedService.insert();
     }
 
-    private void handleDataTypeProperties(Classifier classifier)
+    private void handleDataTypeProperties(@Nonnull Classifier classifier)
     {
         for (DataTypeProperty dataTypeProperty : classifier.getDeclaredDataTypeProperties())
         {
@@ -392,9 +393,9 @@ public class KlassBootstrapWriter
     }
 
     private void handleDataTypeProperty(
-            Classifier classifier,
-            DataTypeProperty dataTypeProperty,
-            klass.model.meta.domain.DataTypeProperty bootstrappedDataTypeProperty)
+            @Nonnull Classifier classifier,
+            @Nonnull DataTypeProperty dataTypeProperty,
+            @Nonnull klass.model.meta.domain.DataTypeProperty bootstrappedDataTypeProperty)
     {
         KlassBootstrapWriter.handleNamedElement(bootstrappedDataTypeProperty, dataTypeProperty);
         bootstrappedDataTypeProperty.setClassifierName(classifier.getName());
@@ -402,7 +403,7 @@ public class KlassBootstrapWriter
         bootstrappedDataTypeProperty.setOptional(dataTypeProperty.isOptional());
     }
 
-    private void handlePropertyModifiers(Classifier classifier, DataTypeProperty dataTypeProperty)
+    private void handlePropertyModifiers(@Nonnull Classifier classifier, @Nonnull DataTypeProperty dataTypeProperty)
     {
         for (PropertyModifier propertyModifier : dataTypeProperty.getPropertyModifiers())
         {
@@ -414,7 +415,7 @@ public class KlassBootstrapWriter
         }
     }
 
-    private void handleValidations(Classifier classifier, DataTypeProperty property)
+    private void handleValidations(@Nonnull Classifier classifier, @Nonnull DataTypeProperty property)
     {
         property.getMinLengthPropertyValidation()
                 .ifPresent(this.getValidationHandler(classifier, property, MinLengthPropertyValidation::new));
@@ -431,19 +432,19 @@ public class KlassBootstrapWriter
 
     @Nonnull
     private Consumer<NumericPropertyValidation> getValidationHandler(
-            Classifier classifier,
-            DataTypeProperty dataTypeProperty,
-            Supplier<klass.model.meta.domain.NumericPropertyValidation> bootstrappedValidationSupplier)
+            @Nonnull Classifier classifier,
+            @Nonnull DataTypeProperty dataTypeProperty,
+            @Nonnull Supplier<klass.model.meta.domain.NumericPropertyValidation> bootstrappedValidationSupplier)
     {
         return validation ->
                 this.handleValidation(classifier, dataTypeProperty, bootstrappedValidationSupplier.get(), validation);
     }
 
     protected void handleValidation(
-            Classifier classifier,
-            DataTypeProperty dataTypeProperty,
-            klass.model.meta.domain.NumericPropertyValidation boostrappedValidation,
-            NumericPropertyValidation validation)
+            @Nonnull Classifier classifier,
+            @Nonnull DataTypeProperty dataTypeProperty,
+            @Nonnull klass.model.meta.domain.NumericPropertyValidation boostrappedValidation,
+            @Nonnull NumericPropertyValidation validation)
     {
         // TODO: Fix reladomo bug causing abstract classes to not implement interfaces
         boostrappedValidation.setInferred(validation.isInferred());
@@ -455,7 +456,7 @@ public class KlassBootstrapWriter
         boostrappedValidation.insert();
     }
 
-    private void handleClassifierModifiers(Classifier classifier)
+    private void handleClassifierModifiers(@Nonnull Classifier classifier)
     {
         for (ClassModifier classModifier : classifier.getClassModifiers())
         {
@@ -466,7 +467,7 @@ public class KlassBootstrapWriter
         }
     }
 
-    private void handleSuperInterfaces(Classifier classifier)
+    private void handleSuperInterfaces(@Nonnull Classifier classifier)
     {
         for (Interface superInterface : classifier.getInterfaces())
         {
@@ -477,7 +478,7 @@ public class KlassBootstrapWriter
         }
     }
 
-    private void bootstrapAssociationEnd(AssociationEnd associationEnd, String direction)
+    private void bootstrapAssociationEnd(@Nonnull AssociationEnd associationEnd, String direction)
     {
         klass.model.meta.domain.AssociationEnd bootstrappedAssociationEnd = new klass.model.meta.domain.AssociationEnd();
         KlassBootstrapWriter.handleNamedElement(bootstrappedAssociationEnd, associationEnd);
@@ -501,8 +502,8 @@ public class KlassBootstrapWriter
     }
 
     private void bootstrapAssociationEndOrderBy(
-            AssociationEnd associationEnd,
-            OrderBy orderBy)
+            @Nonnull AssociationEnd associationEnd,
+            @Nonnull OrderBy orderBy)
     {
         for (OrderByMemberReferencePath orderByMemberReferencePath : orderBy.getOrderByMemberReferencePaths())
         {
@@ -521,7 +522,7 @@ public class KlassBootstrapWriter
     }
 
     @Nonnull
-    private klass.model.meta.domain.ThisMemberReferencePath bootstrapThisMemberReferencePath(ThisMemberReferencePath thisMemberReferencePath)
+    private klass.model.meta.domain.ThisMemberReferencePath bootstrapThisMemberReferencePath(@Nonnull ThisMemberReferencePath thisMemberReferencePath)
     {
         klass.model.meta.domain.ThisMemberReferencePath bootstrappedThisMemberReferencePath = new klass.model.meta.domain.ThisMemberReferencePath();
         bootstrappedThisMemberReferencePath.setClassName(thisMemberReferencePath.getKlass().getName());
@@ -535,7 +536,7 @@ public class KlassBootstrapWriter
         return bootstrappedThisMemberReferencePath;
     }
 
-    public static void handleElement(ElementAbstract bootstrappedElement, Element element)
+    public static void handleElement(@Nonnull ElementAbstract bootstrappedElement, @Nonnull Element element)
     {
         bootstrappedElement.setInferred(element.isInferred());
         bootstrappedElement.setSourceCode(element.getSourceCode());
@@ -543,8 +544,8 @@ public class KlassBootstrapWriter
     }
 
     public static void handleNamedElement(
-            NamedElementAbstract bootstrappedNamedElement,
-            NamedElement namedElement)
+            @Nonnull NamedElementAbstract bootstrappedNamedElement,
+            @Nonnull NamedElement namedElement)
     {
         KlassBootstrapWriter.handleElement(bootstrappedNamedElement, namedElement);
         bootstrappedNamedElement.setName(namedElement.getName());
@@ -552,8 +553,8 @@ public class KlassBootstrapWriter
     }
 
     public static void handlePackageableElement(
-            PackageableElementAbstract bootstrappedPackageableElement,
-            PackageableElement packageableElement)
+            @Nonnull PackageableElementAbstract bootstrappedPackageableElement,
+            @Nonnull PackageableElement packageableElement)
     {
         KlassBootstrapWriter.handleNamedElement(bootstrappedPackageableElement, packageableElement);
         bootstrappedPackageableElement.setPackageName(packageableElement.getPackageName());

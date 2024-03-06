@@ -106,7 +106,7 @@ public interface Classifier extends Type, PackageableElement
                 .makeString("");
     }
 
-    default boolean isStrictSuperTypeOf(Classifier classifier)
+    default boolean isStrictSuperTypeOf(@Nonnull Classifier classifier)
     {
         if (this == classifier)
         {

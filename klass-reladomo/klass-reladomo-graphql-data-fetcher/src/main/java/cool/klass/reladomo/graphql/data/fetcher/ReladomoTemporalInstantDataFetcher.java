@@ -3,6 +3,9 @@ package cool.klass.reladomo.graphql.data.fetcher;
 import java.sql.Timestamp;
 import java.time.Instant;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.gs.fw.common.mithra.attribute.TimestampAttribute;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -16,8 +19,9 @@ public class ReladomoTemporalInstantDataFetcher<Input> implements DataFetcher<In
         this.timestampAttribute = timestampAttribute;
     }
 
+    @Nullable
     @Override
-    public Instant get(DataFetchingEnvironment environment)
+    public Instant get(@Nonnull DataFetchingEnvironment environment)
     {
         Input persistentInstance = environment.getSource();
         if (persistentInstance == null)

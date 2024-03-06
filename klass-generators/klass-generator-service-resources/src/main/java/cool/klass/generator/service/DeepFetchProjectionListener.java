@@ -26,7 +26,7 @@ public final class DeepFetchProjectionListener extends BaseProjectionListener
     // TODO: Figure out how to deep fetch polymorphic projection properties
 
     @Override
-    public void enterProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
+    public void enterProjectionAssociationEnd(@Nonnull ProjectionAssociationEnd projectionAssociationEnd)
     {
         this.enterProjectionWithAssociationEnd(projectionAssociationEnd);
     }
@@ -38,13 +38,13 @@ public final class DeepFetchProjectionListener extends BaseProjectionListener
     }
 
     @Override
-    public void enterProjectionProjectionReference(ProjectionProjectionReference projectionProjectionReference)
+    public void enterProjectionProjectionReference(@Nonnull ProjectionProjectionReference projectionProjectionReference)
     {
         this.enterProjectionWithAssociationEnd(projectionProjectionReference);
     }
 
     @Override
-    public void exitProjectionProjectionReference(ProjectionProjectionReference projectionProjectionReference)
+    public void exitProjectionProjectionReference(@Nonnull ProjectionProjectionReference projectionProjectionReference)
     {
         this.exitProjectionWithAssociationEnd(projectionProjectionReference);
     }
@@ -54,7 +54,7 @@ public final class DeepFetchProjectionListener extends BaseProjectionListener
         return this.result.toImmutable();
     }
 
-    private void enterProjectionWithAssociationEnd(ProjectionWithAssociationEnd projectionWithAssociationEnd)
+    private void enterProjectionWithAssociationEnd(@Nonnull ProjectionWithAssociationEnd projectionWithAssociationEnd)
     {
         if (this.stringStack.isEmpty())
         {
@@ -68,7 +68,7 @@ public final class DeepFetchProjectionListener extends BaseProjectionListener
         this.stringStack.push(projectionWithAssociationEnd.getProperty().getName());
     }
 
-    private void exitProjectionWithAssociationEnd(ProjectionWithAssociationEnd projectionWithAssociationEnd)
+    private void exitProjectionWithAssociationEnd(@Nonnull ProjectionWithAssociationEnd projectionWithAssociationEnd)
     {
         // TODO: Figure out how to deep fetch polymorphic projection properties
         if (projectionWithAssociationEnd.isLeaf()

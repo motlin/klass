@@ -42,7 +42,7 @@ public class OperatorToRelationshipVisitor implements OperatorVisitor
         this.appendOperatorText(stringOperator);
     }
 
-    private void appendOperatorText(Operator operator)
+    private void appendOperatorText(@Nonnull Operator operator)
     {
         this.stringBuilder.append(' ');
         this.stringBuilder.append(operator.getOperatorText());

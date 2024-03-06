@@ -2,6 +2,9 @@ package cool.klass.reladomo.graphql.data.fetcher;
 
 import java.time.LocalDate;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.gs.fw.common.mithra.attribute.DateAttribute;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -15,8 +18,9 @@ public class ReladomoLocalDateDataFetcher<Input> implements DataFetcher<LocalDat
         this.dateAttribute = dateAttribute;
     }
 
+    @Nullable
     @Override
-    public LocalDate get(DataFetchingEnvironment environment)
+    public LocalDate get(@Nonnull DataFetchingEnvironment environment)
     {
         Input persistentInstance = environment.getSource();
         if (persistentInstance == null)

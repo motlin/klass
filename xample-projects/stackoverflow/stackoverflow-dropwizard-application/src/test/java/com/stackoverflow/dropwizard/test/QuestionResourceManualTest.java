@@ -65,7 +65,7 @@ public class QuestionResourceManualTest
         this.assertQuestion1Unchanged(client);
     }
 
-    protected void assertQuestion1Unchanged(Client client) throws JSONException
+    protected void assertQuestion1Unchanged(@Nonnull Client client) throws JSONException
     {
         Response response = client.target(
                 String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))

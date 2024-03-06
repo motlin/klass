@@ -115,7 +115,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
     @Nonnull
     private ConnectionManagerType getConnectionManager(
             String connectionManagerFullyQualifiedName,
-            ImmutableList<PropertyType> propertyTypes)
+            @Nonnull ImmutableList<PropertyType> propertyTypes)
     {
         ConnectionManagerType connectionManagerType = new ConnectionManagerType();
         connectionManagerType.setClassName(connectionManagerFullyQualifiedName);

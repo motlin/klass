@@ -2,7 +2,7 @@ package cool.klass.model.converter.compiler;
 
 import java.util.function.Function;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.phase.AssociationPhase;
 import cool.klass.model.converter.compiler.phase.ClassTemporalPropertyInferencePhase;
@@ -74,7 +74,7 @@ public class KlassCompiler
         }
     }
 
-    @Nullable
+    @Nonnull
     public DomainModel compile()
     {
         ImmutableList<KlassListener> compilerPhases =

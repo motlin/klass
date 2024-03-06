@@ -157,7 +157,8 @@ public class DataTransferObjectsGenerator
         return sourceCode;
     }
 
-    private String getLiteral(EnumerationLiteral enumerationLiteral)
+    @Nonnull
+    private String getLiteral(@Nonnull EnumerationLiteral enumerationLiteral)
     {
         String line1 = enumerationLiteral.getDeclaredPrettyName()
                 .map(prettyName -> "    @JsonProperty(\"" + prettyName + "\")\n")
@@ -168,7 +169,8 @@ public class DataTransferObjectsGenerator
         return line1 + line2;
     }
 
-    private String getDataGetterSetter(DataTypeProperty dataTypeProperty)
+    @Nonnull
+    private String getDataGetterSetter(@Nonnull DataTypeProperty dataTypeProperty)
     {
         String type          = this.getType(dataTypeProperty.getType());
         String name          = dataTypeProperty.getName();
@@ -176,7 +178,8 @@ public class DataTransferObjectsGenerator
         return this.getGetterSetter(type, name, uppercaseName);
     }
 
-    private String getReferenceGetterSetter(AssociationEnd associationEnd)
+    @Nonnull
+    private String getReferenceGetterSetter(@Nonnull AssociationEnd associationEnd)
     {
         String type          = this.getType(associationEnd.getType(), associationEnd.getMultiplicity());
         String name          = associationEnd.getName();
@@ -216,7 +219,7 @@ public class DataTransferObjectsGenerator
     }
 
     @Nonnull
-    private String getType(Klass klass, Multiplicity multiplicity)
+    private String getType(@Nonnull Klass klass, @Nonnull Multiplicity multiplicity)
     {
         String toOneType = klass.getName() + "DTO";
         if (multiplicity.isToOne())
@@ -235,17 +238,17 @@ public class DataTransferObjectsGenerator
     }
 
     @Nonnull
-    private String getAnnotation(DataTypeProperty dataTypeProperty)
+    private String getAnnotation(@Nonnull DataTypeProperty dataTypeProperty)
     {
         return this.isNullable(dataTypeProperty) ? "" : "    @NotNull\n";
     }
 
-    private boolean isNullable(DataTypeProperty dataTypeProperty)
+    private boolean isNullable(@Nonnull DataTypeProperty dataTypeProperty)
     {
         return dataTypeProperty.isTemporal() || dataTypeProperty.isOptional() || dataTypeProperty.isKey();
     }
 
-    private String getReferenceField(AssociationEnd associationEnd)
+    private String getReferenceField(@Nonnull AssociationEnd associationEnd)
     {
         Multiplicity multiplicity = associationEnd.getMultiplicity();
 

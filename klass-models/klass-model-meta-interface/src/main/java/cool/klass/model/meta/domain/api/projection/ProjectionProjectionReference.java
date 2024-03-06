@@ -23,7 +23,7 @@ public interface ProjectionProjectionReference extends ProjectionWithAssociation
     }
 
     @Override
-    default void visit(ProjectionVisitor visitor)
+    default void visit(@Nonnull ProjectionVisitor visitor)
     {
         visitor.visitProjectionProjectionReference(this);
     }

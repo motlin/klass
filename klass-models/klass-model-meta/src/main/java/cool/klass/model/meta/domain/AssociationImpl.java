@@ -45,7 +45,7 @@ public final class AssociationImpl extends AbstractPackageableElement implements
         return this.associationEnds;
     }
 
-    private void setAssociationEnds(ImmutableList<AssociationEnd> associationEnds)
+    private void setAssociationEnds(@Nonnull ImmutableList<AssociationEnd> associationEnds)
     {
         if (associationEnds.size() != 2)
         {

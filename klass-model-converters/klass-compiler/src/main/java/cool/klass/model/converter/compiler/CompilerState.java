@@ -138,7 +138,7 @@ public class CompilerState
             DomainModelBuilder domainModelBuilder = this.domainModelState.build();
             return domainModelBuilder.build();
         }
-        return null;
+        throw new AssertionError(this.compilerErrorHolder.getCompilerErrors().makeString());
     }
 
     public AntlrDomainModel getDomainModelState()

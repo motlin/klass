@@ -3,7 +3,6 @@ package cool.klass.model.converter.compiler.state;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import org.antlr.v4.runtime.ParserRuleContext;

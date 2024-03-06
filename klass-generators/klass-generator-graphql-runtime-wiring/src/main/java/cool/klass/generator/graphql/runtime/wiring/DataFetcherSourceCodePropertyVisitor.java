@@ -64,13 +64,14 @@ public final class DataFetcherSourceCodePropertyVisitor implements PropertyVisit
     }
 
     @Override
-    public void visitPrimitiveProperty(PrimitiveProperty primitiveProperty)
+    public void visitPrimitiveProperty(@Nonnull PrimitiveProperty primitiveProperty)
     {
         PrimitiveType primitiveType = primitiveProperty.getType();
         this.dataFetcherSourceCode = this.getPrimitiveDataFetcherSourceCode(primitiveType);
     }
 
-    private String getPrimitiveDataFetcherSourceCode(PrimitiveType primitiveType)
+    @Nonnull
+    private String getPrimitiveDataFetcherSourceCode(@Nonnull PrimitiveType primitiveType)
     {
         if (SPECIAL_PRIMITIVE_TYPES.contains(primitiveType))
         {

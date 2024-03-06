@@ -5,6 +5,8 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
@@ -36,7 +38,7 @@ public abstract class AbstractDataTypePropertyVisitor implements DataTypePropert
     }
 
     @Override
-    public void visitEnumerationProperty(EnumerationProperty enumerationProperty)
+    public void visitEnumerationProperty(@Nonnull EnumerationProperty enumerationProperty)
     {
         ImmutableList<EnumerationLiteral> enumerationLiterals = enumerationProperty.getType().getEnumerationLiterals();
         // TODO: Compiler error for enumeration with <2 literals
@@ -44,7 +46,7 @@ public abstract class AbstractDataTypePropertyVisitor implements DataTypePropert
     }
 
     @Override
-    public void visitString(PrimitiveProperty primitiveProperty)
+    public void visitString(@Nonnull PrimitiveProperty primitiveProperty)
     {
         // TODO: Something more reliable, or ban shared foreign keys
         if (primitiveProperty.getKeysMatchingThisForeignKey().size() == 1)
@@ -72,13 +74,13 @@ public abstract class AbstractDataTypePropertyVisitor implements DataTypePropert
     }
 
     @Override
-    public void visitInteger(PrimitiveProperty primitiveProperty)
+    public void visitInteger(@Nonnull PrimitiveProperty primitiveProperty)
     {
         this.result = this.getAdjustment(primitiveProperty);
     }
 
     @Override
-    public void visitLong(PrimitiveProperty primitiveProperty)
+    public void visitLong(@Nonnull PrimitiveProperty primitiveProperty)
     {
         if (primitiveProperty.isForeignKey())
         {
@@ -95,13 +97,13 @@ public abstract class AbstractDataTypePropertyVisitor implements DataTypePropert
     }
 
     @Override
-    public void visitDouble(PrimitiveProperty primitiveProperty)
+    public void visitDouble(@Nonnull PrimitiveProperty primitiveProperty)
     {
         this.result = this.getAdjustment(primitiveProperty) + 0.0123456789;
     }
 
     @Override
-    public void visitFloat(PrimitiveProperty primitiveProperty)
+    public void visitFloat(@Nonnull PrimitiveProperty primitiveProperty)
     {
         this.result = this.getAdjustment(primitiveProperty) + 0.01234567f;
     }
@@ -113,13 +115,13 @@ public abstract class AbstractDataTypePropertyVisitor implements DataTypePropert
     }
 
     @Override
-    public void visitInstant(PrimitiveProperty primitiveProperty)
+    public void visitInstant(@Nonnull PrimitiveProperty primitiveProperty)
     {
         this.result = this.getUniqueLocalDateTime(primitiveProperty).toInstant(ZoneOffset.UTC);
     }
 
     @Override
-    public void visitLocalDate(PrimitiveProperty primitiveProperty)
+    public void visitLocalDate(@Nonnull PrimitiveProperty primitiveProperty)
     {
         this.result = this.getUniqueLocalDateTime(primitiveProperty).toLocalDate();
     }
@@ -132,7 +134,7 @@ public abstract class AbstractDataTypePropertyVisitor implements DataTypePropert
     }
 
     @Override
-    public void visitTemporalRange(PrimitiveProperty primitiveProperty)
+    public void visitTemporalRange(@Nonnull PrimitiveProperty primitiveProperty)
     {
         if (!primitiveProperty.isSystem())
         {
@@ -142,18 +144,20 @@ public abstract class AbstractDataTypePropertyVisitor implements DataTypePropert
 
     protected abstract boolean getBoolean();
 
+    @Nonnull
     protected abstract String getEmoji();
 
     protected abstract int getIndex();
 
+    @Nonnull
     protected abstract LocalDateTime getLocalDateTime();
 
-    private int getAdjustment(PrimitiveProperty primitiveProperty)
+    private int getAdjustment(@Nonnull PrimitiveProperty primitiveProperty)
     {
         return primitiveProperty.isForeignKey() ? this.getIndex() : this.getNumber(primitiveProperty);
     }
 
-    private LocalDateTime getUniqueLocalDateTime(PrimitiveProperty primitiveProperty)
+    private LocalDateTime getUniqueLocalDateTime(@Nonnull PrimitiveProperty primitiveProperty)
     {
         if (primitiveProperty.isForeignKey())
         {

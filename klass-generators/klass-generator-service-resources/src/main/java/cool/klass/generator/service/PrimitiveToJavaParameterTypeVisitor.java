@@ -1,5 +1,7 @@
 package cool.klass.generator.service;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 
@@ -7,7 +9,7 @@ public class PrimitiveToJavaParameterTypeVisitor implements PrimitiveTypeVisitor
 {
     private String result;
 
-    public static String getJavaType(PrimitiveType primitiveType)
+    public static String getJavaType(@Nonnull PrimitiveType primitiveType)
     {
         PrimitiveToJavaParameterTypeVisitor primitiveToJavaTypeVisitor = new PrimitiveToJavaParameterTypeVisitor();
         primitiveType.visit(primitiveToJavaTypeVisitor);

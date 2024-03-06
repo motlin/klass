@@ -2,6 +2,8 @@ package cool.klass.model.graphql.domain;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class GraphQLEnumeration extends GraphQLNamedElement implements GraphQLElement
@@ -17,7 +19,7 @@ public class GraphQLEnumeration extends GraphQLNamedElement implements GraphQLEl
     }
 
     @Override
-    public void visit(GraphQLElementVisitor visitor)
+    public void visit(@Nonnull GraphQLElementVisitor visitor)
     {
         visitor.visitEnumeration(this);
     }

@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -44,9 +45,9 @@ public abstract class PersistentSynchronizer
     protected abstract boolean shouldWriteId();
 
     public void synchronize(
-            Klass klass,
+            @Nonnull Klass klass,
             Object persistentInstance,
-            ObjectNode incomingJson)
+            @Nonnull ObjectNode incomingJson)
     {
         if (this.inTransaction)
         {
@@ -68,10 +69,10 @@ public abstract class PersistentSynchronizer
     }
 
     protected void synchronizeInTransaction(
-            Klass klass,
-            Optional<AssociationEnd> pathHere,
+            @Nonnull Klass klass,
+            @Nonnull Optional<AssociationEnd> pathHere,
             Object persistentInstance,
-            ObjectNode incomingJson)
+            @Nonnull ObjectNode incomingJson)
     {
         if (!this.inTransaction)
         {
@@ -85,15 +86,15 @@ public abstract class PersistentSynchronizer
         this.synchronizeAssociationEnds(klass, pathHere, persistentInstance, incomingJson);
     }
 
-    private boolean isRestrictedFromWriting(Klass klass)
+    private boolean isRestrictedFromWriting(@Nonnull Klass klass)
     {
         return klass.isTransient() || klass.getVersionedProperty().isPresent();
     }
 
     private void synchronizeDataTypeProperties(
-            Klass klass,
+            @Nonnull Klass klass,
             Object persistentInstance,
-            ObjectNode incomingJson)
+            @Nonnull ObjectNode incomingJson)
     {
         ImmutableList<DataTypeProperty> dataTypeProperties = klass.getDataTypeProperties();
         ImmutableList<DataTypeProperty> nonDerivedDataTypeProperties = this.getNonDerivedDataTypeProperties(
@@ -126,10 +127,10 @@ public abstract class PersistentSynchronizer
     }
 
     private void synchronizeAssociationEnds(
-            Klass klass,
-            Optional<AssociationEnd> pathHere,
+            @Nonnull Klass klass,
+            @Nonnull Optional<AssociationEnd> pathHere,
             Object persistentInstance,
-            ObjectNode incomingObjectNode)
+            @Nonnull ObjectNode incomingObjectNode)
     {
         PartitionImmutableList<AssociationEnd> forwardOwnedAssociationEnds = klass.getAssociationEnds()
                 .reject(associationEnd -> pathHere.equals(Optional.of(associationEnd.getOpposite())))
@@ -180,9 +181,9 @@ public abstract class PersistentSynchronizer
             JsonNode jsonNode);
 
     private void handleToOne(
-            AssociationEnd associationEnd,
+            @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
-            JsonNode incomingChildInstance)
+            @Nonnull JsonNode incomingChildInstance)
     {
         Object persistentChildInstance = this.dataStore.getToOne(persistentParentInstance, associationEnd);
 
@@ -219,8 +220,8 @@ public abstract class PersistentSynchronizer
 
     protected Object findExistingChildPersistentInstance(
             Object persistentParentInstance,
-            JsonNode incomingChildInstance,
-            AssociationEnd associationEnd)
+            @Nonnull JsonNode incomingChildInstance,
+            @Nonnull AssociationEnd associationEnd)
     {
         if (!(this instanceof PersistentCreator) && !(this instanceof PersistentReplacer))
         {
@@ -234,7 +235,7 @@ public abstract class PersistentSynchronizer
     }
 
     private void insert(
-            AssociationEnd associationEnd,
+            @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
             JsonNode incomingChildInstance,
             ImmutableList<Object> keys)
@@ -259,9 +260,9 @@ public abstract class PersistentSynchronizer
     }
 
     private void handleToMany(
-            AssociationEnd associationEnd,
+            @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
-            JsonNode incomingChildInstances)
+            @Nonnull JsonNode incomingChildInstances)
     {
         // TODO: Test null where an array goes
 
@@ -341,11 +342,12 @@ public abstract class PersistentSynchronizer
         }
     }
 
+    @Nullable
     private Object getPersistentChildInstance(
-            AssociationEnd associationEnd,
+            @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
-            MapIterable<ImmutableList<Object>, Object> persistentChildInstancesByKey,
-            JsonNode incomingChildInstance)
+            @Nonnull MapIterable<ImmutableList<Object>, Object> persistentChildInstancesByKey,
+            @Nonnull JsonNode incomingChildInstance)
     {
         if (this.jsonNodeNeedsIdInferredOnInsert(incomingChildInstance, associationEnd))
         {
@@ -362,7 +364,7 @@ public abstract class PersistentSynchronizer
 
     private boolean jsonNodeNeedsIdInferredOnInsert(
             JsonNode jsonNode,
-            AssociationEnd associationEnd)
+            @Nonnull AssociationEnd associationEnd)
     {
         return associationEnd
                 .getType()
@@ -374,9 +376,9 @@ public abstract class PersistentSynchronizer
     }
 
     private boolean jsonNodeNeedsIdInferredOnInsert(
-            DataTypeProperty keyProperty,
+            @Nonnull DataTypeProperty keyProperty,
             JsonNode jsonNode,
-            AssociationEnd associationEnd)
+            @Nonnull AssociationEnd associationEnd)
     {
         ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
 
@@ -405,9 +407,9 @@ public abstract class PersistentSynchronizer
     }
 
     private void handleToManyOutsideProjection(
-            AssociationEnd associationEnd,
+            @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
-            JsonNode incomingChildInstances)
+            @Nonnull JsonNode incomingChildInstances)
     {
         // TODO: Test null where an array goes
 
@@ -476,8 +478,8 @@ public abstract class PersistentSynchronizer
     }
 
     private ImmutableList<Object> getKeysFromJsonNode(
-            JsonNode jsonNode,
-            AssociationEnd associationEnd,
+            @Nonnull JsonNode jsonNode,
+            @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance)
     {
         if (this.jsonNodeNeedsIdInferredOnInsert(jsonNode, associationEnd))
@@ -495,9 +497,9 @@ public abstract class PersistentSynchronizer
     }
 
     private Object getKeyFromJsonNode(
-            DataTypeProperty keyProperty,
-            JsonNode jsonNode,
-            AssociationEnd associationEnd,
+            @Nonnull DataTypeProperty keyProperty,
+            @Nonnull JsonNode jsonNode,
+            @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance)
     {
         ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
@@ -536,9 +538,10 @@ public abstract class PersistentSynchronizer
         return Objects.requireNonNull(result);
     }
 
+    @Nonnull
     private MapIterable<ImmutableList<Object>, Object> indexPersistentInstances(
-            List<Object> persistentInstances,
-            Klass klass)
+            @Nonnull List<Object> persistentInstances,
+            @Nonnull Klass klass)
     {
         // TODO: Change to use groupByUniqueKey after EC 10.0 is released.
 
@@ -556,9 +559,10 @@ public abstract class PersistentSynchronizer
         // return result.asUnmodifiable();
     }
 
+    @Nonnull
     private MapIterable<ImmutableList<Object>, JsonNode> indexIncomingJsonInstances(
-            Iterable<JsonNode> incomingInstances,
-            AssociationEnd associationEnd,
+            @Nonnull Iterable<JsonNode> incomingInstances,
+            @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance)
     {
         MutableOrderedMap<ImmutableList<Object>, JsonNode> result = OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -575,13 +579,14 @@ public abstract class PersistentSynchronizer
         // return result.asUnmodifiable();
     }
 
-    protected ImmutableList<Object> getKeysFromPersistentInstance(Object persistentInstance, Klass klass)
+    protected ImmutableList<Object> getKeysFromPersistentInstance(Object persistentInstance, @Nonnull Klass klass)
     {
         return klass
                 .getKeyProperties()
                 .collect(keyProperty -> this.dataStore.getDataTypeProperty(persistentInstance, keyProperty));
     }
 
+    @Nonnull
     protected abstract PersistentSynchronizer determineNextMode(OperationMode nextMode);
 
     private boolean hasReferencePropertyDependentOnDataTypeProperty(
