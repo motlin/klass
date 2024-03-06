@@ -18,6 +18,7 @@ import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationListContext;
@@ -93,6 +94,14 @@ public class ParameterizedPropertyPhase
 
         this.handleClassReference(ctx.classReference());
         this.handleMultiplicity(ctx.multiplicity());
+
+        KlassVisitor<AntlrCriteria> visitor = new CriteriaVisitor(
+                this.compilerState,
+                this.parameterizedPropertyState);
+
+        CriteriaExpressionContext criteriaExpressionContext = ctx.criteriaExpression();
+        AntlrCriteria             criteriaState             = visitor.visit(criteriaExpressionContext);
+        this.parameterizedPropertyState.setCriteria(criteriaState);
     }
 
     @Override
