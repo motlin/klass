@@ -118,12 +118,14 @@ public class QuestionResourceManual
             @Nonnull @NotNull ObjectNode incomingInstance)
     {
         MutableList<String> errors = Lists.mutable.empty();
+        MutableList<String> warnings = Lists.mutable.empty();
         JsonTypeCheckingValidator.validate(incomingInstance, StackOverflowDomainModel.Question, errors);
         RequiredPropertiesValidator.validate(
                 StackOverflowDomainModel.Question,
                 incomingInstance,
                 OperationMode.REPLACE,
-                errors);
+                errors,
+                warnings);
 
         if (errors.notEmpty())
         {
@@ -341,12 +343,14 @@ public class QuestionResourceManual
     public Response method5(@Nonnull ObjectNode incomingInstance, @Nonnull @Context UriInfo uriInfo)
     {
         MutableList<String> errors = Lists.mutable.empty();
+        MutableList<String> warnings = Lists.mutable.empty();
         JsonTypeCheckingValidator.validate(incomingInstance, StackOverflowDomainModel.Question, errors);
         RequiredPropertiesValidator.validate(
                 StackOverflowDomainModel.QuestionWriteProjection.getKlass(),
                 incomingInstance,
                 OperationMode.CREATE,
-                errors);
+                errors,
+                warnings);
         if (errors.notEmpty())
         {
             Response response = Response
