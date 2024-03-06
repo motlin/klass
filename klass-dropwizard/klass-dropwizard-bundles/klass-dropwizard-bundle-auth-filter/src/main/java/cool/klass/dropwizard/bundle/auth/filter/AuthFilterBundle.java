@@ -14,7 +14,7 @@ import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.auth.filter.AuthFilterFactory;
 import cool.klass.dropwizard.configuration.auth.filter.AuthFilterFactoryProvider;
-import cool.klass.servlet.filter.mdc.ClearMDCFilter;
+import cool.klass.servlet.filter.mdc.keys.ClearMDCKeysFilter;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthFilter;
 import io.dropwizard.auth.AuthValueFactoryProvider.Binder;
@@ -91,6 +91,6 @@ public class AuthFilterBundle
         ImmutableList<String> mdcKeys = ListAdapter.adapt(authFilterFactories)
                 .flatCollect(AuthFilterFactory::getMDCKeys)
                 .toImmutable();
-        return new ClearMDCFilter(mdcKeys);
+        return new ClearMDCKeysFilter(mdcKeys);
     }
 }
