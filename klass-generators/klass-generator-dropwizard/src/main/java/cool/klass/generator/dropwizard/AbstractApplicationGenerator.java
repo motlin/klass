@@ -105,6 +105,7 @@ public class AbstractApplicationGenerator
                 + "        super.initialize(bootstrap);\n"
                 + "\n"
                 + "        bootstrap.addCommand(new " + this.applicationName + "TestDataGeneratorCommand(this));\n"
+                + "        bootstrap.addCommand(new " + this.applicationName + "DdlExecutorCommand(this));\n"
                 + "\n"
                 + "        bootstrap.addBundle(new HttpLoggingBundle());\n"
                 + "        bootstrap.addBundle(new ObjectMapperBundle());\n"
