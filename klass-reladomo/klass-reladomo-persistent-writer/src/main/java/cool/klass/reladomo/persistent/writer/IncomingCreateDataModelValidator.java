@@ -331,7 +331,7 @@ public class IncomingCreateDataModelValidator
                         "Error at '%s'. Could not find existing persistent instance for association end '%s' with key %s.",
                         this.getContextString(),
                         associationEnd,
-                        keys.makeString());
+                        keys);
                 this.errors.add(error);
             }
         }
