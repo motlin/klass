@@ -30,15 +30,14 @@ public class ClassTemporalPropertyInferencePhase
     {
         super.enterClassifierModifier(ctx);
 
-        String modifierText = ctx.getText();
-
         ImmutableList<AntlrDataTypeProperty<?>> allDataTypeProperties = this.compilerState
                 .getCompilerWalk()
-                .getKlass()
+                .getClassifier()
                 .getAllDataTypeProperties();
 
         StringBuilder stringBuilder = new StringBuilder();
 
+        String modifierText = ctx.getText();
         if ("validTemporal".equals(modifierText) || "bitemporal".equals(modifierText))
         {
             if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidRange))
