@@ -18,7 +18,6 @@ import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import io.liftwizard.junit.rule.match.json.JsonMatchRule;
 import io.liftwizard.reladomo.test.rule.ReladomoLoadDataTestRule;
 import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
@@ -163,7 +162,6 @@ public class QuestionResourceManualTest
         //</editor-fold>
     }
 
-    @Ignore("TODO: Add an error when the id in the body doesn't match the id in the url. #1650")
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
     public void put_invalid_id()
@@ -183,7 +181,7 @@ public class QuestionResourceManualTest
                 .header("Authorization", "Impersonation test user 1")
                 .put(Entity.json(json));
 
-        this.assertEmptyResponse(Status.NO_CONTENT, response);
+        this.assertResponse("put_invalid_id", Status.OK, response);
         this.assertQuestion1Unchanged(client, "assertQuestion1Unchanged_put_invalid_id");
     }
 
