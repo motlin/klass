@@ -1,6 +1,7 @@
 package cool.klass.deserializer.json.test;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -10,6 +11,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.deserializer.json.JsonTypeCheckingValidator;
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.deserializer.json.RequiredPropertiesValidator;
+import cool.klass.dropwizard.configuration.domain.model.loader.compiler.DomainModelCompilerFactory;
+import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -24,7 +27,9 @@ public abstract class AbstractValidatorTest
     protected final MutableList<String> actualErrors   = Lists.mutable.empty();
     protected final MutableList<String> actualWarnings = Lists.mutable.empty();
 
-    private final ObjectMapper objectMapper = AbstractValidatorTest.getObjectMapper();
+    protected final ObjectMapper objectMapper = AbstractValidatorTest.getObjectMapper();
+
+    protected final DomainModel domainModel = AbstractValidatorTest.getDomainModel(this.objectMapper);
 
     protected final void validate(
             @Nonnull String incomingJson,
@@ -75,6 +80,13 @@ public abstract class AbstractValidatorTest
         objectMapper.configure(Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
         objectMapper.configure(Feature.ALLOW_TRAILING_COMMA, true);
         return objectMapper;
+    }
+
+    private static DomainModel getDomainModel(ObjectMapper objectMapper)
+    {
+        DomainModelCompilerFactory domainModelCompilerFactory = new DomainModelCompilerFactory();
+        domainModelCompilerFactory.setSourcePackages(List.of("cool.klass.xample.coverage"));
+        return domainModelCompilerFactory.createDomainModel(objectMapper);
     }
 
     protected final void performValidation(@Nonnull ObjectNode incomingInstance)

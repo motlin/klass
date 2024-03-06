@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
-import cool.klass.xample.coverage.meta.constants.CoverageExampleDomainModel;
 import io.liftwizard.reladomo.test.rule.ReladomoTestRuleBuilder;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -30,9 +29,7 @@ public class Update_FinalPropertiesTest
     @Before
     public void setUp()
     {
-        this.persistentInstance = this.reladomoDataStore.findByKey(
-                CoverageExampleDomainModel.FinalProperties,
-                Lists.immutable.with(1L));
+        this.persistentInstance = this.reladomoDataStore.findByKey(this.getKlass(), Lists.immutable.with(1L));
     }
 
     @Test
@@ -54,7 +51,7 @@ public class Update_FinalPropertiesTest
     @Override
     protected Klass getKlass()
     {
-        return CoverageExampleDomainModel.FinalProperties;
+        return this.domainModel.getClassByName("FinalProperties");
     }
 
     @Nonnull

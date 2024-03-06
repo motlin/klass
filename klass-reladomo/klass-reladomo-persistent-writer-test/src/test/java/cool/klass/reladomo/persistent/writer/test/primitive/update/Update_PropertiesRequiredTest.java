@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.reladomo.persistent.writer.test.primitive.PrimitiveValidatorTest;
-import cool.klass.xample.coverage.meta.constants.CoverageExampleDomainModel;
 import io.liftwizard.reladomo.test.rule.ReladomoTestRuleBuilder;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -32,9 +31,7 @@ public class Update_PropertiesRequiredTest
     @Before
     public void setUp()
     {
-        this.persistentInstance = this.reladomoDataStore.findByKey(
-                CoverageExampleDomainModel.PropertiesRequired,
-                Lists.immutable.with(1L));
+        this.persistentInstance = this.reladomoDataStore.findByKey(this.getKlass(), Lists.immutable.with(1L));
     }
 
     @Override
@@ -351,7 +348,7 @@ public class Update_PropertiesRequiredTest
     @Override
     protected Klass getKlass()
     {
-        return CoverageExampleDomainModel.PropertiesRequired;
+        return this.domainModel.getClassByName("PropertiesRequired");
     }
 
     @Nonnull

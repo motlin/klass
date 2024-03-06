@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
-import cool.klass.xample.coverage.meta.constants.CoverageExampleDomainModel;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Test;
@@ -323,7 +322,7 @@ public class PropertiesRequiredTest extends AbstractPrimitiveValidatorTest
     @Override
     protected Klass getKlass()
     {
-        return CoverageExampleDomainModel.PropertiesRequired;
+        return this.domainModel.getClassByName("PropertiesRequired");
     }
 
     @Nonnull

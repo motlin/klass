@@ -14,6 +14,19 @@
 
     <name>Klass Deserializer: JSON Tests</name>
 
+    <build>
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <ignoreNonCompile>true</ignoreNonCompile>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
     <dependencies>
 
         <dependency>
@@ -25,7 +38,7 @@
 
         <dependency>
             <groupId>cool.klass.xample.coverage</groupId>
-            <artifactId>coverage-example-meta-model-constants</artifactId>
+            <artifactId>coverage-example-domain-model</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
@@ -80,6 +93,26 @@
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-domain-model-loader-compiler</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-logging-buffered-appender</artifactId>
+            <version>${liftwizard.version}</version>
             <scope>test</scope>
         </dependency>
 
