@@ -17,6 +17,5 @@
 
     <modules>
         <module>stackoverflow</module>
-        <module>bootstrapped-meta-model</module>
     </modules>
 </project>
