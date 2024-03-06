@@ -23,8 +23,6 @@ public class CoverageExampleApplication
     public void initialize(@Nonnull Bootstrap<CoverageExampleConfiguration> bootstrap)
     {
         super.initialize(bootstrap);
-
-        // TODO: application initialization
     }
 
     @Override

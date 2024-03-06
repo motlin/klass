@@ -550,14 +550,12 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-logging-buffered</artifactId>
-            <version>${liftwizard.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-junit-rule-log-marker</artifactId>
-            <version>${liftwizard.version}</version>
             <scope>test</scope>
         </dependency>
 
