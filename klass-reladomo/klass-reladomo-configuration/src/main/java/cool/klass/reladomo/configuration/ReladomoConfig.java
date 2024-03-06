@@ -6,9 +6,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.gs.fw.common.mithra.MithraManager;
 import com.gs.fw.common.mithra.MithraManagerProvider;
 import org.slf4j.Logger;
@@ -21,16 +18,6 @@ public final class ReladomoConfig
     private ReladomoConfig()
     {
         throw new AssertionError("Suppress default constructor for noninstantiability");
-    }
-
-    public static <T> void addSerializer(
-            @Nonnull ObjectMapper objectMapper,
-            @Nonnull Class<T> klass,
-            @Nonnull JsonSerializer<T> jsonSerializer)
-    {
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(klass, jsonSerializer);
-        objectMapper.registerModule(module);
     }
 
     public static void setTransactionTimeout(int transactionTimeoutSeconds)
