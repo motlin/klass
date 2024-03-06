@@ -270,6 +270,9 @@
           "id": 1
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -281,6 +284,9 @@
           "id": 1
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "EnumerationLiteral"
+          },
           "name": "prettyName"
         }
       },
@@ -292,6 +298,9 @@
           "id": 2
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -303,6 +312,9 @@
           "id": 2
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "PackageableElement"
+          },
           "name": "packageName"
         }
       },
@@ -314,6 +326,9 @@
           "id": 2
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Enumeration"
+          },
           "name": "enumerationLiterals"
         }
       },
@@ -325,6 +340,9 @@
           "id": 3
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -336,6 +354,9 @@
           "id": 3
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "PackageableElement"
+          },
           "name": "packageName"
         }
       },
@@ -347,6 +368,9 @@
           "id": 3
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Enumeration"
+          },
           "name": "enumerationLiterals"
         }
       },
@@ -358,6 +382,9 @@
           "id": 3
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Classifier"
+          },
           "name": "superInterfaces"
         }
       },
@@ -369,6 +396,9 @@
           "id": 3
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Classifier"
+          },
           "name": "classifierModifiers"
         }
       },
@@ -380,6 +410,9 @@
           "id": 3
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Classifier"
+          },
           "name": "dataTypeProperties"
         }
       },
@@ -391,6 +424,9 @@
           "id": 3
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "Klass"
+          },
           "name": "abstractClass"
         }
       },
@@ -402,6 +438,9 @@
           "id": 3
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Klass"
+          },
           "name": "superClass"
         }
       },
@@ -413,6 +452,9 @@
           "id": 42
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -424,6 +466,9 @@
           "id": 3
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Klass"
+          },
           "name": "parameterizedProperties"
         }
       },
@@ -435,6 +480,9 @@
           "id": 3
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Association"
+          },
           "name": "associationEnds"
         }
       },
@@ -446,6 +494,9 @@
           "id": 3
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Association"
+          },
           "name": "criteria"
         }
       },
@@ -457,6 +508,9 @@
           "id": 46
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "Criteria"
+          },
           "name": "id"
         }
       },
@@ -468,6 +522,9 @@
           "id": 3
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "NamedProjection"
+          },
           "name": "rootProjection"
         }
       },
@@ -479,6 +536,9 @@
           "id": 48
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ProjectionElement"
+          },
           "name": "id"
         }
       },
@@ -490,6 +550,9 @@
           "id": 3
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "ServiceGroup"
+          },
           "name": "owningClass"
         }
       },
@@ -501,6 +564,9 @@
           "id": 50
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -512,6 +578,9 @@
           "id": 3
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "ServiceGroup"
+          },
           "name": "urls"
         }
       },
@@ -523,6 +592,9 @@
           "id": 4
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ClassifierModifier"
+          },
           "name": "keyword"
         }
       },
@@ -534,6 +606,9 @@
           "id": 5
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "ClassifierInterfaceMapping"
+          },
           "name": "superInterface"
         }
       },
@@ -545,6 +620,9 @@
           "id": 54
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -556,6 +634,9 @@
           "id": 6
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -567,6 +648,9 @@
           "id": 6
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ParameterizedProperty"
+          },
           "name": "multiplicity"
         }
       },
@@ -578,6 +662,9 @@
           "id": 6
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "ParameterizedProperty"
+          },
           "name": "resultType"
         }
       },
@@ -589,6 +676,9 @@
           "id": 58
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -600,6 +690,9 @@
           "id": 6
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "ParameterizedProperty"
+          },
           "name": "parameterizedPropertyOrderings"
         }
       },
@@ -611,6 +704,9 @@
           "id": 6
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "ParameterizedProperty"
+          },
           "name": "parameters"
         }
       },
@@ -622,6 +718,9 @@
           "id": 61
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -633,6 +732,9 @@
           "id": 7
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ParameterizedPropertyOrdering"
+          },
           "name": "ordinal"
         }
       },
@@ -644,6 +746,9 @@
           "id": 8
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ProjectionElement"
+          },
           "name": "id"
         }
       },
@@ -655,6 +760,9 @@
           "id": 8
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ProjectionElement"
+          },
           "name": "name"
         }
       },
@@ -666,6 +774,9 @@
           "id": 8
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "ProjectionElement"
+          },
           "name": "children"
         }
       },
@@ -677,6 +788,9 @@
           "id": 8
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "RootProjection"
+          },
           "name": "classifier"
         }
       },
@@ -688,6 +802,9 @@
           "id": 67
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -699,6 +816,9 @@
           "id": 8
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "ProjectionWithAssociationEnd"
+          },
           "name": "associationEnd"
         }
       },
@@ -710,6 +830,9 @@
           "id": 69
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "AssociationEnd"
+          },
           "name": "owningClass"
         }
       },
@@ -721,6 +844,9 @@
           "id": 70
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -732,6 +858,9 @@
           "id": 69
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -743,6 +872,9 @@
           "id": 8
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "ProjectionProjectionReference"
+          },
           "name": "projection"
         }
       },
@@ -754,6 +886,9 @@
           "id": 73
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -765,6 +900,9 @@
           "id": 8
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "ProjectionDataTypeProperty"
+          },
           "name": "dataTypeProperty"
         }
       },
@@ -776,6 +914,9 @@
           "id": 75
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "DataTypeProperty"
+          },
           "name": "owningClassifier"
         }
       },
@@ -787,6 +928,9 @@
           "id": 76
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -798,6 +942,9 @@
           "id": 75
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -809,6 +956,9 @@
           "id": 9
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -820,6 +970,9 @@
           "id": 9
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "PackageableElement"
+          },
           "name": "packageName"
         }
       },
@@ -831,6 +984,9 @@
           "id": 9
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "NamedProjection"
+          },
           "name": "rootProjection"
         }
       },
@@ -842,6 +998,9 @@
           "id": 10
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -853,6 +1012,9 @@
           "id": 10
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "PackageableElement"
+          },
           "name": "packageName"
         }
       },
@@ -864,6 +1026,9 @@
           "id": 10
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "ServiceGroup"
+          },
           "name": "owningClass"
         }
       },
@@ -875,6 +1040,9 @@
           "id": 84
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -886,6 +1054,9 @@
           "id": 10
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "ServiceGroup"
+          },
           "name": "urls"
         }
       },
@@ -897,6 +1068,9 @@
           "id": 11
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "Url"
+          },
           "name": "url"
         }
       },
@@ -908,6 +1082,9 @@
           "id": 11
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Url"
+          },
           "name": "parameters"
         }
       },
@@ -919,6 +1096,9 @@
           "id": 11
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Url"
+          },
           "name": "services"
         }
       },
@@ -930,6 +1110,9 @@
           "id": 12
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "Parameter"
+          },
           "name": "id"
         }
       },
@@ -941,6 +1124,9 @@
           "id": 12
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "Parameter"
+          },
           "name": "name"
         }
       },
@@ -952,6 +1138,9 @@
           "id": 12
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "Parameter"
+          },
           "name": "multiplicity"
         }
       },
@@ -963,6 +1152,9 @@
           "id": 12
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "EnumerationParameter"
+          },
           "name": "enumeration"
         }
       },
@@ -974,6 +1166,9 @@
           "id": 93
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -985,6 +1180,9 @@
           "id": 12
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "PrimitiveParameter"
+          },
           "name": "primitiveType"
         }
       },
@@ -996,6 +1194,9 @@
           "id": 13
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "UrlParameter"
+          },
           "name": "type"
         }
       },
@@ -1007,6 +1208,9 @@
           "id": 13
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "UrlParameter"
+          },
           "name": "parameter"
         }
       },
@@ -1018,6 +1222,9 @@
           "id": 14
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "Service"
+          },
           "name": "verb"
         }
       },
@@ -1029,6 +1236,9 @@
           "id": 14
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "Service"
+          },
           "name": "serviceMultiplicity"
         }
       },
@@ -1040,6 +1250,9 @@
           "id": 14
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Service"
+          },
           "name": "projection"
         }
       },
@@ -1051,6 +1264,9 @@
           "id": 100
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1062,6 +1278,9 @@
           "id": 14
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Service"
+          },
           "name": "queryCriteria"
         }
       },
@@ -1073,6 +1292,9 @@
           "id": 14
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Service"
+          },
           "name": "authorizeCriteria"
         }
       },
@@ -1084,6 +1306,9 @@
           "id": 14
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Service"
+          },
           "name": "validateCriteria"
         }
       },
@@ -1095,6 +1320,9 @@
           "id": 14
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Service"
+          },
           "name": "conflictCriteria"
         }
       },
@@ -1106,6 +1334,9 @@
           "id": 14
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Service"
+          },
           "name": "orderBys"
         }
       },
@@ -1117,6 +1348,9 @@
           "id": 15
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ServiceOrderBy"
+          },
           "name": "orderByDirection"
         }
       },
@@ -1128,6 +1362,9 @@
           "id": 15
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "ServiceOrderBy"
+          },
           "name": "thisMemberReferencePath"
         }
       },
@@ -1139,6 +1376,9 @@
           "id": 108
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ExpressionValue"
+          },
           "name": "id"
         }
       },
@@ -1150,6 +1390,9 @@
           "id": 16
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1161,6 +1404,9 @@
           "id": 16
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "PackageableElement"
+          },
           "name": "packageName"
         }
       },
@@ -1172,6 +1418,9 @@
           "id": 16
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Classifier"
+          },
           "name": "superInterfaces"
         }
       },
@@ -1183,6 +1432,9 @@
           "id": 16
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Classifier"
+          },
           "name": "classifierModifiers"
         }
       },
@@ -1194,6 +1446,9 @@
           "id": 16
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Classifier"
+          },
           "name": "dataTypeProperties"
         }
       },
@@ -1205,6 +1460,9 @@
           "id": 17
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NumericPropertyValidation"
+          },
           "name": "number"
         }
       },
@@ -1216,6 +1474,9 @@
           "id": 18
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1227,6 +1488,9 @@
           "id": 18
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "DataTypeProperty"
+          },
           "name": "optional"
         }
       },
@@ -1238,6 +1502,9 @@
           "id": 18
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "DataTypeProperty"
+          },
           "name": "minLengthValidation"
         }
       },
@@ -1249,6 +1516,9 @@
           "id": 18
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "DataTypeProperty"
+          },
           "name": "maxLengthValidation"
         }
       },
@@ -1260,6 +1530,9 @@
           "id": 18
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "DataTypeProperty"
+          },
           "name": "propertyModifiers"
         }
       },
@@ -1271,6 +1544,9 @@
           "id": 120
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "PropertyModifier"
+          },
           "name": "keyword"
         }
       },
@@ -1282,6 +1558,9 @@
           "id": 18
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "PrimitiveProperty"
+          },
           "name": "primitiveType"
         }
       },
@@ -1293,6 +1572,9 @@
           "id": 18
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "PrimitiveProperty"
+          },
           "name": "minValidation"
         }
       },
@@ -1304,6 +1586,9 @@
           "id": 18
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "PrimitiveProperty"
+          },
           "name": "maxValidation"
         }
       },
@@ -1315,6 +1600,9 @@
           "id": 18
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "EnumerationProperty"
+          },
           "name": "enumeration"
         }
       },
@@ -1326,6 +1614,9 @@
           "id": 125
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1337,6 +1628,9 @@
           "id": 19
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1348,6 +1642,9 @@
           "id": 19
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "PackageableElement"
+          },
           "name": "packageName"
         }
       },
@@ -1359,6 +1656,9 @@
           "id": 19
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "Klass"
+          },
           "name": "abstractClass"
         }
       },
@@ -1370,6 +1670,9 @@
           "id": 19
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Classifier"
+          },
           "name": "superInterfaces"
         }
       },
@@ -1381,6 +1684,9 @@
           "id": 19
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Classifier"
+          },
           "name": "classifierModifiers"
         }
       },
@@ -1392,6 +1698,9 @@
           "id": 19
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Classifier"
+          },
           "name": "dataTypeProperties"
         }
       },
@@ -1403,6 +1712,9 @@
           "id": 19
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Klass"
+          },
           "name": "superClass"
         }
       },
@@ -1414,6 +1726,9 @@
           "id": 133
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1425,6 +1740,9 @@
           "id": 19
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Klass"
+          },
           "name": "associationEnds"
         }
       },
@@ -1436,6 +1754,9 @@
           "id": 135
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1447,6 +1768,9 @@
           "id": 19
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Klass"
+          },
           "name": "parameterizedProperties"
         }
       },
@@ -1458,6 +1782,9 @@
           "id": 20
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1469,6 +1796,9 @@
           "id": 20
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "PackageableElement"
+          },
           "name": "packageName"
         }
       },
@@ -1480,6 +1810,9 @@
           "id": 20
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Classifier"
+          },
           "name": "superInterfaces"
         }
       },
@@ -1491,6 +1824,9 @@
           "id": 20
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Classifier"
+          },
           "name": "classifierModifiers"
         }
       },
@@ -1502,6 +1838,9 @@
           "id": 20
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Classifier"
+          },
           "name": "dataTypeProperties"
         }
       },
@@ -1513,6 +1852,9 @@
           "id": 20
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "Klass"
+          },
           "name": "abstractClass"
         }
       },
@@ -1524,6 +1866,9 @@
           "id": 20
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Klass"
+          },
           "name": "superClass"
         }
       },
@@ -1535,6 +1880,9 @@
           "id": 144
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1546,6 +1894,9 @@
           "id": 20
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Klass"
+          },
           "name": "associationEnds"
         }
       },
@@ -1557,6 +1908,9 @@
           "id": 146
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1568,6 +1922,9 @@
           "id": 20
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Klass"
+          },
           "name": "parameterizedProperties"
         }
       },
@@ -1579,6 +1936,9 @@
           "id": 21
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ExpressionValue"
+          },
           "name": "id"
         }
       },
@@ -1590,6 +1950,9 @@
           "id": 21
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "MemberReferencePath"
+          },
           "name": "klass"
         }
       },
@@ -1601,6 +1964,9 @@
           "id": 150
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1612,6 +1978,9 @@
           "id": 21
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "MemberReferencePath"
+          },
           "name": "associationEnds"
         }
       },
@@ -1623,6 +1992,9 @@
           "id": 21
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "MemberReferencePath"
+          },
           "name": "dataTypeProperty"
         }
       },
@@ -1634,6 +2006,9 @@
           "id": 153
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "DataTypeProperty"
+          },
           "name": "owningClassifier"
         }
       },
@@ -1645,6 +2020,9 @@
           "id": 154
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1656,6 +2034,9 @@
           "id": 153
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1667,6 +2048,9 @@
           "id": 22
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "AssociationEndModifier"
+          },
           "name": "keyword"
         }
       },
@@ -1678,6 +2062,9 @@
           "id": 23
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "AssociationEndOrderBy"
+          },
           "name": "orderByDirection"
         }
       },
@@ -1689,6 +2076,9 @@
           "id": 23
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "AssociationEndOrderBy"
+          },
           "name": "thisMemberReferencePath"
         }
       },
@@ -1700,6 +2090,9 @@
           "id": 159
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ExpressionValue"
+          },
           "name": "id"
         }
       },
@@ -1711,6 +2104,9 @@
           "id": 24
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1722,6 +2118,9 @@
           "id": 24
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "AssociationEnd"
+          },
           "name": "direction"
         }
       },
@@ -1733,6 +2132,9 @@
           "id": 24
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "AssociationEnd"
+          },
           "name": "multiplicity"
         }
       },
@@ -1744,6 +2146,9 @@
           "id": 24
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "AssociationEnd"
+          },
           "name": "resultType"
         }
       },
@@ -1755,6 +2160,9 @@
           "id": 164
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1766,6 +2174,9 @@
           "id": 24
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "AssociationEnd"
+          },
           "name": "associationEndModifiers"
         }
       },
@@ -1777,6 +2188,9 @@
           "id": 24
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "AssociationEnd"
+          },
           "name": "orderBys"
         }
       },
@@ -1788,6 +2202,9 @@
           "id": 25
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "MemberReferencePathAssociationEndMapping"
+          },
           "name": "associationEnd"
         }
       },
@@ -1799,6 +2216,9 @@
           "id": 168
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "AssociationEnd"
+          },
           "name": "owningClass"
         }
       },
@@ -1810,6 +2230,9 @@
           "id": 169
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1821,6 +2244,9 @@
           "id": 168
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1832,6 +2258,9 @@
           "id": 26
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ExpressionValue"
+          },
           "name": "id"
         }
       },
@@ -1843,6 +2272,9 @@
           "id": 26
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "VariableReference"
+          },
           "name": "parameter"
         }
       },
@@ -1854,6 +2286,9 @@
           "id": 173
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "Parameter"
+          },
           "name": "id"
         }
       },
@@ -1865,6 +2300,9 @@
           "id": 173
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "Parameter"
+          },
           "name": "name"
         }
       },
@@ -1876,6 +2314,9 @@
           "id": 26
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "MemberReferencePath"
+          },
           "name": "klass"
         }
       },
@@ -1887,6 +2328,9 @@
           "id": 176
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1898,6 +2342,9 @@
           "id": 26
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "MemberReferencePath"
+          },
           "name": "associationEnds"
         }
       },
@@ -1909,6 +2356,9 @@
           "id": 26
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "MemberReferencePath"
+          },
           "name": "dataTypeProperty"
         }
       },
@@ -1920,6 +2370,9 @@
           "id": 179
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "DataTypeProperty"
+          },
           "name": "owningClassifier"
         }
       },
@@ -1931,6 +2384,9 @@
           "id": 180
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1942,6 +2398,9 @@
           "id": 179
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1953,6 +2412,9 @@
           "id": 27
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ExpressionValue"
+          },
           "name": "id"
         }
       },
@@ -1964,6 +2426,9 @@
           "id": 27
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "MemberReferencePath"
+          },
           "name": "klass"
         }
       },
@@ -1975,6 +2440,9 @@
           "id": 184
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -1986,6 +2454,9 @@
           "id": 27
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "MemberReferencePath"
+          },
           "name": "associationEnds"
         }
       },
@@ -1997,6 +2468,9 @@
           "id": 27
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "MemberReferencePath"
+          },
           "name": "dataTypeProperty"
         }
       },
@@ -2008,6 +2482,9 @@
           "id": 187
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "DataTypeProperty"
+          },
           "name": "owningClassifier"
         }
       },
@@ -2019,6 +2496,9 @@
           "id": 188
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -2030,6 +2510,9 @@
           "id": 187
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -2041,6 +2524,9 @@
           "id": 28
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "BinaryCriteria"
+          },
           "name": "left"
         }
       },
@@ -2052,6 +2538,9 @@
           "id": 28
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "BinaryCriteria"
+          },
           "name": "right"
         }
       },
@@ -2063,6 +2552,9 @@
           "id": 28
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "OperatorCriteria"
+          },
           "name": "operator"
         }
       },
@@ -2074,6 +2566,9 @@
           "id": 28
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "OperatorCriteria"
+          },
           "name": "sourceExpressionValue"
         }
       },
@@ -2085,6 +2580,9 @@
           "id": 28
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "OperatorCriteria"
+          },
           "name": "targetExpressionValue"
         }
       },
@@ -2096,6 +2594,9 @@
           "id": 28
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "EdgePointCriteria"
+          },
           "name": "memberReferencePath"
         }
       },
@@ -2107,6 +2608,9 @@
           "id": 29
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
@@ -2118,6 +2622,9 @@
           "id": 29
         },
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "PackageableElement"
+          },
           "name": "packageName"
         }
       },
@@ -2129,6 +2636,9 @@
           "id": 29
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Association"
+          },
           "name": "associationEnds"
         }
       },
@@ -2140,6 +2650,9 @@
           "id": 29
         },
         "associationEnd": {
+          "owningClass": {
+            "name": "Association"
+          },
           "name": "criteria"
         }
       }

@@ -12,11 +12,17 @@ fragment ProjectionElementFragment on ProjectionElement {
   }
   ... on ProjectionWithAssociationEnd {
     associationEnd {
+      owningClass {
+        name
+      }
       name
     }
   }
   ... on ProjectionDataTypeProperty {
     dataTypeProperty {
+      owningClassifier {
+        name
+      }
       name
     }
   }
