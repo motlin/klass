@@ -433,7 +433,7 @@ class AssociationEndModifier
 association AssociationEndHasModifiers
 {
     associationEnd: AssociationEnd[1..1];
-    associationEndModifiers: AssociationEndModifier[0..*]
+    associationEndModifiers: AssociationEndModifier[0..*] owned
         orderBy: this.ordinal ascending;
 
     relationship this.owningClassName == AssociationEndModifier.owningClassName
