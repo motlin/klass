@@ -19,7 +19,7 @@ import static org.junit.Assert.fail;
 public class KlassMacroGeneratorTest
 {
     @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule();
+    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
 
     @Rule
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();
@@ -56,8 +56,7 @@ public class KlassMacroGeneratorTest
 
                 this.fileMatchRule.assertFileContents(
                         resourceClassPathLocation,
-                        sourceCodeText,
-                        this.getClass());
+                        sourceCodeText);
             }
         }
     }

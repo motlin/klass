@@ -27,7 +27,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractKlassCompilerErrorTestCase.class);
 
     @Rule
-    public final FileMatchRule rule = new FileMatchRule();
+    public final FileMatchRule rule = new FileMatchRule(this.getClass());
 
     @Rule
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();
@@ -49,7 +49,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
                 sourceName,
                 sourceCodeText);
 
-        this.handleCompilerAnnotations(compilationResult, testName, callingClass);
+        this.handleCompilerAnnotations(compilationResult, testName);
 
         if (compilationResult.domainModelWithSourceCode().isPresent())
         {
@@ -69,7 +69,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
                 sourceName,
                 sourceCodeText);
 
-        this.handleCompilerAnnotations(compilationResult, testName, callingClass);
+        this.handleCompilerAnnotations(compilationResult, testName);
 
         Optional<DomainModelWithSourceCode> domainModelWithSourceCode = compilationResult.domainModelWithSourceCode();
         assertTrue(domainModelWithSourceCode.isPresent());
@@ -89,8 +89,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
 
     private void handleCompilerAnnotations(
             CompilationResult compilationResult,
-            String testName,
-            Class<?> callingClass)
+            String testName)
     {
         ImmutableList<RootCompilerAnnotation> compilerAnnotations = compilationResult.compilerAnnotations();
         for (RootCompilerAnnotation compilerAnnotation : compilerAnnotations)
@@ -103,8 +102,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
 
             this.rule.assertFileContents(
                     annotationSourceName,
-                    compilerAnnotation.toString(),
-                    callingClass);
+                    compilerAnnotation.toString());
         }
 
         ImmutableListMultimap<Object, RootCompilerAnnotation> annotationsByKey =

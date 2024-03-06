@@ -22,7 +22,7 @@ import static org.junit.Assert.fail;
 public class ServiceResourceGeneratorTest
 {
     @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule();
+    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
 
     @Rule
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();
@@ -58,8 +58,7 @@ public class ServiceResourceGeneratorTest
 
             this.fileMatchRule.assertFileContents(
                     this.getClass().getSimpleName() + ".java",
-                    serviceGroupSourceCode,
-                    this.getClass());
+                    serviceGroupSourceCode);
         }
     }
 }

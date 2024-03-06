@@ -21,7 +21,7 @@ public class RelationalSchemaGeneratorTest
             CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.UPPER_UNDERSCORE);
 
     @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule();
+    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
 
     @Rule
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();
@@ -42,20 +42,17 @@ public class RelationalSchemaGeneratorTest
             String ddlSourceCode = DdlGenerator.getDdl(klass);
             this.fileMatchRule.assertFileContents(
                     tableName + ".ddl",
-                    ddlSourceCode,
-                    this.getClass());
+                    ddlSourceCode);
 
             String idxSourceCode = IdxGenerator.getIdx(klass);
             this.fileMatchRule.assertFileContents(
                     tableName + ".idx",
-                    idxSourceCode,
-                    this.getClass());
+                    idxSourceCode);
 
             Optional<String> maybeFkSourceCode = FkGenerator.getFk(klass);
             maybeFkSourceCode.ifPresent(fkSourceCode -> this.fileMatchRule.assertFileContents(
                     tableName + ".fk",
-                    fkSourceCode,
-                    this.getClass()));
+                    fkSourceCode));
         }
     }
 }

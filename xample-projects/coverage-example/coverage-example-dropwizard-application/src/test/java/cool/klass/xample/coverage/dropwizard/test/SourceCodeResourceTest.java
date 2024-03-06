@@ -23,7 +23,7 @@ import static org.junit.Assert.assertThat;
 public class SourceCodeResourceTest
 {
     @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule();
+    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
 
     @Rule
     public final DropwizardAppRule<CoverageExampleConfiguration> rule = new DropwizardAppRule<>(
@@ -60,7 +60,7 @@ public class SourceCodeResourceTest
         // assertEquals(responseHtml, expected, responseHtml);
 
         String expectedStringClasspathLocation = this.getClass().getCanonicalName() + "#smoke_test.html";
-        this.fileMatchRule.assertFileContents(expectedStringClasspathLocation, responseHtml, this.getClass());
+        this.fileMatchRule.assertFileContents(expectedStringClasspathLocation, responseHtml);
     }
 
     private void assertResponseStatus(@Nonnull Response response, Status status)

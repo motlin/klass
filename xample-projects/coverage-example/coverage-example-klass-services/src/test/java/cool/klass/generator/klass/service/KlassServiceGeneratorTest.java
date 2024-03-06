@@ -14,7 +14,7 @@ import org.junit.rules.TestRule;
 public class KlassServiceGeneratorTest
 {
     @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule();
+    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
 
     @Rule
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();
@@ -40,8 +40,7 @@ public class KlassServiceGeneratorTest
 
             this.fileMatchRule.assertFileContents(
                     resourceClassPathLocation,
-                    sourceCode,
-                    this.getClass());
+                    sourceCode);
         }
     }
 }

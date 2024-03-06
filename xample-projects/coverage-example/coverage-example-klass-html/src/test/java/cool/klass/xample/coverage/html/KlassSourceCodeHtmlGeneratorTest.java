@@ -18,7 +18,7 @@ import static org.junit.Assert.fail;
 public class KlassSourceCodeHtmlGeneratorTest
 {
     @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule();
+    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
 
     @Rule
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();
@@ -52,8 +52,7 @@ public class KlassSourceCodeHtmlGeneratorTest
             String resourceClassPathLocation = fullPathSourceName + ".html";
             this.fileMatchRule.assertFileContents(
                     resourceClassPathLocation,
-                    html,
-                    this.getClass());
+                    html);
         }
     }
 }

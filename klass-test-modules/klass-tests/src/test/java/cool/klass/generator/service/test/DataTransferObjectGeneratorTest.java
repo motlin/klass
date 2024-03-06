@@ -24,7 +24,7 @@ import static org.junit.Assert.fail;
 public class DataTransferObjectGeneratorTest
 {
     @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule();
+    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
 
     @Rule
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();
@@ -58,8 +58,7 @@ public class DataTransferObjectGeneratorTest
 
             this.fileMatchRule.assertFileContents(
                     this.getClass().getSimpleName() + ".java",
-                    klassSourceCode,
-                    this.getClass());
+                    klassSourceCode);
         }
     }
 }
