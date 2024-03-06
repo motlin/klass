@@ -63,7 +63,7 @@ public class JsonViewDynamicFeature
     {
         try
         {
-            return jsonViewClass.asSubclass(KlassJsonView.class).newInstance();
+            return jsonViewClass.asSubclass(KlassJsonView.class).getConstructor().newInstance();
         }
         catch (ReflectiveOperationException e)
         {
