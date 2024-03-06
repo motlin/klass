@@ -1,5 +1,6 @@
 package com.stackoverflow.service.resource;
 
+import java.security.Principal;
 import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.Instant;
@@ -54,6 +55,7 @@ import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
 import com.stackoverflow.QuestionVersionFinder;
 import com.stackoverflow.json.view.QuestionReadProjection_JsonView;
+import io.dropwizard.auth.Auth;
 import org.eclipse.collections.api.factory.Maps;
 import org.eclipse.collections.api.factory.Sets;
 import org.eclipse.collections.api.list.MutableList;
@@ -123,7 +125,8 @@ public class QuestionResourceManual
     public void method1(
             @PathParam("id") Long id,
             @Nonnull @QueryParam("version") Optional<Integer> optionalVersion,
-            @Nonnull @NotNull ObjectNode incomingInstance)
+            @Nonnull @NotNull ObjectNode incomingInstance,
+            @Nonnull @Auth Principal principal)
     {
         Klass klass = this.domainModel.getClassByName("Question");
 
@@ -187,8 +190,10 @@ public class QuestionResourceManual
             throw new BadRequestException("Incoming data failed validation.", response);
         }
 
+        String             userPrincipalName  = principal.getName();
+        Optional<String>   userId             = Optional.of(userPrincipalName);
         Instant            transactionInstant = Instant.now(this.clock);
-        MutationContext    mutationContext    = new MutationContext(Optional.empty(), transactionInstant, Maps.immutable.empty());
+        MutationContext    mutationContext    = new MutationContext(userId, transactionInstant, Maps.immutable.empty());
         PersistentReplacer replacer           = new PersistentReplacer(mutationContext, this.dataStore);
         replacer.synchronize(klass, persistentInstance, incomingInstance);
     }
@@ -329,8 +334,7 @@ public class QuestionResourceManual
         String    userPrincipalName  = securityContext.getUserPrincipal().getName();
         Operation queryOperation     = QuestionFinder.id().eq(id);
         Operation authorizeOperation = QuestionFinder.createdById().eq(userPrincipalName);
-        Operation validateOperation = QuestionFinder.id().eq(QuestionVersionFinder.id()).and(QuestionVersionFinder.number().eq(
-                version));
+        Operation validateOperation = QuestionFinder.id().eq(QuestionVersionFinder.id()).and(QuestionVersionFinder.number().eq(version));
         Operation conflictOperation = QuestionFinder.all();
 
         QuestionList result = QuestionFinder.findMany(queryOperation);
@@ -351,7 +355,10 @@ public class QuestionResourceManual
     @POST
     @Path("/question")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response method5(@Nonnull ObjectNode incomingInstance, @Nonnull @Context UriInfo uriInfo)
+    public Response method5(
+            @Nonnull ObjectNode incomingInstance,
+            @Nonnull @Context UriInfo uriInfo,
+            @Nonnull @Auth Principal principal)
     {
         Klass klass = this.domainModel.getClassByName("Question");
 
@@ -382,8 +389,13 @@ public class QuestionResourceManual
             question.setCreatedOn(Timestamp.valueOf(LocalDateTime.ofInstant(now, ZoneOffset.UTC)));
             question.generateAndSetId();
 
+            String            userPrincipalName  = principal.getName();
+            Optional<String>  userId             = Optional.of(userPrincipalName);
             Instant           transactionInstant = Instant.now(this.clock);
-            MutationContext   mutationContext    = new MutationContext(Optional.empty(), transactionInstant, Maps.immutable.empty());
+            MutationContext   mutationContext    = new MutationContext(
+                    userId,
+                    transactionInstant,
+                    Maps.immutable.empty());
             PersistentCreator creator            = new PersistentCreator(mutationContext, this.dataStore);
             creator.synchronize(klass, question, incomingInstance);
             question.insert();
