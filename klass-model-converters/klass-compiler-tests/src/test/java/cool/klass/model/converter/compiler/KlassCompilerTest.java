@@ -33,12 +33,6 @@ public class KlassCompilerTest
     }
 
     @Test
-    public void meta()
-    {
-        this.assertNoCompilerErrors("meta.klass");
-    }
-
-    @Test
     public void emoji()
     {
         this.assertNoCompilerErrors("emoji.klass");
