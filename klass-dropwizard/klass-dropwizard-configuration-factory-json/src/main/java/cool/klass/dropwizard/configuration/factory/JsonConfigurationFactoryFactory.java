@@ -19,14 +19,14 @@ public class JsonConfigurationFactoryFactory<T> implements ConfigurationFactoryF
 {
     @Override
     public ConfigurationFactory<T> create(
-            Class<T> klass,
+            Class<T> aClass,
             Validator validator,
             ObjectMapper objectMapper,
             String propertyPrefix)
     {
         ObjectMapper strictObjectMapper = this.getStrictObjectMapper(objectMapper);
         return new JsonConfigurationFactory<>(
-                klass,
+                aClass,
                 validator,
                 strictObjectMapper,
                 propertyPrefix);
