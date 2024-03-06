@@ -16,7 +16,6 @@
     <name>Klass Config Factories (Module Group)</name>
 
     <modules>
-        <module>klass-dropwizard-configuration-uuids</module>
         <module>klass-dropwizard-configuration-data-stores</module>
         <module>klass-dropwizard-configuration-domain-model-loaders</module>
         <module>klass-dropwizard-configuration-http-logging</module>

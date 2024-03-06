@@ -30,5 +30,8 @@
     </dependencyManagement>
 
     <modules>
+        <module>klass-dropwizard-configuration-uuid</module>
+        <module>klass-dropwizard-configuration-uuid-seed</module>
+        <module>klass-dropwizard-configuration-uuid-system</module>
     </modules>
 </project>
