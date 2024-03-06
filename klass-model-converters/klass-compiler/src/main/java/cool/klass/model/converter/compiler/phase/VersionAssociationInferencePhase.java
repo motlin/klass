@@ -75,10 +75,10 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
         //language=Klass
         String klassSourceCode = "package " + classState.getPackageName() + "\n"
                 + "\n"
-                + "association " + className + "HasVersion versions(" + className + "Version)\n"
+                + "association " + className + "HasVersion\n"
                 + "{\n"
                 + "    " + associationEndName + ": " + className + "[1..1];\n"
-                + "    version: " + className + "Version[1..1] owned;\n"
+                + "    version: " + className + "Version[1..1] owned version;\n"
                 + "\n"
                 + "    relationship " + relationshipKeyClauses + "\n"
                 + "}\n";

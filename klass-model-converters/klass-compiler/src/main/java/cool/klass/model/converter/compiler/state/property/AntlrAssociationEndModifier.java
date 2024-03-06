@@ -27,6 +27,11 @@ public class AntlrAssociationEndModifier extends AntlrNamedElement
         return this.name.equals("owned");
     }
 
+    public boolean isVersion()
+    {
+        return this.name.equals("version");
+    }
+
     public AssociationEndModifierBuilder build()
     {
         return new AssociationEndModifierBuilder(

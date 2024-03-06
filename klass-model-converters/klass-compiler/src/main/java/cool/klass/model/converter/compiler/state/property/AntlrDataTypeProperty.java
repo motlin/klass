@@ -109,7 +109,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
 
     public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        String message = String.format("ERR_DUP_MEM: Duplicate member: '%s'.", this.name);
+        String message = String.format("ERR_DUP_DTP: Duplicate member: '%s'.", this.name);
 
         compilerErrorHolder.add(
                 message,

@@ -21,7 +21,6 @@ import cool.klass.model.converter.compiler.phase.ResolveTypesPhase;
 import cool.klass.model.converter.compiler.phase.ServicePhase;
 import cool.klass.model.converter.compiler.phase.VersionAssociationInferencePhase;
 import cool.klass.model.converter.compiler.phase.VersionClassInferencePhase;
-import cool.klass.model.converter.compiler.phase.VersionReferencePhase;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.meta.domain.DomainModelImpl.DomainModelBuilder;
 import cool.klass.model.meta.domain.api.DomainModel;
@@ -131,13 +130,7 @@ public class KlassCompiler
                 this.domainModelState,
                 compilationUnits);
 
-        KlassListener phase7 = new VersionReferencePhase(
-                this.compilerErrorHolder,
-                compilationUnitsByContext,
-                this.domainModelState,
-                false);
-
-        KlassListener parameterizedPropertyPhase = new ParameterizedPropertyPhase(
+        KlassListener phase7 = new ParameterizedPropertyPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 false,
@@ -180,7 +173,6 @@ public class KlassCompiler
                 phase5,
                 phase6,
                 phase7,
-                parameterizedPropertyPhase,
                 phase8,
                 phase9,
                 phase10,

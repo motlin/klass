@@ -184,7 +184,10 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
 
     public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        String message = String.format("ERR_DUP_MEM: Duplicate member: '%s'.", this.name);
+        String message = String.format(
+                "ERR_DUP_PZP: Duplicate member: '%s.%s'.",
+                this.owningClassState.getName(),
+                this.name);
 
         compilerErrorHolder.add(
                 message,

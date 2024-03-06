@@ -67,10 +67,10 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
         //language=Klass
         String klassSourceCode = "package " + packageName + "\n"
                 + "\n"
-                + "class " + className + "Version systemTemporal versions(" + className + ")\n"
+                + "class " + className + "Version systemTemporal\n"
                 + "{\n"
                 + keyPropertySourceCode
-                + "    number: Integer;\n"
+                + "    number: Integer version;\n"
                 + "}\n";
 
         String contextMessage = this.getContextMessage(ctx.getStart());
@@ -91,7 +91,8 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
         KlassListener classPhase = new ClassPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState, isInference);
+                this.domainModelState,
+                this.isInference);
 
         KlassListener temporalPropertyInferencePhase = new ClassTemporalPropertyInferencePhase(
                 this.compilerErrorHolder,

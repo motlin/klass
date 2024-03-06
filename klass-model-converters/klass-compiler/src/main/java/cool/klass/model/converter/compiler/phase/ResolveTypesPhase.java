@@ -18,7 +18,6 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
-import cool.klass.model.meta.grammar.KlassParser.VersionsContext;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
@@ -37,8 +36,6 @@ public class ResolveTypesPhase extends KlassBaseListener
     private final MutableOrderedMap<ProjectionDeclarationContext, ClassDeclarationContext>     projectionDeclarations     = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
     private final MutableOrderedMap<ServiceGroupDeclarationContext, ClassDeclarationContext>   serviceGroupDeclarations   = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
-    private final MutableOrderedMap<VersionsContext, ClassDeclarationContext>                  versions                   = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
 
     private final MutableOrderedMap<ServiceProjectionDispatchContext, ProjectionDeclarationContext>        serviceProjectDispatches  = OrderedMapAdapter.adapt(
@@ -120,15 +117,6 @@ public class ResolveTypesPhase extends KlassBaseListener
         this.enumerationParameterTypes.put(ctx, declaration);
     }
 
-    @Override
-    public void enterVersions(@Nonnull VersionsContext ctx)
-    {
-        ClassReferenceContext classReferenceContext = ctx.classReference();
-
-        ClassDeclarationContext declaration = this.resolveTypeReferencesPhase.getClassByReference(classReferenceContext);
-        this.versions.put(ctx, declaration);
-    }
-
     public ClassDeclarationContext getType(AssociationEndContext ctx)
     {
         return this.associationEndTypes.get(ctx);
@@ -167,11 +155,6 @@ public class ResolveTypesPhase extends KlassBaseListener
     public ClassDeclarationContext getType(ParameterizedPropertyContext ctx)
     {
         return this.parameterizedPropertyTypes.get(ctx);
-    }
-
-    public ClassDeclarationContext getType(VersionsContext ctx)
-    {
-        return this.versions.get(ctx);
     }
 
     // TODO: Resolve types for enterTypeReference, using a combination of context for 'this' and classReference

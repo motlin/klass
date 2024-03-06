@@ -176,7 +176,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
             return this.associationEnd;
         }
 
-        public AssociationEndImpl getAssociationEnd()
+        public AssociationEndImpl getElement()
         {
             return this.associationEnd;
         }

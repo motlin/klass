@@ -44,7 +44,7 @@ public final class ThisMemberReferencePathImpl extends AbstractMemberReferencePa
                     this.elementContext,
                     this.inferred,
                     this.klassBuilder.getElement(),
-                    this.associationEndBuilders.collect(AssociationEndBuilder::getAssociationEnd),
+                    this.associationEndBuilders.collect(AssociationEndBuilder::getElement),
                     this.propertyBuilder.getProperty());
         }
     }

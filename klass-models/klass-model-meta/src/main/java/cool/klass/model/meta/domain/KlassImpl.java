@@ -25,11 +25,10 @@ public final class KlassImpl extends AbstractPackageableElement implements TopLe
     private ImmutableList<DataTypeProperty> dataTypeProperties;
     private ImmutableList<AssociationEnd>   associationEnds;
 
-    // TODO: Instead of Klasses, these two should be AssociationEnds
     @Nonnull
-    private Optional<Klass> versionClass   = Optional.empty();
+    private Optional<AssociationEnd> versionProperty   = Optional.empty();
     @Nonnull
-    private Optional<Klass> versionedClass = Optional.empty();
+    private Optional<AssociationEnd> versionedProperty = Optional.empty();
 
     private KlassImpl(
             @Nonnull ParserRuleContext elementContext,
@@ -61,26 +60,26 @@ public final class KlassImpl extends AbstractPackageableElement implements TopLe
 
     @Override
     @Nonnull
-    public Optional<Klass> getVersionClass()
+    public Optional<AssociationEnd> getVersionProperty()
     {
-        return this.versionClass;
+        return this.versionProperty;
     }
 
-    private void setVersionClass(@Nonnull KlassImpl versionClass)
+    private void setVersionProperty(@Nonnull Optional<AssociationEnd> versionProperty)
     {
-        this.versionClass = Optional.of(versionClass);
+        this.versionProperty = versionProperty;
     }
 
     @Override
     @Nonnull
-    public Optional<Klass> getVersionedClass()
+    public Optional<AssociationEnd> getVersionedProperty()
     {
-        return this.versionedClass;
+        return this.versionedProperty;
     }
 
-    private void setVersionedClass(@Nonnull KlassImpl versionedClass)
+    private void setVersionedProperty(@Nonnull Optional<AssociationEnd> versionedProperty)
     {
-        this.versionedClass = Optional.of(versionedClass);
+        this.versionedProperty = versionedProperty;
     }
 
     @Override
@@ -123,8 +122,8 @@ public final class KlassImpl extends AbstractPackageableElement implements TopLe
         private ImmutableList<DataTypePropertyBuilder<?, ?>> dataTypePropertyBuilders;
         private ImmutableList<AssociationEndBuilder>         associationEndBuilders;
 
-        private KlassBuilder versionClassBuilder;
-        private KlassBuilder versionedClassBuilder;
+        private Optional<AssociationEndBuilder> versionPropertyBuilder;
+        private Optional<AssociationEndBuilder> versionedPropertyBuilder;
 
         private KlassImpl klass;
 
@@ -150,14 +149,14 @@ public final class KlassImpl extends AbstractPackageableElement implements TopLe
             this.dataTypePropertyBuilders = Objects.requireNonNull(dataTypePropertyBuilders);
         }
 
-        public void setVersionClassBuilder(KlassBuilder versionClassBuilder)
+        public void setVersionPropertyBuilder(Optional<AssociationEndBuilder> versionPropertyBuilder)
         {
-            this.versionClassBuilder = Objects.requireNonNull(versionClassBuilder);
+            this.versionPropertyBuilder = Objects.requireNonNull(versionPropertyBuilder);
         }
 
-        public void setVersionedClassBuilder(KlassBuilder versionedClassBuilder)
+        public void setVersionedPropertyBuilder(Optional<AssociationEndBuilder> versionedPropertyBuilder)
         {
-            this.versionedClassBuilder = Objects.requireNonNull(versionedClassBuilder);
+            this.versionedPropertyBuilder = Objects.requireNonNull(versionedPropertyBuilder);
         }
 
         public void setAssociationEndBuilders(ImmutableList<AssociationEndBuilder> associationEndBuilders)
@@ -200,15 +199,8 @@ public final class KlassImpl extends AbstractPackageableElement implements TopLe
                 throw new IllegalStateException();
             }
 
-            if (this.versionClassBuilder != null)
-            {
-                this.klass.setVersionClass(this.versionClassBuilder.getElement());
-            }
-
-            if (this.versionedClassBuilder != null)
-            {
-                this.klass.setVersionedClass(this.versionedClassBuilder.getElement());
-            }
+            this.klass.setVersionProperty(this.versionPropertyBuilder.map(AssociationEndBuilder::getElement));
+            this.klass.setVersionedProperty(this.versionedPropertyBuilder.map(AssociationEndBuilder::getElement));
         }
 
         public void build3()
@@ -219,7 +211,7 @@ public final class KlassImpl extends AbstractPackageableElement implements TopLe
             }
 
             ImmutableList<AssociationEnd> associationEnds = this.associationEndBuilders
-                    .<AssociationEnd>collect(AssociationEndBuilder::getAssociationEnd)
+                    .<AssociationEnd>collect(AssociationEndBuilder::getElement)
                     .toImmutable();
 
             this.klass.setAssociationEnds(associationEnds);

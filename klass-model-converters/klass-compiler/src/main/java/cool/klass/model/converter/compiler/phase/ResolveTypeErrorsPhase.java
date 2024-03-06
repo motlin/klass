@@ -17,7 +17,6 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
-import cool.klass.model.meta.grammar.KlassParser.VersionsContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.MutableMap;
 
@@ -113,20 +112,6 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
                     enumerationReferenceContext,
                     ctx,
                     this.classDeclarationContext,
-                    this.currentCompilationUnit.getParserContext());
-        }
-    }
-
-    @Override
-    public void enterVersions(@Nonnull VersionsContext ctx)
-    {
-        ClassDeclarationContext declaration = this.resolveTypesPhase.getType(ctx);
-        if (declaration == DeclarationsByNamePhase.NO_SUCH_CLASS)
-        {
-            ClassReferenceContext reference = ctx.classReference();
-            this.error(
-                    String.format("Cannot find class '%s'", reference.getText()),
-                    reference,
                     this.currentCompilationUnit.getParserContext());
         }
     }

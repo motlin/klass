@@ -68,7 +68,7 @@ public final class ProjectionAssociationEndImpl extends AbstractProjectionParent
                     this.nameContext,
                     this.name,
                     this.ordinal,
-                    this.associationEndBuilder.getAssociationEnd());
+                    this.associationEndBuilder.getElement());
 
             ImmutableList<ProjectionElement> children = this.childBuilders.collect(ProjectionElementBuilder::build);
 

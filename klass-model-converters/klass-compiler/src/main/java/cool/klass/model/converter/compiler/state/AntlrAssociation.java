@@ -49,7 +49,6 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrCr
     private AntlrCriteria criteriaState;
 
     private AssociationBuilder associationBuilder;
-    private AntlrClass         versionClass;
 
     public AntlrAssociation(
             @Nonnull ParserRuleContext elementContext,
@@ -199,6 +198,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrCr
         }
 
         // TODO: reportErrors: Check that both ends aren't owned
+        // TODO: reportErrors: Check that both ends aren't versions
 
         AntlrAssociationEnd sourceAntlrAssociationEnd = this.associationEndStates.get(0);
         AntlrAssociationEnd targetAntlrAssociationEnd = this.associationEndStates.get(1);
@@ -270,33 +270,5 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrCr
     {
         parserRuleContexts.add(this.getElementContext());
         parserRuleContexts.add(this.compilationUnit.getParserContext());
-    }
-
-    public void setVersionClass(AntlrClass classState)
-    {
-        if (this.versionClass != null)
-        {
-            throw new AssertionError();
-        }
-        this.versionClass = Objects.requireNonNull(classState);
-    }
-
-    public void reportDuplicateVersionAssociation(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull AntlrClass versionClass)
-    {
-        String message = String.format(
-                "ERR_MUL_VER_ASSO: Multiple version associations on '%s'.",
-                versionClass.getName());
-        compilerErrorHolder.add(message, this.getElementContext().versions().classReference());
-    }
-
-    public void reportVersionAssociation(@Nonnull CompilerErrorHolder compilerErrorHolder, AntlrClass antlrClass)
-    {
-        // TODO: Check for the class they probably meant to point to
-        String message = String.format(
-                "ERR_VER_ASSO: Version association points to class which isn't a version '%s'.",
-                this.versionClass.getName());
-        compilerErrorHolder.add(message, this.getElementContext().versions().classReference());
     }
 }

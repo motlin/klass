@@ -39,7 +39,7 @@ public class AntlrThisMemberReferencePath extends AntlrMemberExpressionValue
     public ThisMemberReferencePathBuilder build()
     {
         ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates.collect(
-                AntlrAssociationEnd::getAssociationEndBuilder);
+                AntlrAssociationEnd::getElementBuilder);
 
         return new ThisMemberReferencePathBuilder(
                 this.elementContext,

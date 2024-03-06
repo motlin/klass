@@ -19,7 +19,7 @@ topLevelDeclaration
     ;
 
 // class
-classDeclaration: classOrUser identifier classServiceModifier* classModifier* versions? classBody;
+classDeclaration: classOrUser identifier classServiceModifier* classModifier* classBody;
 classOrUser: 'class' | 'user';
 classServiceModifier: serviceCategoryModifier ('(' projectionReference ')')?;
 serviceCategoryModifier: 'read' | 'write' | 'create' | 'update' | 'delete';
@@ -32,7 +32,7 @@ enumerationLiteral: identifier ('(' enumerationPrettyName ')')?;
 enumerationPrettyName: StringLiteral;
 
 // association
-associationDeclaration: 'association' identifier versions? associationBody;
+associationDeclaration: 'association' identifier associationBody;
 associationBody: '{' associationEnd? associationEnd? relationship? '}';
 associationEnd: identifier ':' classType associationEndModifier* orderByDeclaration? ';'
     | identifier ':' classType associationEndModifier* orderByDeclaration? {notifyErrorListeners("Missing semi-colon after association end declaration.");};
@@ -106,12 +106,10 @@ primitiveType: 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 
 
 // modifiers
 classModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked' | 'transient';
-propertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy';
-associationEndModifier: 'owned' | 'final';
+propertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy' | 'version';
+associationEndModifier: 'owned' | 'final' | 'version';
 parameterizedPropertyModifier: 'createdBy' | 'lastUpdatedBy';
 parameterModifier: 'version' | 'userId' | 'id';
-
-versions: 'versions' '(' classReference ')';
 
 // order by
 orderByDeclaration: 'orderBy' ':' orderByMemberReferencePath (',' orderByMemberReferencePath)*;
@@ -172,7 +170,6 @@ identifier
 keywordValidAsIdentifier
     : 'package'
     | 'class' | 'enumeration' | 'association' | 'projection' | 'service' | 'user'
-    | 'versions'
     | 'native'
     | 'relationship'
     | 'multiplicity' | 'orderBy'

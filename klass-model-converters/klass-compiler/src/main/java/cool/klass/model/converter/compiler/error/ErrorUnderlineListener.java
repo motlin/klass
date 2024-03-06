@@ -489,8 +489,7 @@ public class ErrorUnderlineListener extends BaseErrorListener
     @Override
     public void enterAssociationEndModifier(AssociationEndModifierContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterAssociationEndModifier() not implemented yet");
+        this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override

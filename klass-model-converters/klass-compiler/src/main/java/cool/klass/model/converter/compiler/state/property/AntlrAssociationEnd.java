@@ -113,13 +113,24 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
         return this.associationEndModifierStates.anySatisfy(AntlrAssociationEndModifier::isOwned);
     }
 
+    public boolean isVersion()
+    {
+        return this.associationEndModifierStates.anySatisfy(AntlrAssociationEndModifier::isVersion);
+    }
+
+    public boolean isVersioned()
+    {
+        // TODO: ❗️ Error if both ends are version
+        return this.opposite.isVersion();
+    }
+
     public void setOpposite(@Nonnull AntlrAssociationEnd opposite)
     {
         this.opposite = Objects.requireNonNull(opposite);
     }
 
     @Nonnull
-    public AssociationEndBuilder getAssociationEndBuilder()
+    public AssociationEndBuilder getElementBuilder()
     {
         return Objects.requireNonNull(this.associationEndBuilder);
     }
@@ -154,11 +165,38 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
 
     public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        String message = String.format("ERR_DUP_MEM: Duplicate member: '%s'.", this.name);
+        String message = String.format(
+                "ERR_DUP_END: Duplicate member: '%s.%s'.",
+                this.owningClassState.getName(),
+                this.name);
 
         compilerErrorHolder.add(
                 message,
                 this.nameContext,
                 this.owningAssociationState.getElementContext());
+    }
+
+    public void reportDuplicateVersionProperty(CompilerErrorHolder compilerErrorHolder, AntlrClass antlrClass)
+    {
+        AntlrAssociationEndModifier versionModifier = this.associationEndModifierStates.detect(
+                AntlrAssociationEndModifier::isVersion);
+        String message = String.format(
+                "ERR_VER_END: Multiple version properties on '%s'.",
+                antlrClass.getName());
+        compilerErrorHolder.add(
+                message,
+                versionModifier.getElementContext(),
+                this.owningAssociationState.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+    }
+
+    public void reportDuplicateVersionedProperty(CompilerErrorHolder compilerErrorHolder, AntlrClass antlrClass)
+    {
+        String message = String.format(
+                "ERR_VER_END: Multiple versioned properties on '%s'.",
+                antlrClass.getName());
+        compilerErrorHolder.add(
+                message,
+                this.getNameContext(),
+                this.owningAssociationState.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
     }
 }

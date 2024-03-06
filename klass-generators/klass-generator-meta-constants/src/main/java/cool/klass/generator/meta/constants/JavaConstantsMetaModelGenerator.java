@@ -575,16 +575,16 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
-                + "    public Optional<Klass> getVersionClass()\n"
+                + "    public Optional<AssociationEnd> getVersionProperty()\n"
                 + "    {\n"
-                + "        return " + this.getOptionalKlassSourceCode(klass.getVersionClass()) + ";\n"
+                + "        return " + this.getOptionalAssociationEndSourceCode(klass.getVersionProperty()) + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
-                + "    public Optional<Klass> getVersionedClass()\n"
+                + "    public Optional<AssociationEnd> getVersionedProperty()\n"
                 + "    {\n"
-                + "        return " + this.getOptionalKlassSourceCode(klass.getVersionedClass()) + ";\n"
+                + "        return " + this.getOptionalAssociationEndSourceCode(klass.getVersionedProperty()) + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -641,13 +641,12 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getOptionalKlassSourceCode(Optional<Klass> optionalKlass)
+    private String getOptionalAssociationEndSourceCode(Optional<AssociationEnd> optionalAssociationEnd)
     {
-        return optionalKlass
-                .map(versionClass -> String.format(
-                        "Optional.of(%sDomainModel.%s)",
-                        this.applicationName,
-                        versionClass.getName()))
+        return optionalAssociationEnd
+                .map(associationEnd -> String.format(
+                        "Optional.of(%s)",
+                        associationEnd.getName()))
                 .orElse("Optional.empty()");
     }
 

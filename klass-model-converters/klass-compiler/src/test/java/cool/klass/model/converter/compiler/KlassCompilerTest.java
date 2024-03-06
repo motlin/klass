@@ -507,14 +507,14 @@ public class KlassCompilerTest
                         + "class DuplicateTopLevelElement\n"
                         + "      ^^^^^^^^^^^^^^^^^^^^^^^^\n",
                 ""
-                        + "File: example.klass Line: 11 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateMember'.\n"
+                        + "File: example.klass Line: 11 Char: 5 Error: ERR_DUP_DTP: Duplicate member: 'duplicateMember'.\n"
                         + "class DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    duplicateMember: String;\n"
                         + "    ^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 12 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateMember'.\n"
+                        + "File: example.klass Line: 12 Char: 5 Error: ERR_DUP_DTP: Duplicate member: 'duplicateMember'.\n"
                         + "class DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    duplicateMember: DuplicateTopLevelElement;\n"
@@ -529,14 +529,14 @@ public class KlassCompilerTest
                         + "association DuplicateTopLevelElement\n"
                         + "            ^^^^^^^^^^^^^^^^^^^^^^^^\n",
                 ""
-                        + "File: example.klass Line: 22 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateMember'.\n"
+                        + "File: example.klass Line: 22 Char: 5 Error: ERR_DUP_END: Duplicate member: 'DuplicateTopLevelElement.duplicateMember'.\n"
                         + "association DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    duplicateMember: DuplicateTopLevelElement[1..1];\n"
                         + "    ^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 23 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateMember'.\n"
+                        + "File: example.klass Line: 23 Char: 5 Error: ERR_DUP_END: Duplicate member: 'DuplicateTopLevelElement.duplicateMember'.\n"
                         + "association DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    duplicateMember: DuplicateTopLevelElement[1..1];\n"
@@ -547,14 +547,14 @@ public class KlassCompilerTest
                         + "association DuplicateAssociationEnd\n"
                         + "            ^^^^^^^^^^^^^^^^^^^^^^^\n",
                 ""
-                        + "File: example.klass Line: 28 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateAssociationEnd'.\n"
+                        + "File: example.klass Line: 28 Char: 5 Error: ERR_DUP_END: Duplicate member: 'DuplicateTopLevelElement.duplicateAssociationEnd'.\n"
                         + "association DuplicateAssociationEnd\n"
                         + "{\n"
                         + "    duplicateAssociationEnd: DuplicateTopLevelElement[1..1];\n"
                         + "    ^^^^^^^^^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 29 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateAssociationEnd'.\n"
+                        + "File: example.klass Line: 29 Char: 5 Error: ERR_DUP_END: Duplicate member: 'DuplicateTopLevelElement.duplicateAssociationEnd'.\n"
                         + "association DuplicateAssociationEnd\n"
                         + "{\n"
                         + "    duplicateAssociationEnd: DuplicateTopLevelElement[1..1];\n"
@@ -672,7 +672,7 @@ public class KlassCompilerTest
         String sourceCodeText = ""
                 + "package dummy\n"
                 + "\n"
-                + "class ClassWithUnresolved versions(UnresolvedVersioned)\n"
+                + "class ClassWithUnresolved\n"
                 + "{\n"
                 + "    unresolvedEnumerationProperty: UnresolvedEnumeration;\n"
                 + "\n"
@@ -682,7 +682,7 @@ public class KlassCompilerTest
                 + "    }\n"
                 + "}\n"
                 + "\n"
-                + "association AssociationWithUnresolved versions(UnresolvedVersioned)\n"
+                + "association AssociationWithUnresolved\n"
                 + "{\n"
                 + "    parent: UnresolvedClass[0..1];\n"
                 + "    children: UnresolvedClass[0..*];\n"
@@ -711,14 +711,9 @@ public class KlassCompilerTest
 
         String[] errors = {
                 ""
-                        + "File: example.klass Line: 3 Char: 36 Error: Cannot find class 'UnresolvedVersioned'\n"
-                        + "package dummy\n"
-                        + "class ClassWithUnresolved versions(UnresolvedVersioned)\n"
-                        + "                                   ^^^^^^^^^^^^^^^^^^^\n",
-                ""
                         + "File: example.klass Line: 5 Char: 36 Error: Cannot find enumeration 'UnresolvedEnumeration'\n"
                         + "package dummy\n"
-                        + "class ClassWithUnresolved versions(UnresolvedVersioned)\n"
+                        + "class ClassWithUnresolved\n"
                         + "{\n"
                         + "    unresolvedEnumerationProperty: UnresolvedEnumeration;\n"
                         + "                                   ^^^^^^^^^^^^^^^^^^^^^\n"
@@ -726,20 +721,15 @@ public class KlassCompilerTest
                 ""
                         + "File: example.klass Line: 7 Char: 40 Error: Cannot find class 'UnresolvedClass'\n"
                         + "package dummy\n"
-                        + "class ClassWithUnresolved versions(UnresolvedVersioned)\n"
+                        + "class ClassWithUnresolved\n"
                         + "{\n"
                         + "    unresolvedParameterizedProperty(): UnresolvedClass[1..1]\n"
                         + "                                       ^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 13 Char: 48 Error: Cannot find class 'UnresolvedVersioned'\n"
-                        + "package dummy\n"
-                        + "association AssociationWithUnresolved versions(UnresolvedVersioned)\n"
-                        + "                                               ^^^^^^^^^^^^^^^^^^^\n",
-                ""
                         + "File: example.klass Line: 15 Char: 13 Error: ERR_ASO_TYP: Cannot find class 'UnresolvedClass'.\n"
                         + "package dummy\n"
-                        + "association AssociationWithUnresolved versions(UnresolvedVersioned)\n"
+                        + "association AssociationWithUnresolved\n"
                         + "{\n"
                         + "    parent: UnresolvedClass[0..1];\n"
                         + "            ^^^^^^^^^^^^^^^\n"
@@ -747,7 +737,7 @@ public class KlassCompilerTest
                 ""
                         + "File: example.klass Line: 16 Char: 15 Error: ERR_ASO_TYP: Cannot find class 'UnresolvedClass'.\n"
                         + "package dummy\n"
-                        + "association AssociationWithUnresolved versions(UnresolvedVersioned)\n"
+                        + "association AssociationWithUnresolved\n"
                         + "{\n"
                         + "    children: UnresolvedClass[0..*];\n"
                         + "              ^^^^^^^^^^^^^^^\n"
@@ -1148,27 +1138,73 @@ public class KlassCompilerTest
     {
         //<editor-fold desc="source code">
         //language=Klass
-        String sourceCodeText = ""
-                + "package com.errors\n"
+        String sourceCodeText = "package com.errors\n"
                 + "\n"
                 + "class ExampleClass systemTemporal versioned\n"
                 + "{\n"
+                + "    id: Long key;\n"
                 + "}\n"
                 + "\n"
-                + "class SecondClassVersion systemTemporal versions(ExampleClass)\n"
+                + "class SecondClassVersion systemTemporal\n"
                 + "{\n"
+                + "    id: Long key;\n"
+                // TODO: 🔢 Check that version properties are integers
+                // TODO: 🔢 Check that a class has only one version property
+                // TODO: 🔢 Check that version associationEnds point at classes which are versions
+                + "    number: Integer version;\n"
+                + "}\n"
+                + "\n"
+                + "association ExampleClassHasVersion\n"
+                + "{\n"
+                + "    exampleClass: ExampleClass[1..1];\n"
+                // TODO: Check that version associationEnds are owned, or infer owned
+                + "    version: SecondClassVersion[1..1] owned version;\n"
+                + "\n"
+                + "    relationship this.id == SecondClassVersion.id\n"
                 + "}\n";
         //</editor-fold>
 
         String[] errors = {
                 ""
-                        + "File: VersionClassInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 3 Char: 51 Error: ERR_VER_CLS: Multiple version classes on 'ExampleClass'.\n"
-                        + "class ExampleClassVersion systemTemporal versions(ExampleClass)\n"
-                        + "                                                  ^^^^^^^^^^^^\n",
+                        + "File: VersionAssociationInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 3 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'ExampleClassHasVersion'.\n"
+                        + "association ExampleClassHasVersion\n"
+                        + "            ^^^^^^^^^^^^^^^^^^^^^^\n",
+
                 ""
-                        + "File: example.klass Line: 7 Char: 50 Error: ERR_VER_CLS: Multiple version classes on 'ExampleClass'.\n"
-                        + "class SecondClassVersion systemTemporal versions(ExampleClass)\n"
-                        + "                                                 ^^^^^^^^^^^^\n"
+                        + "File: VersionAssociationInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 6 Char: 5 Error: ERR_DUP_END: Duplicate member: 'ExampleClass.version'.\n"
+                        + "association ExampleClassHasVersion\n"
+                        + "{\n"
+                        + "    version: ExampleClassVersion[1..1] owned version;\n"
+                        + "    ^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: VersionAssociationInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 6 Char: 46 Error: ERR_VER_END: Multiple version properties on 'ExampleClass'.\n"
+                        + "package com.errors\n"
+                        + "association ExampleClassHasVersion\n"
+                        + "{\n"
+                        + "    version: ExampleClassVersion[1..1] owned version;\n"
+                        + "                                             ^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 14 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'ExampleClassHasVersion'.\n"
+                        + "association ExampleClassHasVersion\n"
+                        + "            ^^^^^^^^^^^^^^^^^^^^^^\n",
+
+                ""
+                        + "File: example.klass Line: 17 Char: 5 Error: ERR_DUP_END: Duplicate member: 'ExampleClass.version'.\n"
+                        + "association ExampleClassHasVersion\n"
+                        + "{\n"
+                        + "    version: SecondClassVersion[1..1] owned version;\n"
+                        + "    ^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 17 Char: 45 Error: ERR_VER_END: Multiple version properties on 'ExampleClass'.\n"
+                        + "package com.errors\n"
+                        + "association ExampleClassHasVersion\n"
+                        + "{\n"
+                        + "    version: SecondClassVersion[1..1] owned version;\n"
+                        + "                                            ^^^^^^^\n"
+                        + "}\n",
         };
 
         this.assertCompilerErrors(sourceCodeText, errors);
@@ -1187,10 +1223,10 @@ public class KlassCompilerTest
                 + "    id: Long id key;\n"
                 + "}\n"
                 + "\n"
-                + "association ExampleClassVersionAgain versions(ExampleClassVersion)\n"
+                + "association ExampleClassVersionAgain\n"
                 + "{\n"
-                + "    exampleClass: ExampleClass[1..1];\n"
-                + "    exampleClassVersion: ExampleClassVersion[1..1];\n"
+                + "    duplicateExampleClass: ExampleClass[1..1];\n"
+                + "    duplicateExampleClassVersion: ExampleClassVersion[1..1] owned version;\n"
                 + "\n"
                 + "    relationship this.id == ExampleClassVersion.id\n"
                 + "}\n";
@@ -1198,26 +1234,36 @@ public class KlassCompilerTest
 
         String[] errors = {
                 ""
-                        + "File: VersionAssociationInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 3 Char: 45 Error: ERR_MUL_VER_ASSO: Multiple version associations on 'ExampleClassVersion'.\n"
-                        + "association ExampleClassHasVersion versions(ExampleClassVersion)\n"
-                        + "                                            ^^^^^^^^^^^^^^^^^^^\n",
-                ""
-                        + "File: VersionAssociationInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 5 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'exampleClass'.\n"
-                        + "association ExampleClassHasVersion versions(ExampleClassVersion)\n"
+                        + "File: VersionAssociationInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 5 Char: 5 Error: ERR_VER_END: Multiple versioned properties on 'ExampleClassVersion'.\n"
+                        + "package com.errors\n"
+                        + "association ExampleClassHasVersion\n"
                         + "{\n"
                         + "    exampleClass: ExampleClass[1..1];\n"
                         + "    ^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 8 Char: 47 Error: ERR_MUL_VER_ASSO: Multiple version associations on 'ExampleClassVersion'.\n"
-                        + "association ExampleClassVersionAgain versions(ExampleClassVersion)\n"
-                        + "                                              ^^^^^^^^^^^^^^^^^^^\n",
-                ""
-                        + "File: example.klass Line: 10 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'exampleClass'.\n"
-                        + "association ExampleClassVersionAgain versions(ExampleClassVersion)\n"
+                        + "File: VersionAssociationInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 6 Char: 46 Error: ERR_VER_END: Multiple version properties on 'ExampleClass'.\n"
+                        + "package com.errors\n"
+                        + "association ExampleClassHasVersion\n"
                         + "{\n"
-                        + "    exampleClass: ExampleClass[1..1];\n"
-                        + "    ^^^^^^^^^^^^\n"
+                        + "    version: ExampleClassVersion[1..1] owned version;\n"
+                        + "                                             ^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 10 Char: 5 Error: ERR_VER_END: Multiple versioned properties on 'ExampleClassVersion'.\n"
+                        + "package com.errors\n"
+                        + "association ExampleClassVersionAgain\n"
+                        + "{\n"
+                        + "    duplicateExampleClass: ExampleClass[1..1];\n"
+                        + "    ^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 11 Char: 67 Error: ERR_VER_END: Multiple version properties on 'ExampleClass'.\n"
+                        + "package com.errors\n"
+                        + "association ExampleClassVersionAgain\n"
+                        + "{\n"
+                        + "    duplicateExampleClassVersion: ExampleClassVersion[1..1] owned version;\n"
+                        + "                                                                  ^^^^^^^\n"
                         + "}\n"
         };
 

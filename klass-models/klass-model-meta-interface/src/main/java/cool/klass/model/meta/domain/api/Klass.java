@@ -50,10 +50,10 @@ public interface Klass extends Type, PackageableElement
     }
 
     @Nonnull
-    Optional<Klass> getVersionClass();
+    Optional<AssociationEnd> getVersionProperty();
 
     @Nonnull
-    Optional<Klass> getVersionedClass();
+    Optional<AssociationEnd> getVersionedProperty();
 
     @Nonnull
     ImmutableList<ClassModifier> getClassModifiers();

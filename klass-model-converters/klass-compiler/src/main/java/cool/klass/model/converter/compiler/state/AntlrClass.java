@@ -2,6 +2,7 @@ package cool.klass.model.converter.compiler.state;
 
 import java.util.LinkedHashMap;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -109,14 +110,10 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
     private final MutableOrderedMap<ParameterizedPropertyContext, AntlrParameterizedProperty> parameterizedPropertiesByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    private final MutableList<AntlrClass>       versionClasses      = Lists.mutable.empty();
-    private final MutableList<AntlrAssociation> versionAssociations = Lists.mutable.empty();
-
     private final ImmutableList<AntlrClassModifier> classModifierStates;
 
     private final boolean isUser;
 
-    private AntlrClass   versionedClass;
     private KlassBuilder klassBuilder;
 
     public AntlrClass(
@@ -229,6 +226,12 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         return this.classModifierStates.anySatisfy(AntlrClassModifier::isOptimisticallyLocked);
     }
 
+    @Override
+    public KlassBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.klassBuilder);
+    }
+
     public void build2()
     {
         if (this.klassBuilder == null)
@@ -236,35 +239,22 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             throw new IllegalStateException();
         }
 
-        if (this.versionClasses.notEmpty())
-        {
-            this.klassBuilder.setVersionClassBuilder(this.versionClasses.getOnly().getElementBuilder());
-        }
-
-        if (this.versionedClass != null)
-        {
-            this.klassBuilder.setVersionedClassBuilder(this.versionedClass.getElementBuilder());
-        }
-    }
-
-    @Override
-    public KlassBuilder getElementBuilder()
-    {
-        return Objects.requireNonNull(this.klassBuilder);
-    }
-
-    public void build3()
-    {
-        if (this.klassBuilder == null)
-        {
-            throw new IllegalStateException();
-        }
-
         ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates
-                .collect(AntlrAssociationEnd::getAssociationEndBuilder)
+                .collect(AntlrAssociationEnd::getElementBuilder)
                 .toImmutable();
 
         this.klassBuilder.setAssociationEndBuilders(associationEndBuilders);
+
+        Optional<AntlrAssociationEnd> versionAssociationEnd =
+                this.associationEndStates.detectOptional(AntlrAssociationEnd::isVersion);
+        Optional<AntlrAssociationEnd> versionedAssociationEnd =
+                this.associationEndStates.detectOptional(AntlrAssociationEnd::isVersioned);
+
+        Optional<AssociationEndBuilder> versionAssociationEndBuilder   = versionAssociationEnd.map(AntlrAssociationEnd::getElementBuilder);
+        Optional<AssociationEndBuilder> versionedAssociationEndBuilder = versionedAssociationEnd.map(AntlrAssociationEnd::getElementBuilder);
+
+        this.klassBuilder.setVersionPropertyBuilder(versionAssociationEndBuilder);
+        this.klassBuilder.setVersionedPropertyBuilder(versionedAssociationEndBuilder);
     }
 
     public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -332,36 +322,30 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             associationEndState.reportErrors(compilerErrorHolder);
         }
 
-        if (this.versionClasses.size() > 1)
+        MutableList<AntlrAssociationEnd> versionAssociationEnds = this.associationEndStates.select(AntlrAssociationEnd::isVersion);
+        if (versionAssociationEnds.size() > 1)
         {
-            for (AntlrClass versionClass : this.versionClasses)
+            for (AntlrAssociationEnd antlrAssociationEnd : versionAssociationEnds)
             {
-                versionClass.reportDuplicateVersionClass(compilerErrorHolder, this);
+                antlrAssociationEnd.reportDuplicateVersionProperty(compilerErrorHolder, this);
             }
         }
 
-        if (this.versionAssociations.size() > 1)
+        MutableList<AntlrAssociationEnd> versionedAssociationEnds = this.associationEndStates.select(AntlrAssociationEnd::isVersioned);
+        if (versionedAssociationEnds.size() > 1)
         {
-            for (AntlrAssociation versionAssociation : this.versionAssociations)
+            for (AntlrAssociationEnd versionedAssociationEnd : versionedAssociationEnds)
             {
-                versionAssociation.reportDuplicateVersionAssociation(compilerErrorHolder, this);
+                versionedAssociationEnd.reportDuplicateVersionedProperty(compilerErrorHolder, this);
             }
         }
 
-        if (this.versionedClass == null)
-        {
-            for (AntlrAssociation versionAssociation : this.versionAssociations)
-            {
-                versionAssociation.reportVersionAssociation(compilerErrorHolder, this);
-            }
-        }
-
-        if (this.versionedClass != null && this.versionClasses.notEmpty())
+        if (versionAssociationEnds.notEmpty() && versionedAssociationEnds.notEmpty())
         {
             String message = String.format("ERR_VER_VER: Class is a version and has a version: '%s'.", this.name);
             compilerErrorHolder.add(
                     message,
-                    this.getElementContext().versions().classReference());
+                    this.getElementContext());
         }
 
         // TODO: Warn if class is owned by multiple
@@ -378,14 +362,6 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();
-    }
-
-    private void reportDuplicateVersionClass(CompilerErrorHolder compilerErrorHolder, AntlrClass versionedClass)
-    {
-        String message = String.format(
-                "ERR_VER_CLS: Multiple version classes on '%s'.",
-                versionedClass.getName());
-        compilerErrorHolder.add(message, this.getElementContext().versions().classReference());
     }
 
     @Nonnull
@@ -426,27 +402,8 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
                 + ".getTypeBuilder() not implemented yet");
     }
 
-    public void addVersionClass(AntlrClass versionClass)
-    {
-        this.versionClasses.add(Objects.requireNonNull(versionClass));
-    }
-
-    public void setVersionedClass(AntlrClass versionedClass)
-    {
-        if (this.versionedClass != null)
-        {
-            throw new AssertionError();
-        }
-        this.versionedClass = Objects.requireNonNull(versionedClass);
-    }
-
-    public void addVersionAssociation(AntlrAssociation versionAssociation)
-    {
-        this.versionAssociations.add(Objects.requireNonNull(versionAssociation));
-    }
-
     public boolean hasVersion()
     {
-        return this.versionClasses.notEmpty();
+        return this.associationEndStates.anySatisfy(AntlrAssociationEnd::isVersion);
     }
 }
