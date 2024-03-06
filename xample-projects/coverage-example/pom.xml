@@ -96,28 +96,28 @@
     </build>
 
     <modules>
-        <module>${app.artifactId}-domain-model</module>
-        <module>${app.artifactId}-dropwizard-application</module>
-        <module>${app.artifactId}-dtos</module>
-        <module>${app.artifactId}-graphql-data-fetchers</module>
-        <module>${app.artifactId}-graphql-fragment</module>
-        <module>${app.artifactId}-graphql-reladomo-finder</module>
-        <module>${app.artifactId}-graphql-runtime-wiring-query</module>
-        <module>${app.artifactId}-graphql-runtime-wiring</module>
-        <module>${app.artifactId}-graphql-schema-query</module>
-        <module>${app.artifactId}-graphql-schema</module>
-        <module>${app.artifactId}-json-views</module>
-        <module>${app.artifactId}-klass-html</module>
-        <!--<module>${app.artifactId}-klass-projections</module>-->
-        <!--<module>${app.artifactId}-klass-services</module>-->
-        <module>${app.artifactId}-reladomo-ddls</module>
-        <module>${app.artifactId}-reladomo-definitions</module>
-        <module>${app.artifactId}-reladomo-merge-hooks</module>
-        <module>${app.artifactId}-reladomo-pojos</module>
-        <module>${app.artifactId}-reladomo-readable-interfaces</module>
-        <module>${app.artifactId}-reladomo-runtime-configuration</module>
-        <module>${app.artifactId}-services</module>
-        <module>${app.artifactId}-uml-nomnoml</module>
+        <module>coverage-example-domain-model</module>
+        <module>coverage-example-dropwizard-application</module>
+        <module>coverage-example-dtos</module>
+        <module>coverage-example-graphql-data-fetchers</module>
+        <module>coverage-example-graphql-fragment</module>
+        <module>coverage-example-graphql-reladomo-finder</module>
+        <module>coverage-example-graphql-runtime-wiring-query</module>
+        <module>coverage-example-graphql-runtime-wiring</module>
+        <module>coverage-example-graphql-schema-query</module>
+        <module>coverage-example-graphql-schema</module>
+        <module>coverage-example-json-views</module>
+        <module>coverage-example-klass-html</module>
+        <!--<module>coverage-example-klass-projections</module>-->
+        <!--<module>coverage-example-klass-services</module>-->
+        <module>coverage-example-reladomo-ddls</module>
+        <module>coverage-example-reladomo-definitions</module>
+        <module>coverage-example-reladomo-merge-hooks</module>
+        <module>coverage-example-reladomo-pojos</module>
+        <module>coverage-example-reladomo-readable-interfaces</module>
+        <module>coverage-example-reladomo-runtime-configuration</module>
+        <module>coverage-example-services</module>
+        <module>coverage-example-uml-nomnoml</module>
         <module>klass-generator-klass-html-test</module>
         <module>klass-reladomo-operation-compiler-test</module>
         <module>liftwizard-reladomo-graphql-operation-test</module>

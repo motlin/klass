@@ -95,28 +95,28 @@
     </build>
 
     <modules>
-        <module>${app.artifactId}-domain-model</module>
-        <module>${app.artifactId}-dropwizard-application</module>
-        <module>${app.artifactId}-dtos</module>
-        <module>${app.artifactId}-graphql-data-fetchers</module>
-        <module>${app.artifactId}-graphql-fragment</module>
-        <module>${app.artifactId}-graphql-reladomo-finder</module>
-        <module>${app.artifactId}-graphql-runtime-wiring-query</module>
-        <module>${app.artifactId}-graphql-runtime-wiring</module>
-        <module>${app.artifactId}-graphql-schema-query</module>
-        <module>${app.artifactId}-graphql-schema</module>
-        <module>${app.artifactId}-json-views</module>
-        <module>${app.artifactId}-klass-html</module>
-        <module>${app.artifactId}-klass-projections</module>
-        <module>${app.artifactId}-klass-services</module>
-        <!--<module>${app.artifactId}-meta-model-json</module>-->
-        <module>${app.artifactId}-reladomo-ddls</module>
-        <module>${app.artifactId}-reladomo-definitions</module>
-        <module>${app.artifactId}-reladomo-merge-hooks</module>
-        <module>${app.artifactId}-reladomo-pojos</module>
-        <module>${app.artifactId}-reladomo-runtime-configuration</module>
-        <module>${app.artifactId}-services</module>
-        <module>${app.artifactId}-uml-nomnoml</module>
+        <module>stackoverflow-domain-model</module>
+        <module>stackoverflow-dropwizard-application</module>
+        <module>stackoverflow-dtos</module>
+        <module>stackoverflow-graphql-data-fetchers</module>
+        <module>stackoverflow-graphql-fragment</module>
+        <module>stackoverflow-graphql-reladomo-finder</module>
+        <module>stackoverflow-graphql-runtime-wiring-query</module>
+        <module>stackoverflow-graphql-runtime-wiring</module>
+        <module>stackoverflow-graphql-schema-query</module>
+        <module>stackoverflow-graphql-schema</module>
+        <module>stackoverflow-json-views</module>
+        <module>stackoverflow-klass-html</module>
+        <module>stackoverflow-klass-projections</module>
+        <module>stackoverflow-klass-services</module>
+        <!--<module>stackoverflow-meta-model-json</module>-->
+        <module>stackoverflow-reladomo-ddls</module>
+        <module>stackoverflow-reladomo-definitions</module>
+        <module>stackoverflow-reladomo-merge-hooks</module>
+        <module>stackoverflow-reladomo-pojos</module>
+        <module>stackoverflow-reladomo-runtime-configuration</module>
+        <module>stackoverflow-services</module>
+        <module>stackoverflow-uml-nomnoml</module>
     </modules>
 
 </project>
