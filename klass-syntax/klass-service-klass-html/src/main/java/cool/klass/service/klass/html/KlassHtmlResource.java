@@ -9,6 +9,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -96,6 +97,14 @@ public class KlassHtmlResource
         ImmutableList<SourceCode> sourceCodes = this.domainModel
                 .getSourceCodes()
                 .select(each -> each.getSourceName().equals(fileName));
+
+        if (sourceCodes.size() != 1)
+        {
+            throw new NotFoundException(this.domainModel
+                    .getSourceCodes()
+                    .collect(SourceCode::getSourceName)
+                    .toString());
+        }
 
         SourceCode sourceCode = sourceCodes.getOnly();
         return KlassSourceCodeHtmlGenerator.getSourceCode(
