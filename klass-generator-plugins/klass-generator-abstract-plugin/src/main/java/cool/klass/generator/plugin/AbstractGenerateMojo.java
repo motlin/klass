@@ -1,10 +1,14 @@
 package cool.klass.generator.plugin;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
@@ -12,10 +16,13 @@ import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.meta.domain.api.DomainModel;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
@@ -28,6 +35,9 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
 {
     @Parameter(property = "klassSourcePackages", required = true, readonly = true)
     protected List<String> klassSourcePackages;
+
+    @Parameter(defaultValue = "${project}", required = true, readonly = true)
+    protected MavenProject mavenProject;
 
     @Nullable
     protected DomainModel getDomainModel() throws MojoExecutionException
@@ -44,16 +54,20 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
         }
 
         ImmutableList<String> klassSourcePackagesImmutable = Lists.immutable.withAll(this.klassSourcePackages);
+        this.getLog().debug("Scanning source packages: " + klassSourcePackagesImmutable.makeString());
 
-        ImmutableList<URL> urls = klassSourcePackagesImmutable.flatCollect(ClasspathHelper::forPackage);
+        ClassLoader classLoader = this.getClassLoader();
+
+        ImmutableList<URL> urls = klassSourcePackagesImmutable.flatCollectWith(ClasspathHelper::forPackage, classLoader);
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .setScanners(new ResourcesScanner())
                 .setUrls(urls.castToList());
         Reflections reflections    = new Reflections(configurationBuilder);
         Set<String> klassLocations = reflections.getResources(Pattern.compile(".*\\.klass"));
+        this.getLog().debug("Found klass locations: " + SetAdapter.adapt(klassLocations).makeString());
 
         MutableSet<CompilationUnit> compilationUnits = SetAdapter.adapt(klassLocations)
-                .collect(CompilationUnit::createFromClasspathLocation);
+                .collectWith(CompilationUnit::createFromClasspathLocation, classLoader);
 
         CompilerState compilerState = new CompilerState(compilationUnits);
         KlassCompiler klassCompiler = new KlassCompiler(compilerState);
@@ -70,5 +84,39 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
         }
 
         return domainModel;
+    }
+
+    private ClassLoader getClassLoader() throws MojoExecutionException
+    {
+        try
+        {
+            List<String>     classpathElements    = this.mavenProject.getCompileClasspathElements();
+            MutableList<URL> projectClasspathList = Lists.mutable.empty();
+            for (String element : classpathElements)
+            {
+                URL url = this.getUrl(element);
+                projectClasspathList.add(url);
+            }
+
+            URL[] urls = projectClasspathList.toArray(new URL[0]);
+            return new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
+        }
+        catch (DependencyResolutionRequiredException e)
+        {
+            throw new MojoExecutionException("Dependency resolution failed", e);
+        }
+    }
+
+    @Nonnull
+    private URL getUrl(String classpathElement) throws MojoExecutionException
+    {
+        try
+        {
+            return new File(classpathElement).toURI().toURL();
+        }
+        catch (MalformedURLException e)
+        {
+            throw new MojoExecutionException(classpathElement + " is an invalid classpath element", e);
+        }
     }
 }
