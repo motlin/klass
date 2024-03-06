@@ -72,4 +72,57 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 + "}\n";
         JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
     }
+
+    @Test
+    public void putFirst() throws JSONException
+    {
+        Client client = this.getClient(
+                "cool.klass.xample.coverage.dropwizard.test.PropertiesRequiredTest.putFirst");
+
+        //language=JSON
+        String json = "{\n"
+                + "  \"propertiesRequiredId\": 1,\n"
+                + "  \"requiredString\": \"PropertiesRequired requiredString 1 ☝\",\n"
+                + "  \"requiredInteger\": 1,\n"
+                + "  \"requiredLong\": 100000000000,\n"
+                + "  \"requiredDouble\": 1.0123456789,\n"
+                + "  \"requiredFloat\": 1.0123457,\n"
+                + "  \"requiredBoolean\": true,\n"
+                + "  \"requiredInstant\": \"1999-12-31T23:59:00Z\",\n"
+                + "  \"requiredLocalDate\": \"1999-12-31\"\n"
+                + "}\n";
+
+        Response putResponse = client.target(
+                String.format("http://localhost:%d/api/propertiesRequired/{id}", RULE.getLocalPort()))
+                .resolveTemplate("id", 1)
+                .request()
+                .put(Entity.json(json));
+        this.assertResponseStatus(putResponse, Status.OK);
+        String putJsonResponse = putResponse.readEntity(String.class);
+        JSONAssert.assertEquals(json, putJsonResponse, JSONCompareMode.STRICT);
+
+        Response getResponse = client.target(
+                String.format("http://localhost:%d/api/propertiesRequired/{id}", RULE.getLocalPort()))
+                .resolveTemplate("id", 1)
+                .request()
+                .get();
+
+        this.assertResponseStatus(getResponse, Status.OK);
+
+        String jsonResponse = getResponse.readEntity(String.class);
+        //language=JSON
+        String expected = ""
+                + "{\n"
+                + "  \"propertiesRequiredId\": 1,\n"
+                + "  \"requiredString\": \"PropertiesRequired requiredString 1 ☝\",\n"
+                + "  \"requiredInteger\": 1,\n"
+                + "  \"requiredLong\": 100000000000,\n"
+                + "  \"requiredDouble\": 1.0123456789,\n"
+                + "  \"requiredFloat\": 1.0123457,\n"
+                + "  \"requiredBoolean\": true,\n"
+                + "  \"requiredInstant\": \"1999-12-31T23:59:00Z\",\n"
+                + "  \"requiredLocalDate\": \"1999-12-31\"\n"
+                + "}\n";
+        JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
+    }
 }

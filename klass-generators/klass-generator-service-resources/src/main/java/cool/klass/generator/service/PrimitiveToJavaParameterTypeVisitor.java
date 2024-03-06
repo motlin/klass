@@ -58,7 +58,7 @@ public class PrimitiveToJavaParameterTypeVisitor implements PrimitiveTypeVisitor
     @Override
     public void visitInstant()
     {
-        this.result = "InstantParam";
+        this.result = "OffsetDateTimeParam";
     }
 
     @Override
