@@ -32,7 +32,7 @@ import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>
 {
     private final DomainModel domainModel;
-    private final DataStore dataStore;
+    private final DataStore   dataStore;
 
     public ReladomoJsonSerializer(DomainModel domainModel, DataStore dataStore)
     {
@@ -42,11 +42,11 @@ public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>
 
     @Override
     public void serialize(
-            MithraObject mithraObject,
-            JsonGenerator jsonGenerator,
-            SerializerProvider serializers) throws IOException
+            @Nonnull MithraObject mithraObject,
+            @Nonnull JsonGenerator jsonGenerator,
+            @Nonnull SerializerProvider serializers) throws IOException
     {
-        Class<?>                    activeViewClass = serializers.getActiveView();
+        Class<?> activeViewClass = serializers.getActiveView();
         Objects.requireNonNull(activeViewClass);
 
         if (!KlassJsonView.class.isAssignableFrom(activeViewClass))
@@ -54,14 +54,15 @@ public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>
             throw new IllegalStateException(activeViewClass.getCanonicalName());
         }
         KlassJsonView klassJsonView = this.instantiate(activeViewClass);
-        Projection    projection   = klassJsonView.getProjection();
+        Projection    projection    = klassJsonView.getProjection();
 
         // This would work if we consistently used the same DomainModel everywhere (instead of sometimes compiled and sometimes code generated).
         // Projection projection = this.domainModel.getProjections().selectInstancesOf(activeView).getOnly();
         this.serialize(mithraObject, jsonGenerator, projection);
     }
 
-    private KlassJsonView instantiate(Class<?> activeViewClass)
+    @Nonnull
+    private KlassJsonView instantiate(@Nonnull Class<?> activeViewClass)
     {
         try
         {
@@ -74,8 +75,8 @@ public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>
     }
 
     public void serialize(
-            MithraObject mithraObject,
-            JsonGenerator jsonGenerator,
+            @Nonnull MithraObject mithraObject,
+            @Nonnull JsonGenerator jsonGenerator,
             @Nonnull ProjectionParent projectionParent) throws IOException
     {
         jsonGenerator.writeStartObject();
@@ -118,7 +119,7 @@ public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>
     public void handleProjectionPrimitiveMember(
             @Nonnull JsonGenerator jsonGenerator,
             MithraObject mithraObject,
-            ProjectionDataTypeProperty projectionPrimitiveMember) throws IOException
+            @Nonnull ProjectionDataTypeProperty projectionPrimitiveMember) throws IOException
     {
         if (projectionPrimitiveMember.isPolymorphic())
         {
@@ -163,7 +164,7 @@ public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>
     public void handleProjectionWithAssociationEnd(
             @Nonnull JsonGenerator jsonGenerator,
             MithraObject mithraObject,
-            ProjectionWithAssociationEnd projectionWithAssociationEnd) throws IOException
+            @Nonnull ProjectionWithAssociationEnd projectionWithAssociationEnd) throws IOException
     {
         if (projectionWithAssociationEnd.isPolymorphic())
         {
