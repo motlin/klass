@@ -60,6 +60,7 @@ public abstract class AntlrElement
      *
      * @throws AssertionError if the parserRuleContext is not a sentinel but looks too much like a sentinel
      */
+    @SuppressWarnings("unused")
     public static String getSourceTextLenient(ParserRuleContext parserRuleContext)
     {
         Objects.requireNonNull(parserRuleContext);
