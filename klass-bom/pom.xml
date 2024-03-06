@@ -775,7 +775,7 @@
             <dependency>
                 <groupId>io.grpc</groupId>
                 <artifactId>grpc-context</artifactId>
-                <version>1.24.1</version>
+                <version>1.25.0</version>
             </dependency>
 
             <dependency>
