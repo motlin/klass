@@ -229,6 +229,7 @@ public class ReladomoDataStore implements DataStore
     @Override
     public Object getDataTypeProperty(@Nonnull Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty)
     {
+        // TODO: Code generate accessors to avoid reflection
         if (dataTypeProperty.isDerived())
         {
             return this.getPropertyReflectively(persistentInstance, dataTypeProperty);
