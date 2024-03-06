@@ -1,0 +1,97 @@
+{
+  "name": "DataTypePropertyHasModifiers",
+  "inferred": false,
+  "packageName": "klass.model.meta.domain",
+  "ordinal": 76,
+  "sourceCode": "association DataTypePropertyHasModifiers\n{\n    dataTypeProperty              : DataTypeProperty[1..1];\n    propertyModifiers             : PropertyModifier[0..*]\n        orderBy: this.ordinal;\n\n    relationship this.classifierName == PropertyModifier.classifierName\n            && this.name == PropertyModifier.propertyName\n}",
+  "sourceCodeWithInference": "association DataTypePropertyHasModifiers\n{\n    dataTypeProperty              : DataTypeProperty[1..1];\n    propertyModifiers             : PropertyModifier[0..*]\n        orderBy: this.ordinal;\n\n    relationship this.classifierName == PropertyModifier.classifierName\n            && this.name == PropertyModifier.propertyName\n}",
+  "associationEnds": [
+    {
+      "name": "dataTypeProperty",
+      "inferred": false,
+      "ordinal": 1,
+      "sourceCode": "dataTypeProperty              : DataTypeProperty[1..1];",
+      "sourceCodeWithInference": "dataTypeProperty              : DataTypeProperty[1..1];",
+      "direction": "source",
+      "multiplicity": "1..1",
+      "owningClass": {
+        "name": "PropertyModifier",
+        "packageName": "klass.model.meta.domain"
+      },
+      "resultType": {
+        "name": "DataTypeProperty",
+        "packageName": "klass.model.meta.domain"
+      },
+      "owningAssociation": {
+        "name": "DataTypePropertyHasModifiers"
+      }
+    },
+    {
+      "name": "propertyModifiers",
+      "inferred": false,
+      "ordinal": 2,
+      "sourceCode": "propertyModifiers             : PropertyModifier[0..*]\n        orderBy: this.ordinal;",
+      "sourceCodeWithInference": "propertyModifiers             : PropertyModifier[0..*]\n        orderBy: this.ordinal;",
+      "direction": "target",
+      "multiplicity": "0..*",
+      "owningClass": {
+        "name": "DataTypeProperty",
+        "packageName": "klass.model.meta.domain"
+      },
+      "resultType": {
+        "name": "PropertyModifier",
+        "packageName": "klass.model.meta.domain"
+      },
+      "owningAssociation": {
+        "name": "DataTypePropertyHasModifiers"
+      }
+    }
+  ],
+  "criteria": {
+    "_type": "AndCriteria",
+    "left": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "DataTypeProperty"
+        },
+        "dataTypeProperty": {
+          "name": "classifierName"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "PropertyModifier"
+        },
+        "dataTypeProperty": {
+          "name": "classifierName"
+        }
+      }
+    },
+    "right": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "DataTypeProperty"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "PropertyModifier"
+        },
+        "dataTypeProperty": {
+          "name": "propertyName"
+        }
+      }
+    }
+  }
+}

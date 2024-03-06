@@ -1,0 +1,11 @@
+{
+  "name": "Classifier",
+  "packageName": "klass.model.meta.domain",
+  "superInterfaces": [
+    {
+      "superInterface": {
+        "name": "PackageableElement"
+      }
+    }
+  ]
+}

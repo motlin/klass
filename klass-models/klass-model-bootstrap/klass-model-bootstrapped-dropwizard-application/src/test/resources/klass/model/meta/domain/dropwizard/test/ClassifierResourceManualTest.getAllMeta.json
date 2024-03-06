@@ -866,6 +866,31 @@
   },
   {
     "_type": "Klass",
+    "name": "UserLiteral",
+    "packageName": "klass.model.meta.domain",
+    "superClass": {
+      "name": "ExpressionValue"
+    },
+    "primitiveProperties": [
+      {
+        "name": "id",
+        "primitiveType": "Long",
+        "optional": false,
+        "key": true,
+        "id": false,
+        "propertyModifiers": [
+          {
+            "name": "key"
+          },
+          {
+            "name": "private"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "_type": "Klass",
     "name": "VariableReference",
     "packageName": "klass.model.meta.domain",
     "superClass": {

@@ -1,0 +1,35 @@
+{
+  "name": "PackageableElement",
+  "inferred": false,
+  "packageName": "klass.model.meta.domain",
+  "ordinal": 12,
+  "sourceCode": "interface PackageableElement implements NamedElement\n{\n    packageName: String;\n\n    // fullyQualifiedName: String = packageName + \".\" + name;\n}",
+  "sourceCodeWithInference": "interface PackageableElement\n    implements NamedElement\n{\n    packageName: String;\n}\n",
+  "superInterfaces": [
+    {
+      "superInterface": {
+        "name": "NamedElement",
+        "packageName": "klass.model.meta.domain",
+        "superInterfaces": [
+          {
+            "superInterface": {
+              "name": "Element",
+              "packageName": "klass.model.meta.domain"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "primitiveProperties": [
+    {
+      "name": "packageName",
+      "inferred": false,
+      "primitiveType": "String",
+      "optional": false,
+      "key": false,
+      "id": false,
+      "ordinal": 1
+    }
+  ]
+}

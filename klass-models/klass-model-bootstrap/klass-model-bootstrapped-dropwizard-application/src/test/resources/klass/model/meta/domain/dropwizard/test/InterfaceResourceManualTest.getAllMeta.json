@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Element",
+    "packageName": "klass.model.meta.domain",
+    "primitiveProperties": [
+      {
+        "name": "inferred",
+        "primitiveType": "Boolean",
+        "optional": false,
+        "key": false,
+        "id": false
+      },
+      {
+        "name": "sourceCode",
+        "primitiveType": "String",
+        "optional": false,
+        "key": false,
+        "id": false,
+        "maxLengthValidation": {
+          "number": 100000
+        }
+      },
+      {
+        "name": "sourceCodeWithInference",
+        "primitiveType": "String",
+        "optional": false,
+        "key": false,
+        "id": false,
+        "maxLengthValidation": {
+          "number": 100000
+        }
+      }
+    ]
+  },
+  {
+    "name": "NamedElement",
+    "packageName": "klass.model.meta.domain",
+    "superInterfaces": [
+      {
+        "superInterface": {
+          "name": "Element"
+        }
+      }
+    ],
+    "primitiveProperties": [
+      {
+        "name": "name",
+        "primitiveType": "String",
+        "optional": false,
+        "key": true,
+        "id": false,
+        "propertyModifiers": [
+          {
+            "name": "key"
+          }
+        ]
+      },
+      {
+        "name": "ordinal",
+        "primitiveType": "Integer",
+        "optional": false,
+        "key": false,
+        "id": false
+      }
+    ]
+  },
+  {
+    "name": "PackageableElement",
+    "packageName": "klass.model.meta.domain",
+    "superInterfaces": [
+      {
+        "superInterface": {
+          "name": "NamedElement"
+        }
+      }
+    ],
+    "primitiveProperties": [
+      {
+        "name": "packageName",
+        "primitiveType": "String",
+        "optional": false,
+        "key": false,
+        "id": false
+      }
+    ]
+  },
+  {
+    "name": "PropertyValidation",
+    "packageName": "klass.model.meta.domain",
+    "superInterfaces": [
+      {
+        "superInterface": {
+          "name": "Element"
+        }
+      }
+    ]
+  }
+]

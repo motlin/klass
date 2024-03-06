@@ -1,0 +1,80 @@
+{
+  "name": "DataTypePropertyHasModifiers",
+  "packageName": "klass.model.meta.domain",
+  "associationEnds": [
+    {
+      "name": "dataTypeProperty",
+      "multiplicity": "1..1",
+      "resultType": {
+        "name": "DataTypeProperty"
+      }
+    },
+    {
+      "name": "propertyModifiers",
+      "multiplicity": "0..*",
+      "resultType": {
+        "name": "PropertyModifier"
+      },
+      "orderBys": [
+        {
+          "thisMemberReferencePath": {
+            "klass": {
+              "name": "PropertyModifier"
+            },
+            "dataTypeProperty": {
+              "name": "ordinal"
+            }
+          },
+          "orderByDirection": "ascending"
+        }
+      ]
+    }
+  ],
+  "criteria": {
+    "_type": "AndCriteria",
+    "left": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "DataTypeProperty"
+        },
+        "dataTypeProperty": {
+          "name": "classifierName"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "PropertyModifier"
+        },
+        "dataTypeProperty": {
+          "name": "classifierName"
+        }
+      }
+    },
+    "right": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "DataTypeProperty"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "PropertyModifier"
+        },
+        "dataTypeProperty": {
+          "name": "propertyName"
+        }
+      }
+    }
+  }
+}

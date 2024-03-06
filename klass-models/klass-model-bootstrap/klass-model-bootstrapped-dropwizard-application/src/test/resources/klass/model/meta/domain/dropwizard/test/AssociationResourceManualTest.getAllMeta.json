@@ -1,0 +1,2741 @@
+[
+  {
+    "name": "EnumerationHasLiterals",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "enumeration",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Enumeration"
+        }
+      },
+      {
+        "name": "enumerationLiterals",
+        "multiplicity": "1..*",
+        "resultType": {
+          "name": "EnumerationLiteral"
+        },
+        "orderBys": [
+          {
+            "thisMemberReferencePath": {
+              "klass": {
+                "name": "EnumerationLiteral"
+              },
+              "dataTypeProperty": {
+                "name": "ordinal"
+              }
+            },
+            "orderByDirection": "ascending"
+          }
+        ]
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Enumeration"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "EnumerationLiteral"
+        },
+        "dataTypeProperty": {
+          "name": "enumerationName"
+        }
+      }
+    }
+  },
+  {
+    "name": "ClassifierHasClassifierInterfaceMapping",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "subClassifier",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Classifier"
+        }
+      },
+      {
+        "name": "superInterfaces",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "ClassifierInterfaceMapping"
+        },
+        "associationEndModifiers": [
+          {
+            "name": "owned"
+          }
+        ]
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Classifier"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "ClassifierInterfaceMapping"
+        },
+        "dataTypeProperty": {
+          "name": "classifierName"
+        }
+      }
+    }
+  },
+  {
+    "name": "ClassifierInterfaceMappingHasInterface",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "superInterface",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Interface"
+        }
+      },
+      {
+        "name": "subClassifiers",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "ClassifierInterfaceMapping"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Interface"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "ClassifierInterfaceMapping"
+        },
+        "dataTypeProperty": {
+          "name": "interfaceName"
+        }
+      }
+    }
+  },
+  {
+    "name": "ClassHasSuperClass",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "subClasses",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "Klass"
+        }
+      },
+      {
+        "name": "superClass",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "Klass"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Klass"
+        },
+        "dataTypeProperty": {
+          "name": "superClassName"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Klass"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      }
+    }
+  },
+  {
+    "name": "EnumerationPropertyHasEnumeration",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "enumerationProperty",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "EnumerationProperty"
+        }
+      },
+      {
+        "name": "enumeration",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Enumeration"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "EnumerationProperty"
+        },
+        "dataTypeProperty": {
+          "name": "enumerationName"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Enumeration"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      }
+    }
+  },
+  {
+    "name": "ClassifierHasPrimitiveProperties",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "owningClassifier",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Classifier"
+        }
+      },
+      {
+        "name": "primitiveProperties",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "PrimitiveProperty"
+        },
+        "orderBys": [
+          {
+            "thisMemberReferencePath": {
+              "klass": {
+                "name": "PrimitiveProperty"
+              },
+              "dataTypeProperty": {
+                "name": "ordinal"
+              }
+            },
+            "orderByDirection": "ascending"
+          }
+        ]
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Classifier"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "PrimitiveProperty"
+        },
+        "dataTypeProperty": {
+          "name": "classifierName"
+        }
+      }
+    }
+  },
+  {
+    "name": "ClassifierHasEnumerationProperties",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "owningClassifier",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Classifier"
+        }
+      },
+      {
+        "name": "enumerationProperties",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "EnumerationProperty"
+        },
+        "orderBys": [
+          {
+            "thisMemberReferencePath": {
+              "klass": {
+                "name": "EnumerationProperty"
+              },
+              "dataTypeProperty": {
+                "name": "ordinal"
+              }
+            },
+            "orderByDirection": "ascending"
+          }
+        ]
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Classifier"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "EnumerationProperty"
+        },
+        "dataTypeProperty": {
+          "name": "classifierName"
+        }
+      }
+    }
+  },
+  {
+    "name": "DataTypePropertyHasMinLengthPropertyValidation",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "dataTypeProperty",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "DataTypeProperty"
+        }
+      },
+      {
+        "name": "minLengthValidation",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "MinLengthPropertyValidation"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "DataTypeProperty"
+          },
+          "dataTypeProperty": {
+            "name": "classifierName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "MinLengthPropertyValidation"
+          },
+          "dataTypeProperty": {
+            "name": "classifierName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "DataTypeProperty"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "MinLengthPropertyValidation"
+          },
+          "dataTypeProperty": {
+            "name": "propertyName"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "DataTypePropertyHasMaxLengthPropertyValidation",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "dataTypeProperty",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "DataTypeProperty"
+        }
+      },
+      {
+        "name": "maxLengthValidation",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "MaxLengthPropertyValidation"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "DataTypeProperty"
+          },
+          "dataTypeProperty": {
+            "name": "classifierName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "MaxLengthPropertyValidation"
+          },
+          "dataTypeProperty": {
+            "name": "classifierName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "DataTypeProperty"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "MaxLengthPropertyValidation"
+          },
+          "dataTypeProperty": {
+            "name": "propertyName"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "PrimitivePropertyHasMinPropertyValidation",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "primitiveProperty",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "PrimitiveProperty"
+        }
+      },
+      {
+        "name": "minValidation",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "MinPropertyValidation"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "PrimitiveProperty"
+          },
+          "dataTypeProperty": {
+            "name": "classifierName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "MinPropertyValidation"
+          },
+          "dataTypeProperty": {
+            "name": "classifierName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "PrimitiveProperty"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "MinPropertyValidation"
+          },
+          "dataTypeProperty": {
+            "name": "propertyName"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "PrimitivePropertyHasMaxPropertyValidation",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "primitiveProperty",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "PrimitiveProperty"
+        }
+      },
+      {
+        "name": "maxValidation",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "MaxPropertyValidation"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "PrimitiveProperty"
+          },
+          "dataTypeProperty": {
+            "name": "classifierName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "MaxPropertyValidation"
+          },
+          "dataTypeProperty": {
+            "name": "classifierName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "PrimitiveProperty"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "MaxPropertyValidation"
+          },
+          "dataTypeProperty": {
+            "name": "propertyName"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "DataTypePropertyHasModifiers",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "dataTypeProperty",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "DataTypeProperty"
+        }
+      },
+      {
+        "name": "propertyModifiers",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "PropertyModifier"
+        },
+        "orderBys": [
+          {
+            "thisMemberReferencePath": {
+              "klass": {
+                "name": "PropertyModifier"
+              },
+              "dataTypeProperty": {
+                "name": "ordinal"
+              }
+            },
+            "orderByDirection": "ascending"
+          }
+        ]
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "DataTypeProperty"
+          },
+          "dataTypeProperty": {
+            "name": "classifierName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "PropertyModifier"
+          },
+          "dataTypeProperty": {
+            "name": "classifierName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "DataTypeProperty"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "PropertyModifier"
+          },
+          "dataTypeProperty": {
+            "name": "propertyName"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "ClassifierHasModifiers",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "owningClassifier",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Classifier"
+        }
+      },
+      {
+        "name": "classifierModifiers",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "ClassifierModifier"
+        },
+        "orderBys": [
+          {
+            "thisMemberReferencePath": {
+              "klass": {
+                "name": "ClassifierModifier"
+              },
+              "dataTypeProperty": {
+                "name": "ordinal"
+              }
+            },
+            "orderByDirection": "ascending"
+          }
+        ]
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Classifier"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "ClassifierModifier"
+        },
+        "dataTypeProperty": {
+          "name": "classifierName"
+        }
+      }
+    }
+  },
+  {
+    "name": "AssociationHasEnds",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "owningAssociation",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Association"
+        }
+      },
+      {
+        "name": "associationEnds",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "AssociationEnd"
+        },
+        "orderBys": [
+          {
+            "thisMemberReferencePath": {
+              "klass": {
+                "name": "AssociationEnd"
+              },
+              "dataTypeProperty": {
+                "name": "direction"
+              }
+            },
+            "orderByDirection": "ascending"
+          }
+        ]
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Association"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "AssociationEnd"
+        },
+        "dataTypeProperty": {
+          "name": "associationName"
+        }
+      }
+    }
+  },
+  {
+    "name": "ClassHasAssociationEnds",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "owningClass",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Klass"
+        }
+      },
+      {
+        "name": "associationEnds",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "AssociationEnd"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Klass"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "AssociationEnd"
+        },
+        "dataTypeProperty": {
+          "name": "owningClassName"
+        }
+      }
+    }
+  },
+  {
+    "name": "AssociationEndHasResultType",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "associationEndsResultTypeOf",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "AssociationEnd"
+        }
+      },
+      {
+        "name": "resultType",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Klass"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "AssociationEnd"
+        },
+        "dataTypeProperty": {
+          "name": "resultTypeName"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Klass"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      }
+    }
+  },
+  {
+    "name": "AssociationEndHasModifiers",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "associationEnd",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "AssociationEnd"
+        }
+      },
+      {
+        "name": "associationEndModifiers",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "AssociationEndModifier"
+        },
+        "orderBys": [
+          {
+            "thisMemberReferencePath": {
+              "klass": {
+                "name": "AssociationEndModifier"
+              },
+              "dataTypeProperty": {
+                "name": "ordinal"
+              }
+            },
+            "orderByDirection": "ascending"
+          }
+        ]
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "AssociationEnd"
+          },
+          "dataTypeProperty": {
+            "name": "owningClassName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "AssociationEndModifier"
+          },
+          "dataTypeProperty": {
+            "name": "owningClassName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "AssociationEnd"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "AssociationEndModifier"
+          },
+          "dataTypeProperty": {
+            "name": "associationEndName"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "AssociationHasCriteria",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "association",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "Association"
+        }
+      },
+      {
+        "name": "criteria",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Criteria"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Association"
+        },
+        "dataTypeProperty": {
+          "name": "criteriaId"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Criteria"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      }
+    }
+  },
+  {
+    "name": "OperatorCriteriaHasSourceExpressionValue",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "operatorCriteriaSourceOf",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "OperatorCriteria"
+        }
+      },
+      {
+        "name": "sourceExpressionValue",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "ExpressionValue"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "OperatorCriteria"
+        },
+        "dataTypeProperty": {
+          "name": "sourceExpressionId"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "ExpressionValue"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      }
+    }
+  },
+  {
+    "name": "OperatorCriteriaHasTargetExpressionValue",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "operatorCriteriaTargetOf",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "OperatorCriteria"
+        }
+      },
+      {
+        "name": "targetExpressionValue",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "ExpressionValue"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "OperatorCriteria"
+        },
+        "dataTypeProperty": {
+          "name": "targetExpressionId"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "ExpressionValue"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      }
+    }
+  },
+  {
+    "name": "MemberReferencePathHasEdgePointCriteria",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "memberReferencePath",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "MemberReferencePath"
+        }
+      },
+      {
+        "name": "edgePointCriteria",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "EdgePointCriteria"
+        },
+        "associationEndModifiers": [
+          {
+            "name": "owned"
+          }
+        ]
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "MemberReferencePath"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "EdgePointCriteria"
+        },
+        "dataTypeProperty": {
+          "name": "memberReferencePathId"
+        }
+      }
+    }
+  },
+  {
+    "name": "VariableReferenceHasParameter",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "variableReference",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "VariableReference"
+        }
+      },
+      {
+        "name": "parameter",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Parameter"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "VariableReference"
+        },
+        "dataTypeProperty": {
+          "name": "parameterId"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Parameter"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      }
+    }
+  },
+  {
+    "name": "EnumerationParameterHasEnumeration",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "enumerationParameter",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "EnumerationParameter"
+        }
+      },
+      {
+        "name": "enumeration",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Enumeration"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "EnumerationParameter"
+        },
+        "dataTypeProperty": {
+          "name": "enumerationName"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Enumeration"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      }
+    }
+  },
+  {
+    "name": "MemberReferencePathHasClass",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "memberReferencePaths",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "MemberReferencePath"
+        }
+      },
+      {
+        "name": "klass",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Klass"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "MemberReferencePath"
+        },
+        "dataTypeProperty": {
+          "name": "className"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Klass"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      }
+    }
+  },
+  {
+    "name": "MemberReferencePathHasMemberReferencePathAssociationEndMapping",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "memberReferencePath",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "MemberReferencePath"
+        }
+      },
+      {
+        "name": "associationEnds",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "MemberReferencePathAssociationEndMapping"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "MemberReferencePath"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "MemberReferencePathAssociationEndMapping"
+        },
+        "dataTypeProperty": {
+          "name": "memberReferencePathId"
+        }
+      }
+    }
+  },
+  {
+    "name": "MemberReferencePathAssociationEndMappingHasAssociationEnd",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "memberReferencePaths",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "MemberReferencePathAssociationEndMapping"
+        }
+      },
+      {
+        "name": "associationEnd",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "AssociationEnd"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "MemberReferencePathAssociationEndMapping"
+          },
+          "dataTypeProperty": {
+            "name": "associationOwningClassName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "AssociationEnd"
+          },
+          "dataTypeProperty": {
+            "name": "owningClassName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "MemberReferencePathAssociationEndMapping"
+          },
+          "dataTypeProperty": {
+            "name": "associationEndName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "AssociationEnd"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "DataTypePropertyHasMemberReferencePaths",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "memberReferencePaths",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "MemberReferencePath"
+        }
+      },
+      {
+        "name": "dataTypeProperty",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "DataTypeProperty"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "MemberReferencePath"
+          },
+          "dataTypeProperty": {
+            "name": "propertyClassName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "DataTypeProperty"
+          },
+          "dataTypeProperty": {
+            "name": "classifierName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "MemberReferencePath"
+          },
+          "dataTypeProperty": {
+            "name": "propertyName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "DataTypeProperty"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "BinaryCriteriaHasLeft",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "ownerOfLeftCriteria",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "BinaryCriteria"
+        }
+      },
+      {
+        "name": "left",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Criteria"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "BinaryCriteria"
+        },
+        "dataTypeProperty": {
+          "name": "leftId"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Criteria"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      }
+    }
+  },
+  {
+    "name": "BinaryCriteriaHasRight",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "ownerOfRightCriteria",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "BinaryCriteria"
+        }
+      },
+      {
+        "name": "right",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Criteria"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "BinaryCriteria"
+        },
+        "dataTypeProperty": {
+          "name": "rightId"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Criteria"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      }
+    }
+  },
+  {
+    "name": "ClassHasParameterizedProperties",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "owningClass",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Klass"
+        }
+      },
+      {
+        "name": "parameterizedProperties",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "ParameterizedProperty"
+        },
+        "associationEndModifiers": [
+          {
+            "name": "owned"
+          }
+        ],
+        "orderBys": [
+          {
+            "thisMemberReferencePath": {
+              "klass": {
+                "name": "ParameterizedProperty"
+              },
+              "dataTypeProperty": {
+                "name": "ordinal"
+              }
+            },
+            "orderByDirection": "descending"
+          },
+          {
+            "thisMemberReferencePath": {
+              "klass": {
+                "name": "ParameterizedProperty"
+              },
+              "dataTypeProperty": {
+                "name": "ordinal"
+              }
+            },
+            "orderByDirection": "ascending"
+          }
+        ]
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Klass"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "ParameterizedProperty"
+        },
+        "dataTypeProperty": {
+          "name": "owningClassName"
+        }
+      }
+    }
+  },
+  {
+    "name": "AssociationEndHasOrderBy",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "associationEnd",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "AssociationEnd"
+        }
+      },
+      {
+        "name": "orderBys",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "AssociationEndOrderBy"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "AssociationEnd"
+          },
+          "dataTypeProperty": {
+            "name": "owningClassName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "AssociationEndOrderBy"
+          },
+          "dataTypeProperty": {
+            "name": "associationEndClassName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "AssociationEnd"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "AssociationEndOrderBy"
+          },
+          "dataTypeProperty": {
+            "name": "associationEndName"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "AssociationEndOrderByHasMemberReferencePath",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "associationEndOrderBy",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "AssociationEndOrderBy"
+        }
+      },
+      {
+        "name": "thisMemberReferencePath",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "ThisMemberReferencePath"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "AssociationEndOrderBy"
+        },
+        "dataTypeProperty": {
+          "name": "thisMemberReferencePathId"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "ThisMemberReferencePath"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      }
+    }
+  },
+  {
+    "name": "ParameterizedPropertyHasResultType",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "parameterizedPropertiesResultTypeOf",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "ParameterizedProperty"
+        }
+      },
+      {
+        "name": "resultType",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Klass"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "ParameterizedProperty"
+        },
+        "dataTypeProperty": {
+          "name": "resultTypeName"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Klass"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      }
+    }
+  },
+  {
+    "name": "ParameterizedPropertyHasOrdering",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "parameterizedProperty",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "ParameterizedProperty"
+        }
+      },
+      {
+        "name": "parameterizedPropertyOrdering",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "ParameterizedPropertyOrdering"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "ParameterizedProperty"
+          },
+          "dataTypeProperty": {
+            "name": "owningClassName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "ParameterizedPropertyOrdering"
+          },
+          "dataTypeProperty": {
+            "name": "owningClassName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "ParameterizedProperty"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "ParameterizedPropertyOrdering"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "ParameterizedPropertyHasParameters",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "parameterizedProperty",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "ParameterizedProperty"
+        }
+      },
+      {
+        "name": "parameters",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "ParameterizedPropertyParameter"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "ParameterizedProperty"
+          },
+          "dataTypeProperty": {
+            "name": "owningClassName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "ParameterizedPropertyParameter"
+          },
+          "dataTypeProperty": {
+            "name": "classifierName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "ParameterizedProperty"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "ParameterizedPropertyParameter"
+          },
+          "dataTypeProperty": {
+            "name": "parameterizedPropertyName"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "ProjectionElementHasChildren",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "parent",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "ProjectionElement"
+        }
+      },
+      {
+        "name": "children",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "ProjectionElement"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "ProjectionElement"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "ProjectionElement"
+        },
+        "dataTypeProperty": {
+          "name": "parentId"
+        }
+      }
+    }
+  },
+  {
+    "name": "ProjectionWithAssociationEndHasAssociationEnd",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "projectionWithAssociationEnd",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "ProjectionWithAssociationEnd"
+        }
+      },
+      {
+        "name": "associationEnd",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "AssociationEnd"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "ProjectionWithAssociationEnd"
+          },
+          "dataTypeProperty": {
+            "name": "associationEndClass"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "AssociationEnd"
+          },
+          "dataTypeProperty": {
+            "name": "owningClassName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "ProjectionWithAssociationEnd"
+          },
+          "dataTypeProperty": {
+            "name": "associationEndName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "AssociationEnd"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "ProjectionDataTypePropertyHasDataTypeProperty",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "projectionDataTypeProperty",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "ProjectionDataTypeProperty"
+        }
+      },
+      {
+        "name": "dataTypeProperty",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "DataTypeProperty"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "ProjectionDataTypeProperty"
+          },
+          "dataTypeProperty": {
+            "name": "propertyClassifierName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "DataTypeProperty"
+          },
+          "dataTypeProperty": {
+            "name": "classifierName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "ProjectionDataTypeProperty"
+          },
+          "dataTypeProperty": {
+            "name": "propertyName"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "DataTypeProperty"
+          },
+          "dataTypeProperty": {
+            "name": "name"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "ProjectionHasClass",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "projection",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "ServiceProjection"
+        }
+      },
+      {
+        "name": "klass",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Klass"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "ServiceProjection"
+        },
+        "dataTypeProperty": {
+          "name": "className"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Klass"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      }
+    }
+  },
+  {
+    "name": "ProjectionProjectionReferenceHasProjection",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "projectionProjectionReference",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "ProjectionProjectionReference"
+        }
+      },
+      {
+        "name": "projection",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "ServiceProjection"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "ProjectionProjectionReference"
+        },
+        "dataTypeProperty": {
+          "name": "projectionName"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "ServiceProjection"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      }
+    }
+  },
+  {
+    "name": "ServiceGroupHasClass",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "serviceGroup",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "ServiceGroup"
+        }
+      },
+      {
+        "name": "owningClass",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Klass"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "ServiceGroup"
+        },
+        "dataTypeProperty": {
+          "name": "className"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Klass"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      }
+    }
+  },
+  {
+    "name": "UrlHasUrlParameters",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "url",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Url"
+        }
+      },
+      {
+        "name": "parameters",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "UrlParameter"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "Url"
+          },
+          "dataTypeProperty": {
+            "name": "className"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "UrlParameter"
+          },
+          "dataTypeProperty": {
+            "name": "urlClassName"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "Url"
+          },
+          "dataTypeProperty": {
+            "name": "url"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "UrlParameter"
+          },
+          "dataTypeProperty": {
+            "name": "urlString"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "UrlParameterHasParameter",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "urlParameter",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "UrlParameter"
+        }
+      },
+      {
+        "name": "parameter",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Parameter"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "UrlParameter"
+        },
+        "dataTypeProperty": {
+          "name": "parameterId"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Parameter"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      }
+    }
+  },
+  {
+    "name": "ServiceGroupHasUrls",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "serviceGroup",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "ServiceGroup"
+        }
+      },
+      {
+        "name": "urls",
+        "multiplicity": "1..*",
+        "resultType": {
+          "name": "Url"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "ServiceGroup"
+        },
+        "dataTypeProperty": {
+          "name": "className"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Url"
+        },
+        "dataTypeProperty": {
+          "name": "className"
+        }
+      }
+    }
+  },
+  {
+    "name": "UrlHasServices",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "url",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Url"
+        }
+      },
+      {
+        "name": "services",
+        "multiplicity": "1..*",
+        "resultType": {
+          "name": "Service"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "Url"
+          },
+          "dataTypeProperty": {
+            "name": "className"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "Service"
+          },
+          "dataTypeProperty": {
+            "name": "className"
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "Url"
+          },
+          "dataTypeProperty": {
+            "name": "url"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "Service"
+          },
+          "dataTypeProperty": {
+            "name": "urlString"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "ServiceHasProjection",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "services",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "Service"
+        }
+      },
+      {
+        "name": "projection",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "ServiceProjection"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Service"
+        },
+        "dataTypeProperty": {
+          "name": "projectionName"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "ServiceProjection"
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      }
+    }
+  },
+  {
+    "name": "ServiceHasQueryCriteria",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "queryService",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "Service"
+        }
+      },
+      {
+        "name": "queryCriteria",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Criteria"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Service"
+        },
+        "dataTypeProperty": {
+          "name": "queryCriteriaId"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Criteria"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      }
+    }
+  },
+  {
+    "name": "ServiceHasAuthorizeCriteria",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "authorizeService",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "Service"
+        }
+      },
+      {
+        "name": "authorizeCriteria",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Criteria"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Service"
+        },
+        "dataTypeProperty": {
+          "name": "authorizeCriteriaId"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Criteria"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      }
+    }
+  },
+  {
+    "name": "ServiceHasValidateCriteria",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "validateService",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "Service"
+        }
+      },
+      {
+        "name": "validateCriteria",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Criteria"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Service"
+        },
+        "dataTypeProperty": {
+          "name": "validateCriteriaId"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Criteria"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      }
+    }
+  },
+  {
+    "name": "ServiceHasConflictCriteria",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "conflictService",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "Service"
+        }
+      },
+      {
+        "name": "conflictCriteria",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Criteria"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "Service"
+        },
+        "dataTypeProperty": {
+          "name": "conflictCriteriaId"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "Criteria"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      }
+    }
+  },
+  {
+    "name": "ServiceHasOrderBy",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "service",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Service"
+        }
+      },
+      {
+        "name": "orderBys",
+        "multiplicity": "0..*",
+        "resultType": {
+          "name": "ServiceOrderBy"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "AndCriteria",
+      "left": {
+        "_type": "AndCriteria",
+        "left": {
+          "_type": "OperatorCriteria",
+          "operator": "==",
+          "sourceExpressionValue": {
+            "_type": "ThisMemberReferencePath",
+            "klass": {
+              "name": "Service"
+            },
+            "dataTypeProperty": {
+              "name": "className"
+            }
+          },
+          "targetExpressionValue": {
+            "_type": "TypeMemberReferencePath",
+            "klass": {
+              "name": "ServiceOrderBy"
+            },
+            "dataTypeProperty": {
+              "name": "serviceClassName"
+            }
+          }
+        },
+        "right": {
+          "_type": "OperatorCriteria",
+          "operator": "==",
+          "sourceExpressionValue": {
+            "_type": "ThisMemberReferencePath",
+            "klass": {
+              "name": "Service"
+            },
+            "dataTypeProperty": {
+              "name": "urlString"
+            }
+          },
+          "targetExpressionValue": {
+            "_type": "TypeMemberReferencePath",
+            "klass": {
+              "name": "ServiceOrderBy"
+            },
+            "dataTypeProperty": {
+              "name": "serviceUrlString"
+            }
+          }
+        }
+      },
+      "right": {
+        "_type": "OperatorCriteria",
+        "operator": "==",
+        "sourceExpressionValue": {
+          "_type": "ThisMemberReferencePath",
+          "klass": {
+            "name": "Service"
+          },
+          "dataTypeProperty": {
+            "name": "verb"
+          }
+        },
+        "targetExpressionValue": {
+          "_type": "TypeMemberReferencePath",
+          "klass": {
+            "name": "ServiceOrderBy"
+          },
+          "dataTypeProperty": {
+            "name": "serviceVerb"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "ServiceOrderByHasMemberReferencePath",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "serviceOrderBy",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "ServiceOrderBy"
+        }
+      },
+      {
+        "name": "thisMemberReferencePath",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "ThisMemberReferencePath"
+        }
+      }
+    ],
+    "criteria": {
+      "_type": "OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "_type": "ThisMemberReferencePath",
+        "klass": {
+          "name": "ServiceOrderBy"
+        },
+        "dataTypeProperty": {
+          "name": "thisMemberReferencePathId"
+        }
+      },
+      "targetExpressionValue": {
+        "_type": "TypeMemberReferencePath",
+        "klass": {
+          "name": "ThisMemberReferencePath"
+        },
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      }
+    }
+  }
+]

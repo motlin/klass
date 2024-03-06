@@ -1,0 +1,83 @@
+{
+  "name": "ServiceGroup",
+  "packageName": "klass.model.meta.domain",
+  "urls": [
+    {
+      "url": "/api/meta/serviceGroup",
+      "services": [
+        {
+          "verb": "GET",
+          "serviceMultiplicity": "many",
+          "projection": {
+            "name": "ServiceGroupSummaryProjection"
+          },
+          "queryCriteria": {
+            "_type": "AllCriteria"
+          }
+        }
+      ]
+    },
+    {
+      "url": "/api/meta/serviceGroup/{serviceGroupName}",
+      "services": [
+        {
+          "verb": "GET",
+          "serviceMultiplicity": "one",
+          "projection": {
+            "name": "ServiceGroupProjection"
+          },
+          "queryCriteria": {
+            "_type": "OperatorCriteria",
+            "operator": "==",
+            "sourceExpressionValue": {
+              "_type": "ThisMemberReferencePath",
+              "klass": {
+                "name": "ServiceGroup"
+              },
+              "dataTypeProperty": {
+                "name": "name"
+              }
+            },
+            "targetExpressionValue": {
+              "_type": "VariableReference",
+              "parameter": {
+                "name": "serviceGroupName"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "url": "/api/meta/serviceGroup/{serviceGroupName}/summary",
+      "services": [
+        {
+          "verb": "GET",
+          "serviceMultiplicity": "one",
+          "projection": {
+            "name": "ServiceGroupSummaryProjection"
+          },
+          "queryCriteria": {
+            "_type": "OperatorCriteria",
+            "operator": "==",
+            "sourceExpressionValue": {
+              "_type": "ThisMemberReferencePath",
+              "klass": {
+                "name": "ServiceGroup"
+              },
+              "dataTypeProperty": {
+                "name": "name"
+              }
+            },
+            "targetExpressionValue": {
+              "_type": "VariableReference",
+              "parameter": {
+                "name": "serviceGroupName"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

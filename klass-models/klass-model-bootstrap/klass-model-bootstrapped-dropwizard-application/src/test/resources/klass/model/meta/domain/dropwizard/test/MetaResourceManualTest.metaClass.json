@@ -1,0 +1,113 @@
+{
+  "name": "Classifier",
+  "inferred": false,
+  "packageName": "klass.model.meta.domain",
+  "ordinal": 15,
+  "sourceCode": "class Classifier\n    abstract(table-per-class)\n    implements PackageableElement\n{\n}",
+  "sourceCodeWithInference": "class Classifier\n    abstract(table-per-class)\n    implements PackageableElement\n{\n    superInterfaces               : ClassifierInterfaceMapping[0..*] owned;\n    primitiveProperties: PrimitiveProperty[0..*]\n        orderBy: this.ordinal;\n    enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;\n    classifierModifiers: ClassifierModifier[0..*]\n        orderBy: this.ordinal;\n}\n",
+  "superInterfaces": [
+    {
+      "superInterface": {
+        "name": "PackageableElement",
+        "packageName": "klass.model.meta.domain",
+        "superInterfaces": [
+          {
+            "superInterface": {
+              "name": "NamedElement",
+              "packageName": "klass.model.meta.domain"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "associationEnds": [
+    {
+      "name": "superInterfaces",
+      "inferred": false,
+      "ordinal": 2,
+      "sourceCode": "superInterfaces               : ClassifierInterfaceMapping[0..*] owned;",
+      "sourceCodeWithInference": "superInterfaces               : ClassifierInterfaceMapping[0..*] owned;",
+      "direction": "target",
+      "multiplicity": "0..*",
+      "owningClass": {
+        "name": "Classifier",
+        "packageName": "klass.model.meta.domain"
+      },
+      "resultType": {
+        "name": "ClassifierInterfaceMapping",
+        "packageName": "klass.model.meta.domain"
+      },
+      "owningAssociation": {
+        "name": "ClassifierHasClassifierInterfaceMapping"
+      },
+      "associationEndModifiers": [
+        {
+          "name": "owned",
+          "inferred": false,
+          "ordinal": 1
+        }
+      ]
+    },
+    {
+      "name": "primitiveProperties",
+      "inferred": false,
+      "ordinal": 2,
+      "sourceCode": "primitiveProperties: PrimitiveProperty[0..*]\n        orderBy: this.ordinal;",
+      "sourceCodeWithInference": "primitiveProperties: PrimitiveProperty[0..*]\n        orderBy: this.ordinal;",
+      "direction": "target",
+      "multiplicity": "0..*",
+      "owningClass": {
+        "name": "Classifier",
+        "packageName": "klass.model.meta.domain"
+      },
+      "resultType": {
+        "name": "PrimitiveProperty",
+        "packageName": "klass.model.meta.domain"
+      },
+      "owningAssociation": {
+        "name": "ClassifierHasPrimitiveProperties"
+      }
+    },
+    {
+      "name": "enumerationProperties",
+      "inferred": false,
+      "ordinal": 2,
+      "sourceCode": "enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;",
+      "sourceCodeWithInference": "enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;",
+      "direction": "target",
+      "multiplicity": "0..*",
+      "owningClass": {
+        "name": "Classifier",
+        "packageName": "klass.model.meta.domain"
+      },
+      "resultType": {
+        "name": "EnumerationProperty",
+        "packageName": "klass.model.meta.domain"
+      },
+      "owningAssociation": {
+        "name": "ClassifierHasEnumerationProperties"
+      }
+    },
+    {
+      "name": "classifierModifiers",
+      "inferred": false,
+      "ordinal": 2,
+      "sourceCode": "classifierModifiers: ClassifierModifier[0..*]\n        orderBy: this.ordinal;",
+      "sourceCodeWithInference": "classifierModifiers: ClassifierModifier[0..*]\n        orderBy: this.ordinal;",
+      "direction": "target",
+      "multiplicity": "0..*",
+      "owningClass": {
+        "name": "Classifier",
+        "packageName": "klass.model.meta.domain"
+      },
+      "resultType": {
+        "name": "ClassifierModifier",
+        "packageName": "klass.model.meta.domain"
+      },
+      "owningAssociation": {
+        "name": "ClassifierHasModifiers"
+      }
+    }
+  ]
+}

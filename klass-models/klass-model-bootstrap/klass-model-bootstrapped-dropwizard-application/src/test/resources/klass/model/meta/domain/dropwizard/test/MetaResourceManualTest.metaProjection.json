@@ -1,0 +1,32 @@
+{
+  "_type": "ServiceProjection",
+  "name": "ProjectionElementSummaryProjection",
+  "packageName": "klass.model.meta.domain",
+  "children": [
+    {
+      "_type": "ProjectionDataTypeProperty",
+      "name": "name"
+    },
+    {
+      "_type": "ProjectionDataTypeProperty",
+      "name": "packageName"
+    },
+    {
+      "_type": "ProjectionAssociationEnd",
+      "name": "projection",
+      "children": [
+        {
+          "_type": "ProjectionDataTypeProperty",
+          "name": "name"
+        }
+      ]
+    },
+    {
+      "_type": "ProjectionProjectionReference",
+      "name": "children",
+      "projection": {
+        "name": "ProjectionElementSummaryProjection"
+      }
+    }
+  ]
+}

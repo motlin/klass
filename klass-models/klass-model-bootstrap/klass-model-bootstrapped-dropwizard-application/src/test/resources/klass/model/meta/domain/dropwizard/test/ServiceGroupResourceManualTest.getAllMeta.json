@@ -1,0 +1,552 @@
+[
+  {
+    "name": "Enumeration",
+    "packageName": "klass.model.meta.domain",
+    "urls": [
+      {
+        "url": "/api/meta/enumeration",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "EnumerationSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "AllCriteria"
+            }
+          }
+        ]
+      },
+      {
+        "url": "/api/meta/enumeration/{enumerationName}",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "EnumerationProjection"
+            },
+            "queryCriteria": {
+              "_type": "OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "_type": "ThisMemberReferencePath",
+                "klass": {
+                  "name": "Enumeration"
+                },
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "_type": "VariableReference",
+                "parameter": {
+                  "name": "enumerationName"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "url": "/api/meta/enumeration/{enumerationName}/summary",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "EnumerationSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "_type": "ThisMemberReferencePath",
+                "klass": {
+                  "name": "Enumeration"
+                },
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "_type": "VariableReference",
+                "parameter": {
+                  "name": "enumerationName"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Interface",
+    "packageName": "klass.model.meta.domain",
+    "urls": [
+      {
+        "url": "/api/meta/interface",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "InterfaceSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "AllCriteria"
+            }
+          }
+        ]
+      },
+      {
+        "url": "/api/meta/interface/{interfaceName}",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "InterfaceProjection"
+            },
+            "queryCriteria": {
+              "_type": "OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "_type": "ThisMemberReferencePath",
+                "klass": {
+                  "name": "Interface"
+                },
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "_type": "VariableReference",
+                "parameter": {
+                  "name": "interfaceName"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "url": "/api/meta/interface/{interfaceName}/summary",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "InterfaceSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "_type": "ThisMemberReferencePath",
+                "klass": {
+                  "name": "Interface"
+                },
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "_type": "VariableReference",
+                "parameter": {
+                  "name": "interfaceName"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Klass",
+    "packageName": "klass.model.meta.domain",
+    "urls": [
+      {
+        "url": "/api/meta/class",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "ClassSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "AllCriteria"
+            }
+          }
+        ]
+      },
+      {
+        "url": "/api/meta/class/{className}",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "ClassProjection"
+            },
+            "queryCriteria": {
+              "_type": "OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "_type": "ThisMemberReferencePath",
+                "klass": {
+                  "name": "Klass"
+                },
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "_type": "VariableReference",
+                "parameter": {
+                  "name": "className"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "url": "/api/meta/class/{className}/summary",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "ClassSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "_type": "ThisMemberReferencePath",
+                "klass": {
+                  "name": "Klass"
+                },
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "_type": "VariableReference",
+                "parameter": {
+                  "name": "className"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Classifier",
+    "packageName": "klass.model.meta.domain",
+    "urls": [
+      {
+        "url": "/api/meta/classifier",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "ClassifierSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "AllCriteria"
+            }
+          }
+        ]
+      },
+      {
+        "url": "/api/meta/classifier/{classifierName}",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "ClassifierSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "_type": "ThisMemberReferencePath",
+                "klass": {
+                  "name": "Classifier"
+                },
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "_type": "VariableReference",
+                "parameter": {
+                  "name": "classifierName"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Association",
+    "packageName": "klass.model.meta.domain",
+    "urls": [
+      {
+        "url": "/api/meta/association",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "AssociationSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "AllCriteria"
+            }
+          }
+        ]
+      },
+      {
+        "url": "/api/meta/association/{associationName}",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "AssociationProjection"
+            },
+            "queryCriteria": {
+              "_type": "OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "_type": "ThisMemberReferencePath",
+                "klass": {
+                  "name": "Association"
+                },
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "_type": "VariableReference",
+                "parameter": {
+                  "name": "associationName"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "url": "/api/meta/association/{associationName}/summary",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "AssociationSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "_type": "ThisMemberReferencePath",
+                "klass": {
+                  "name": "Association"
+                },
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "_type": "VariableReference",
+                "parameter": {
+                  "name": "associationName"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ServiceProjection",
+    "packageName": "klass.model.meta.domain",
+    "urls": [
+      {
+        "url": "/api/meta/projection",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "ProjectionElementSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "AllCriteria"
+            }
+          }
+        ]
+      },
+      {
+        "url": "/api/meta/projection/{projectionName}",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "ProjectionElementProjection"
+            },
+            "queryCriteria": {
+              "_type": "OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "_type": "ThisMemberReferencePath",
+                "klass": {
+                  "name": "ServiceProjection"
+                },
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "_type": "VariableReference",
+                "parameter": {
+                  "name": "projectionName"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "url": "/api/meta/projection/{projectionName}/summary",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "ProjectionElementSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "_type": "ThisMemberReferencePath",
+                "klass": {
+                  "name": "ServiceProjection"
+                },
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "_type": "VariableReference",
+                "parameter": {
+                  "name": "projectionName"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ServiceGroup",
+    "packageName": "klass.model.meta.domain",
+    "urls": [
+      {
+        "url": "/api/meta/serviceGroup",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "ServiceGroupSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "AllCriteria"
+            }
+          }
+        ]
+      },
+      {
+        "url": "/api/meta/serviceGroup/{serviceGroupName}",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "ServiceGroupProjection"
+            },
+            "queryCriteria": {
+              "_type": "OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "_type": "ThisMemberReferencePath",
+                "klass": {
+                  "name": "ServiceGroup"
+                },
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "_type": "VariableReference",
+                "parameter": {
+                  "name": "serviceGroupName"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "url": "/api/meta/serviceGroup/{serviceGroupName}/summary",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "ServiceGroupSummaryProjection"
+            },
+            "queryCriteria": {
+              "_type": "OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "_type": "ThisMemberReferencePath",
+                "klass": {
+                  "name": "ServiceGroup"
+                },
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "_type": "VariableReference",
+                "parameter": {
+                  "name": "serviceGroupName"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
