@@ -10,6 +10,8 @@ export LIFTWIZARD_FILE_MATCH_RULE_RERECORD=true
 export MAVEN='mvnd'
 export MAVEN='./mvnw'
 
+COMMAND="Dependency analysis"
+
 function echoSay {
     echo "$1"
     say --voice "$VOICE" "$1"
@@ -17,7 +19,7 @@ function echoSay {
 
 function failWithMessage {
     if [ "$1" -ne 0 ]; then
-        say --voice "$VOICE" "$2 failed with exit code $1"
+        echoSay "$2 failed with exit code $1"
         exit 1
     fi
 }
@@ -31,19 +33,16 @@ COMMIT_MESSAGE=$(git log --format=%B -n 1 HEAD)
 
 echoSay "[[volm 0.10]] Beginning build of commit: $COMMIT_MESSAGE" &
 
-$MAVEN  clean            --threads 2C
-EXIT_CODE_CLEAN=$?
+$MAVEN clean            --threads 2C
+$MAVEN install          --threads 2C -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true --activate-profiles 'dev'
+EXIT_CODE=$?
 
-$MAVEN dependency:analyze --threads 2C
-EXIT_CODE_CHECKSTYLE=$?
-
-if [ $EXIT_CODE_CLEAN -ne 0 ] || [ $EXIT_CODE_CHECKSTYLE -ne 0 ]; then
-    ./mvnw dependency:analyze
-    EXIT_CODE=$?
-    echoSay "Checkstyle failed on commit: '$COMMIT_MESSAGE' with exit code: $EXIT_CODE"
+if [ $EXIT_CODE -ne 0 ]; then
+	./mvnw install -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true --activate-profiles 'dev'
+    echoSay "$COMMAND failed on commit: '$COMMIT_MESSAGE' with exit code: $EXIT_CODE"
     exit 1
 fi
 
 checkLocalModification
-echoSay "[[volm 0.10]] Checkstyle succeeded on commit: '$COMMIT_MESSAGE'"
+echoSay "[[volm 0.10]] $COMMAND succeeded on commit: '$COMMIT_MESSAGE'"
 exit 0

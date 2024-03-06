@@ -7,8 +7,10 @@ export LIFTWIZARD_FILE_MATCH_RULE_RERECORD=true
 
 # mvnd is the maven daemon, and is much faster but doesn't work for builds that include maven plugins plus runs of those maven plugins
 # mvnw is the regular maven wrapper.
-export MAVEN='mvnd'
 export MAVEN='./mvnw'
+export MAVEN='mvnd'
+
+COMMAND="Checkstyle"
 
 function echoSay {
     echo "$1"
@@ -17,7 +19,7 @@ function echoSay {
 
 function failWithMessage {
     if [ "$1" -ne 0 ]; then
-        say --voice "$VOICE" "$2 failed with exit code $1"
+        echoSay "$2 failed with exit code $1"
         exit 1
     fi
 }
@@ -37,10 +39,10 @@ EXIT_CODE=$?
 
 if [ $EXIT_CODE -ne 0 ]; then
     ./mvnw checkstyle:check
-    echoSay "Checkstyle failed on commit: '$COMMIT_MESSAGE' with exit code: $EXIT_CODE"
+    echoSay "$COMMAND failed on commit: '$COMMIT_MESSAGE' with exit code: $EXIT_CODE"
     exit 1
 fi
 
 checkLocalModification
-echoSay "[[volm 0.10]] Checkstyle succeeded on commit: '$COMMIT_MESSAGE'"
+echoSay "[[volm 0.10]] $COMMAND succeeded on commit: '$COMMIT_MESSAGE'"
 exit 0

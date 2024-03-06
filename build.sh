@@ -10,6 +10,8 @@ export LIFTWIZARD_FILE_MATCH_RULE_RERECORD=true
 export MAVEN='mvnd'
 export MAVEN='./mvnw'
 
+COMMAND="Build"
+
 function echoSay {
     echo "$1"
     say --voice "$VOICE" "$1"
@@ -17,7 +19,7 @@ function echoSay {
 
 function failWithMessage {
     if [ "$1" -ne 0 ]; then
-        say --voice "$VOICE" "$2 failed with exit code $1"
+        echoSay "$2 failed with exit code $1"
         exit 1
     fi
 }
@@ -37,10 +39,10 @@ EXIT_CODE=$?
 
 if [ $EXIT_CODE -ne 0 ]; then
 	./mvnw install -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip=true --activate-profiles 'dev'
-    echoSay "Build failed on commit: '$COMMIT_MESSAGE' with exit code: $EXIT_CODE"
+    echoSay "$COMMAND failed on commit: '$COMMIT_MESSAGE' with exit code: $EXIT_CODE"
     exit 1
 fi
 
 checkLocalModification
-echoSay "[[volm 0.10]] Build succeeded on commit: '$COMMIT_MESSAGE'"
+echoSay "[[volm 0.10]] $COMMAND succeeded on commit: '$COMMIT_MESSAGE'"
 exit 0
