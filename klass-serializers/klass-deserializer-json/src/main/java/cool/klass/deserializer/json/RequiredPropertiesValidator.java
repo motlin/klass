@@ -229,22 +229,9 @@ public class RequiredPropertiesValidator
             return;
         }
 
-        if (jsonNode.isNull())
-        {
-            String warning = String.format(
-                    "Warning at %s. Didn't expect to receive value for %s property '%s.%s: %s%s' but value was null.",
-                    this.getContextString(),
-                    propertyKind,
-                    property.getOwningClassifier().getName(),
-                    property.getName(),
-                    property.getType(),
-                    property.isOptional() ? "?" : "");
-            this.warnings.add(warning);
-            return;
-        }
-
+        String jsonNodeString = jsonNode.isNull() ? "" : ": " + jsonNode;
         String warning = String.format(
-                "Warning at %s. Didn't expect to receive value for %s property '%s.%s: %s%s' but value was %s: %s.",
+                "Warning at %s. Didn't expect to receive value for %s property '%s.%s: %s%s' but value was %s%s.",
                 this.getContextString(),
                 propertyKind,
                 property.getOwningClassifier().getName(),
@@ -252,7 +239,7 @@ public class RequiredPropertiesValidator
                 property.getType(),
                 property.isOptional() ? "?" : "",
                 jsonNode.getNodeType().toString().toLowerCase(),
-                jsonNode);
+                jsonNodeString);
         this.warnings.add(warning);
     }
 
@@ -264,22 +251,9 @@ public class RequiredPropertiesValidator
             return;
         }
 
-        if (jsonNode.isNull())
-        {
-            String warning = String.format(
-                    "Warning at %s. Didn't expect to receive value for %s association end '%s.%s: %s[%s]' but value was null.",
-                    this.getContextString(),
-                    propertyKind,
-                    property.getOwningClassifier().getName(),
-                    property.getName(),
-                    property.getType(),
-                    property.getMultiplicity().getPrettyName());
-            this.warnings.add(warning);
-            return;
-        }
-
+        String jsonNodeString = jsonNode.isNull() ? "" : ": " + jsonNode;
         String warning = String.format(
-                "Warning at %s. Didn't expect to receive value for %s association end '%s.%s: %s[%s]' but value was %s: %s.",
+                "Warning at %s. Didn't expect to receive value for %s association end '%s.%s: %s[%s]' but value was %s%s.",
                 this.getContextString(),
                 propertyKind,
                 property.getOwningClassifier().getName(),
@@ -287,7 +261,7 @@ public class RequiredPropertiesValidator
                 property.getType(),
                 property.getMultiplicity().getPrettyName(),
                 jsonNode.getNodeType().toString().toLowerCase(),
-                jsonNode);
+                jsonNodeString);
         this.warnings.add(warning);
     }
 
