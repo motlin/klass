@@ -304,4 +304,28 @@ public interface Klass
                 .select(DataTypeProperty::isSystem)
                 .detectOptional(DataTypeProperty::isTo);
     }
+
+    default ImmutableList<Klass> getSubClassChain()
+    {
+        return this.getSubClasses()
+                .flatCollect(Klass::getSubClassChainWithThis)
+                .toImmutable();
+    }
+
+    default ImmutableList<Klass> getSubClassChainWithThis()
+    {
+        return Lists.immutable.with(this).newWithAll(this.getSubClassChain());
+    }
+
+    default ImmutableList<Klass> getSuperClassChain()
+    {
+        return this.getSuperClass()
+                .map(Klass::getSuperClassChainWithThis)
+                .orElseGet(Lists.immutable::empty);
+    }
+
+    default ImmutableList<Klass> getSuperClassChainWithThis()
+    {
+        return Lists.immutable.with(this).newWithAll(this.getSuperClassChain());
+    }
 }
