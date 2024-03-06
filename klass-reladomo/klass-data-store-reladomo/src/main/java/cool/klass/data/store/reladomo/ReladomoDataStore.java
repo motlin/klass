@@ -82,8 +82,6 @@ public class ReladomoDataStore
     {
         return MithraManagerProvider.getMithraManager().executeTransactionalCommand(transaction ->
         {
-            ReladomoDataStore.logTransactionalStats("Starting", transaction);
-
             try
             {
                 Transaction transactionAdapter = new TransactionAdapter(transaction);
@@ -91,7 +89,7 @@ public class ReladomoDataStore
             }
             finally
             {
-                ReladomoDataStore.logTransactionalStats("Ending", transaction);
+                ReladomoDataStore.logTransactionalStats(transaction);
             }
         }, this.retryCount);
     }
@@ -106,9 +104,7 @@ public class ReladomoDataStore
         }, this.retryCount);
     }
 
-    private static void logTransactionalStats(
-            String context,
-            MithraTransaction reladomoTransaction)
+    private static void logTransactionalStats(MithraTransaction reladomoTransaction)
     {
         if (MithraManagerProvider.getMithraManager().getCurrentTransaction() != reladomoTransaction)
         {
@@ -116,28 +112,19 @@ public class ReladomoDataStore
         }
 
         MDC.put(
-                "total remote retrievals",
-                String.valueOf(MithraManagerProvider.getMithraManager().getRemoteRetrieveCount()));
-        MDC.put(
                 "total database retrievals",
                 String.valueOf(MithraManagerProvider.getMithraManager().getDatabaseRetrieveCount()));
-        MDC.put(
-                "remote retrievals",
-                String.valueOf(reladomoTransaction.getRemoteRetrieveCount()));
         MDC.put(
                 "database retrievals",
                 String.valueOf(reladomoTransaction.getDatabaseRetrieveCount()));
 
         LOGGER.debug(
                 MARKER,
-                "{} transaction: {}, identityHashCode: {}",
-                context,
-                reladomoTransaction,
-                System.identityHashCode(reladomoTransaction));
+                "total database retrievals: {} database retrievals: {}",
+                MithraManagerProvider.getMithraManager().getDatabaseRetrieveCount(),
+                reladomoTransaction.getDatabaseRetrieveCount());
 
-        MDC.remove("total remote retrievals");
         MDC.remove("total database retrievals");
-        MDC.remove("remote retrievals");
         MDC.remove("database retrievals");
     }
 
