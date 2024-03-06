@@ -183,7 +183,7 @@ class Association
 {
     name                          : String key;
     inferred                      : Boolean;
-    packageName                   : String private;
+    packageName                   : String;
     ordinal                       : Integer;
     sourceCode                    : String;
 
