@@ -9,10 +9,12 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Classifier;
+import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.TopLevelElement;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public class GraphQLSchemaGenerator
 {
@@ -94,14 +96,19 @@ public class GraphQLSchemaGenerator
 
     private String getPrimitiveScalarsSourceCode()
     {
-        boolean containsLong = this.domainModel
+        ImmutableList<DataType> dataTypes = this.domainModel
                 .getClassifiers()
                 .asLazy()
                 .flatCollect(Classifier::getDeclaredDataTypeProperties)
                 .collect(DataTypeProperty::getType)
-                .contains(PrimitiveType.LONG);
+                .toList()
+                .toImmutable();
+        boolean containsLong      = dataTypes.contains(PrimitiveType.LONG);
+        boolean containsLocalDate = dataTypes.contains(PrimitiveType.LOCAL_DATE);
 
-        return containsLong ? "scalar Long\n" : "";
+        String longSourceCode      = containsLong ? "scalar Long\n" : "";
+        String localDateSourceCode = containsLocalDate ? "scalar LocalDate\n" : "";
+        return longSourceCode + localDateSourceCode;
     }
 
     private String getSourceCode(@Nonnull TopLevelElement topLevelElement)
