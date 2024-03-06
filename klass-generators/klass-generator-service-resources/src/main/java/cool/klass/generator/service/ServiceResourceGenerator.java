@@ -156,11 +156,11 @@ public class ServiceResourceGenerator
                 + ""
                 + serviceMethodsSourceCode
                 + "\n"
-                + "    private List<ReladomoJsonTree> applyProjection(\n"
+                + "    private List<ReladomoJsonSerializable> applyProjection(\n"
                 + "            MutableList<? extends MithraObject> mithraObjects,\n"
                 + "            Projection projection)\n"
                 + "    {\n"
-                + "        return mithraObjects.<ReladomoJsonTree>collect(mithraObject -> new ReladomoJsonTree(\n"
+                + "        return mithraObjects.<ReladomoJsonSerializable>collect(mithraObject -> new ReladomoJsonSerializable(\n"
                 + "                this.dataStore,\n"
                 + "                mithraObject,\n"
                 + "                projection));\n"
@@ -305,8 +305,8 @@ public class ServiceResourceGenerator
     {
         boolean uniqueResult = serviceMultiplicity == ServiceMultiplicity.ONE;
         return uniqueResult
-                ? "ReladomoJsonTree"
-                : "List<ReladomoJsonTree>";
+                ? "ReladomoJsonSerializable"
+                : "List<ReladomoJsonSerializable>";
     }
 
     @Nonnull
@@ -328,7 +328,7 @@ public class ServiceResourceGenerator
                     + "        MithraObject mithraObject = Iterate.getOnly(result);\n"
                     + "\n"
                     + "        Projection projection = " + this.applicationName + "DomainModel." + projectionName + ";\n"
-                    + "        return new ReladomoJsonTree(this.dataStore, mithraObject, projection);\n";
+                    + "        return new ReladomoJsonSerializable(this.dataStore, mithraObject, projection);\n";
 
             // @formatter:on
         }

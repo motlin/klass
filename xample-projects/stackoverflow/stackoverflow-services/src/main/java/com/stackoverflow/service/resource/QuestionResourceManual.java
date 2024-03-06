@@ -45,7 +45,7 @@ import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.reladomo.persistent.writer.IncomingUpdateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.PersistentCreator;
 import cool.klass.reladomo.persistent.writer.PersistentReplacer;
-import cool.klass.serializer.json.ReladomoJsonTree;
+import cool.klass.serializer.json.ReladomoJsonSerializable;
 import com.stackoverflow.Question;
 import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
@@ -73,7 +73,7 @@ public class QuestionResourceManual
     @GET
     @Path("/api/question/{id}") // ?{version}
     @Produces(MediaType.APPLICATION_JSON)
-    public ReladomoJsonTree method0(
+    public ReladomoJsonSerializable method0(
             @PathParam("id") Long id,
             @Nullable @QueryParam("version") Integer version)
     {
@@ -99,7 +99,7 @@ public class QuestionResourceManual
         MithraObject mithraObject = Iterate.getOnly(result);
 
         Projection projection = StackOverflowDomainModel.QuestionReadProjection;
-        return new ReladomoJsonTree(this.dataStore, mithraObject, projection);
+        return new ReladomoJsonSerializable(this.dataStore, mithraObject, projection);
     }
 
     @Timed
@@ -189,7 +189,7 @@ public class QuestionResourceManual
     @DELETE
     @Path("/api/question/{id}") // ?{version}
     @Produces(MediaType.APPLICATION_JSON)
-    public ReladomoJsonTree method2(
+    public ReladomoJsonSerializable method2(
             @PathParam("id") Long id,
             @QueryParam("version") Integer version,
             @Nonnull @Context SecurityContext securityContext)
@@ -224,7 +224,7 @@ public class QuestionResourceManual
         MithraObject mithraObject = Iterate.getOnly(result);
 
         Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
-        return new ReladomoJsonTree(this.dataStore, mithraObject, projection);
+        return new ReladomoJsonSerializable(this.dataStore, mithraObject, projection);
     }
 
     @Nonnull
@@ -233,7 +233,7 @@ public class QuestionResourceManual
     @GET
     @Path("/api/question/in") // ?{ids}
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReladomoJsonTree> method3(@Nonnull @QueryParam("ids") Set<Long> ids)
+    public List<ReladomoJsonSerializable> method3(@Nonnull @QueryParam("ids") Set<Long> ids)
     {
         // Question
 
@@ -256,7 +256,7 @@ public class QuestionResourceManual
     @GET
     @Path("/api/question/firstTwo")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReladomoJsonTree> method4()
+    public List<ReladomoJsonSerializable> method4()
     {
         // Question
 
@@ -277,7 +277,7 @@ public class QuestionResourceManual
     @GET
     @Path("/api/question/{id}/version/{version}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ReladomoJsonTree method3(
+    public ReladomoJsonSerializable method3(
             @PathParam("id") Long id,
             @PathParam("version") Integer version)
     {
@@ -303,7 +303,7 @@ public class QuestionResourceManual
         MithraObject mithraObject = Iterate.getOnly(result);
 
         Projection projection = StackOverflowDomainModel.QuestionReadProjection;
-        return new ReladomoJsonTree(this.dataStore, mithraObject, projection);
+        return new ReladomoJsonSerializable(this.dataStore, mithraObject, projection);
     }
 
     @Nonnull
@@ -312,7 +312,7 @@ public class QuestionResourceManual
     @DELETE
     @Path("/api/question/{id}?{version}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ReladomoJsonTree method4(
+    public ReladomoJsonSerializable method4(
             @PathParam("id") Long id,
             @QueryParam("version") Integer version,
             @Nonnull @Context SecurityContext securityContext)
@@ -337,7 +337,7 @@ public class QuestionResourceManual
         MithraObject mithraObject = Iterate.getOnly(result);
 
         Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
-        return new ReladomoJsonTree(this.dataStore, mithraObject, projection);
+        return new ReladomoJsonSerializable(this.dataStore, mithraObject, projection);
     }
 
     @Timed
@@ -389,7 +389,7 @@ public class QuestionResourceManual
     @GET
     @Path("/api/question")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReladomoJsonTree> method6()
+    public List<ReladomoJsonSerializable> method6()
     {
         // Question
 
@@ -409,7 +409,7 @@ public class QuestionResourceManual
     @GET
     @Path("/api/user/{userId}/questions")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReladomoJsonTree> method7(@PathParam("userId") String userId)
+    public List<ReladomoJsonSerializable> method7(@PathParam("userId") String userId)
     {
         // Question
 
@@ -422,11 +422,11 @@ public class QuestionResourceManual
         return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionWriteProjection);
     }
 
-    private List<ReladomoJsonTree> applyProjection(
+    private List<ReladomoJsonSerializable> applyProjection(
             MutableList<? extends MithraObject> mithraObjects,
             @Nonnull Projection projection)
     {
-        return mithraObjects.collect(mithraObject -> new ReladomoJsonTree(
+        return mithraObjects.collect(mithraObject -> new ReladomoJsonSerializable(
                 this.dataStore,
                 mithraObject,
                 projection));

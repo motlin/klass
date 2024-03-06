@@ -28,13 +28,13 @@ import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 
 // TODO: Refactor this to use DataStore
-public class ReladomoJsonTree implements JsonSerializable
+public class ReladomoJsonSerializable implements JsonSerializable
 {
     private final DataStore    dataStore;
     private final MithraObject mithraObject;
     private final ProjectionParent projectionParent;
 
-    public ReladomoJsonTree(
+    public ReladomoJsonSerializable(
             DataStore dataStore,
             MithraObject mithraObject,
             ProjectionParent projectionParent)
