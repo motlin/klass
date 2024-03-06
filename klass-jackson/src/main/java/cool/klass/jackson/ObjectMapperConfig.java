@@ -3,6 +3,7 @@ package cool.klass.jackson;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -50,6 +51,11 @@ public final class ObjectMapperConfig
 
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.disable(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS);
+        objectMapper.configure(Feature.ALLOW_COMMENTS, true);
+        objectMapper.configure(Feature.ALLOW_YAML_COMMENTS, true);
+        objectMapper.configure(Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+        objectMapper.configure(Feature.ALLOW_TRAILING_COMMA, true);
+
         objectMapper.setDateFormat(new StdDateFormat());
         objectMapper.setSerializationInclusion(include);
     }
