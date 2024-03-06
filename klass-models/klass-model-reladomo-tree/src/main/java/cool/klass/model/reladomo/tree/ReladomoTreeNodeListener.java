@@ -2,6 +2,10 @@ package cool.klass.model.reladomo.tree;
 
 public interface ReladomoTreeNodeListener
 {
+    default void assertInvariants()
+    {
+    }
+
     void enterRoot(RootReladomoTreeNode rootReladomoTreeNode);
 
     void exitRoot(RootReladomoTreeNode rootReladomoTreeNode);

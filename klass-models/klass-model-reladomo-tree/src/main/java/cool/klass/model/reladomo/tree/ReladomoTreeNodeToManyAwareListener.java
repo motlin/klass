@@ -4,6 +4,10 @@ import java.util.Optional;
 
 public interface ReladomoTreeNodeToManyAwareListener
 {
+    default void assertInvariants()
+    {
+    }
+
     void enterListIndex(int index);
 
     void exitListIndex(int index);
