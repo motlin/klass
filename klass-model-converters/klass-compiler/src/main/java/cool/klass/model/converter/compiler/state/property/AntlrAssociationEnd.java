@@ -103,6 +103,12 @@ public class AntlrAssociationEnd
     }
 
     @Nonnull
+    public AntlrAssociation getOwningAssociation()
+    {
+        return this.owningAssociation;
+    }
+
+    @Nonnull
     @Override
     public AssociationEndBuilder build()
     {

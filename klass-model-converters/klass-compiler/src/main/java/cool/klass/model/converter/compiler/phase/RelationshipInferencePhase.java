@@ -8,10 +8,12 @@ import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.AssociationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public class RelationshipInferencePhase
         extends AbstractCompilerPhase
@@ -80,12 +82,19 @@ public class RelationshipInferencePhase
         }
     }
 
-    private void handleSourceAssociationEnd(AssociationBodyContext inPlaceContext, AntlrAssociationEnd associationEnd)
+    private void handleSourceAssociationEnd(
+            AssociationBodyContext inPlaceContext,
+            AntlrAssociationEnd associationEnd)
     {
         AntlrClass oppositeType = associationEnd.getOpposite().getType();
 
-        String sourceCodeText = oppositeType
-                .getAllKeyProperties()
+        ImmutableList<AntlrDataTypeProperty<?>> allKeyProperties = oppositeType.getAllKeyProperties();
+        if (allKeyProperties.isEmpty())
+        {
+            return;
+        }
+
+        String sourceCodeText = allKeyProperties
                 .collect(each -> "this.%s%s == %s.%s".formatted(
                         UPPER_TO_LOWER_CAMEL.convert(oppositeType.getName()),
                         LOWER_CAMEL_TO_UPPER_CAMEL.convert(each.getName()),
@@ -96,12 +105,19 @@ public class RelationshipInferencePhase
         this.runInPlaceCompilerMacro(inPlaceContext, sourceCodeText);
     }
 
-    private void handleTargetAssociationEnd(AssociationBodyContext inPlaceContext, AntlrAssociationEnd associationEnd)
+    private void handleTargetAssociationEnd(
+            AssociationBodyContext inPlaceContext,
+            AntlrAssociationEnd associationEnd)
     {
         AntlrClass oppositeType = associationEnd.getOpposite().getType();
 
-        String sourceCodeText = oppositeType
-                .getAllKeyProperties()
+        ImmutableList<AntlrDataTypeProperty<?>> allKeyProperties = oppositeType.getAllKeyProperties();
+        if (allKeyProperties.isEmpty())
+        {
+            return;
+        }
+
+        String sourceCodeText = allKeyProperties
                 .collect(each -> "this.%s == %s.%s%s".formatted(
                         each.getName(),
                         associationEnd.getType().getName(),
