@@ -4,6 +4,8 @@ import java.util.Optional;
 
 public interface ReladomoTreeNodeToManyAwareListener
 {
+    Object getStateToAssertInvariants();
+
     default void assertInvariants()
     {
     }
