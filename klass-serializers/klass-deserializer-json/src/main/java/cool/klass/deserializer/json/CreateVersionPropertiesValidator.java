@@ -125,7 +125,7 @@ public class CreateVersionPropertiesValidator
         {
             this.handleKeyProperty(dataTypeProperty);
         }
-        else if (dataTypeProperty.isCreatedBy() || dataTypeProperty.isLastUpdatedBy())
+        else if (dataTypeProperty.isAudit())
         {
             if (dataTypeProperty.isPrivate())
             {
@@ -135,10 +135,6 @@ public class CreateVersionPropertiesValidator
             {
                 this.handleWarnIfPresent(dataTypeProperty, "audit");
             }
-        }
-        else if (dataTypeProperty.isCreatedOn())
-        {
-            this.handleWarnIfPresent(dataTypeProperty, "created on");
         }
         else if (dataTypeProperty.isForeignKey())
         {
