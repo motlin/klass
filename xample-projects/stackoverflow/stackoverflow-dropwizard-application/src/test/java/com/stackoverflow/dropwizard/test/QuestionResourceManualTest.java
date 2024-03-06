@@ -14,6 +14,7 @@ import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
+import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import io.liftwizard.junit.rule.match.json.JsonMatchRule;
 import io.liftwizard.reladomo.test.rule.ReladomoLoadDataTestRule;
 import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
@@ -108,40 +109,9 @@ public class QuestionResourceManualTest
     {
         Client client = this.getClient("post_invalid_data");
 
-        //language=JSON
-        String invalidJson = """
-                {
-                  "title": 1,
-                  "status": "Invalid Choice",
-                  "deleted": [],
-                  "extra": "extra",
-                  "answers": [
-                    {
-                      "body": 2,
-                      "nestedExtra": "nestedExtra",
-                      "nestedExtraNull": null
-                    }
-                  ],
-                  "tags": [
-                    {
-                      "name": [
-                        {}
-                      ],
-                      "tag": []
-                    },
-                    {
-                      "name": {
-                        "name": {}
-                      },
-                      "tag": {}
-                    },
-                    "oops"
-                  ],
-                  "version": {
-                    "number": 20000000000
-                  }
-                }
-                """;
+        String invalidJson = FileMatchRule.slurp(
+                this.getClass().getSimpleName() + ".invalid_data.json",
+                this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/api/manual/question/")
@@ -161,30 +131,9 @@ public class QuestionResourceManualTest
 
         //<editor-fold desc="POST valid json, status: CREATED">
         {
-            //language=JSON
-            String validJson = """
-                    {
-                      "title": "example title 2",
-                      "body": "example body 2",
-                      "status": "Open",
-                      "deleted": false,
-                      "createdById": "TODO",
-                      "lastUpdatedById": "TODO",
-                      "answers": [],
-                      "tags": [
-                        {
-                          "tag": {
-                            "name": "test tag 1"
-                          }
-                        },
-                        {
-                          "tag": {
-                            "name": "test tag 3"
-                          }
-                        }
-                      ]
-                    }
-                    """;
+            String validJson = FileMatchRule.slurp(
+                    this.getClass().getSimpleName() + ".create_data.json",
+                    this.getClass());
 
             Response response = client
                     .target("http://localhost:{port}/api/manual/question/")
@@ -221,37 +170,9 @@ public class QuestionResourceManualTest
     {
         Client client = this.getClient("put_invalid_id");
 
-        //language=JSON
-        String json = """
-                {
-                  "id": 2,
-                  "title": "edited title 1",
-                  "body": "edited body 1",
-                  "status": "On hold",
-                  "deleted": true,
-                  "systemFrom": "1999-12-31T23:59:59.999Z",
-                  "systemTo": null,
-                  "createdById": "test user 1",
-                  "createdOn": "1999-12-31T23:59:59.999Z",
-                  "lastUpdatedById": "test user 1",
-                  "answers": [],
-                  "tags": [
-                    {
-                      "tag": {
-                        "name": "test tag 1"
-                      }
-                    },
-                    {
-                      "tag": {
-                        "name": "test tag 3"
-                      }
-                    }
-                  ],
-                  "version": {
-                    "number": 2
-                  }
-                }
-                """;
+        String json = FileMatchRule.slurp(
+                this.getClass().getSimpleName() + ".invalid_id_data.json",
+                this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/api/manual/question/{id}")
@@ -262,7 +183,7 @@ public class QuestionResourceManualTest
                 .header("Authorization", "Impersonation test user 1")
                 .put(Entity.json(json));
 
-        this.assertResponseStatus(response, Status.NO_CONTENT);
+        this.assertEmptyResponse(Status.NO_CONTENT, response);
         this.assertQuestion1Unchanged(client, "assertQuestion1Unchanged_put_invalid_id");
     }
 
@@ -272,20 +193,9 @@ public class QuestionResourceManualTest
     {
         Client client = this.getClient("put_conflict");
 
-        //language=JSON
-        String validJson = """
-                {
-                  "title": "edited title 1",
-                  "body": "edited body 1",
-                  "status": "Open",
-                  "deleted": false,
-                  "answers": [],
-                  "tags": [],
-                  "version": {
-                    "number": 2
-                  }
-                }
-                """;
+        String validJson = FileMatchRule.slurp(
+                this.getClass().getSimpleName() + ".valid_versioned_put_data.json",
+                this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/api/manual/question/{id}")
@@ -296,7 +206,7 @@ public class QuestionResourceManualTest
                 .header("Authorization", "Impersonation test user 1")
                 .put(Entity.json(validJson));
 
-        this.assertResponseStatus(response, Status.CONFLICT);
+        this.assertResponse("put_conflict", Status.CONFLICT, response);
 
         this.assertQuestion1Unchanged(client, "assertQuestion1Unchanged_put_conflict");
     }
@@ -309,31 +219,9 @@ public class QuestionResourceManualTest
 
         //<editor-fold desc="PUT id: 1, version: 2, status: NO_CONTENT">
         {
-            //language=JSON
-            String validJson = """
-                    {
-                      "id": 1,
-                      "title": "edited title 1",
-                      "body": "edited body 1",
-                      "status": "On hold",
-                      "deleted": true,
-                      "tags": [
-                        {
-                          "tag": {
-                            "name": "test tag 1"
-                          }
-                        },
-                        {
-                          "tag": {
-                            "name": "test tag 3"
-                          }
-                        }
-                      ],
-                      "version": {
-                        "number": 2
-                      }
-                    }
-                    """;
+            String validJson = FileMatchRule.slurp(
+                    this.getClass().getSimpleName() + ".valid_versioned_put_data.json",
+                    this.getClass());
 
             Response response = client
                     .target("http://localhost:{port}/api/manual/question/{id}")
