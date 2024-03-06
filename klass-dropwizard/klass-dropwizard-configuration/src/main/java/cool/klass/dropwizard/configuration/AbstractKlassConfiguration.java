@@ -166,7 +166,7 @@ public class AbstractKlassConfiguration extends Configuration
     }
 
     @JsonProperty
-    public void setSampleDataFactory(SampleDataFactory sampleDataFactory)
+    public void setSampleData(SampleDataFactory sampleDataFactory)
     {
         this.sampleDataFactory = sampleDataFactory;
     }
@@ -177,7 +177,7 @@ public class AbstractKlassConfiguration extends Configuration
     }
 
     @JsonProperty
-    public void setConfigLoggingFactory(EnabledFactory configLoggingFactory)
+    public void setConfigLogging(EnabledFactory configLoggingFactory)
     {
         this.configLoggingFactory = configLoggingFactory;
     }
