@@ -12,6 +12,8 @@ import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -27,12 +29,13 @@ public abstract class AbstractClassifier
     protected AbstractClassifier(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal, packageName);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
     }
 
     @Nonnull
@@ -94,12 +97,13 @@ public abstract class AbstractClassifier
         protected ClassifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal, packageName);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
         }
 
         public void setDataTypePropertyBuilders(@Nonnull ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders)

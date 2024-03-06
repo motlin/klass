@@ -11,11 +11,15 @@ import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.order.OrderByMemberReferencePath;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.order.OrderByMemberReferencePathImpl.OrderByMemberReferencePathBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class OrderByImpl extends AbstractElement implements OrderBy
+public final class OrderByImpl
+        extends AbstractElement
+        implements OrderBy
 {
     @Nonnull
     private final AbstractClassifier thisContext;
@@ -25,9 +29,10 @@ public final class OrderByImpl extends AbstractElement implements OrderBy
     private OrderByImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull AbstractClassifier thisContext)
     {
-        super(elementContext, macroElement);
+        super(elementContext, macroElement, sourceCode);
         this.thisContext = Objects.requireNonNull(thisContext);
     }
 
@@ -42,7 +47,8 @@ public final class OrderByImpl extends AbstractElement implements OrderBy
         this.orderByMemberReferencePaths = Objects.requireNonNull(orderByMemberReferencePaths);
     }
 
-    public static final class OrderByBuilder extends ElementBuilder<OrderByImpl>
+    public static final class OrderByBuilder
+            extends ElementBuilder<OrderByImpl>
     {
         @Nonnull
         private final ClassifierBuilder<?> thisContextBuilder;
@@ -52,9 +58,10 @@ public final class OrderByImpl extends AbstractElement implements OrderBy
         public OrderByBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ClassifierBuilder<?> thisContextBuilder)
         {
-            super(elementContext, macroElement);
+            super(elementContext, macroElement, sourceCode);
             this.thisContextBuilder = Objects.requireNonNull(thisContextBuilder);
         }
 
@@ -70,6 +77,7 @@ public final class OrderByImpl extends AbstractElement implements OrderBy
             return new OrderByImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.thisContextBuilder.getElement());
         }
 

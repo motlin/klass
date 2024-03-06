@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.ClassModifier;
 import cool.klass.model.meta.domain.api.Element;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.property.AbstractModifier;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -18,12 +20,13 @@ public final class ClassModifierImpl
     private ClassModifierImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull AbstractClassifier owningClassifier)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal, owningClassifier);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, owningClassifier);
     }
 
     @Override
@@ -41,12 +44,13 @@ public final class ClassModifierImpl
         public ClassModifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
             this.owningClassifierBuilder = Objects.requireNonNull(owningClassifierBuilder);
         }
 
@@ -57,6 +61,7 @@ public final class ClassModifierImpl
             return new ClassModifierImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.nameContext,
                     this.name,
                     this.ordinal,

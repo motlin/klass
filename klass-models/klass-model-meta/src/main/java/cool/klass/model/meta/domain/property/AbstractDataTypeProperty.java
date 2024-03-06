@@ -18,6 +18,8 @@ import cool.klass.model.meta.domain.api.property.validation.MaxLengthPropertyVal
 import cool.klass.model.meta.domain.api.property.validation.MaxPropertyValidation;
 import cool.klass.model.meta.domain.api.property.validation.MinLengthPropertyValidation;
 import cool.klass.model.meta.domain.api.property.validation.MinPropertyValidation;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.DataTypePropertyModifierImpl.DataTypePropertyModifierBuilder;
 import cool.klass.model.meta.domain.property.validation.MaxLengthPropertyValidationImpl.MaxLengthPropertyValidationBuilder;
@@ -57,6 +59,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
     protected AbstractDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -64,7 +67,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
             @Nonnull AbstractClassifier owningClassifier,
             boolean isOptional)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal, dataType, owningClassifier);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, dataType, owningClassifier);
         this.optional = isOptional;
     }
 
@@ -196,7 +199,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
         return String.format(
                 "%s: %s%s%s",
                 this.getName(),
-                this.getType().toString(),
+                this.getType(),
                 isOptionalString,
                 propertyModifiersString);
     }
@@ -204,7 +207,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
     public abstract static class DataTypePropertyBuilder<T extends DataType, TG extends DataTypeGetter, BuiltElement extends AbstractDataTypeProperty<T>>
             extends PropertyBuilder<T, TG, BuiltElement>
     {
-        protected final boolean                                        isOptional;
+        protected final boolean isOptional;
 
         protected ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>>
                 keyBuildersMatchingThisForeignKey;
@@ -221,6 +224,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
         protected DataTypePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -228,8 +232,16 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
                 boolean isOptional)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal, typeBuilder, owningClassifierBuilder);
-            this.isOptional               = isOptional;
+            super(
+                    elementContext,
+                    macroElement,
+                    sourceCode,
+                    nameContext,
+                    name,
+                    ordinal,
+                    typeBuilder,
+                    owningClassifierBuilder);
+            this.isOptional = isOptional;
         }
 
         public void setKeyBuildersMatchingThisForeignKey(ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> keyBuildersMatchingThisForeignKey)

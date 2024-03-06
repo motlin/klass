@@ -7,12 +7,14 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.domain.AbstractElement.ElementBuilder;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public abstract class AntlrElement implements IAntlrElement
+public abstract class AntlrElement
+        implements IAntlrElement
 {
     @Nonnull
     protected final ParserRuleContext         elementContext;
@@ -26,7 +28,7 @@ public abstract class AntlrElement implements IAntlrElement
         this.elementContext  = Objects.requireNonNull(elementContext);
         this.compilationUnit = Objects.requireNonNull(compilationUnit);
 
-        compilationUnit.ifPresent(cu -> assertContextContains(cu.getParserContext(), elementContext));
+        compilationUnit.ifPresent(cu -> AntlrElement.assertContextContains(cu.getParserContext(), elementContext));
     }
 
     private static void assertContextContains(ParserRuleContext parentContext, ParserRuleContext childContext)
@@ -38,7 +40,7 @@ public abstract class AntlrElement implements IAntlrElement
 
         ParserRuleContext nextParent = childContext.getParent();
         Objects.requireNonNull(nextParent);
-        assertContextContains(parentContext, nextParent);
+        AntlrElement.assertContextContains(parentContext, nextParent);
     }
 
     @Override
@@ -65,7 +67,12 @@ public abstract class AntlrElement implements IAntlrElement
     @Nonnull
     protected Optional<ElementBuilder<?>> getMacroElementBuilder()
     {
-        return this.getMacroElement().map(AntlrElement::getElementBuilder);
+        return this.getMacroElement().map(antlrElement -> Objects.requireNonNull(antlrElement.getElementBuilder()));
+    }
+
+    protected Optional<SourceCodeBuilder> getSourceCodeBuilder()
+    {
+        return this.compilationUnit.map(CompilationUnit::build);
     }
 
     @Override

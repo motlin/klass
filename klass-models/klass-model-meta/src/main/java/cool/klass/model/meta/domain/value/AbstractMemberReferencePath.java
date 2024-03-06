@@ -9,6 +9,8 @@ import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.value.MemberReferencePath;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
@@ -16,7 +18,9 @@ import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBu
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public abstract class AbstractMemberReferencePath extends AbstractExpressionValue implements MemberReferencePath
+public abstract class AbstractMemberReferencePath
+        extends AbstractExpressionValue
+        implements MemberReferencePath
 {
     @Nonnull
     private final KlassImpl                     klass;
@@ -28,11 +32,12 @@ public abstract class AbstractMemberReferencePath extends AbstractExpressionValu
     protected AbstractMemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull KlassImpl klass,
             @Nonnull ImmutableList<AssociationEnd> associationEnds,
             @Nonnull AbstractDataTypeProperty<?> property)
     {
-        super(elementContext, macroElement);
+        super(elementContext, macroElement, sourceCode);
         this.klass           = Objects.requireNonNull(klass);
         this.associationEnds = Objects.requireNonNull(associationEnds);
         this.property        = Objects.requireNonNull(property);
@@ -72,11 +77,12 @@ public abstract class AbstractMemberReferencePath extends AbstractExpressionValu
         protected AbstractMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull KlassBuilder klassBuilder,
                 @Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)
         {
-            super(elementContext, macroElement);
+            super(elementContext, macroElement, sourceCode);
             this.klassBuilder           = Objects.requireNonNull(klassBuilder);
             this.associationEndBuilders = Objects.requireNonNull(associationEndBuilders);
             this.propertyBuilder        = Objects.requireNonNull(propertyBuilder);

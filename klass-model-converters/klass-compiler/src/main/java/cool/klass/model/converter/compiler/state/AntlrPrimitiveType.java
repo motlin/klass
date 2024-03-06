@@ -96,6 +96,7 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
         return new PrimitiveTypeBuilder(
                 this.getElementContext(),
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.primitiveType);
     }
 

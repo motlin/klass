@@ -142,6 +142,7 @@ public class AntlrAssociation
         this.associationBuilder = new AssociationBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

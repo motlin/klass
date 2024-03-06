@@ -109,6 +109,7 @@ public class AntlrDataTypePropertyModifier extends AntlrModifier
         this.elementBuilder = new DataTypePropertyModifierBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

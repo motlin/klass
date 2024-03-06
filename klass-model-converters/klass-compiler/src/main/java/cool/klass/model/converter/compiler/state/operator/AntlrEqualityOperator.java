@@ -36,6 +36,7 @@ public class AntlrEqualityOperator extends AntlrOperator
         this.elementBuilder = new EqualityOperatorBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.operatorText);
         return this.elementBuilder;
     }

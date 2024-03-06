@@ -260,6 +260,7 @@ public class AntlrClass extends AntlrClassifier
         this.klassBuilder = new KlassBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

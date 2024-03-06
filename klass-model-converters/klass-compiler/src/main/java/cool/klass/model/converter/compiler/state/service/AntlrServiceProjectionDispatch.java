@@ -102,6 +102,7 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
         this.elementBuilder = new ServiceProjectionDispatchBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.projection.getElementBuilder());
         return this.elementBuilder;
     }

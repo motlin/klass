@@ -51,6 +51,7 @@ public class AntlrUrlConstant extends AntlrNamedElement
         this.elementBuilder = new UrlConstantBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal);

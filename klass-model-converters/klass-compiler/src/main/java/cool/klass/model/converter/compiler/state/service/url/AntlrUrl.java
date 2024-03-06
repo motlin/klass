@@ -242,6 +242,7 @@ public class AntlrUrl extends AntlrElement
         this.elementBuilder = new UrlBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.serviceGroup.getElementBuilder());
 
         ImmutableList<ElementBuilder<?>> pathSegments = this.urlPathSegments

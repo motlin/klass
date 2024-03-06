@@ -100,6 +100,7 @@ public class AntlrPrimitiveProperty
         this.elementBuilder = new PrimitivePropertyBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

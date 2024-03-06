@@ -10,6 +10,9 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.phase.AbstractCompilerPhase;
 import cool.klass.model.converter.compiler.state.AntlrElement;
+import cool.klass.model.meta.domain.MacroSourceCode.MacroSourceCodeBuilder;
+import cool.klass.model.meta.domain.RootSourceCode.RootSourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassLexer;
 import cool.klass.model.meta.grammar.KlassParser;
 import org.antlr.v4.runtime.ANTLRErrorListener;
@@ -30,6 +33,8 @@ public final class CompilationUnit
     @Nonnull
     private final String                 sourceName;
     @Nonnull
+    private final String                 sourceCodeText;
+    @Nonnull
     private final String[]               lines;
     @Nonnull
     private final CharStream             charStream;
@@ -37,6 +42,7 @@ public final class CompilationUnit
     private final TokenStream            tokenStream;
     @Nonnull
     private final ParserRuleContext      parserContext;
+    private       SourceCodeBuilder      sourceCodeBuilder;
 
     private CompilationUnit(
             @Nonnull Optional<AntlrElement> macroElement,
@@ -47,12 +53,13 @@ public final class CompilationUnit
             @Nonnull TokenStream tokenStream,
             @Nonnull ParserRuleContext parserRuleContext)
     {
-        this.macroElement  = Objects.requireNonNull(macroElement);
-        this.sourceName    = Objects.requireNonNull(sourceName);
-        this.lines         = Objects.requireNonNull(lines);
-        this.charStream    = Objects.requireNonNull(charStream);
-        this.tokenStream   = Objects.requireNonNull(tokenStream);
-        this.parserContext = Objects.requireNonNull(parserRuleContext);
+        this.macroElement   = Objects.requireNonNull(macroElement);
+        this.sourceName     = Objects.requireNonNull(sourceName);
+        this.sourceCodeText = Objects.requireNonNull(sourceCodeText);
+        this.lines          = Objects.requireNonNull(lines);
+        this.charStream     = Objects.requireNonNull(charStream);
+        this.tokenStream    = Objects.requireNonNull(tokenStream);
+        this.parserContext  = Objects.requireNonNull(parserRuleContext);
 
         if (macroElement.isPresent() && !sourceName.contains("macro"))
         {
@@ -65,14 +72,14 @@ public final class CompilationUnit
             @Nonnull String classpathLocation,
             @Nonnull ClassLoader classLoader)
     {
-        String sourceCodeText = slurp(classpathLocation, classLoader);
+        String sourceCodeText = CompilationUnit.slurp(classpathLocation, classLoader);
         return CompilationUnit.createFromText(Optional.empty(), classpathLocation, sourceCodeText);
     }
 
     @Nonnull
     public static CompilationUnit createFromClasspathLocation(@Nonnull String classpathLocation)
     {
-        return createFromClasspathLocation(classpathLocation, CompilationUnit.class.getClassLoader());
+        return CompilationUnit.createFromClasspathLocation(classpathLocation, CompilationUnit.class.getClassLoader());
     }
 
     @Nonnull
@@ -98,7 +105,7 @@ public final class CompilationUnit
             @Nonnull String sourceName,
             @Nonnull String sourceCodeText)
     {
-        return createFromText(macroElement, sourceName, sourceCodeText, KlassParser::compilationUnit);
+        return CompilationUnit.createFromText(macroElement, sourceName, sourceCodeText, KlassParser::compilationUnit);
     }
 
     @Nonnull
@@ -111,7 +118,7 @@ public final class CompilationUnit
         String[]            lines             = NEWLINE_PATTERN.split(sourceCodeText);
         ANTLRErrorListener  errorListener     = new ThrowingErrorListener(sourceName, lines);
         CodePointCharStream charStream        = CharStreams.fromString(sourceCodeText, sourceName);
-        KlassLexer          lexer             = getKlassLexer(errorListener, charStream);
+        KlassLexer          lexer             = CompilationUnit.getKlassLexer(errorListener, charStream);
         CommonTokenStream   tokenStream       = new CommonTokenStream(lexer);
         KlassParser         parser            = CompilationUnit.getParser(errorListener, tokenStream);
         ParserRuleContext   parserRuleContext = parserRule.apply(parser);
@@ -150,7 +157,7 @@ public final class CompilationUnit
             @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule)
     {
         String sourceName = macroExpansionCompilerPhase.getName() + " macro";
-        return createFromText(Optional.of(macroElement), sourceName, sourceCodeText, parserRule);
+        return CompilationUnit.createFromText(Optional.of(macroElement), sourceName, sourceCodeText, parserRule);
     }
 
     @Nonnull
@@ -191,5 +198,33 @@ public final class CompilationUnit
     public String getLine(int index)
     {
         return this.lines[index];
+    }
+
+    public SourceCodeBuilder build()
+    {
+        if (this.sourceCodeBuilder == null)
+        {
+            this.sourceCodeBuilder = this.macroElement
+                    .flatMap(AntlrElement::getCompilationUnit)
+                    .map(CompilationUnit::build)
+                    .<SourceCodeBuilder>map(this::getMacroSourceCodeBuilder)
+                    .orElseGet(this::getRootSourceCodeBuilder);
+        }
+        return this.sourceCodeBuilder;
+    }
+
+    private MacroSourceCodeBuilder getMacroSourceCodeBuilder(SourceCodeBuilder macroSourceCodeBuilder)
+    {
+        return new MacroSourceCodeBuilder(
+                this.sourceName,
+                this.sourceCodeText,
+                this.tokenStream,
+                this.parserContext,
+                macroSourceCodeBuilder);
+    }
+
+    private RootSourceCodeBuilder getRootSourceCodeBuilder()
+    {
+        return new RootSourceCodeBuilder(this.sourceName, this.sourceCodeText, this.tokenStream, this.parserContext);
     }
 }

@@ -95,6 +95,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
         this.elementBuilder = new EnumerationLiteralBuilder(
                 this.getElementContext(),
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

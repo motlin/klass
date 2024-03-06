@@ -42,7 +42,8 @@ public class AllAntlrCriteria extends AntlrCriteria
         }
         this.elementBuilder = new AllCriteriaBuilder(
                 this.elementContext,
-                this.getMacroElementBuilder());
+                this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder());
         return this.elementBuilder;
     }
 

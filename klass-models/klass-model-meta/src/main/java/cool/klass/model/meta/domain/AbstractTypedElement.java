@@ -9,9 +9,13 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Type;
 import cool.klass.model.meta.domain.api.Type.TypeGetter;
 import cool.klass.model.meta.domain.api.TypedElement;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public abstract class AbstractTypedElement<T extends Type> extends AbstractNamedElement implements TypedElement
+public abstract class AbstractTypedElement<T extends Type>
+        extends AbstractNamedElement
+        implements TypedElement
 {
     @Nonnull
     protected final T type;
@@ -19,12 +23,13 @@ public abstract class AbstractTypedElement<T extends Type> extends AbstractNamed
     protected AbstractTypedElement(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull T type)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
         this.type = Objects.requireNonNull(type);
     }
 
@@ -44,12 +49,13 @@ public abstract class AbstractTypedElement<T extends Type> extends AbstractNamed
         protected TypedElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull TG typeBuilder)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
             this.typeBuilder = Objects.requireNonNull(typeBuilder);
         }
     }

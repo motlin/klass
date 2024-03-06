@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.NamedElement;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AbstractNamedElement extends AbstractElement implements NamedElement
@@ -20,11 +22,12 @@ public abstract class AbstractNamedElement extends AbstractElement implements Na
     protected AbstractNamedElement(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, macroElement);
+        super(elementContext, macroElement, sourceCode);
         this.nameContext = Objects.requireNonNull(nameContext);
         this.name        = Objects.requireNonNull(name);
         this.ordinal     = ordinal;
@@ -61,11 +64,12 @@ public abstract class AbstractNamedElement extends AbstractElement implements Na
         protected NamedElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal)
         {
-            super(elementContext, macroElement);
+            super(elementContext, macroElement, sourceCode);
             this.nameContext = Objects.requireNonNull(nameContext);
             this.name        = Objects.requireNonNull(name);
             this.ordinal     = ordinal;

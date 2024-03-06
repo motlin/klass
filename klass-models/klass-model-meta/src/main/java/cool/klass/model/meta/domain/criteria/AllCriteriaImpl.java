@@ -6,16 +6,26 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.AllCriteria;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class AllCriteriaImpl extends AbstractCriteria implements AllCriteria
+public final class AllCriteriaImpl
+        extends AbstractCriteria
+        implements AllCriteria
 {
     // TODO: Make a distinction between macroElement and declaration
-    public static final AllCriteriaImpl INSTANCE = new AllCriteriaImpl(new ParserRuleContext(), Optional.empty());
+    public static final AllCriteriaImpl INSTANCE = new AllCriteriaImpl(
+            new ParserRuleContext(),
+            Optional.empty(),
+            Optional.empty());
 
-    private AllCriteriaImpl(@Nonnull ParserRuleContext elementContext, Optional<Element> macroElement)
+    private AllCriteriaImpl(
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode)
     {
-        super(elementContext, macroElement);
+        super(elementContext, macroElement, sourceCode);
     }
 
     @Nonnull
@@ -25,11 +35,15 @@ public final class AllCriteriaImpl extends AbstractCriteria implements AllCriter
         return "all";
     }
 
-    public static final class AllCriteriaBuilder extends AbstractCriteriaBuilder<AllCriteriaImpl>
+    public static final class AllCriteriaBuilder
+            extends AbstractCriteriaBuilder<AllCriteriaImpl>
     {
-        public AllCriteriaBuilder(@Nonnull ParserRuleContext elementContext, Optional<ElementBuilder<?>> macroElement)
+        public AllCriteriaBuilder(
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode)
         {
-            super(elementContext, macroElement);
+            super(elementContext, macroElement, sourceCode);
         }
 
         @Nonnull

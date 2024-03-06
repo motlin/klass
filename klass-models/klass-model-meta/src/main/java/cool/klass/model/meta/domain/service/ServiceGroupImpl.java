@@ -12,11 +12,15 @@ import cool.klass.model.meta.domain.TopLevelElement;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.service.url.Url;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class ServiceGroupImpl extends AbstractPackageableElement implements TopLevelElement, ServiceGroup
+public final class ServiceGroupImpl
+        extends AbstractPackageableElement
+        implements TopLevelElement, ServiceGroup
 {
     @Nonnull
     private final KlassImpl klass;
@@ -26,13 +30,14 @@ public final class ServiceGroupImpl extends AbstractPackageableElement implement
     private ServiceGroupImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
             @Nonnull KlassImpl klass)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal, packageName);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
         this.klass = Objects.requireNonNull(klass);
     }
 
@@ -71,13 +76,14 @@ public final class ServiceGroupImpl extends AbstractPackageableElement implement
         public ServiceGroupBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
                 @Nonnull KlassBuilder klassBuilder)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal, packageName);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
         }
 
@@ -93,6 +99,7 @@ public final class ServiceGroupImpl extends AbstractPackageableElement implement
             return new ServiceGroupImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.nameContext,
                     this.name,
                     this.ordinal,

@@ -86,6 +86,7 @@ public class AntlrAssociationEndModifier extends AntlrModifier
         this.elementBuilder = new AssociationEndModifierBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

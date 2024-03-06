@@ -65,6 +65,7 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
         this.elementBuilder = new EdgePointCriteriaBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.memberExpressionValue.build());
         return this.elementBuilder;
     }

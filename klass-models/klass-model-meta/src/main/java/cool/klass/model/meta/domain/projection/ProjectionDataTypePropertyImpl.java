@@ -9,6 +9,8 @@ import cool.klass.model.meta.domain.AbstractNamedElement;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
@@ -30,6 +32,7 @@ public final class ProjectionDataTypePropertyImpl
     private ProjectionDataTypePropertyImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -38,7 +41,7 @@ public final class ProjectionDataTypePropertyImpl
             @Nonnull ProjectionParent parent,
             @Nonnull AbstractDataTypeProperty<?> property)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
         this.headerContext = Objects.requireNonNull(headerContext);
         this.headerText    = Objects.requireNonNull(headerText);
         this.parent        = Objects.requireNonNull(parent);
@@ -82,6 +85,7 @@ public final class ProjectionDataTypePropertyImpl
         public ProjectionDataTypePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -90,7 +94,7 @@ public final class ProjectionDataTypePropertyImpl
                 @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
             this.headerContext   = Objects.requireNonNull(headerContext);
             this.headerText      = Objects.requireNonNull(headerText);
             this.parentBuilder   = Objects.requireNonNull(parentBuilder);
@@ -104,6 +108,7 @@ public final class ProjectionDataTypePropertyImpl
             return new ProjectionDataTypePropertyImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.nameContext,
                     this.name,
                     this.ordinal,

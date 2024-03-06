@@ -158,6 +158,7 @@ public final class AntlrParameter
         this.elementBuilder = new ParameterBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

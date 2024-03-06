@@ -89,6 +89,7 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
         this.elementBuilder = new OrderByMemberReferencePathBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.orderByState.getElementBuilder(),
                 this.ordinal,
                 thisMemberReferencePathBuilder);

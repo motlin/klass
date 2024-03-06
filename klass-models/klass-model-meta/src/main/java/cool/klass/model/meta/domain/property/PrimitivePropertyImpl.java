@@ -9,6 +9,8 @@ import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class PrimitivePropertyImpl
@@ -18,6 +20,7 @@ public final class PrimitivePropertyImpl
     private PrimitivePropertyImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -28,6 +31,7 @@ public final class PrimitivePropertyImpl
         super(
                 elementContext,
                 macroElement,
+                sourceCode,
                 nameContext,
                 name,
                 ordinal,
@@ -42,6 +46,7 @@ public final class PrimitivePropertyImpl
         public PrimitivePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -52,6 +57,7 @@ public final class PrimitivePropertyImpl
             super(
                     elementContext,
                     macroElement,
+                    sourceCode,
                     nameContext,
                     name,
                     ordinal,
@@ -67,6 +73,7 @@ public final class PrimitivePropertyImpl
             return new PrimitivePropertyImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.nameContext,
                     this.name,
                     this.ordinal,

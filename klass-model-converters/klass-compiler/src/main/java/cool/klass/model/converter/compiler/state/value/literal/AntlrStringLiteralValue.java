@@ -46,6 +46,7 @@ public final class AntlrStringLiteralValue extends AbstractAntlrLiteralValue
         this.elementBuilder = new StringLiteralValueBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.value);
         return this.elementBuilder;
     }

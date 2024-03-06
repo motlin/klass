@@ -8,6 +8,8 @@ import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.value.TypeMemberReferencePath;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
@@ -15,16 +17,19 @@ import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBu
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class TypeMemberReferencePathImpl extends AbstractMemberReferencePath implements TypeMemberReferencePath
+public final class TypeMemberReferencePathImpl
+        extends AbstractMemberReferencePath
+        implements TypeMemberReferencePath
 {
     private TypeMemberReferencePathImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull KlassImpl klass,
             @Nonnull ImmutableList<AssociationEnd> associationEnds,
             @Nonnull AbstractDataTypeProperty<?> property)
     {
-        super(elementContext, macroElement, klass, associationEnds, property);
+        super(elementContext, macroElement, sourceCode, klass, associationEnds, property);
     }
 
     public static final class TypeMemberReferencePathBuilder
@@ -33,11 +38,12 @@ public final class TypeMemberReferencePathImpl extends AbstractMemberReferencePa
         public TypeMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull KlassBuilder klassBuilder,
                 @Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)
         {
-            super(elementContext, macroElement, klassBuilder, associationEndBuilders, propertyBuilder);
+            super(elementContext, macroElement, sourceCode, klassBuilder, associationEndBuilders, propertyBuilder);
         }
 
         @Override
@@ -47,6 +53,7 @@ public final class TypeMemberReferencePathImpl extends AbstractMemberReferencePa
             return new TypeMemberReferencePathImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.klassBuilder.getElement(),
                     this.associationEndBuilders.collect(AssociationEndBuilder::getElement),
                     this.propertyBuilder.getElement());

@@ -10,11 +10,15 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class KlassImpl extends AbstractClassifier implements Klass
+public final class KlassImpl
+        extends AbstractClassifier
+        implements Klass
 {
     private final InheritanceType inheritanceType;
     private final boolean         isUser;
@@ -31,6 +35,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
     private KlassImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -39,7 +44,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
             boolean isUser,
             boolean isTransient)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal, packageName);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
         this.inheritanceType = Objects.requireNonNull(inheritanceType);
         this.isUser          = isUser;
         this.isTransient     = isTransient;
@@ -120,7 +125,8 @@ public final class KlassImpl extends AbstractClassifier implements Klass
         this.superClass = Objects.requireNonNull(superClass);
     }
 
-    public static final class KlassBuilder extends ClassifierBuilder<KlassImpl>
+    public static final class KlassBuilder
+            extends ClassifierBuilder<KlassImpl>
     {
         @Nonnull
         private final InheritanceType inheritanceType;
@@ -140,6 +146,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
         public KlassBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -148,7 +155,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
                 boolean isUser,
                 boolean isTransient)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal, packageName);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
             this.inheritanceType = Objects.requireNonNull(inheritanceType);
             this.isUser          = isUser;
             this.isTransient     = isTransient;
@@ -188,6 +195,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
             return new KlassImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.nameContext,
                     this.name,
                     this.ordinal,

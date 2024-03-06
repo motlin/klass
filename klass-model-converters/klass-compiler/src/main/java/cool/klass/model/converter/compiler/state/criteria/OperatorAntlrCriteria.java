@@ -94,6 +94,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         this.elementBuilder = new OperatorCriteriaBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.operator.build(),
                 this.sourceValue.build(),
                 this.targetValue.build());

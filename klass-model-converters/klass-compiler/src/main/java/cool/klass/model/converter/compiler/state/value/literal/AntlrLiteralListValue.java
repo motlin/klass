@@ -15,7 +15,8 @@ import cool.klass.model.meta.domain.value.literal.LiteralListValueImpl.LiteralLi
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
+public class AntlrLiteralListValue
+        extends AbstractAntlrLiteralValue
 {
     private ImmutableList<AbstractAntlrLiteralValue> literalStates;
     private LiteralListValueBuilder                  elementBuilder;
@@ -48,6 +49,7 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
         this.elementBuilder = new LiteralListValueBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.getInferredType().getTypeGetter());
 
         ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders = this.literalStates

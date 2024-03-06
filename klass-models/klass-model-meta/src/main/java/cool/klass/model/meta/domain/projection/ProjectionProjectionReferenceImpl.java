@@ -10,6 +10,8 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
@@ -31,13 +33,14 @@ public final class ProjectionProjectionReferenceImpl
     private ProjectionProjectionReferenceImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull ProjectionParent parent,
             @Nonnull AssociationEndImpl associationEnd)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
         this.parent         = Objects.requireNonNull(parent);
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
@@ -84,13 +87,14 @@ public final class ProjectionProjectionReferenceImpl
         public ProjectionProjectionReferenceBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
                 @Nonnull AssociationEndBuilder associationEndBuilder)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
             this.parentBuilder         = Objects.requireNonNull(parentBuilder);
             this.associationEndBuilder = Objects.requireNonNull(associationEndBuilder);
         }
@@ -112,6 +116,7 @@ public final class ProjectionProjectionReferenceImpl
             return new ProjectionProjectionReferenceImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.nameContext,
                     this.name,
                     this.ordinal,

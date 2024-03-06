@@ -15,7 +15,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrNullLiteral extends AbstractAntlrLiteralValue
+public class AntlrNullLiteral
+        extends AbstractAntlrLiteralValue
 {
     private NullLiteralBuilder elementBuilder;
 
@@ -42,7 +43,8 @@ public class AntlrNullLiteral extends AbstractAntlrLiteralValue
         }
         this.elementBuilder = new NullLiteralBuilder(
                 this.elementContext,
-                this.getMacroElementBuilder());
+                this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder());
         return this.elementBuilder;
     }
 

@@ -36,6 +36,7 @@ public class AntlrInOperator extends AntlrOperator
         this.elementBuilder = new InOperatorBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.operatorText);
         return this.elementBuilder;
     }

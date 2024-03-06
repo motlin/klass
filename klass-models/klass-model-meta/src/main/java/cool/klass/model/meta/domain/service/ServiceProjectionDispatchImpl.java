@@ -8,11 +8,15 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class ServiceProjectionDispatchImpl extends AbstractElement implements ServiceProjectionDispatch
+public final class ServiceProjectionDispatchImpl
+        extends AbstractElement
+        implements ServiceProjectionDispatch
 {
     @Nonnull
     private final ProjectionImpl projection;
@@ -20,9 +24,10 @@ public final class ServiceProjectionDispatchImpl extends AbstractElement impleme
     private ServiceProjectionDispatchImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ProjectionImpl projection)
     {
-        super(elementContext, macroElement);
+        super(elementContext, macroElement, sourceCode);
         this.projection = Objects.requireNonNull(projection);
     }
 
@@ -33,7 +38,8 @@ public final class ServiceProjectionDispatchImpl extends AbstractElement impleme
         return this.projection;
     }
 
-    public static final class ServiceProjectionDispatchBuilder extends ElementBuilder<ServiceProjectionDispatchImpl>
+    public static final class ServiceProjectionDispatchBuilder
+            extends ElementBuilder<ServiceProjectionDispatchImpl>
     {
         @Nonnull
         private final ProjectionBuilder projectionBuilder;
@@ -41,9 +47,10 @@ public final class ServiceProjectionDispatchImpl extends AbstractElement impleme
         public ServiceProjectionDispatchBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ProjectionBuilder projectionBuilder)
         {
-            super(elementContext, macroElement);
+            super(elementContext, macroElement, sourceCode);
             this.projectionBuilder = Objects.requireNonNull(projectionBuilder);
         }
 
@@ -54,6 +61,7 @@ public final class ServiceProjectionDispatchImpl extends AbstractElement impleme
             return new ServiceProjectionDispatchImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.projectionBuilder.getElement());
         }
     }

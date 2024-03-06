@@ -84,6 +84,7 @@ public class AntlrProjectionProjectionReference extends AntlrNamedElement implem
         this.projectionProjectionReferenceBuilder = new ProjectionProjectionReferenceBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

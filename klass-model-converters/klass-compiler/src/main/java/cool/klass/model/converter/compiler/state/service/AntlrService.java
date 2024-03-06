@@ -254,6 +254,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         this.elementBuilder = new ServiceBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 urlBuilder,
                 verb,
                 serviceMultiplicity);

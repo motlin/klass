@@ -97,6 +97,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
         this.elementBuilder = new EnumerationPropertyBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

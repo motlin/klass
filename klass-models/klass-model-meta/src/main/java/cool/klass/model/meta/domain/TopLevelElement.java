@@ -2,7 +2,6 @@ package cool.klass.model.meta.domain;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.AbstractElement.IElementBuilder;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.PackageableElement;
 
@@ -15,7 +14,7 @@ public interface TopLevelElement extends Element
     @Nonnull
     String getPackageName();
 
-    interface TopLevelElementBuilder extends IElementBuilder
+    interface TopLevelElementBuilder
     {
         @Nonnull
         PackageableElement getElement();

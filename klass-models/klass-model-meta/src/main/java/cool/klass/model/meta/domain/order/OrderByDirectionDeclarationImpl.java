@@ -9,9 +9,13 @@ import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.order.OrderByDirection;
 import cool.klass.model.meta.domain.api.order.OrderByDirectionDeclaration;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class OrderByDirectionDeclarationImpl extends AbstractElement implements OrderByDirectionDeclaration
+public final class OrderByDirectionDeclarationImpl
+        extends AbstractElement
+        implements OrderByDirectionDeclaration
 {
     @Nonnull
     private final OrderByDirection orderByDirection;
@@ -19,9 +23,10 @@ public final class OrderByDirectionDeclarationImpl extends AbstractElement imple
     private OrderByDirectionDeclarationImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull OrderByDirection orderByDirection)
     {
-        super(elementContext, macroElement);
+        super(elementContext, macroElement, sourceCode);
         this.orderByDirection = Objects.requireNonNull(orderByDirection);
     }
 
@@ -32,7 +37,8 @@ public final class OrderByDirectionDeclarationImpl extends AbstractElement imple
         return this.orderByDirection;
     }
 
-    public static final class OrderByDirectionDeclarationBuilder extends ElementBuilder<OrderByDirectionDeclarationImpl>
+    public static final class OrderByDirectionDeclarationBuilder
+            extends ElementBuilder<OrderByDirectionDeclarationImpl>
     {
         @Nonnull
         private final OrderByDirection orderByDirection;
@@ -40,9 +46,10 @@ public final class OrderByDirectionDeclarationImpl extends AbstractElement imple
         public OrderByDirectionDeclarationBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull OrderByDirection orderByDirection)
         {
-            super(elementContext, macroElement);
+            super(elementContext, macroElement, sourceCode);
             this.orderByDirection = Objects.requireNonNull(orderByDirection);
         }
 
@@ -53,6 +60,7 @@ public final class OrderByDirectionDeclarationImpl extends AbstractElement imple
             return new OrderByDirectionDeclarationImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.orderByDirection);
         }
     }

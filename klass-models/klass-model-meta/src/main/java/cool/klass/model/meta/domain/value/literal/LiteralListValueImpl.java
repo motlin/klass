@@ -8,12 +8,16 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Type;
 import cool.klass.model.meta.domain.api.Type.TypeGetter;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.api.value.literal.LiteralValue;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class LiteralListValueImpl extends AbstractLiteralValue implements LiteralListValue
+public final class LiteralListValueImpl
+        extends AbstractLiteralValue
+        implements LiteralListValue
 {
     @Nonnull
     private final Type type;
@@ -23,9 +27,10 @@ public final class LiteralListValueImpl extends AbstractLiteralValue implements 
     private LiteralListValueImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull Type type)
     {
-        super(elementContext, macroElement);
+        super(elementContext, macroElement, sourceCode);
         this.type = Objects.requireNonNull(type);
     }
 
@@ -52,7 +57,8 @@ public final class LiteralListValueImpl extends AbstractLiteralValue implements 
         return this.type;
     }
 
-    public static final class LiteralListValueBuilder extends AbstractLiteralValueBuilder<LiteralListValueImpl>
+    public static final class LiteralListValueBuilder
+            extends AbstractLiteralValueBuilder<LiteralListValueImpl>
     {
         @Nonnull
         private final TypeGetter                                    typeBuilder;
@@ -61,9 +67,10 @@ public final class LiteralListValueImpl extends AbstractLiteralValue implements 
         public LiteralListValueBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull TypeGetter typeBuilder)
         {
-            super(elementContext, macroElement);
+            super(elementContext, macroElement, sourceCode);
             this.typeBuilder = Objects.requireNonNull(typeBuilder);
         }
 
@@ -83,6 +90,7 @@ public final class LiteralListValueImpl extends AbstractLiteralValue implements 
             return new LiteralListValueImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.typeBuilder.getType());
         }
 

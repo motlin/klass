@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.OperatorCriteria;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.operator.AbstractOperator;
 import cool.klass.model.meta.domain.operator.AbstractOperator.AbstractOperatorBuilder;
 import cool.klass.model.meta.domain.value.AbstractExpressionValue;
@@ -25,11 +27,12 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
     private OperatorCriteriaImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull AbstractOperator operator,
             @Nonnull AbstractExpressionValue sourceValue,
             @Nonnull AbstractExpressionValue targetValue)
     {
-        super(elementContext, macroElement);
+        super(elementContext, macroElement, sourceCode);
         this.operator    = Objects.requireNonNull(operator);
         this.sourceValue = Objects.requireNonNull(sourceValue);
         this.targetValue = Objects.requireNonNull(targetValue);
@@ -68,11 +71,12 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
         public OperatorCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull AbstractOperatorBuilder<?> operator,
                 @Nonnull AbstractExpressionValueBuilder<?> sourceValue,
                 @Nonnull AbstractExpressionValueBuilder<?> targetValue)
         {
-            super(elementContext, macroElement);
+            super(elementContext, macroElement, sourceCode);
             this.operator    = Objects.requireNonNull(operator);
             this.sourceValue = Objects.requireNonNull(sourceValue);
             this.targetValue = Objects.requireNonNull(targetValue);
@@ -85,6 +89,7 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
             return new OperatorCriteriaImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.operator.build(),
                     this.sourceValue.build(),
                     this.targetValue.build());

@@ -6,24 +6,31 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Element;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
 
-public abstract class AbstractElement implements Element
+public abstract class AbstractElement
+        implements Element
 {
     public static final ParserRuleContext NO_CONTEXT = new ParserRuleContext();
 
     @Nonnull
-    private final ParserRuleContext elementContext;
+    private final ParserRuleContext    elementContext;
     @Nonnull
-    private final Optional<Element> macroElement;
+    private final Optional<Element>    macroElement;
+    @Nonnull
+    private final Optional<SourceCode> sourceCode;
 
     protected AbstractElement(
             @Nonnull ParserRuleContext elementContext,
-            @Nonnull Optional<Element> macroElement)
+            @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode)
     {
         this.elementContext = Objects.requireNonNull(elementContext);
         this.macroElement   = Objects.requireNonNull(macroElement);
+        this.sourceCode     = Objects.requireNonNull(sourceCode);
     }
 
     @Nonnull
@@ -31,6 +38,12 @@ public abstract class AbstractElement implements Element
     public Optional<Element> getMacroElement()
     {
         return this.macroElement;
+    }
+
+    @Override
+    public Optional<SourceCode> getSourceCodeObject()
+    {
+        return this.sourceCode;
     }
 
     @Nonnull
@@ -49,23 +62,24 @@ public abstract class AbstractElement implements Element
         return this.elementContext;
     }
 
-    public interface IElementBuilder
-    {
-    }
-
     public abstract static class ElementBuilder<BuiltElement extends Element>
-            implements IElementBuilder
     {
         @Nonnull
         protected final ParserRuleContext           elementContext;
         @Nonnull
         protected final Optional<ElementBuilder<?>> macroElement;
+        @Nonnull
+        protected final Optional<SourceCodeBuilder> sourceCode;
         protected       BuiltElement                element;
 
-        protected ElementBuilder(@Nonnull ParserRuleContext elementContext, Optional<ElementBuilder<?>> macroElement)
+        protected ElementBuilder(
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode)
         {
             this.elementContext = Objects.requireNonNull(elementContext);
             this.macroElement   = Objects.requireNonNull(macroElement);
+            this.sourceCode     = Objects.requireNonNull(sourceCode);
         }
 
         @Nonnull

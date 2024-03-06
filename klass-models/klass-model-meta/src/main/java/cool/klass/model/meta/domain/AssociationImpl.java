@@ -8,13 +8,17 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.api.Association;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class AssociationImpl extends AbstractPackageableElement implements TopLevelElement, Association
+public final class AssociationImpl
+        extends AbstractPackageableElement
+        implements TopLevelElement, Association
 {
     @Nonnull
     private final AbstractCriteria criteria;
@@ -26,13 +30,14 @@ public final class AssociationImpl extends AbstractPackageableElement implements
     private AssociationImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
             @Nonnull AbstractCriteria criteria)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal, packageName);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
         this.criteria = Objects.requireNonNull(criteria);
     }
 
@@ -72,7 +77,8 @@ public final class AssociationImpl extends AbstractPackageableElement implements
         return this.targetAssociationEnd;
     }
 
-    public static final class AssociationBuilder extends PackageableElementBuilder<AssociationImpl>
+    public static final class AssociationBuilder
+            extends PackageableElementBuilder<AssociationImpl>
             implements TopLevelElementBuilder
     {
         @Nonnull
@@ -83,13 +89,14 @@ public final class AssociationImpl extends AbstractPackageableElement implements
         public AssociationBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
                 @Nonnull AbstractCriteriaBuilder<?> criteriaBuilder)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal, packageName);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
             this.criteriaBuilder = Objects.requireNonNull(criteriaBuilder);
         }
 
@@ -105,6 +112,7 @@ public final class AssociationImpl extends AbstractPackageableElement implements
             return new AssociationImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.nameContext,
                     this.name,
                     this.ordinal,

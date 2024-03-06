@@ -33,6 +33,7 @@ public class AntlrMinLengthPropertyValidation extends AbstractAntlrNumericProper
         this.elementBuilder = new MinLengthPropertyValidationBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.owningPropertyState.getElementBuilder(),
                 this.number);
         return this.elementBuilder;

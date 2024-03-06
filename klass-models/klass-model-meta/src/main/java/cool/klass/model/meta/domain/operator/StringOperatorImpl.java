@@ -6,26 +6,33 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.operator.StringOperator;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class StringOperatorImpl extends AbstractOperator implements StringOperator
+public final class StringOperatorImpl
+        extends AbstractOperator
+        implements StringOperator
 {
     private StringOperatorImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull String operatorText)
     {
-        super(elementContext, macroElement, operatorText);
+        super(elementContext, macroElement, sourceCode, operatorText);
     }
 
-    public static final class StringOperatorBuilder extends AbstractOperatorBuilder<StringOperatorImpl>
+    public static final class StringOperatorBuilder
+            extends AbstractOperatorBuilder<StringOperatorImpl>
     {
         public StringOperatorBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull String operatorText)
         {
-            super(elementContext, macroElement, operatorText);
+            super(elementContext, macroElement, sourceCode, operatorText);
         }
 
         @Override
@@ -35,6 +42,7 @@ public final class StringOperatorImpl extends AbstractOperator implements String
             return new StringOperatorImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.operatorText);
         }
     }

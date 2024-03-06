@@ -6,10 +6,14 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Element;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class StringLiteralValueImpl extends AbstractLiteralValue implements StringLiteralValue
+public final class StringLiteralValueImpl
+        extends AbstractLiteralValue
+        implements StringLiteralValue
 {
     @Nonnull
     private final String value;
@@ -17,9 +21,10 @@ public final class StringLiteralValueImpl extends AbstractLiteralValue implement
     private StringLiteralValueImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull String value)
     {
-        super(elementContext, macroElement);
+        super(elementContext, macroElement, sourceCode);
         this.value = Objects.requireNonNull(value);
     }
 
@@ -30,7 +35,8 @@ public final class StringLiteralValueImpl extends AbstractLiteralValue implement
         return this.value;
     }
 
-    public static final class StringLiteralValueBuilder extends AbstractLiteralValueBuilder<StringLiteralValueImpl>
+    public static final class StringLiteralValueBuilder
+            extends AbstractLiteralValueBuilder<StringLiteralValueImpl>
     {
         @Nonnull
         private final String value;
@@ -38,9 +44,10 @@ public final class StringLiteralValueImpl extends AbstractLiteralValue implement
         public StringLiteralValueBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull String value)
         {
-            super(elementContext, macroElement);
+            super(elementContext, macroElement, sourceCode);
             this.value = Objects.requireNonNull(value);
         }
 
@@ -51,6 +58,7 @@ public final class StringLiteralValueImpl extends AbstractLiteralValue implement
             return new StringLiteralValueImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.value);
         }
     }

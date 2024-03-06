@@ -42,6 +42,7 @@ public class AntlrAndCriteria extends AntlrBinaryCriteria
         this.elementBuilder = new AndCriteriaBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.left.build(),
                 this.right.build());
         return this.elementBuilder;

@@ -8,9 +8,11 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.AbstractElement.ElementBuilder;
 import cool.klass.model.meta.domain.api.DataType.DataTypeGetter;
 import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class PrimitiveTypeBuilder extends ElementBuilder<PrimitiveType>
+public class PrimitiveTypeBuilder
+        extends ElementBuilder<PrimitiveType>
         implements DataTypeGetter
 {
     @Nonnull
@@ -19,9 +21,10 @@ public class PrimitiveTypeBuilder extends ElementBuilder<PrimitiveType>
     public PrimitiveTypeBuilder(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<ElementBuilder<?>> macroElement,
+            @Nonnull Optional<SourceCodeBuilder> sourceCode,
             @Nonnull PrimitiveType primitiveType)
     {
-        super(elementContext, macroElement);
+        super(elementContext, macroElement, sourceCode);
         this.primitiveType = Objects.requireNonNull(primitiveType);
     }
 

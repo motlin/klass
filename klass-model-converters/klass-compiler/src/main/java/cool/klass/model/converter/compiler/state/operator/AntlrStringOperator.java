@@ -35,7 +35,9 @@ public class AntlrStringOperator extends AntlrOperator
         this.elementBuilder = new StringOperatorBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.operatorText);
+
         return this.elementBuilder;
     }
 

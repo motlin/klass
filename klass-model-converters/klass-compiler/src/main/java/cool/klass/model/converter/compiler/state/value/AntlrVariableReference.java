@@ -48,6 +48,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
         this.elementBuilder = new VariableReferenceBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.antlrParameter.getElementBuilder());
         return this.elementBuilder;
     }

@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AbstractPackageableElement extends AbstractNamedElement implements PackageableElement
@@ -17,12 +19,13 @@ public abstract class AbstractPackageableElement extends AbstractNamedElement im
     protected AbstractPackageableElement(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
         this.packageName = Objects.requireNonNull(packageName);
     }
 
@@ -50,12 +53,13 @@ public abstract class AbstractPackageableElement extends AbstractNamedElement im
         protected PackageableElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
             this.packageName = Objects.requireNonNull(packageName);
         }
     }

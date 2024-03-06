@@ -11,9 +11,13 @@ import cool.klass.model.meta.domain.TopLevelElement;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class ProjectionImpl extends AbstractProjectionParent implements TopLevelElement, Projection
+public final class ProjectionImpl
+        extends AbstractProjectionParent
+        implements TopLevelElement, Projection
 {
     @Nonnull
     private final String    packageName;
@@ -23,13 +27,14 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
     private ProjectionImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
             @Nonnull KlassImpl klass)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
         this.packageName = Objects.requireNonNull(packageName);
         this.klass       = Objects.requireNonNull(klass);
     }
@@ -66,13 +71,14 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
         public ProjectionBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
                 @Nonnull KlassBuilder klassBuilder)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
             this.packageName  = Objects.requireNonNull(packageName);
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
         }
@@ -84,6 +90,7 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
             return new ProjectionImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.nameContext,
                     this.name,
                     this.ordinal,

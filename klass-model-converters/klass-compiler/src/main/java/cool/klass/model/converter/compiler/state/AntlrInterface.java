@@ -106,6 +106,7 @@ public class AntlrInterface extends AntlrClassifier
         this.interfaceBuilder = new InterfaceBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

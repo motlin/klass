@@ -13,6 +13,8 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Type;
 import cool.klass.model.meta.domain.api.Type.TypeGetter;
 import cool.klass.model.meta.domain.api.property.Property;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AbstractProperty<T extends Type>
@@ -25,13 +27,14 @@ public abstract class AbstractProperty<T extends Type>
     protected AbstractProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull T type,
             @Nonnull AbstractClassifier owningClassifier)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal, type);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, type);
         this.owningClassifier = Objects.requireNonNull(owningClassifier);
     }
 
@@ -51,13 +54,14 @@ public abstract class AbstractProperty<T extends Type>
         protected PropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull TG typeBuilder,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal, typeBuilder);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, typeBuilder);
             this.owningClassifierBuilder = Objects.requireNonNull(owningClassifierBuilder);
         }
     }

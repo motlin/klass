@@ -36,6 +36,7 @@ public class AntlrInequalityOperator extends AntlrOperator
         this.elementBuilder = new InequalityOperatorBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.operatorText);
         return this.elementBuilder;
     }

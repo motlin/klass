@@ -171,6 +171,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
         this.serviceGroupBuilder = new ServiceGroupBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

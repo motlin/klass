@@ -15,13 +15,17 @@ import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.modifier.AssociationEndModifier;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 // TODO: Super class for reference-type-property?
-public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implements AssociationEnd
+public final class AssociationEndImpl
+        extends AbstractProperty<KlassImpl>
+        implements AssociationEnd
 {
     @Nonnull
     private final AssociationImpl owningAssociation;
@@ -37,6 +41,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
     private AssociationEndImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -46,7 +51,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
             @Nonnull Multiplicity multiplicity,
             boolean owned)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal, type, owningKlass);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, type, owningKlass);
         this.owningAssociation = Objects.requireNonNull(owningAssociation);
         this.multiplicity      = Objects.requireNonNull(multiplicity);
         this.owned             = owned;
@@ -114,7 +119,8 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
                 this.multiplicity.getPrettyName());
     }
 
-    public static final class AssociationEndBuilder extends PropertyBuilder<KlassImpl, KlassBuilder, AssociationEndImpl>
+    public static final class AssociationEndBuilder
+            extends PropertyBuilder<KlassImpl, KlassBuilder, AssociationEndImpl>
     {
         @Nonnull
         private final AssociationBuilder owningAssociation;
@@ -130,6 +136,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
         public AssociationEndBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -139,7 +146,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
                 @Nonnull Multiplicity multiplicity,
                 boolean isOwned)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal, type, owningKlassBuilder);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, type, owningKlassBuilder);
             this.owningAssociation = Objects.requireNonNull(owningAssociation);
             this.multiplicity      = Objects.requireNonNull(multiplicity);
             this.isOwned           = isOwned;
@@ -162,6 +169,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
             return new AssociationEndImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.nameContext,
                     this.name,
                     this.ordinal,

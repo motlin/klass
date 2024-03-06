@@ -12,11 +12,15 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 // TODO: Super class for reference-type-property?
-public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl> implements ParameterizedProperty
+public final class ParameterizedPropertyImpl
+        extends AbstractProperty<KlassImpl>
+        implements ParameterizedProperty
 {
     @Nonnull
     private final Multiplicity multiplicity;
@@ -29,6 +33,7 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
     private ParameterizedPropertyImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -36,7 +41,7 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
             @Nonnull KlassImpl owningKlass,
             @Nonnull Multiplicity multiplicity)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal, type, owningKlass);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, type, owningKlass);
         this.multiplicity = Objects.requireNonNull(multiplicity);
     }
 
@@ -78,6 +83,7 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
         public ParameterizedPropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -85,7 +91,7 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
                 @Nonnull KlassBuilder owningKlassBuilder,
                 @Nonnull Multiplicity multiplicity)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal, type, owningKlassBuilder);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, type, owningKlassBuilder);
             this.multiplicity = Objects.requireNonNull(multiplicity);
         }
 
@@ -101,6 +107,7 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
             ParameterizedPropertyImpl parameterizedProperty = new ParameterizedPropertyImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.nameContext,
                     this.name,
                     this.ordinal,

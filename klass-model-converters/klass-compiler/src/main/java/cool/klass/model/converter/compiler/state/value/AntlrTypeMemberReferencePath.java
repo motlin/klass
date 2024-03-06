@@ -60,6 +60,7 @@ public class AntlrTypeMemberReferencePath
         this.elementBuilder = new TypeMemberReferencePathBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.classState.getElementBuilder(),
                 associationEndBuilders,
                 this.dataTypePropertyState.getElementBuilder());

@@ -10,6 +10,8 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.parameter.Parameter;
 import cool.klass.model.meta.domain.api.service.Service;
 import cool.klass.model.meta.domain.api.service.url.Url;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.parameter.ParameterImpl.ParameterBuilder;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
@@ -30,9 +32,10 @@ public final class UrlImpl extends AbstractElement implements Url
     private UrlImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ServiceGroupImpl serviceGroup)
     {
-        super(elementContext, macroElement);
+        super(elementContext, macroElement, sourceCode);
         this.serviceGroup = Objects.requireNonNull(serviceGroup);
     }
 
@@ -132,9 +135,10 @@ public final class UrlImpl extends AbstractElement implements Url
         public UrlBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ServiceGroupBuilder serviceGroupBuilder)
         {
-            super(elementContext, macroElement);
+            super(elementContext, macroElement, sourceCode);
             this.serviceGroupBuilder = Objects.requireNonNull(serviceGroupBuilder);
         }
 
@@ -170,6 +174,7 @@ public final class UrlImpl extends AbstractElement implements Url
             return new UrlImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.serviceGroupBuilder.getElement());
         }
 

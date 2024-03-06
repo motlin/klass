@@ -13,6 +13,8 @@ import cool.klass.model.meta.domain.api.service.Service;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
 import cool.klass.model.meta.domain.api.service.Verb;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.service.ServiceProjectionDispatchImpl.ServiceProjectionDispatchBuilder;
@@ -20,7 +22,9 @@ import cool.klass.model.meta.domain.service.url.UrlImpl;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class ServiceImpl extends AbstractElement implements Service
+public final class ServiceImpl
+        extends AbstractElement
+        implements Service
 {
     @Nonnull
     private final UrlImpl             url;
@@ -42,11 +46,12 @@ public final class ServiceImpl extends AbstractElement implements Service
     private ServiceImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull UrlImpl url,
             @Nonnull Verb verb,
             @Nonnull ServiceMultiplicity serviceMultiplicity)
     {
-        super(elementContext, macroElement);
+        super(elementContext, macroElement, sourceCode);
         this.url                 = Objects.requireNonNull(url);
         this.verb                = Objects.requireNonNull(verb);
         this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
@@ -186,7 +191,8 @@ public final class ServiceImpl extends AbstractElement implements Service
         return this.authorizeCriteria.isPresent();
     }
 
-    public static final class ServiceBuilder extends ElementBuilder<ServiceImpl>
+    public static final class ServiceBuilder
+            extends ElementBuilder<ServiceImpl>
     {
         @Nonnull
         private final UrlBuilder          urlBuilder;
@@ -208,11 +214,12 @@ public final class ServiceImpl extends AbstractElement implements Service
         public ServiceBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull UrlBuilder urlBuilder,
                 @Nonnull Verb verb,
                 @Nonnull ServiceMultiplicity serviceMultiplicity)
         {
-            super(elementContext, macroElement);
+            super(elementContext, macroElement, sourceCode);
             this.urlBuilder          = Objects.requireNonNull(urlBuilder);
             this.verb                = Objects.requireNonNull(verb);
             this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
@@ -287,6 +294,7 @@ public final class ServiceImpl extends AbstractElement implements Service
             ServiceImpl service = new ServiceImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.urlBuilder.getElement(),
                     this.verb,
                     this.serviceMultiplicity);

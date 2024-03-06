@@ -42,7 +42,8 @@ public class AntlrUserLiteral extends AbstractAntlrLiteralValue
         }
         this.elementBuilder = new UserLiteralBuilder(
                 this.elementContext,
-                this.getMacroElementBuilder());
+                this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder());
         return this.elementBuilder;
     }
 

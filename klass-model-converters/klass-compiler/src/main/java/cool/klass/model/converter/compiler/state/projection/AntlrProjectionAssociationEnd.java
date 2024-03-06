@@ -79,6 +79,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
         this.projectionAssociationEndBuilder = new ProjectionAssociationEndBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

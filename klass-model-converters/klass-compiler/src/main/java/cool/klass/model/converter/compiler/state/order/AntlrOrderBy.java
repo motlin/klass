@@ -100,6 +100,7 @@ public class AntlrOrderBy extends AntlrElement
         this.elementBuilder = new OrderByBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.thisContext.getElementBuilder());
 
         ImmutableList<OrderByMemberReferencePathBuilder> orderByMemberReferencePathBuilders =

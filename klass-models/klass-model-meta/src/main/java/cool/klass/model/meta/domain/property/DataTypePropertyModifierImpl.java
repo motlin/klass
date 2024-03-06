@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -18,12 +20,13 @@ public final class DataTypePropertyModifierImpl
     private DataTypePropertyModifierImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull AbstractDataTypeProperty<?> owningProperty)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal, owningProperty);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, owningProperty);
     }
 
     @Override
@@ -41,12 +44,13 @@ public final class DataTypePropertyModifierImpl
         public DataTypePropertyModifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
             this.owningPropertyBuilder = Objects.requireNonNull(owningPropertyBuilder);
         }
 
@@ -57,6 +61,7 @@ public final class DataTypePropertyModifierImpl
             return new DataTypePropertyModifierImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.map(SourceCodeBuilder::build),
                     this.nameContext,
                     this.name,
                     this.ordinal,

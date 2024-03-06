@@ -52,6 +52,7 @@ public class AntlrOrderByDirection extends AntlrElement
         this.elementBuilder = new OrderByDirectionDeclarationBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.orderByDirection);
         return this.elementBuilder;
     }

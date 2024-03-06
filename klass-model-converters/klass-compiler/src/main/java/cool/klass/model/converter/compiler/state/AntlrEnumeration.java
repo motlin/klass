@@ -19,7 +19,9 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrEnumeration extends AntlrPackageableElement implements AntlrType, AntlrTopLevelElement
+public class AntlrEnumeration
+        extends AntlrPackageableElement
+        implements AntlrType, AntlrTopLevelElement
 {
     @Nonnull
     public static final AntlrEnumeration AMBIGUOUS = new AntlrEnumeration(
@@ -42,8 +44,9 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
             "klass.meta");
 
     private final MutableList<AntlrEnumerationLiteral>               enumerationLiteralStates  = Lists.mutable.empty();
-    private final MutableOrderedMap<String, AntlrEnumerationLiteral> enumerationLiteralsByName = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
+    private final MutableOrderedMap<String, AntlrEnumerationLiteral> enumerationLiteralsByName =
+            OrderedMapAdapter.adapt(
+                    new LinkedHashMap<>());
 
     private EnumerationBuilder enumerationBuilder;
 
@@ -84,6 +87,7 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
         this.enumerationBuilder = new EnumerationBuilder(
                 this.getElementContext(),
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.getElementContext().identifier(),
                 this.name,
                 this.ordinal,

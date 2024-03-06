@@ -9,10 +9,13 @@ import cool.klass.model.meta.domain.AbstractNamedElement;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.ProjectionChild;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public abstract class AbstractProjectionParent extends AbstractNamedElement
+public abstract class AbstractProjectionParent
+        extends AbstractNamedElement
         implements AbstractProjectionElement, ProjectionParent
 {
     private ImmutableList<ProjectionChild> children;
@@ -20,11 +23,12 @@ public abstract class AbstractProjectionParent extends AbstractNamedElement
     protected AbstractProjectionParent(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
+            @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal);
+        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
     }
 
     @Override
@@ -47,11 +51,12 @@ public abstract class AbstractProjectionParent extends AbstractNamedElement
         protected AbstractProjectionParentBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal)
         {
-            super(elementContext, macroElement, nameContext, name, ordinal);
+            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
         }
 
         public void setChildBuilders(@Nonnull ImmutableList<ProjectionChildBuilder> projectionChildrenBuilders)

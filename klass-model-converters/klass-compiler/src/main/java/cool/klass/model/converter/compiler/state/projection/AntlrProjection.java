@@ -72,6 +72,7 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
         this.projectionBuilder = new ProjectionBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

@@ -32,6 +32,7 @@ public class AntlrMaxPropertyValidation extends AbstractAntlrNumericPropertyVali
         this.elementBuilder = new MaxPropertyValidationBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
+                this.getSourceCodeBuilder(),
                 this.owningPropertyState.getElementBuilder(),
                 this.number);
         return this.elementBuilder;
