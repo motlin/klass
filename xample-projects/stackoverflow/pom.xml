@@ -34,7 +34,6 @@
         <module>${app.artifactId}-reladomo-definitions</module>
         <module>${app.artifactId}-reladomo-pojos</module>
         <module>${app.artifactId}-reladomo-ddls</module>
-        <module>${app.artifactId}-reladomo-ddl-executor</module>
         <module>${app.artifactId}-services</module>
         <module>${app.artifactId}-reladomo-test-data</module>
         <module>${app.artifactId}-dtos</module>
