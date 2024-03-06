@@ -265,7 +265,9 @@
 
         <module name="MissingDeprecated" />
 
-        <module name="AnnotationUseStyle" />
+        <module name="AnnotationUseStyle">
+            <property name="trailingArrayComma" value="always"/>
+        </module>
 
         <module name="DeclarationOrder" />
 

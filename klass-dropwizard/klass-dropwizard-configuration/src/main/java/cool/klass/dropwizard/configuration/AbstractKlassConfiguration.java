@@ -53,23 +53,23 @@ import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MapIterable;
 
 @JsonPropertyOrder({
-                           "server",
-                           "logging",
-                           "metrics",
-                           "klass",
-                           "configLogging",
-                           "objectMapper",
-                           "cors",
-                           "authFilters",
-                           "jerseyHttpLogging",
-                           "h2",
-                           "dataSources",
-                           "ddlExecutors",
-                           "reladomo",
-                           "connectionManagers",
-                           "sampleData",
-                           "bootstrap"
-                   })
+        "server",
+        "logging",
+        "metrics",
+        "klass",
+        "configLogging",
+        "objectMapper",
+        "cors",
+        "authFilters",
+        "jerseyHttpLogging",
+        "h2",
+        "dataSources",
+        "ddlExecutors",
+        "reladomo",
+        "connectionManagers",
+        "sampleData",
+        "bootstrap",
+})
 public class AbstractKlassConfiguration
         extends Configuration
         implements ConfigLoggingFactoryProvider,

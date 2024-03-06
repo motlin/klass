@@ -11,7 +11,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.liftwizard.logging.slf4j.mdc.MultiMDCCloseable;
 
-@JsonPropertyOrder({"_metadata", "_data"})
+@JsonPropertyOrder({
+        "_metadata",
+        "_data",
+})
 public class KlassResponse
 {
     @Nonnull
