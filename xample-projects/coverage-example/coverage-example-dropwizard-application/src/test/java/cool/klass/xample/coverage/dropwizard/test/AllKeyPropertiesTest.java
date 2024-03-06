@@ -22,7 +22,7 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
                 "cool.klass.xample.coverage.dropwizard.test.AllKeyPropertiesTest.get");
 
         Response response = client.target(
-                String.format("http://localhost:%d/api/allKeyProperties", this.rule.getLocalPort()))
+                String.format("http://localhost:%d/api/allKeyProperties", this.appRule.getLocalPort()))
                 .request()
                 .get();
 
@@ -149,7 +149,7 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
                 + "]\n";
 
         Response response = client.target(
-                String.format("http://localhost:%d/api/allKeyProperties", this.rule.getLocalPort()))
+                String.format("http://localhost:%d/api/allKeyProperties", this.appRule.getLocalPort()))
                 .request()
                 .post(Entity.json(json));
 
@@ -176,7 +176,7 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
             Response response = client.target(
                     String.format(
                             "http://localhost:%d/api/allKeyProperties/AllKeyProperties keyString 1 ☝/1/1/1.0123456789/1.0123457/true/1999-12-31T23:59:00Z/1999-12-31/",
-                            this.rule.getLocalPort()))
+                            this.appRule.getLocalPort()))
                     .request()
                     .get();
 
@@ -237,7 +237,7 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
             Response response = client.target(
                     String.format(
                             "http://localhost:%d/api/allKeyProperties/AllKeyProperties keyString 1 ☝/1/1/1.0123456789/1.0123457/true/1999-12-31T23:59:00Z/1999-12-31/",
-                            this.rule.getLocalPort()))
+                            this.appRule.getLocalPort()))
                     .request()
                     .put(Entity.json(json));
 
@@ -249,7 +249,7 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
         Response response = client.target(
                 String.format(
                         "http://localhost:%d/api/allKeyProperties/AllKeyProperties keyString 1 ☝/1/1/1.0123456789/1.0123457/true/1999-12-31T23:59:00Z/1999-12-31/",
-                        this.rule.getLocalPort()))
+                        this.appRule.getLocalPort()))
                 .request()
                 .get();
 

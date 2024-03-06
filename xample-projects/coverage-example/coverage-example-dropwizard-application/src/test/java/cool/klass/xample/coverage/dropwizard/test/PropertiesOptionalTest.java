@@ -18,7 +18,7 @@ public class PropertiesOptionalTest extends AbstractCoverageTest
                 "cool.klass.xample.coverage.dropwizard.test.PropertiesOptionalTest.getFirst");
 
         Response response = client.target(
-                String.format("http://localhost:%d/api/propertiesOptional/{id}", this.rule.getLocalPort()))
+                String.format("http://localhost:%d/api/propertiesOptional/{id}", this.appRule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .request()
                 .get();
@@ -50,7 +50,7 @@ public class PropertiesOptionalTest extends AbstractCoverageTest
                 "cool.klass.xample.coverage.dropwizard.test.PropertiesOptionalTest.getSecond");
 
         Response response = client.target(
-                String.format("http://localhost:%d/api/propertiesOptional/{id}", this.rule.getLocalPort()))
+                String.format("http://localhost:%d/api/propertiesOptional/{id}", this.appRule.getLocalPort()))
                 .resolveTemplate("id", 2)
                 .request()
                 .get();

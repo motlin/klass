@@ -14,6 +14,7 @@ import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import org.junit.Rule;
+import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -21,20 +22,24 @@ import static org.junit.Assert.assertThat;
 
 public class AbstractCoverageTest
 {
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
-
-    @Rule
-    public final DropwizardAppRule<CoverageExampleConfiguration> rule = new DropwizardAppRule<>(
+    protected final DropwizardAppRule<CoverageExampleConfiguration> appRule = new DropwizardAppRule<>(
             CoverageExampleApplication.class,
             ResourceHelpers.resourceFilePath("config-test.json5"));
+
+    protected final TestRule logMarkerTestRule = new LogMarkerTestRule();
+
+    // TODO: Write Znai documentation for LogMarkerTestRule explaining that it needs to be an inner rule, with any other rules that tear down logging outer to it.
+    @Rule
+    public final TestRule rule = RuleChain
+            .outerRule(this.appRule)
+            .around(this.logMarkerTestRule);
 
     protected Client getClient(String clientName)
     {
         var jerseyClientConfiguration = new JerseyClientConfiguration();
         jerseyClientConfiguration.setTimeout(Duration.minutes(5));
 
-        return new JerseyClientBuilder(this.rule.getEnvironment())
+        return new JerseyClientBuilder(this.appRule.getEnvironment())
                 .using(jerseyClientConfiguration)
                 .build(clientName);
     }
