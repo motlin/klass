@@ -30,7 +30,8 @@ public class ProjectionDeclarationPhase extends AbstractCompilerPhase
         String            className              = ctx.classReference().identifier().getText();
         AntlrClass        klass                  = this.compilerState.getDomainModelState().getClassByName(className);
         IdentifierContext nameContext            = ctx.identifier();
-        CompilationUnit   currentCompilationUnit = this.compilerState.getCompilerWalkState().getCurrentCompilationUnit();
+        CompilationUnit   currentCompilationUnit =
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit();
         this.projectionState = new AntlrProjection(
                 ctx,
                 Optional.of(currentCompilationUnit),

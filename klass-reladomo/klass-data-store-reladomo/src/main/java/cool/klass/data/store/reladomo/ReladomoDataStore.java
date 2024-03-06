@@ -94,6 +94,16 @@ public class ReladomoDataStore implements DataStore
         }, this.retryCount);
     }
 
+    @Override
+    public void runInTransaction(@Nonnull Runnable runnable)
+    {
+        MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
+        {
+            runnable.run();
+            return null;
+        }, this.retryCount);
+    }
+
     private static void logTransactionalStats(
             String context,
             MithraTransaction reladomoTransaction)
@@ -127,16 +137,6 @@ public class ReladomoDataStore implements DataStore
         MDC.remove("total database retrievals");
         MDC.remove("remote retrievals");
         MDC.remove("database retrievals");
-    }
-
-    @Override
-    public void runInTransaction(@Nonnull Runnable runnable)
-    {
-        MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
-        {
-            runnable.run();
-            return null;
-        }, this.retryCount);
     }
 
     @Override

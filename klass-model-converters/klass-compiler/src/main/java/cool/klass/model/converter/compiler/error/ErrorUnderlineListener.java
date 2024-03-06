@@ -220,6 +220,33 @@ public class ErrorUnderlineListener extends AbstractErrorListener
         }
     }
 
+    private void addUnderlinedToken(@Nonnull ParserRuleContext ctx, @Nonnull ImmutableList<Token> offendingTokens)
+    {
+        ImmutableMap<Integer, Token> tokenByLine = offendingTokens.groupByUniqueKey(Token::getLine);
+
+        Token startToken = ctx.getStart();
+        Token stopToken  = ctx.getStop();
+        int   startLine  = startToken.getLine();
+        int   stopLine   = stopToken.getLine();
+
+        for (int lineNumber = startLine; lineNumber <= stopLine; lineNumber++)
+        {
+            if (tokenByLine.containsKey(lineNumber))
+            {
+                Token offendingToken = tokenByLine.get(lineNumber);
+                this.addUnderlinedContext(offendingToken, offendingToken, lineNumber);
+            }
+            else
+            {
+                // TODO: Move the decrement inside getLine?
+                int           adjustedLineNumber = lineNumber - 1;
+                String        sourceCodeLine     = this.compilationUnit.getLine(adjustedLineNumber);
+                ContextString contextString      = new ContextString(lineNumber, sourceCodeLine);
+                this.contextualStrings.add(contextString);
+            }
+        }
+    }
+
     private void addUnderlinedToken(@Nonnull Token offendingToken)
     {
         this.addUnderlinedContext(offendingToken, offendingToken, offendingToken.getLine());
@@ -290,32 +317,5 @@ public class ErrorUnderlineListener extends AbstractErrorListener
         return ansi()
                 .a(whitespaceBuffer.toString())
                 .bg(BLACK).fgBright(RED).a(caretBuffer.toString()).toString();
-    }
-
-    private void addUnderlinedToken(@Nonnull ParserRuleContext ctx, @Nonnull ImmutableList<Token> offendingTokens)
-    {
-        ImmutableMap<Integer, Token> tokenByLine = offendingTokens.groupByUniqueKey(Token::getLine);
-
-        Token    startToken     = ctx.getStart();
-        Token    stopToken      = ctx.getStop();
-        int      startLine      = startToken.getLine();
-        int      stopLine       = stopToken.getLine();
-
-        for (int lineNumber = startLine; lineNumber <= stopLine; lineNumber++)
-        {
-            if (tokenByLine.containsKey(lineNumber))
-            {
-                Token offendingToken = tokenByLine.get(lineNumber);
-                this.addUnderlinedContext(offendingToken, offendingToken, lineNumber);
-            }
-            else
-            {
-                // TODO: Move the decrement inside getLine?
-                int           adjustedLineNumber = lineNumber - 1;
-                String        sourceCodeLine     = this.compilationUnit.getLine(adjustedLineNumber);
-                ContextString contextString      = new ContextString(lineNumber, sourceCodeLine);
-                this.contextualStrings.add(contextString);
-            }
-        }
     }
 }

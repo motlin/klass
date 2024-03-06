@@ -192,12 +192,12 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         }
     };
 
-    protected final MutableList<AntlrAssociationEndSignature>                              associationEndSignatureStates     =
+    protected final MutableList<AntlrAssociationEndSignature>               associationEndSignatureStates  =
             Lists.mutable.empty();
-    protected final MutableOrderedMap<String, AntlrAssociationEndSignature>                associationEndSignaturesByName    =
+    protected final MutableOrderedMap<String, AntlrAssociationEndSignature> associationEndSignaturesByName =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    protected final MutableOrderedMap<AssociationEndSignatureContext, AntlrAssociationEndSignature> associationEndSignaturesByContext =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
+    protected final MutableOrderedMap<AssociationEndSignatureContext, AntlrAssociationEndSignature> associationEndSignaturesByContext = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     protected final MutableList<AntlrClassModifier>       classModifierStates    = Lists.mutable.empty();
     protected final MutableList<AntlrDataTypeProperty<?>> dataTypePropertyStates = Lists.mutable.empty();
@@ -220,6 +220,11 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
             @Nonnull String packageName)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
+    }
+
+    public final ImmutableList<AntlrDataTypeProperty<?>> getDataTypeProperties()
+    {
+        return this.getDataTypeProperties(Lists.mutable.empty());
     }
 
     protected ImmutableList<AntlrDataTypeProperty<?>> getDataTypeProperties(@Nonnull MutableList<AntlrClassifier> visited)
@@ -246,9 +251,9 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                 .toImmutable();
     }
 
-    public final ImmutableList<AntlrDataTypeProperty<?>> getDataTypeProperties()
+    private ImmutableList<AntlrClassModifier> getClassModifiers()
     {
-        return this.getDataTypeProperties(Lists.mutable.empty());
+        return this.getClassModifiers(Lists.mutable.empty());
     }
 
     protected ImmutableList<AntlrClassModifier> getClassModifiers(@Nonnull MutableList<AntlrClassifier> visited)
@@ -273,11 +278,6 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                 .flatCollectWith(AntlrClassifier::getClassModifiers, visited)
                 .distinctBy(AntlrNamedElement::getName)
                 .toImmutable();
-    }
-
-    public final ImmutableList<AntlrClassModifier> getClassModifiers()
-    {
-        return this.getClassModifiers(Lists.mutable.empty());
     }
 
     public boolean isTransient()

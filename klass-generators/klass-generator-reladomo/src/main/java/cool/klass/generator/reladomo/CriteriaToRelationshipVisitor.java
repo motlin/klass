@@ -74,11 +74,17 @@ public class CriteriaToRelationshipVisitor implements CriteriaVisitor
         switch (operatorText)
         {
             case "==":
+            {
                 return "is null";
+            }
             case "!=":
+            {
                 return "is not null";
+            }
             default:
+            {
                 throw new AssertionError();
+            }
         }
     }
 

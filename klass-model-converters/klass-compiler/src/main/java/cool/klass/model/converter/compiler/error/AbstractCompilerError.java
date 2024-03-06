@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.SourceContext;
+import cool.klass.model.meta.grammar.KlassListener;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -22,12 +23,12 @@ public abstract class AbstractCompilerError
     @Nonnull
     protected final CompilationUnit                  compilationUnit;
     @Nonnull
-    private final Optional<CauseCompilerError>     macroCause;
+    private final   Optional<CauseCompilerError>     macroCause;
     // TODO: Change type of offendingContexts to also be SourceContexts
     @Nonnull
-    private final ImmutableList<ParserRuleContext> offendingContexts;
+    private final   ImmutableList<ParserRuleContext> offendingContexts;
     @Nonnull
-    private final ImmutableList<SourceContext>     sourceContexts;
+    private final   ImmutableList<SourceContext>     sourceContexts;
 
     protected AbstractCompilerError(
             @Nonnull CompilationUnit compilationUnit,
@@ -35,10 +36,10 @@ public abstract class AbstractCompilerError
             @Nonnull ImmutableList<ParserRuleContext> offendingContexts,
             @Nonnull ImmutableList<SourceContext> sourceContexts)
     {
-        this.macroCause = Objects.requireNonNull(macroCause);
-        this.compilationUnit = Objects.requireNonNull(compilationUnit);
+        this.macroCause        = Objects.requireNonNull(macroCause);
+        this.compilationUnit   = Objects.requireNonNull(compilationUnit);
         this.offendingContexts = Objects.requireNonNull(offendingContexts);
-        this.sourceContexts = Objects.requireNonNull(sourceContexts);
+        this.sourceContexts    = Objects.requireNonNull(sourceContexts);
 
         if (offendingContexts.isEmpty())
         {
@@ -101,17 +102,19 @@ public abstract class AbstractCompilerError
         ImmutableList<SourceContext> reversedContext = this.sourceContexts.toReversed();
         for (SourceContext sourceContext : reversedContext)
         {
-            ParserRuleContext elementContext = sourceContext.getElementContext();
+            ParserRuleContext elementContext  = sourceContext.getElementContext();
             CompilationUnit   compilationUnit = sourceContext.getCompilationUnit();
             elementContext.enterRule(new ErrorContextListener(compilationUnit, contextualStrings));
         }
 
-        ErrorUnderlineListener errorUnderlineListener = new ErrorUnderlineListener(this.compilationUnit, contextualStrings);
+        KlassListener errorUnderlineListener = new ErrorUnderlineListener(
+                this.compilationUnit,
+                contextualStrings);
         this.offendingContexts.forEachWith(ParserRuleContext::enterRule, errorUnderlineListener);
 
         for (SourceContext sourceContext : this.sourceContexts)
         {
-            ParserRuleContext elementContext = sourceContext.getElementContext();
+            ParserRuleContext elementContext  = sourceContext.getElementContext();
             CompilationUnit   compilationUnit = sourceContext.getCompilationUnit();
             elementContext.exitRule(new ErrorContextListener(compilationUnit, contextualStrings));
         }
@@ -153,8 +156,7 @@ public abstract class AbstractCompilerError
     private String getLocationMessage()
     {
         return ansi().a("\n")
-                .fg(CYAN).a("Location:  ").reset().a(this.getFilenameWithoutDirectory()).a(":").a(this.getLine()).reset().a(
-                        "\n")
+                .fg(CYAN).a("Location:  ").reset().a(this.getFilenameWithoutDirectory()).a(":").a(this.getLine()).reset().a("\n")
                 .fg(CYAN).a("File:      ").reset().a(this.compilationUnit).reset().a("\n")
                 .fg(CYAN).a("Line:      ").reset().a(this.getLine()).reset().a("\n")
                 .fg(CYAN).a("Character: ").reset().a(this.getCharPositionInLine() + 1).reset().a("\n")

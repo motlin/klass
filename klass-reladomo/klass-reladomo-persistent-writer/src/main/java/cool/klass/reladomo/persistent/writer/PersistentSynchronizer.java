@@ -677,25 +677,6 @@ public abstract class PersistentSynchronizer
                         associationEnd));
     }
 
-    private ImmutableList<Object> getKeysFromJsonNode(
-            @Nonnull JsonNode jsonNode,
-            @Nonnull AssociationEnd associationEnd,
-            Object persistentParentInstance)
-    {
-        if (this.jsonNodeNeedsIdInferredOnInsert(jsonNode, associationEnd))
-        {
-            return Lists.immutable.empty();
-        }
-
-        return associationEnd.getType()
-                .getKeyProperties()
-                .collect(keyProperty -> this.getKeyFromJsonNode(
-                        keyProperty,
-                        jsonNode,
-                        associationEnd,
-                        persistentParentInstance));
-    }
-
     private boolean jsonNodeNeedsIdInferredOnInsert(
             @Nonnull DataTypeProperty keyProperty,
             JsonNode jsonNode,
@@ -726,5 +707,24 @@ public abstract class PersistentSynchronizer
         return JsonDataTypeValueVisitor.dataTypePropertyIsNullInJson(
                 keyProperty,
                 (ObjectNode) jsonNode);
+    }
+
+    private ImmutableList<Object> getKeysFromJsonNode(
+            @Nonnull JsonNode jsonNode,
+            @Nonnull AssociationEnd associationEnd,
+            Object persistentParentInstance)
+    {
+        if (this.jsonNodeNeedsIdInferredOnInsert(jsonNode, associationEnd))
+        {
+            return Lists.immutable.empty();
+        }
+
+        return associationEnd.getType()
+                .getKeyProperties()
+                .collect(keyProperty -> this.getKeyFromJsonNode(
+                        keyProperty,
+                        jsonNode,
+                        associationEnd,
+                        persistentParentInstance));
     }
 }

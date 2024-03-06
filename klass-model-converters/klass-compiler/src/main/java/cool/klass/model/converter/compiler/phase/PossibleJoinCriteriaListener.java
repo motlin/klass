@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -20,7 +21,9 @@ import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferencePathContext;
 
 public class PossibleJoinCriteriaListener extends KlassBaseListener
 {
+    @Nonnull
     private final AntlrDomainModel domainModelState;
+    @Nonnull
     private final AntlrClass       targetType;
 
     private boolean allEqualityOperators         = true;
@@ -30,11 +33,11 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
     private boolean allReferencesResolve         = true;
 
     public PossibleJoinCriteriaListener(
-            AntlrDomainModel domainModelState,
-            AntlrClass targetType)
+            @Nonnull AntlrDomainModel domainModelState,
+            @Nonnull AntlrClass targetType)
     {
-        this.domainModelState = domainModelState;
-        this.targetType = targetType;
+        this.domainModelState = Objects.requireNonNull(domainModelState);
+        this.targetType       = Objects.requireNonNull(targetType);
     }
 
     public boolean hasForeignKeys()

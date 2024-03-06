@@ -54,16 +54,24 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
         switch (cacheType)
         {
             case "partial":
+            {
                 return CacheType.PARTIAL;
+            }
             case "full":
+            {
                 return CacheType.FULL;
+            }
             case "none":
+            {
                 return CacheType.NONE;
+            }
             default:
+            {
                 String message = String.format(
                         "Invalid cacheType. Expected one of [partial, full, none] but got: %s",
                         cacheType);
                 throw new RuntimeException(message);
+            }
         }
     }
 
@@ -142,8 +150,10 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
 
     private ImmutableList<MithraObjectConfigurationType> getConnectionManagerObjectConfigurationTypes()
     {
-        ImmutableList<MithraObjectConfigurationType> objectConfigurationTypes              = this.getObjectConfigurationTypes();
-        MithraObjectConfigurationType                objectSequenceObjectConfigurationType = ReladomoRuntimeConfigurationGenerator.createObjectSequenceObjectConfigurationType();
+        ImmutableList<MithraObjectConfigurationType> objectConfigurationTypes = this.getObjectConfigurationTypes();
+
+        MithraObjectConfigurationType objectSequenceObjectConfigurationType =
+                ReladomoRuntimeConfigurationGenerator.createObjectSequenceObjectConfigurationType();
 
         return Lists.immutable.with(objectSequenceObjectConfigurationType)
                 .newWithAll(objectConfigurationTypes);

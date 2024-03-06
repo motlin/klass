@@ -46,11 +46,11 @@ public final class CompilationUnit
             @Nonnull TokenStream tokenStream,
             @Nonnull ParserRuleContext parserRuleContext)
     {
-        this.macroElement = Objects.requireNonNull(macroElement);
-        this.sourceName = Objects.requireNonNull(sourceName);
-        this.lines = Objects.requireNonNull(lines);
-        this.charStream = Objects.requireNonNull(charStream);
-        this.tokenStream = Objects.requireNonNull(tokenStream);
+        this.macroElement  = Objects.requireNonNull(macroElement);
+        this.sourceName    = Objects.requireNonNull(sourceName);
+        this.lines         = Objects.requireNonNull(lines);
+        this.charStream    = Objects.requireNonNull(charStream);
+        this.tokenStream   = Objects.requireNonNull(tokenStream);
         this.parserContext = Objects.requireNonNull(parserRuleContext);
 
         if (macroElement.isPresent() && !sourceName.contains("macro"))
@@ -60,7 +60,9 @@ public final class CompilationUnit
     }
 
     @Nonnull
-    public static CompilationUnit createFromClasspathLocation(@Nonnull String classpathLocation, @Nonnull ClassLoader classLoader)
+    public static CompilationUnit createFromClasspathLocation(
+            @Nonnull String classpathLocation,
+            @Nonnull ClassLoader classLoader)
     {
         String sourceCodeText = slurp(classpathLocation, classLoader);
         return CompilationUnit.createFromText(Optional.empty(), classpathLocation, sourceCodeText);
@@ -78,6 +80,15 @@ public final class CompilationUnit
         InputStream inputStream = classLoader.getResourceAsStream(classpathLocation);
         Objects.requireNonNull(inputStream);
         return CompilationUnit.slurp(inputStream);
+    }
+
+    @Nonnull
+    private static String slurp(@Nonnull InputStream inputStream)
+    {
+        try (Scanner scanner = new Scanner(inputStream).useDelimiter("\\A"))
+        {
+            return scanner.hasNext() ? scanner.next() : "";
+        }
     }
 
     @Nonnull
@@ -118,15 +129,6 @@ public final class CompilationUnit
         KlassLexer lexer = new KlassLexer(charStream);
         lexer.addErrorListener(errorListener);
         return lexer;
-    }
-
-    @Nonnull
-    private static String slurp(@Nonnull InputStream inputStream)
-    {
-        try (Scanner scanner = new Scanner(inputStream).useDelimiter("\\A"))
-        {
-            return scanner.hasNext() ? scanner.next() : "";
-        }
     }
 
     @Nonnull

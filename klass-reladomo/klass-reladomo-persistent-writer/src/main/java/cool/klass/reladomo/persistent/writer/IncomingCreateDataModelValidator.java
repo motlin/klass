@@ -560,6 +560,38 @@ public class IncomingCreateDataModelValidator
                         associationEnd));
     }
 
+    private boolean jsonNodeNeedsIdInferredOnInsert(
+            @Nonnull DataTypeProperty keyProperty,
+            JsonNode jsonNode,
+            @Nonnull AssociationEnd associationEnd)
+    {
+        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+                keyProperty.getKeysMatchingThisForeignKey();
+
+        AssociationEnd opposite = associationEnd.getOpposite();
+
+        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.get(opposite);
+
+        if (oppositeForeignKeys.notEmpty())
+        {
+            return false;
+        }
+
+        if (keysMatchingThisForeignKey.notEmpty())
+        {
+            if (keysMatchingThisForeignKey.size() != 1)
+            {
+                throw new AssertionError();
+            }
+
+            return false;
+        }
+
+        return JsonDataTypeValueVisitor.dataTypePropertyIsNullInJson(
+                keyProperty,
+                (ObjectNode) jsonNode);
+    }
+
     private ImmutableList<Object> getKeysFromJsonNode(
             @Nonnull JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd,
@@ -622,37 +654,5 @@ public class IncomingCreateDataModelValidator
                 keyProperty,
                 objectNode);
         return Objects.requireNonNull(result);
-    }
-
-    private boolean jsonNodeNeedsIdInferredOnInsert(
-            @Nonnull DataTypeProperty keyProperty,
-            JsonNode jsonNode,
-            @Nonnull AssociationEnd associationEnd)
-    {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
-                keyProperty.getKeysMatchingThisForeignKey();
-
-        AssociationEnd opposite = associationEnd.getOpposite();
-
-        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.get(opposite);
-
-        if (oppositeForeignKeys.notEmpty())
-        {
-            return false;
-        }
-
-        if (keysMatchingThisForeignKey.notEmpty())
-        {
-            if (keysMatchingThisForeignKey.size() != 1)
-            {
-                throw new AssertionError();
-            }
-
-            return false;
-        }
-
-        return JsonDataTypeValueVisitor.dataTypePropertyIsNullInJson(
-                keyProperty,
-                (ObjectNode) jsonNode);
     }
 }

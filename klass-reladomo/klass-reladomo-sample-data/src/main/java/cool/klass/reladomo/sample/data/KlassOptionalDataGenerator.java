@@ -9,7 +9,7 @@ public class KlassOptionalDataGenerator extends AbstractKlassDataGenerator
 {
     private final OptionalDataTypePropertyVisitor visitor = new OptionalDataTypePropertyVisitor();
 
-    protected KlassOptionalDataGenerator(DataStore dataStore)
+    protected KlassOptionalDataGenerator(@Nonnull DataStore dataStore)
     {
         super(dataStore);
     }

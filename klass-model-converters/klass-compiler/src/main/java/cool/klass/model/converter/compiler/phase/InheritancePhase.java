@@ -29,7 +29,8 @@ public class InheritancePhase extends AbstractCompilerPhase
         ClassReferenceContext classReferenceContext = ctx.classReference();
         IdentifierContext     identifier            = classReferenceContext.identifier();
         String                className             = identifier.getText();
-        AntlrClass            superClassState       = this.compilerState.getDomainModelState().getClassByName(className);
+        AntlrClass            superClassState       =
+                this.compilerState.getDomainModelState().getClassByName(className);
 
         AntlrClass classState = this.compilerState.getCompilerWalkState().getClassState();
         classState.enterExtendsDeclaration(superClassState);
@@ -47,7 +48,8 @@ public class InheritancePhase extends AbstractCompilerPhase
         {
             IdentifierContext identifier     = interfaceReferenceContext.identifier();
             String            interfaceName  = identifier.getText();
-            AntlrInterface    interfaceState = this.compilerState.getDomainModelState().getInterfaceByName(interfaceName);
+            AntlrInterface    interfaceState =
+                    this.compilerState.getDomainModelState().getInterfaceByName(interfaceName);
 
             classifierState.enterImplementsDeclaration(interfaceState);
         }

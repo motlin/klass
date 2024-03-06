@@ -215,6 +215,25 @@ public class IncomingUpdateDataModelValidator
         }
     }
 
+    private void handleAssociationEnd(
+            @Nonnull AssociationEnd associationEnd,
+            @Nonnull ObjectNode objectNode,
+            @Nonnull Object persistentInstance)
+    {
+        IncomingUpdateDataModelValidator validator = new IncomingUpdateDataModelValidator(
+                this.dataStore,
+                associationEnd.getType(),
+                persistentInstance,
+                objectNode,
+                this.errors,
+                this.warnings,
+                this.contextStack,
+                // Yeah?
+                Optional.of(associationEnd),
+                false);
+        validator.validate();
+    }
+
     private void handleVersionAssociationEnd(@Nonnull AssociationEnd associationEnd)
     {
         this.contextStack.push(associationEnd.getName());
@@ -483,25 +502,6 @@ public class IncomingUpdateDataModelValidator
                 .collect(keyProperty -> this.dataStore.getDataTypeProperty(persistentInstance, keyProperty));
     }
 
-    public void handleAssociationEnd(
-            @Nonnull AssociationEnd associationEnd,
-            @Nonnull ObjectNode objectNode,
-            @Nonnull Object persistentInstance)
-    {
-        IncomingUpdateDataModelValidator validator = new IncomingUpdateDataModelValidator(
-                this.dataStore,
-                associationEnd.getType(),
-                persistentInstance,
-                objectNode,
-                this.errors,
-                this.warnings,
-                this.contextStack,
-                // Yeah?
-                Optional.of(associationEnd),
-                false);
-        validator.validate();
-    }
-
     @Nonnull
     private MapIterable<ImmutableList<Object>, JsonNode> indexIncomingJsonInstances(
             @Nonnull Iterable<JsonNode> incomingInstances,
@@ -537,19 +537,6 @@ public class IncomingUpdateDataModelValidator
                         associationEnd));
     }
 
-    private ImmutableList<Object> getKeysFromJsonNode(
-            @Nonnull JsonNode jsonNode,
-            @Nonnull AssociationEnd associationEnd)
-    {
-        return associationEnd
-                .getType()
-                .getKeyProperties()
-                .collect(keyProperty -> this.getKeyFromJsonNode(
-                        keyProperty,
-                        jsonNode,
-                        associationEnd));
-    }
-
     private boolean jsonNodeNeedsIdInferredOnInsert(
             @Nonnull DataTypeProperty keyProperty,
             JsonNode jsonNode,
@@ -580,6 +567,19 @@ public class IncomingUpdateDataModelValidator
         return JsonDataTypeValueVisitor.dataTypePropertyIsNullInJson(
                 keyProperty,
                 (ObjectNode) jsonNode);
+    }
+
+    private ImmutableList<Object> getKeysFromJsonNode(
+            @Nonnull JsonNode jsonNode,
+            @Nonnull AssociationEnd associationEnd)
+    {
+        return associationEnd
+                .getType()
+                .getKeyProperties()
+                .collect(keyProperty -> this.getKeyFromJsonNode(
+                        keyProperty,
+                        jsonNode,
+                        associationEnd));
     }
 
     private Object getKeyFromJsonNode(

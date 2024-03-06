@@ -107,6 +107,14 @@ public final class JsonTypeCheckingValidator
         }
     }
 
+    private String getContextString()
+    {
+        return this.contextStack
+                .toList()
+                .asReversed()
+                .makeString(".");
+    }
+
     private final class JsonTypeCheckingPropertyVisitor implements PropertyVisitor
     {
         private final String   fieldName;
@@ -286,13 +294,5 @@ public final class JsonTypeCheckingValidator
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".visitParameterizedProperty() not implemented yet");
         }
-    }
-
-    public String getContextString()
-    {
-        return this.contextStack
-                .toList()
-                .asReversed()
-                .makeString(".");
     }
 }

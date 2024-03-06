@@ -23,13 +23,14 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
 {
     @Nonnull
     private final CompilerState compilerState;
+    @Nonnull
     private final IAntlrElement expressionValueOwner;
 
     public LiteralValueVisitor(
             @Nonnull CompilerState compilerState,
-            IAntlrElement expressionValueOwner)
+            @Nonnull IAntlrElement expressionValueOwner)
     {
-        this.compilerState = Objects.requireNonNull(compilerState);
+        this.compilerState        = Objects.requireNonNull(compilerState);
         this.expressionValueOwner = Objects.requireNonNull(expressionValueOwner);
     }
 

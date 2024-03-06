@@ -31,19 +31,29 @@ public class OperationOperatorVisitor implements OperatorVisitor
         switch (inequalityOperator.getOperatorText())
         {
             case "<":
+            {
                 this.stringBuilder.append(".lessThan(");
                 break;
+            }
             case ">":
+            {
                 this.stringBuilder.append(".greaterThan(");
                 break;
+            }
             case "<=":
+            {
                 this.stringBuilder.append(".lessThanEquals(");
                 break;
+            }
             case ">=":
+            {
                 this.stringBuilder.append(".greaterThanEquals(");
                 break;
+            }
             default:
+            {
                 throw new AssertionError();
+            }
         }
     }
 

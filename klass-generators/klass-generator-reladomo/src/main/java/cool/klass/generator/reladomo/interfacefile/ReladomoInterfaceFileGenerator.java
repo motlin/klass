@@ -197,11 +197,17 @@ public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
         switch (orderByDirection)
         {
             case ASCENDING:
+            {
                 return "asc";
+            }
             case DESCENDING:
+            {
                 return "desc";
+            }
             default:
+            {
                 throw new AssertionError();
+            }
         }
     }
 

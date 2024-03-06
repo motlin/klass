@@ -223,6 +223,41 @@ public class RequiredPropertiesValidator
         this.warnings.add(warning);
     }
 
+    private void handleWarnIfPresent(@Nonnull AssociationEnd property, String propertyKind)
+    {
+        JsonNode jsonNode = this.objectNode.path(property.getName());
+        if (jsonNode.isMissingNode())
+        {
+            return;
+        }
+
+        if (jsonNode.isNull())
+        {
+            String warning = String.format(
+                    "Warning at %s. Didn't expect to receive value for %s association end '%s.%s: %s[%s]' but value was null.",
+                    this.getContextString(),
+                    propertyKind,
+                    property.getOwningClassifier().getName(),
+                    property.getName(),
+                    property.getType().toString(),
+                    property.getMultiplicity().getPrettyName());
+            this.warnings.add(warning);
+            return;
+        }
+
+        String warning = String.format(
+                "Warning at %s. Didn't expect to receive value for %s association end '%s.%s: %s[%s]' but value was %s: %s.",
+                this.getContextString(),
+                propertyKind,
+                property.getOwningClassifier().getName(),
+                property.getName(),
+                property.getType().toString(),
+                property.getMultiplicity().getPrettyName(),
+                jsonNode.getNodeType().toString().toLowerCase(),
+                jsonNode);
+        this.warnings.add(warning);
+    }
+
     private void handlePlainProperty(@Nonnull DataTypeProperty property)
     {
         if (!property.isRequired())
@@ -279,41 +314,6 @@ public class RequiredPropertiesValidator
         */
     }
 
-    private void handleWarnIfPresent(@Nonnull AssociationEnd property, String propertyKind)
-    {
-        JsonNode jsonNode = this.objectNode.path(property.getName());
-        if (jsonNode.isMissingNode())
-        {
-            return;
-        }
-
-        if (jsonNode.isNull())
-        {
-            String warning = String.format(
-                    "Warning at %s. Didn't expect to receive value for %s association end '%s.%s: %s[%s]' but value was null.",
-                    this.getContextString(),
-                    propertyKind,
-                    property.getOwningClassifier().getName(),
-                    property.getName(),
-                    property.getType().toString(),
-                    property.getMultiplicity().getPrettyName());
-            this.warnings.add(warning);
-            return;
-        }
-
-        String warning = String.format(
-                "Warning at %s. Didn't expect to receive value for %s association end '%s.%s: %s[%s]' but value was %s: %s.",
-                this.getContextString(),
-                propertyKind,
-                property.getOwningClassifier().getName(),
-                property.getName(),
-                property.getType().toString(),
-                property.getMultiplicity().getPrettyName(),
-                jsonNode.getNodeType().toString().toLowerCase(),
-                jsonNode);
-        this.warnings.add(warning);
-    }
-
     private void handleErrorIfAbsent(@Nonnull AssociationEnd associationEnd, String propertyKind)
     {
         JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
@@ -332,6 +332,20 @@ public class RequiredPropertiesValidator
                 associationEnd.getMultiplicity().getPrettyName(),
                 jsonNode.getNodeType().toString().toLowerCase());
         this.errors.add(error);
+    }
+
+    private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd, @Nonnull ObjectNode objectNode)
+    {
+        OperationMode nextMode = this.getNextMode(this.operationMode, associationEnd);
+
+        if (associationEnd.isVersion())
+        {
+            this.handleVersionAssociationEnd(associationEnd);
+        }
+        else
+        {
+            this.handlePlainAssociationEnd(associationEnd, objectNode, nextMode);
+        }
     }
 
     private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd)
@@ -418,20 +432,6 @@ public class RequiredPropertiesValidator
         }
     }
 
-    private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd, @Nonnull ObjectNode objectNode)
-    {
-        OperationMode nextMode = this.getNextMode(this.operationMode, associationEnd);
-
-        if (associationEnd.isVersion())
-        {
-            this.handleVersionAssociationEnd(associationEnd);
-        }
-        else
-        {
-            this.handlePlainAssociationEnd(associationEnd, objectNode, nextMode);
-        }
-    }
-
     private void handleVersionAssociationEnd(@Nonnull AssociationEnd associationEnd)
     {
         if (this.operationMode == OperationMode.CREATE)
@@ -509,6 +509,22 @@ public class RequiredPropertiesValidator
                         jsonNode));
     }
 
+    private ImmutableList<Object> getKeysFromJsonNode(
+            @Nonnull JsonNode jsonNode,
+            @Nonnull AssociationEnd associationEnd,
+            @Nonnull JsonNode parentJsonNode)
+    {
+        Klass                           type                    = associationEnd.getType();
+        ImmutableList<DataTypeProperty> keyProperties           = type.getKeyProperties();
+        ImmutableList<DataTypeProperty> nonForeignKeyProperties = keyProperties.reject(DataTypeProperty::isForeignKey);
+        return nonForeignKeyProperties
+                .collect(keyProperty -> this.getKeyFromJsonNode(
+                        keyProperty,
+                        jsonNode,
+                        associationEnd,
+                        parentJsonNode));
+    }
+
     @Nullable
     private Object getKeyFromJsonNode(
             @Nonnull DataTypeProperty keyProperty,
@@ -535,22 +551,6 @@ public class RequiredPropertiesValidator
         return JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
                 keyProperty,
                 (ObjectNode) jsonNode);
-    }
-
-    private ImmutableList<Object> getKeysFromJsonNode(
-            @Nonnull JsonNode jsonNode,
-            @Nonnull AssociationEnd associationEnd,
-            @Nonnull JsonNode parentJsonNode)
-    {
-        Klass                           type                    = associationEnd.getType();
-        ImmutableList<DataTypeProperty> keyProperties           = type.getKeyProperties();
-        ImmutableList<DataTypeProperty> nonForeignKeyProperties = keyProperties.reject(DataTypeProperty::isForeignKey);
-        return nonForeignKeyProperties
-                .collect(keyProperty -> this.getKeyFromJsonNode(
-                        keyProperty,
-                        jsonNode,
-                        associationEnd,
-                        parentJsonNode));
     }
 
     private Object getKeyFromJsonNode(

@@ -62,19 +62,6 @@ public class ReladomoJsonViewSerializer extends JsonSerializer<MithraObject>
         this.serialize(mithraObject, jsonGenerator, projection);
     }
 
-    @Nonnull
-    private KlassJsonView instantiate(@Nonnull Class<?> activeViewClass)
-    {
-        try
-        {
-            return activeViewClass.asSubclass(KlassJsonView.class).newInstance();
-        }
-        catch (ReflectiveOperationException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
     private void serialize(
             @Nonnull MithraObject mithraObject,
             @Nonnull JsonGenerator jsonGenerator,
@@ -115,6 +102,19 @@ public class ReladomoJsonViewSerializer extends JsonSerializer<MithraObject>
         finally
         {
             jsonGenerator.writeEndObject();
+        }
+    }
+
+    @Nonnull
+    private KlassJsonView instantiate(@Nonnull Class<?> activeViewClass)
+    {
+        try
+        {
+            return activeViewClass.asSubclass(KlassJsonView.class).newInstance();
+        }
+        catch (ReflectiveOperationException e)
+        {
+            throw new RuntimeException(e);
         }
     }
 

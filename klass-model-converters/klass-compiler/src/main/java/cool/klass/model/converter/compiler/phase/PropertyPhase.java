@@ -296,7 +296,6 @@ public class PropertyPhase extends AbstractCompilerPhase
         return this.compilerState.getCompilerWalkState().getClassifierState();
     }
 
-
     @Override
     public void enterClassifierType(@Nonnull ClassifierTypeContext ctx)
     {
@@ -337,9 +336,9 @@ public class PropertyPhase extends AbstractCompilerPhase
             return;
         }
 
-        String           classifierName        = ctx.identifier().getText();
+        String           classifierName   = ctx.identifier().getText();
         AntlrDomainModel domainModelState = this.compilerState.getDomainModelState();
-        AntlrClassifier       classifierState       = domainModelState.getClassifierByName(classifierName);
+        AntlrClassifier  classifierState  = domainModelState.getClassifierByName(classifierName);
 
         this.classifierTypeState.enterClassifierReference(classifierState);
     }

@@ -700,6 +700,24 @@ public class ServiceResourceGenerator
     }
 
     @Nonnull
+    private String getOperation(String finderName, @Nonnull Criteria criteria, String criteriaName)
+    {
+        String operation           = this.getOperation(finderName, criteria);
+        String comment             = this.getComment(criteria);
+        String paddedOperationName = String.format("%-18s", criteriaName + "Operation");
+        return comment
+                + "        Operation " + paddedOperationName + " = " + operation + ";\n";
+    }
+
+    @Nonnull
+    private String getOperation(String finderName, @Nonnull Criteria criteria)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        criteria.visit(new OperationCriteriaVisitor(finderName, stringBuilder));
+        return stringBuilder.toString();
+    }
+
+    @Nonnull
     private String getOptionalOperation(
             String finderName,
             @Nonnull Optional<Criteria> optionalCriteria,
@@ -708,6 +726,19 @@ public class ServiceResourceGenerator
         return optionalCriteria
                 .map(criteria -> this.getOptionalOperation(finderName, criteria, criteriaName))
                 .orElse("");
+    }
+
+    @Nonnull
+    private String getOptionalOperation(String finderName, @Nonnull Criteria criteria, String criteriaName)
+    {
+        String operation           = this.getOperation(finderName, criteria);
+        String comment             = this.getComment(criteria);
+        String paddedOperationName = String.format("%-18s", criteriaName + "Operation");
+
+        return comment
+                + "        Operation " + paddedOperationName + " = " + criteriaName + " == null\n"
+                + "                ? " + finderName + ".all()\n"
+                + "                : " + operation + ";\n";
     }
 
     private String checkPredicate(
@@ -719,6 +750,20 @@ public class ServiceResourceGenerator
         return optionalCriteria
                 .map(criteria -> this.checkPredicate(criteriaName, flagName, exceptionName))
                 .orElse("");
+    }
+
+    @Nonnull
+    private String checkPredicate(String criteriaName, String flagName, String exceptionName)
+    {
+        // @formatter:off
+        return ""
+                + "        boolean " + flagName + " = !result.asEcList().allSatisfy(" + criteriaName + "Operation::matches);\n"
+                + "        if (!" + flagName + ")\n"
+                + "        {\n"
+                + "            throw new " + exceptionName + ";\n"
+                + "        }\n";
+
+        // @formatter:on
     }
 
     @Nonnull
@@ -795,11 +840,17 @@ public class ServiceResourceGenerator
         switch (orderByDirection)
         {
             case ASCENDING:
+            {
                 return ".ascendingOrderBy()";
+            }
             case DESCENDING:
+            {
                 return ".descendingOrderBy()";
+            }
             default:
+            {
                 throw new AssertionError();
+            }
         }
     }
 
@@ -814,51 +865,6 @@ public class ServiceResourceGenerator
             return PrimitiveToJavaParameterTypeVisitor.getJavaType((PrimitiveType) dataType);
         }
         throw new AssertionError();
-    }
-
-    @Nonnull
-    private String getOperation(String finderName, @Nonnull Criteria criteria, String criteriaName)
-    {
-        String operation           = this.getOperation(finderName, criteria);
-        String comment             = this.getComment(criteria);
-        String paddedOperationName = String.format("%-18s", criteriaName + "Operation");
-        return comment
-                + "        Operation " + paddedOperationName + " = " + operation + ";\n";
-    }
-
-    @Nonnull
-    private String getOptionalOperation(String finderName, @Nonnull Criteria criteria, String criteriaName)
-    {
-        String operation           = this.getOperation(finderName, criteria);
-        String comment             = this.getComment(criteria);
-        String paddedOperationName = String.format("%-18s", criteriaName + "Operation");
-
-        return comment
-                + "        Operation " + paddedOperationName + " = " + criteriaName + " == null\n"
-                + "                ? " + finderName + ".all()\n"
-                + "                : " + operation + ";\n";
-    }
-
-    @Nonnull
-    private String checkPredicate(String criteriaName, String flagName, String exceptionName)
-    {
-        // @formatter:off
-        return ""
-                + "        boolean " + flagName + " = !result.asEcList().allSatisfy(" + criteriaName + "Operation::matches);\n"
-                + "        if (!" + flagName + ")\n"
-                + "        {\n"
-                + "            throw new " + exceptionName + ";\n"
-                + "        }\n";
-
-        // @formatter:on
-    }
-
-    @Nonnull
-    private String getOperation(String finderName, @Nonnull Criteria criteria)
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-        criteria.visit(new OperationCriteriaVisitor(finderName, stringBuilder));
-        return stringBuilder.toString();
     }
 
     @Nonnull

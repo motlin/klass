@@ -121,6 +121,14 @@ public class CompilerErrorState
                 sourceContexts);
     }
 
+    private Optional<CauseCompilerError> getCauseCompilerError(@Nonnull IAntlrElement element)
+    {
+        return element.getMacroElement().map(macroElement -> this.getCauseCompilerError(
+                macroElement,
+                macroElement.getSurroundingElements(),
+                Lists.immutable.with(macroElement.getElementContext())));
+    }
+
     private ImmutableList<SourceContext> getSourceContexts(
             @Nonnull IAntlrElement element,
             @Nonnull ImmutableList<IAntlrElement> surroundingElements)
@@ -142,14 +150,6 @@ public class CompilerErrorState
         return Lists.immutable
                 .withAll(innerContexts)
                 .newWith(outerContext);
-    }
-
-    private Optional<CauseCompilerError> getCauseCompilerError(@Nonnull IAntlrElement element)
-    {
-        return element.getMacroElement().map(macroElement -> this.getCauseCompilerError(
-                macroElement,
-                macroElement.getSurroundingElements(),
-                Lists.immutable.with(macroElement.getElementContext())));
     }
 
     public ImmutableList<RootCompilerError> getCompilerErrors()

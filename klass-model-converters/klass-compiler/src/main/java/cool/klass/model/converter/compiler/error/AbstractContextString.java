@@ -14,11 +14,12 @@ import static org.fusesource.jansi.Ansi.ansi;
 public abstract class AbstractContextString
 {
     private final int    line;
+    @Nonnull
     private final String string;
 
-    protected AbstractContextString(int line, String string)
+    protected AbstractContextString(int line, @Nonnull String string)
     {
-        this.line = line;
+        this.line   = line;
         this.string = Objects.requireNonNull(string);
     }
 

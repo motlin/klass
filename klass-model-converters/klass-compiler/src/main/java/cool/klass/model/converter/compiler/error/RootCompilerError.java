@@ -29,7 +29,7 @@ public class RootCompilerError extends AbstractCompilerError implements Comparab
     {
         super(compilationUnit, macroCause, offendingContexts, sourceContexts);
         this.errorCode = Objects.requireNonNull(errorCode);
-        this.message = Objects.requireNonNull(message);
+        this.message   = Objects.requireNonNull(message);
     }
 
     @Override

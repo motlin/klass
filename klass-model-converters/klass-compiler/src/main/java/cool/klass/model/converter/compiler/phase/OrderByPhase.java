@@ -89,7 +89,8 @@ public class OrderByPhase extends AbstractCompilerPhase
                 this.compilerState.getCompilerWalkState().getThisReference(),
                 this.orderByState.get());
 
-        ThisMemberReferencePathContext thisMemberReferencePathContext = orderByMemberReferencePathContext.thisMemberReferencePath();
+        ThisMemberReferencePathContext thisMemberReferencePathContext =
+                orderByMemberReferencePathContext.thisMemberReferencePath();
 
         return expressionValueVisitor.visitThisMemberReferencePath(thisMemberReferencePathContext);
     }

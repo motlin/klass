@@ -32,7 +32,7 @@ public class AbstractErrorListener extends KlassThrowingListener
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull MutableList<AbstractContextString> contextualStrings)
     {
-        this.compilationUnit = Objects.requireNonNull(compilationUnit);
+        this.compilationUnit   = Objects.requireNonNull(compilationUnit);
         this.contextualStrings = Objects.requireNonNull(contextualStrings);
     }
 
@@ -63,14 +63,20 @@ public class AbstractErrorListener extends KlassThrowingListener
             case KlassLexer.MODIFIER_PROPERTY_CREATED_ON:
             case KlassLexer.MODIFIER_PROPERTY_LAST_UPDATED_BY:
             case KlassLexer.MODIFIER_PROPERTY_DERIVED:
+            {
                 return getStringDim(text, YELLOW);
+            }
             case KlassLexer.MODIFIER_ASSOCIATION_END_OWNED:
             case KlassLexer.MODIFIER_ASSOCIATION_END_FINAL:
+            {
                 return getStringBright(text, YELLOW);
+            }
             case KlassLexer.MODIFIER_VERSION:
             case KlassLexer.MODIFIER_USER_ID:
             case KlassLexer.MODIFIER_ID:
+            {
                 return getStringDim(text, YELLOW);
+            }
             case KlassLexer.VALIDATION_MIN_LENGTH:
             case KlassLexer.VALIDATION_MINIMUM_LENGTH:
             case KlassLexer.VALIDATION_MAX_LENGTH:
@@ -79,7 +85,9 @@ public class AbstractErrorListener extends KlassThrowingListener
             case KlassLexer.VALIDATION_MINIMUM:
             case KlassLexer.VALIDATION_MAX:
             case KlassLexer.VALIDATION_MAXIMUM:
+            {
                 return getStringDim(text, YELLOW);
+            }
             // Keywords
             case KlassLexer.KEYWORD_PACKAGE:
             case KlassLexer.KEYWORD_ENUMERATION:
@@ -88,7 +96,9 @@ public class AbstractErrorListener extends KlassThrowingListener
             case KlassLexer.KEYWORD_ASSOCIATION:
             case KlassLexer.KEYWORD_PROJECTION:
             case KlassLexer.KEYWORD_SERVICE:
+            {
                 return getStringDim(text, MAGENTA);
+            }
             case KlassLexer.KEYWORD_USER:
             case KlassLexer.KEYWORD_NATIVE:
             case KlassLexer.KEYWORD_RELATIONSHIP:
@@ -104,7 +114,9 @@ public class AbstractErrorListener extends KlassThrowingListener
             case KlassLexer.KEYWORD_TABLE_FOR_ALL_SUBCLASSES:
             case KlassLexer.LITERAL_NULL:
             case KlassLexer.LITERAL_THIS:
+            {
                 return getStringBright(text, MAGENTA);
+            }
             // Primitives
             case KlassLexer.PRIMITIVE_TYPE_BOOLEAN:
             case KlassLexer.PRIMITIVE_TYPE_INTEGER:
@@ -116,7 +128,9 @@ public class AbstractErrorListener extends KlassThrowingListener
             case KlassLexer.PRIMITIVE_TYPE_LOCAL_DATE:
             case KlassLexer.PRIMITIVE_TYPE_TEMPORAL_INSTANT:
             case KlassLexer.PRIMITIVE_TYPE_TEMPORAL_RANGE:
+            {
                 return getStringBright(text, MAGENTA);
+            }
             // Literals
             case KlassLexer.StringLiteral:
             case KlassLexer.IntegerLiteral:
@@ -124,9 +138,13 @@ public class AbstractErrorListener extends KlassThrowingListener
             case KlassLexer.CharacterLiteral:
             case KlassLexer.FloatingPointLiteral:
             case KlassLexer.PUNCTUATION_ASTERISK:
+            {
                 return getStringBright(text, BLUE);
+            }
             case KlassLexer.Identifier:
+            {
                 return getStringBright(text, WHITE);
+            }
             case KlassLexer.PUNCTUATION_LPAREN:
             case KlassLexer.PUNCTUATION_RPAREN:
             case KlassLexer.PUNCTUATION_LBRACE:
@@ -139,19 +157,27 @@ public class AbstractErrorListener extends KlassThrowingListener
             case KlassLexer.PUNCTUATION_DOT:
             case KlassLexer.PUNCTUATION_DOTDOT:
             case KlassLexer.PUNCTUATION_SLASH:
+            {
                 return getStringDim(text, CYAN);
+            }
             // Operators
             case KlassLexer.OPERATOR_EQ:
+            {
                 return getStringBright(text, YELLOW);
+            }
             // Verbs
             case KlassLexer.VERB_GET:
             case KlassLexer.VERB_POST:
             case KlassLexer.VERB_PUT:
             case KlassLexer.VERB_PATCH:
             case KlassLexer.VERB_DELETE:
+            {
                 return getStringBright(text, GREEN);
+            }
             default:
+            {
                 return getStringBright(text, RED);
+            }
         }
     }
 

@@ -44,16 +44,12 @@ public class SampleDataGenerator
         this.dataStore.runInTransaction(transaction ->
         {
             transaction.setSystemTime(this.systemTime.toEpochMilli());
-            ImmutableList<Klass> classesWithTables = this.domainModel.getClasses().select(this::needsTable);
-            classesWithTables.each(this::generate);
+            this.domainModel
+                    .getClasses()
+                    .select(this::needsTable)
+                    .each(this::generate);
             return null;
         });
-    }
-
-    private boolean needsTable(@Nonnull Klass klass)
-    {
-        return klass.getInheritanceType() == InheritanceType.NONE
-                || klass.getInheritanceType() == InheritanceType.TABLE_PER_CLASS;
     }
 
     private void generate(@Nonnull Klass klass)
@@ -64,5 +60,11 @@ public class SampleDataGenerator
         }
         this.requiredDataGenerator.generateIfRequired(klass);
         this.optionalDataGenerator.generateIfRequired(klass);
+    }
+
+    private boolean needsTable(@Nonnull Klass klass)
+    {
+        return klass.getInheritanceType() == InheritanceType.NONE
+                || klass.getInheritanceType() == InheritanceType.TABLE_PER_CLASS;
     }
 }

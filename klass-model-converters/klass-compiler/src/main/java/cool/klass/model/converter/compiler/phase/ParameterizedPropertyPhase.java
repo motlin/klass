@@ -154,7 +154,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     @Override
     public void exitPrimitiveParameterDeclaration(@Nonnull PrimitiveParameterDeclarationContext ctx)
     {
-        this.parameterState = null;
+        this.parameterState         = null;
         this.multiplicityOwnerState = null;
 
         super.exitPrimitiveParameterDeclaration(ctx);
@@ -180,7 +180,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     @Override
     public void exitEnumerationParameterDeclaration(@Nonnull EnumerationParameterDeclarationContext ctx)
     {
-        this.parameterState = null;
+        this.parameterState         = null;
         this.multiplicityOwnerState = null;
 
         super.exitEnumerationParameterDeclaration(ctx);
@@ -229,7 +229,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
             throw new IllegalStateException();
         }
 
-        this.parameterState = new AntlrParameter(
+        this.parameterState         = new AntlrParameter(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 identifierContext,
@@ -266,7 +266,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
             return;
         }
 
-        this.classTypeState = new AntlrClassType(
+        this.classTypeState         = new AntlrClassType(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.getAntlrClassTypeOwner());
@@ -277,7 +277,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     @Override
     public void exitClassType(@Nonnull ClassTypeContext ctx)
     {
-        this.classTypeState = null;
+        this.classTypeState         = null;
         this.multiplicityOwnerState = null;
 
         super.exitClassType(ctx);

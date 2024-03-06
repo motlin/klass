@@ -9,7 +9,7 @@ public class KlassRequiredDataGenerator extends AbstractKlassDataGenerator
 {
     private final RequiredDataTypePropertyVisitor visitor = new RequiredDataTypePropertyVisitor();
 
-    public KlassRequiredDataGenerator(DataStore dataStore)
+    public KlassRequiredDataGenerator(@Nonnull DataStore dataStore)
     {
         super(dataStore);
     }

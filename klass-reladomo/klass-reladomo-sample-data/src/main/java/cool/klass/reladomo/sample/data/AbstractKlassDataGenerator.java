@@ -1,5 +1,7 @@
 package cool.klass.reladomo.sample.data;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.data.store.DataStore;
@@ -9,14 +11,17 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public abstract class AbstractKlassDataGenerator
 {
+    @Nonnull
     protected final DataStore dataStore;
 
-    protected AbstractKlassDataGenerator(DataStore dataStore)
+    protected AbstractKlassDataGenerator(@Nonnull DataStore dataStore)
     {
-        this.dataStore = dataStore;
+        this.dataStore = Objects.requireNonNull(dataStore);
     }
 
-    protected abstract Object getNonNullValue(DataTypeProperty dataTypeProperty);
+    protected abstract Object getNonNullValue(@Nonnull DataTypeProperty dataTypeProperty);
+
+    protected abstract void generateIfRequired(Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty);
 
     public void generateIfRequired(@Nonnull Klass klass)
     {
@@ -43,8 +48,6 @@ public abstract class AbstractKlassDataGenerator
         }
         return this.dataStore.instantiate(klass, keyValues);
     }
-
-    protected abstract void generateIfRequired(Object persistentInstance, DataTypeProperty dataTypeProperty);
 
     protected final void generate(Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty)
     {
