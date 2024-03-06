@@ -73,6 +73,17 @@ service PropertiesRequired
             criteria    : this.propertiesRequiredId == propertiesRequiredId;
             projection  : PropertiesRequiredProjection;
         }
+        POST
+        {
+            multiplicity: one;
+            projection  : PropertiesRequiredProjection;
+        }
+        PUT
+        {
+            multiplicity: one;
+            criteria    : this.propertiesRequiredId == propertiesRequiredId;
+            projection  : PropertiesRequiredProjection;
+        }
 }
 
 class PropertiesOptional
@@ -110,6 +121,17 @@ service PropertiesOptional
             criteria    : this.propertiesOptionalId == propertiesOptionalId;
             projection  : PropertiesOptionalProjection;
         }
+        POST
+        {
+            multiplicity: one;
+            projection  : PropertiesOptionalProjection;
+        }
+        PUT
+        {
+            multiplicity: one;
+            criteria    : this.propertiesOptionalId == propertiesOptionalId;
+            projection  : PropertiesOptionalProjection;
+        }
 }
 
 class AllKeyProperties
@@ -135,6 +157,7 @@ class AllForeignKeyProperties
     foreignKeyBoolean   : Boolean;
     foreignKeyInstant   : Instant;
     foreignKeyLocalDate : LocalDate;
+    data                : String;
 }
 
 association AllKeyPropertiesHasAllForeignKeyProperties
@@ -151,6 +174,8 @@ association AllKeyPropertiesHasAllForeignKeyProperties
             && this.keyInstant == AllForeignKeyProperties.foreignKeyInstant
             && this.keyLocalDate == AllForeignKeyProperties.foreignKeyLocalDate
 }
+
+// TODO: Reject types that have all auto-generated ids, foreign keys and no data.
 
 projection AllKeyPropertiesProjection on AllKeyProperties
 {
@@ -173,6 +198,7 @@ projection AllKeyPropertiesProjection on AllKeyProperties
         foreignKeyBoolean  : "foreignKeyBoolean",
         foreignKeyInstant  : "foreignKeyInstant",
         foreignKeyLocalDate: "foreignKeyLocalDate",
+        data               : "data",
     },
 }
 
@@ -183,6 +209,48 @@ service AllKeyProperties
         {
             multiplicity: many;
             criteria    : all;
+            projection  : AllKeyPropertiesProjection;
+        }
+    /api/allKeyProperties
+        /{keyString   : String[1..1]}
+        /{keyInteger  : Integer[1..1]}
+        /{keyLong     : Long[1..1]}
+        /{keyDouble   : Double[1..1]}
+        /{keyFloat    : Float[1..1]}
+        /{keyBoolean  : Boolean[1..1]}
+        /{keyInstant  : Instant[1..1]}
+        /{keyLocalDate: LocalDate[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    :
+                          this.keyString == keyString
+                       && this.keyInteger == keyInteger
+                       && this.keyLong == keyLong
+                       && this.keyDouble == keyDouble
+                       && this.keyFloat == keyFloat
+                       && this.keyBoolean == keyBoolean
+                       && this.keyInstant == keyInstant
+                       && this.keyLocalDate == keyLocalDate;
+            projection  : AllKeyPropertiesProjection;
+        }
+        POST
+        {
+            multiplicity: one;
+            projection  : AllKeyPropertiesProjection;
+        }
+        PUT
+        {
+            multiplicity: one;
+            criteria    :
+                this.keyString == keyString
+                    && this.keyInteger == keyInteger
+                    && this.keyLong == keyLong
+                    && this.keyDouble == keyDouble
+                    && this.keyFloat == keyFloat
+                    && this.keyBoolean == keyBoolean
+                    && this.keyInstant == keyInstant
+                    && this.keyLocalDate == keyLocalDate;
             projection  : AllKeyPropertiesProjection;
         }
 }
