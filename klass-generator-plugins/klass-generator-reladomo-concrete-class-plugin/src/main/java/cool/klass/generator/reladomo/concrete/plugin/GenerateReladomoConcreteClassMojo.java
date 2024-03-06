@@ -19,10 +19,8 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 public class GenerateReladomoConcreteClassMojo
         extends AbstractGenerateMojo
 {
-    @Parameter(
-            property = "generatedDir",
-               defaultValue = "${project.build.directory}/generated-sources/reladomo-concrete-classes")
-    private File generatedDir;
+    @Parameter(property = "outputDirectory", defaultValue = "${project.build.sourceDirectory}")
+    private File outputDirectory;
 
     @Override
     public void execute() throws MojoExecutionException
@@ -32,7 +30,7 @@ public class GenerateReladomoConcreteClassMojo
         ReladomoConcreteClassGenerator generator = new ReladomoConcreteClassGenerator(domainModel);
         try
         {
-            generator.writeConcreteClasses(this.generatedDir.toPath());
+            generator.writeConcreteClasses(this.outputDirectory.toPath());
         }
         catch (RuntimeException e)
         {
