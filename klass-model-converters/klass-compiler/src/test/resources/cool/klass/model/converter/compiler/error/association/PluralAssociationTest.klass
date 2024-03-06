@@ -1,0 +1,20 @@
+package dummy
+
+class Parent
+{
+    key: String key;
+}
+
+class Child
+{
+    key: String key;
+    parentKey: String private;
+}
+
+association ParentHasChildren
+{
+    parent: Parent[1..1];
+    child: Child[0..*];
+
+    relationship this.key == Child.parentKey
+}

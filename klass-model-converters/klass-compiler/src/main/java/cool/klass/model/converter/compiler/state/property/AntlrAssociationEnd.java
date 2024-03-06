@@ -144,6 +144,7 @@ public class AntlrAssociationEnd
         this.reportVersionEndUnowned(compilerErrorHolder);
         this.reportNonVersionEnd(compilerErrorHolder);
         this.reportNonUserAuditEnd(compilerErrorHolder);
+        this.reportPluralName(compilerErrorHolder);
     }
 
     private void reportVersionEndUnowned(@Nonnull CompilerErrorState compilerErrorHolder)
@@ -230,6 +231,21 @@ public class AntlrAssociationEnd
                 modifier,
                 classifier.getName());
         compilerErrorHolder.add("ERR_DUP_END", message, modifierState);
+    }
+
+    private void reportPluralName(CompilerErrorState compilerErrorHolder)
+    {
+        if (this.multiplicityState.isToMany())
+        {
+            if (this.getName().equals(this.classReferenceState.getElementContext().identifier().getText().toLowerCase()))
+            {
+                String message = "Expected to-many association end '%s.%s' to have plural name, but name exactly matched type association end type '%s'.".formatted(
+                        this.getOwningClassifierState().getName(),
+                        this.getName(),
+                        this.classReferenceState.getElementContext().identifier().getText());
+                compilerErrorHolder.add("ERR_ASS_PLU", message, this, this.nameContext);
+            }
+        }
     }
 
     @Nonnull

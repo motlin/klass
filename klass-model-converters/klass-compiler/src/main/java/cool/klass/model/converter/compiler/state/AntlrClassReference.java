@@ -45,6 +45,13 @@ public class AntlrClassReference
 
     @Nonnull
     @Override
+    public ClassReferenceContext getElementContext()
+    {
+        return (ClassReferenceContext) super.getElementContext();
+    }
+
+    @Nonnull
+    @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.of(this.classReferenceOwnerState);
