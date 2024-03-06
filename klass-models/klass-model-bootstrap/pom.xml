@@ -58,6 +58,7 @@
         <module>klass-model-bootstrapped-dropwizard-application</module>
         <module>klass-model-bootstrapped-dtos</module>
         <module>klass-model-bootstrapped-json-views</module>
+        <module>klass-model-bootstrapped-klass-macros</module>
         <!--<module>klass-model-bootstrapped-klass-projections</module>-->
         <!--<module>klass-model-bootstrapped-meta-model-json</module>-->
         <module>klass-model-bootstrapped-meta</module>
