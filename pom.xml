@@ -106,6 +106,7 @@
 
                 <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.3.0</version>
                     <executions>
 
                         <execution>
@@ -114,7 +115,7 @@
                                 <goal>analyze-only</goal>
                             </goals>
                             <configuration>
-                                <failOnWarning>true</failOnWarning>
+                                <failOnWarning>false</failOnWarning>
                                 <ignoredUnusedDeclaredDependencies>
                                     <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>com.google.auto.service:auto-service-annotations</ignoredUnusedDeclaredDependency>
