@@ -75,6 +75,8 @@ public final class DomainModelImpl
     private final ImmutableList<Projection>      projections;
     @Nonnull
     private final ImmutableList<ServiceGroup>    serviceGroups;
+    @Nonnull
+    private final Optional<Klass>                userClass;
 
     private final ImmutableMap<String, TopLevelElement> topLevelElementsByName;
     private final ImmutableMap<String, Enumeration>     enumerationsByName;
@@ -83,7 +85,7 @@ public final class DomainModelImpl
     private final ImmutableMap<String, Association>     associationsByName;
     private final ImmutableMap<String, Projection>      projectionsByName;
     private final ImmutableMap<Klass, ServiceGroup>     serviceGroupsByKlass;
-    private final ImmutableMap<String, Classifier>      classifiersByName;
+    private final ImmutableMap<String, Classifier> classifiersByName;
 
     private DomainModelImpl(
             @Nonnull ImmutableList<SourceCode> sourceCodes,
@@ -113,6 +115,8 @@ public final class DomainModelImpl
         this.associations              = Objects.requireNonNull(associations);
         this.projections               = Objects.requireNonNull(projections);
         this.serviceGroups             = Objects.requireNonNull(serviceGroups);
+
+        this.userClass = this.classes.detectOptional(Klass::isUser);
 
         this.topLevelElementsByName = this.topLevelElements
                 .reject(ServiceGroup.class::isInstance)
@@ -182,6 +186,12 @@ public final class DomainModelImpl
     public DomainModelReferences getDomainModelReferences()
     {
         return this.domainModelReferences;
+    }
+
+    @Override
+    public Optional<Klass> getUserClass()
+    {
+        return this.userClass;
     }
 
     @Override

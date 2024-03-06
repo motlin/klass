@@ -10,10 +10,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public interface DomainModel
 {
-    default Optional<Klass> getUserClass()
-    {
-        return this.getClasses().detectOptional(Klass::isUser);
-    }
+    Optional<Klass> getUserClass();
 
     @Nonnull
     ImmutableList<TopLevelElement> getTopLevelElements();
