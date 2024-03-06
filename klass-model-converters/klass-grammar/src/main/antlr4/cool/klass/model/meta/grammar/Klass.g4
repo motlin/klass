@@ -121,9 +121,10 @@ minValidation: ('min' | 'minimum') '(' integerLiteral ')';
 maxValidation: ('max' | 'maximum') '(' integerLiteral ')';
 
 // parameter
-parameterDeclaration: primitiveParameterDeclaration | enumerationParameterDeclaration;
+parameterDeclaration: primitiveParameterDeclaration | enumerationParameterDeclaration | invalidParameterDeclaration;
 primitiveParameterDeclaration: identifier ':' primitiveType multiplicity parameterModifier*;
 enumerationParameterDeclaration: identifier ':' enumerationReference multiplicity parameterModifier*;
+invalidParameterDeclaration: identifier {notifyErrorListeners("Missing type after parameter declaration.");};
 parameterDeclarationList: '(' parameterDeclaration (',' parameterDeclaration)* ')';
 
 // argument

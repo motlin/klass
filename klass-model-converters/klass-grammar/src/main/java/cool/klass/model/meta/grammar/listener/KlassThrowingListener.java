@@ -56,6 +56,7 @@ import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceMemberContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.InvalidParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.KeywordValidAsIdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralListContext;
@@ -1070,6 +1071,20 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitEnumerationParameterDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void enterInvalidParameterDeclaration(InvalidParameterDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterInvalidParameterDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitInvalidParameterDeclaration(InvalidParameterDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitInvalidParameterDeclaration() not implemented yet");
     }
 
     @Override

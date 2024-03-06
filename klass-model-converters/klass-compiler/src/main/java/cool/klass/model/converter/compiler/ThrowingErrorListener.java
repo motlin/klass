@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler;
 
+import javax.annotation.Nonnull;
+
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
@@ -27,13 +29,21 @@ public class ThrowingErrorListener extends BaseErrorListener
     {
         String sourceLine = this.getSourceLine(line);
         String error = String.format(
-                "%s[%d:%d] %s%n%s",
+                "(%s:%d) %s %s[%d:%d]%n%s",
+                this.getFilenameWithoutDirectory(),
+                line,
+                msg,
                 this.sourceName,
                 line,
                 charPositionInLine,
-                msg,
                 sourceLine);
         throw new ParseCancellationException(error);
+    }
+
+    @Nonnull
+    private String getFilenameWithoutDirectory()
+    {
+        return this.sourceName.substring(this.sourceName.lastIndexOf('/') + 1);
     }
 
     public String getSourceLine(int line)
