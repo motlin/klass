@@ -1,4 +1,2 @@
-alter table PARAMETERIZED_PROPERTY_PARAMETER add constraint PARAMETERIZED_PROPERTY_PARAMETER_PK primary key (name, classifier_name, parameterized_property_name);
-
-create index PARAMETERIZED_PROPERTY_PARAMETER_IDX_PARAMETERIZED_PROPERTY on PARAMETERIZED_PROPERTY_PARAMETER(classifier_name, parameterized_property_name);
+alter table PARAMETERIZED_PROPERTY_PARAMETER add constraint PARAMETERIZED_PROPERTY_PARAMETER_PK primary key (classifier_name, parameterized_property_name, name);
 

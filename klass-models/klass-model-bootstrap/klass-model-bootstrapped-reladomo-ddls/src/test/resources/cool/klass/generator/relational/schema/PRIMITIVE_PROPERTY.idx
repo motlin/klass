@@ -1,6 +1,2 @@
-alter table PRIMITIVE_PROPERTY add constraint PRIMITIVE_PROPERTY_PK primary key (name, classifier_name);
-
-create index PRIMITIVE_PROPERTY_IDX_OWNING_CLASSIFIER on PRIMITIVE_PROPERTY(classifier_name);
-
-create index PRIMITIVE_PROPERTY_IDX_OWNING_CLASSIFIER on PRIMITIVE_PROPERTY(classifier_name);
+alter table PRIMITIVE_PROPERTY add constraint PRIMITIVE_PROPERTY_PK primary key (classifier_name, name);
 

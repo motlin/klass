@@ -14,6 +14,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public interface Classifier
@@ -69,7 +70,48 @@ public interface Classifier
         ImmutableList<DataTypeProperty> declaredDataTypeProperties = this.getDeclaredDataTypeProperties()
                 .reject(declaredProperty -> propertyNames.contains(declaredProperty.getName()));
 
-        return inheritedDataTypeProperties.newWithAll(declaredDataTypeProperties);
+        ImmutableList<DataTypeProperty> dataTypeProperties = inheritedDataTypeProperties.newWithAll(
+                declaredDataTypeProperties);
+
+        ImmutableList<DataTypeProperty> foreignKeys = dataTypeProperties.select(DataTypeProperty::isForeignKey);
+        ImmutableList<DataTypeProperty> keysAndForeignKeys = foreignKeys.select(DataTypeProperty::isKey);
+        ImmutableList<DataTypeProperty> keys = dataTypeProperties.select(DataTypeProperty::isKey).reject(DataTypeProperty::isForeignKey);
+        ImmutableList<DataTypeProperty> nonKeyForeignKeys = foreignKeys.reject(DataTypeProperty::isKey).reject(DataTypeProperty::isCreatedBy).reject(DataTypeProperty::isLastUpdatedBy);
+        ImmutableList<DataTypeProperty> systemFrom = dataTypeProperties.select(DataTypeProperty::isSystemFrom);
+        ImmutableList<DataTypeProperty> systemTo = dataTypeProperties.select(DataTypeProperty::isSystemTo);
+        ImmutableList<DataTypeProperty> system = dataTypeProperties.select(DataTypeProperty::isSystemRange);
+        ImmutableList<DataTypeProperty> validFrom = dataTypeProperties.select(DataTypeProperty::isValidFrom);
+        ImmutableList<DataTypeProperty> validTo = dataTypeProperties.select(DataTypeProperty::isValidTo);
+        ImmutableList<DataTypeProperty> valid = dataTypeProperties.select(DataTypeProperty::isValidRange);
+        ImmutableList<DataTypeProperty> createdBy = dataTypeProperties.select(DataTypeProperty::isCreatedBy);
+        ImmutableList<DataTypeProperty> createdOn = dataTypeProperties.select(DataTypeProperty::isCreatedOn);
+        ImmutableList<DataTypeProperty> lastUpdatedBy = dataTypeProperties.select(DataTypeProperty::isLastUpdatedBy);
+
+        ImmutableList<DataTypeProperty> initialDataTypeProperties = Lists.immutable
+                .withAll(keysAndForeignKeys)
+                .newWithAll(keys)
+                .newWithAll(nonKeyForeignKeys)
+                .newWithAll(systemFrom)
+                .newWithAll(systemTo)
+                .newWithAll(system)
+                .newWithAll(validFrom)
+                .newWithAll(validTo)
+                .newWithAll(valid)
+                .newWithAll(createdBy)
+                .newWithAll(createdOn)
+                .newWithAll(lastUpdatedBy);
+
+        ImmutableList<DataTypeProperty> otherDataTypeProperties = dataTypeProperties
+                .reject(initialDataTypeProperties::contains);
+
+        ImmutableList<DataTypeProperty> result = initialDataTypeProperties.newWithAll(otherDataTypeProperties);
+
+        if (!result.equals(result.distinct()))
+        {
+            throw new AssertionError(result);
+        }
+
+        return result;
     }
 
     default ImmutableList<DataTypeProperty> getInheritedDataTypeProperties()

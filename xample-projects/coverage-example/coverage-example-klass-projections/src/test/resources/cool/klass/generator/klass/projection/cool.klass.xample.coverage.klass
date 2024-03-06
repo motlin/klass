@@ -7,16 +7,19 @@ package cool.klass.xample.coverage.inference
 projection UserProjection on User
 {
     userId: "User userId",
+    systemFrom: "User systemFrom",
+    systemTo: "User systemTo",
     firstName: "User firstName",
     lastName: "User lastName",
     email: "User email",
-    systemFrom: "User systemFrom",
-    systemTo: "User systemTo",
 }
 
 projection PropertiesRequiredProjection on PropertiesRequired
 {
     propertiesRequiredId: "PropertiesRequired propertiesRequiredId",
+    systemFrom: "PropertiesRequired systemFrom",
+    systemTo: "PropertiesRequired systemTo",
+    createdOn: "PropertiesRequired createdOn",
     requiredString: "PropertiesRequired requiredString",
     requiredInteger: "PropertiesRequired requiredInteger",
     requiredLong: "PropertiesRequired requiredLong",
@@ -26,9 +29,6 @@ projection PropertiesRequiredProjection on PropertiesRequired
     requiredInstant: "PropertiesRequired requiredInstant",
     requiredLocalDate: "PropertiesRequired requiredLocalDate",
     requiredDerived: "PropertiesRequired requiredDerived",
-    systemFrom: "PropertiesRequired systemFrom",
-    systemTo: "PropertiesRequired systemTo",
-    createdOn: "PropertiesRequired createdOn",
     version: PropertiesRequiredVersionProjection,
     createdBy: UserProjection,
     lastUpdatedBy: UserProjection,
@@ -37,6 +37,9 @@ projection PropertiesRequiredProjection on PropertiesRequired
 projection PropertiesOptionalProjection on PropertiesOptional
 {
     propertiesOptionalId: "PropertiesOptional propertiesOptionalId",
+    systemFrom: "PropertiesOptional systemFrom",
+    systemTo: "PropertiesOptional systemTo",
+    createdOn: "PropertiesOptional createdOn",
     optionalString: "PropertiesOptional optionalString",
     optionalInteger: "PropertiesOptional optionalInteger",
     optionalLong: "PropertiesOptional optionalLong",
@@ -46,9 +49,6 @@ projection PropertiesOptionalProjection on PropertiesOptional
     optionalInstant: "PropertiesOptional optionalInstant",
     optionalLocalDate: "PropertiesOptional optionalLocalDate",
     optionalDerived: "PropertiesOptional optionalDerived",
-    systemFrom: "PropertiesOptional systemFrom",
-    systemTo: "PropertiesOptional systemTo",
-    createdOn: "PropertiesOptional createdOn",
     version: PropertiesOptionalVersionProjection,
     createdBy: UserProjection,
     lastUpdatedBy: UserProjection,
@@ -76,9 +76,9 @@ projection EveryTypeKeyPropertyProjection on EveryTypeKeyProperty
 projection EveryTypeForeignKeyPropertyProjection on EveryTypeForeignKeyProperty
 {
     id: "EveryTypeForeignKeyProperty id",
-    data: "EveryTypeForeignKeyProperty data",
     systemFrom: "EveryTypeForeignKeyProperty systemFrom",
     systemTo: "EveryTypeForeignKeyProperty systemTo",
+    data: "EveryTypeForeignKeyProperty data",
 }
 
 projection FinalPropertiesProjection on FinalProperties
@@ -234,30 +234,30 @@ projection SharedSyntheticOneToManySelfProjection on SharedSyntheticOneToManySel
 
 projection PropertiesRequiredVersionProjection on PropertiesRequiredVersion
 {
-    number: "PropertiesRequiredVersion number",
     systemFrom: "PropertiesRequiredVersion systemFrom",
     systemTo: "PropertiesRequiredVersion systemTo",
     createdOn: "PropertiesRequiredVersion createdOn",
+    number: "PropertiesRequiredVersion number",
     createdBy: UserProjection,
     lastUpdatedBy: UserProjection,
 }
 
 projection PropertiesOptionalVersionProjection on PropertiesOptionalVersion
 {
-    number: "PropertiesOptionalVersion number",
     systemFrom: "PropertiesOptionalVersion systemFrom",
     systemTo: "PropertiesOptionalVersion systemTo",
     createdOn: "PropertiesOptionalVersion createdOn",
+    number: "PropertiesOptionalVersion number",
     createdBy: UserProjection,
     lastUpdatedBy: UserProjection,
 }
 
 projection EveryTypeKeyPropertyVersionProjection on EveryTypeKeyPropertyVersion
 {
-    number: "EveryTypeKeyPropertyVersion number",
     systemFrom: "EveryTypeKeyPropertyVersion systemFrom",
     systemTo: "EveryTypeKeyPropertyVersion systemTo",
     createdOn: "EveryTypeKeyPropertyVersion createdOn",
+    number: "EveryTypeKeyPropertyVersion number",
     createdBy: UserProjection,
     lastUpdatedBy: UserProjection,
 }

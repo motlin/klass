@@ -156,16 +156,16 @@ projection ClassifierModifierProjection on ClassifierModifier
 projection ParameterProjection on Parameter
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     id: "Parameter id",
+    ordinal: "NamedElement ordinal",
     multiplicity: "Parameter multiplicity",
 }
 
 projection EnumerationParameterProjection on EnumerationParameter
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     id: "Parameter id",
+    ordinal: "NamedElement ordinal",
     multiplicity: "Parameter multiplicity",
     enumeration: EnumerationProjection,
 }
@@ -173,8 +173,8 @@ projection EnumerationParameterProjection on EnumerationParameter
 projection PrimitiveParameterProjection on PrimitiveParameter
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     id: "Parameter id",
+    ordinal: "NamedElement ordinal",
     multiplicity: "Parameter multiplicity",
     primitiveType: "PrimitiveParameter primitiveType",
 }
@@ -332,16 +332,16 @@ projection ParameterizedPropertyParameterProjection on ParameterizedPropertyPara
 projection ProjectionElementProjection on ProjectionElement
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     id: "ProjectionElement id",
+    ordinal: "NamedElement ordinal",
     children: ProjectionElementProjection,
 }
 
 projection ServiceProjectionProjection on ServiceProjection
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     id: "ProjectionElement id",
+    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     children: ProjectionElementProjection,
     klass: KlassProjection,
@@ -350,8 +350,8 @@ projection ServiceProjectionProjection on ServiceProjection
 projection ProjectionWithAssociationEndProjection on ProjectionWithAssociationEnd
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     id: "ProjectionElement id",
+    ordinal: "NamedElement ordinal",
     children: ProjectionElementProjection,
     associationEnd: AssociationEndProjection,
 }
@@ -359,8 +359,8 @@ projection ProjectionWithAssociationEndProjection on ProjectionWithAssociationEn
 projection ProjectionReferencePropertyProjection on ProjectionReferenceProperty
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     id: "ProjectionElement id",
+    ordinal: "NamedElement ordinal",
     children: ProjectionElementProjection,
     associationEnd: AssociationEndProjection,
 }
@@ -368,8 +368,8 @@ projection ProjectionReferencePropertyProjection on ProjectionReferenceProperty
 projection ProjectionProjectionReferenceProjection on ProjectionProjectionReference
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     id: "ProjectionElement id",
+    ordinal: "NamedElement ordinal",
     children: ProjectionElementProjection,
     associationEnd: AssociationEndProjection,
     projection: ServiceProjectionProjection,
@@ -378,8 +378,8 @@ projection ProjectionProjectionReferenceProjection on ProjectionProjectionRefere
 projection ProjectionDataTypePropertyProjection on ProjectionDataTypeProperty
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     id: "ProjectionElement id",
+    ordinal: "NamedElement ordinal",
     children: ProjectionElementProjection,
     dataTypeProperty: DataTypePropertyProjection,
 }

@@ -11,6 +11,15 @@ import javax.validation.constraints.*;
 public class QuestionDTO
 {
     private Long id;
+    private Instant systemFrom;
+    private Instant systemTo;
+    private Instant system;
+    @NotNull
+    private String createdById;
+    @NotNull
+    private Instant createdOn;
+    @NotNull
+    private String lastUpdatedById;
     @NotNull
     private String body;
     @NotNull
@@ -19,15 +28,6 @@ public class QuestionDTO
     private StatusDTO status;
     @NotNull
     private Boolean deleted;
-    private Instant system;
-    private Instant systemFrom;
-    private Instant systemTo;
-    @NotNull
-    private String createdById;
-    @NotNull
-    private Instant createdOn;
-    @NotNull
-    private String lastUpdatedById;
 
     private List<AnswerDTO> answers;
     private List<QuestionVoteDTO> votes;
@@ -44,6 +44,66 @@ public class QuestionDTO
     public void setId(Long id)
     {
         this.id = id;
+    }
+
+    public Instant getSystemFrom()
+    {
+        return this.systemFrom;
+    }
+
+    public void setSystemFrom(Instant systemFrom)
+    {
+        this.systemFrom = systemFrom;
+    }
+
+    public Instant getSystemTo()
+    {
+        return this.systemTo;
+    }
+
+    public void setSystemTo(Instant systemTo)
+    {
+        this.systemTo = systemTo;
+    }
+
+    public Instant getSystem()
+    {
+        return this.system;
+    }
+
+    public void setSystem(Instant system)
+    {
+        this.system = system;
+    }
+
+    public String getCreatedById()
+    {
+        return this.createdById;
+    }
+
+    public void setCreatedById(String createdById)
+    {
+        this.createdById = createdById;
+    }
+
+    public Instant getCreatedOn()
+    {
+        return this.createdOn;
+    }
+
+    public void setCreatedOn(Instant createdOn)
+    {
+        this.createdOn = createdOn;
+    }
+
+    public String getLastUpdatedById()
+    {
+        return this.lastUpdatedById;
+    }
+
+    public void setLastUpdatedById(String lastUpdatedById)
+    {
+        this.lastUpdatedById = lastUpdatedById;
     }
 
     public String getBody()
@@ -84,66 +144,6 @@ public class QuestionDTO
     public void setDeleted(Boolean deleted)
     {
         this.deleted = deleted;
-    }
-
-    public Instant getSystem()
-    {
-        return this.system;
-    }
-
-    public void setSystem(Instant system)
-    {
-        this.system = system;
-    }
-
-    public Instant getSystemFrom()
-    {
-        return this.systemFrom;
-    }
-
-    public void setSystemFrom(Instant systemFrom)
-    {
-        this.systemFrom = systemFrom;
-    }
-
-    public Instant getSystemTo()
-    {
-        return this.systemTo;
-    }
-
-    public void setSystemTo(Instant systemTo)
-    {
-        this.systemTo = systemTo;
-    }
-
-    public String getCreatedById()
-    {
-        return this.createdById;
-    }
-
-    public void setCreatedById(String createdById)
-    {
-        this.createdById = createdById;
-    }
-
-    public Instant getCreatedOn()
-    {
-        return this.createdOn;
-    }
-
-    public void setCreatedOn(Instant createdOn)
-    {
-        this.createdOn = createdOn;
-    }
-
-    public String getLastUpdatedById()
-    {
-        return this.lastUpdatedById;
-    }
-
-    public void setLastUpdatedById(String lastUpdatedById)
-    {
-        this.lastUpdatedById = lastUpdatedById;
     }
 
     public List<AnswerDTO> getAnswers()

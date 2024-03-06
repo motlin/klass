@@ -99,7 +99,7 @@ public class ReladomoOperationCompilerTest
         {
             assertThat(
                     e.getMessage(),
-                    is("Could not find attribute 'invalidAttributeName' on type 'PropertiesRequired' in this.invalidAttributeName = \"Value\". Valid attributes: [propertiesRequiredId, requiredString, requiredInteger, requiredLong, requiredDouble, requiredFloat, requiredBoolean, requiredInstant, requiredLocalDate, createdById, createdOn, lastUpdatedById, systemFrom, systemTo]"));
+                    is("Could not find attribute 'invalidAttributeName' on type 'PropertiesRequired' in this.invalidAttributeName = \"Value\". Valid attributes: [propertiesRequiredId, createdById, createdOn, lastUpdatedById, requiredString, requiredInteger, requiredLong, requiredDouble, requiredFloat, requiredBoolean, requiredInstant, requiredLocalDate, systemFrom, systemTo]"));
         }
     }
 

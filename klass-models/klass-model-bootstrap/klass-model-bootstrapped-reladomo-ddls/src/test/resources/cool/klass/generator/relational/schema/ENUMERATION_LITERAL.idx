@@ -1,4 +1,2 @@
-alter table ENUMERATION_LITERAL add constraint ENUMERATION_LITERAL_PK primary key (name, enumeration_name);
-
-create index ENUMERATION_LITERAL_IDX_ENUMERATION on ENUMERATION_LITERAL(enumeration_name);
+alter table ENUMERATION_LITERAL add constraint ENUMERATION_LITERAL_PK primary key (enumeration_name, name);
 

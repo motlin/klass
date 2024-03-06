@@ -71,9 +71,39 @@ public interface DataTypeProperty
         return this.getModifiers().anySatisfy(Modifier::isValid);
     }
 
+    default boolean isValidFrom()
+    {
+        return this.isValid() && this.isFrom();
+    }
+
+    default boolean isValidTo()
+    {
+        return this.isValid() && this.isTo();
+    }
+
+    default boolean isValidRange()
+    {
+        return this.isValid() && this.isTemporalRange();
+    }
+
     default boolean isSystem()
     {
         return this.getModifiers().anySatisfy(Modifier::isSystem);
+    }
+
+    default boolean isSystemFrom()
+    {
+        return this.isSystem() && this.isFrom();
+    }
+
+    default boolean isSystemTo()
+    {
+        return this.isSystem() && this.isTo();
+    }
+
+    default boolean isSystemRange()
+    {
+        return this.isSystem() && this.isTemporalRange();
     }
 
     default boolean isFrom()
