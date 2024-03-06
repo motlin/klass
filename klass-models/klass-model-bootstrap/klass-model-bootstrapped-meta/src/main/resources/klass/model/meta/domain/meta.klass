@@ -455,6 +455,67 @@ association PackageHasAssociations
     relationship this.fullyQualifiedName == Association.packageName
 }
 
+enumeration ServiceMultiplicity
+{
+    ONE,
+    MANY,
+}
+
+enumeration Verb
+{
+    GET,
+    POST,
+    PUT,
+    PATCH,
+    DELETE,
+}
+
+class Service
+    transient
+{
+    className          : String key;
+    urlString          : String key;
+    verb               : Verb key;
+    serviceMultiplicity: ServiceMultiplicity;
+}
+
+class Url
+    transient
+{
+    className          : String key;
+    url                : String key;
+}
+
+class ServiceGroup
+    transient
+{
+    className          : String key;
+}
+
+association ServiceGroupHasClass
+{
+    serviceGroup: ServiceGroup[0..1];
+    owningClass: Class[1..1];
+
+    relationship this.className == Class.name
+}
+
+association ServiceGroupHasUrls
+{
+    serviceGroup: ServiceGroup[1..1];
+    urls: Url[1..*];
+
+    relationship this.className == Url.className
+}
+
+association UrlHasServices
+{
+    url: Url[1..1];
+    services: Service[1..*];
+
+    relationship this.className == Service.className && this.url == Service.urlString
+}
+
 projection ClassReadProjection on Class
 {
     name                 : "Class name",

@@ -60,6 +60,12 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
             @Nonnull ClassModifierContext ctx,
             @Nonnull String prefix)
     {
+        // TODO: Syntax to link together temporal properties
+        /*
+        system            : TemporalRange   system;
+        systemFrom        : TemporalInstant system from;
+        systemTo          : TemporalInstant system to;
+        */
         AntlrPrimitiveProperty temporalProperty = this.property(
                 classState,
                 ctx,

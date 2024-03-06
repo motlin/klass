@@ -71,6 +71,7 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
 
         String associationEndName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, className);
 
+        // TODO: Add property modifiers to the two association ends, "versioned" and "version". Remove the syntax versions(ClassName)
         //language=Klass
         String klassSourceCode = "package " + classState.getPackageName() + "\n"
                 + "\n"

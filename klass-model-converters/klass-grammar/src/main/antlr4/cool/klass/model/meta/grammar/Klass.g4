@@ -164,27 +164,25 @@ thisMemberReferencePath: 'this' ('.' associationEndReference)* '.' memberReferen
 typeMemberReferencePath: classReference ('.' associationEndReference)* '.' memberReference;
 
 identifier
-    : keywordValidAsIdentifier
-    | Identifier
+    : Identifier
+    | keywordValidAsIdentifier
     ;
 
 keywordValidAsIdentifier
     : 'package'
     | 'class' | 'enumeration' | 'association' | 'projection' | 'service' | 'user'
-    | 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked' | 'transient' | 'versions'
-    | 'key' | 'private' | 'owned' | 'userId' | 'id'
-    | 'valid' | 'validFrom' | 'validTo' | 'system' | 'systemFrom' | 'systemTo'
-    | 'read' | 'write' | 'create' | 'update' | 'delete'
-    | 'in' | 'contains' | 'startsWith' | 'endsWith'
-    | 'native' | 'version'
+    | 'versions'
+    | 'native'
     | 'relationship'
     | 'multiplicity' | 'orderBy'
     | classModifier
     | propertyModifier
     | parameterModifier
     | associationEndModifier
+    | verb
+    | serviceCategoryModifier
+    | inOperator | stringOperator
     // TODO: Split these primitive type keywords out, since they're really only ok as enumeration literals
-    | 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate' | 'TemporalInstant' | 'TemporalRange'
     | primitiveType
     ;
 

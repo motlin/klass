@@ -13,6 +13,7 @@ import cool.klass.model.meta.domain.property.DataTypeProperty;
 import cool.klass.model.meta.domain.property.EnumerationProperty;
 import cool.klass.model.meta.domain.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.property.PropertyModifier;
+import cool.klass.model.meta.domain.service.ServiceGroup;
 import klass.model.meta.domain.EnumerationPropertyModifier;
 import klass.model.meta.domain.PrimitivePropertyModifier;
 
@@ -148,8 +149,12 @@ public class KlassBootstrapWriter
             AssociationEnd sourceAssociationEnd = association.getSourceAssociationEnd();
             AssociationEnd targetAssociationEnd = association.getTargetAssociationEnd();
 
-            this.bootstrapAssociationEnd(sourceAssociationEnd, "SOURCE");
-            this.bootstrapAssociationEnd(targetAssociationEnd, "TARGET");
+            this.bootstrapAssociationEnd(sourceAssociationEnd, "source");
+            this.bootstrapAssociationEnd(targetAssociationEnd, "target");
+        }
+
+        for (ServiceGroup serviceGroup : this.domainModel.getServiceGroups())
+        {
         }
     }
 
@@ -162,7 +167,7 @@ public class KlassBootstrapWriter
         bootstrappedAssociationEnd.setOrdinal(associationEnd.getOrdinal());
         bootstrappedAssociationEnd.setAssociationName(associationEnd.getOwningAssociation().getName());
         bootstrappedAssociationEnd.setDirection(direction);
-        bootstrappedAssociationEnd.setMultiplicity(associationEnd.getMultiplicity().name());
+        bootstrappedAssociationEnd.setMultiplicity(associationEnd.getMultiplicity().getPrettyName());
         bootstrappedAssociationEnd.setResultTypeName(associationEnd.getType().getName());
         bootstrappedAssociationEnd.insert();
 

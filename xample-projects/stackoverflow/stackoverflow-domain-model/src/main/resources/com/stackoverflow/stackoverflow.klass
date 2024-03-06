@@ -1,6 +1,7 @@
 /*
  * Simplified StackOverflow domain model. One question has many answers.
  */
+// TODO: There should be a maven plugin that compiles the klass files and does nothing else, just to fail the build at the right module
 package com.stackoverflow
 
 // 'user' is just a special class that represents logged in users

@@ -23,6 +23,7 @@ public final class Klass extends Type
     private ImmutableList<DataTypeProperty<?>> dataTypeProperties;
     private ImmutableList<AssociationEnd>      associationEnds;
 
+    // TODO: Instead of Klasses, these two should be AssociationEnds
     @Nonnull
     private Optional<Klass> versionClass   = Optional.empty();
     @Nonnull
