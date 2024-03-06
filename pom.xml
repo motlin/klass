@@ -24,9 +24,10 @@
         <module>klass-dropwizard-bundles</module>
         <module>klass-test-modules</module>
         <module>klass-data-store</module>
-        <module>xample-projects</module>
         <module>klass-dropwizard</module>
         <module>klass-jackson-jsonview</module>
+        <module>xample-projects</module>
+        <module>klass-maven-archetype</module>
     </modules>
 
     <properties>
@@ -644,7 +645,6 @@
             </plugin>
 
         </plugins>
-
     </build>
 
     <profiles>
