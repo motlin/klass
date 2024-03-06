@@ -74,7 +74,7 @@ public class GraphQLRuntimeWiringBuilderGenerator
                 + "                .scalar(new GraphQLTemporalScalar(\"TemporalRange\"))\n"
                 + this.getPrimitiveScalarsSourceCode()
                 + "                .type(new " + this.applicationName + "QueryTypeRuntimeWiringProvider().get())\n"
-                + this.domainModel.getClasses().reject(Klass::isAbstract).collect(this::getSourceCode).makeString("") + ";\n"
+                + this.domainModel.getClasses().reject(Klass::isAbstract).collect(this::getSourceCode).makeString("\n") + ";\n"
                 + "    }\n"
                 + "}\n";
 
@@ -109,7 +109,7 @@ public class GraphQLRuntimeWiringBuilderGenerator
     private String getSourceCode(Classifier classifier)
     {
         return String.format(
-                "                .type(new %sTypeRuntimeWiringProvider().get())\n",
+                "                .type(new %sTypeRuntimeWiringProvider().get())",
                 classifier.getName());
     }
 
