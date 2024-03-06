@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class KlassResponseMetadata
 {
     @Nonnull
@@ -15,6 +17,7 @@ public class KlassResponseMetadata
         this.transactionTimestamp = Objects.requireNonNull(transactionTimestamp);
     }
 
+    @JsonProperty
     @Nonnull
     public Instant getTransactionTimestamp()
     {

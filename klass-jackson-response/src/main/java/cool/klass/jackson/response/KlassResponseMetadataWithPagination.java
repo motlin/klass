@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class KlassResponseMetadataWithPagination
 {
     @Nonnull
@@ -20,12 +22,14 @@ public class KlassResponseMetadataWithPagination
         this.transactionTimestamp = Objects.requireNonNull(transactionTimestamp);
     }
 
+    @JsonProperty
     @Nonnull
     public KlassResponsePagination getPagination()
     {
         return this.pagination;
     }
 
+    @JsonProperty
     @Nonnull
     public Instant getTransactionTimestamp()
     {

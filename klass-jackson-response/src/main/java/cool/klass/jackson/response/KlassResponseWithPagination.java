@@ -6,13 +6,15 @@ import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonPropertyOrder({"_metadata", "_data"})
 public class KlassResponseWithPagination
 {
     @Nonnull
-    private final Object                              data;
-    @Nonnull
     private final KlassResponseMetadataWithPagination metadata;
+    @Nonnull
+    private final Object                              data;
 
     @JsonCreator
     public KlassResponseWithPagination(@Nonnull Object data, @Nonnull KlassResponseMetadataWithPagination metadata)

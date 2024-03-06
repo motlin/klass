@@ -1,6 +1,7 @@
 package cool.klass.jackson.response;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class KlassResponsePagination
 {
@@ -14,11 +15,13 @@ public class KlassResponsePagination
         this.numberOfPages = numberOfPages;
     }
 
+    @JsonProperty
     public int getPageNumber()
     {
         return this.pageNumber;
     }
 
+    @JsonProperty
     public int getNumberOfPages()
     {
         return this.numberOfPages;
