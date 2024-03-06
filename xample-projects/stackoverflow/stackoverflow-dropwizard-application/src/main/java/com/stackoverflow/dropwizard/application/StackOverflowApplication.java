@@ -1,8 +1,11 @@
 package com.stackoverflow.dropwizard.application;
 
+import java.util.ServiceLoader;
+
 import javax.annotation.Nonnull;
 
 import com.stackoverflow.service.resource.QuestionResourceManual;
+import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -17,6 +20,12 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
     public void initialize(Bootstrap<StackOverflowConfiguration> bootstrap)
     {
         super.initialize(bootstrap);
+
+        ServiceLoader<Bundle> bundleServiceLoader = ServiceLoader.load(Bundle.class);
+        for (Bundle bundle : bundleServiceLoader)
+        {
+            bootstrap.addBundle(bundle);
+        }
 
         // TODO: application initialization
     }

@@ -1,10 +1,11 @@
 logging:
   level: DEBUG
   loggers:
-    org.eclipse.jetty: INFO
     com.stackoverflow: DEBUG
     com.gs.fw.common.mithra.sqllogs: DEBUG
     com.gs.fw.common.mithra.batch.sqllogs: DEBUG
+    com.gs.fw.common.mithra.connectionmanager: INFO
+    org.eclipse.jetty: INFO
 
 server:
   detailedJsonProcessingExceptionMapper: true
