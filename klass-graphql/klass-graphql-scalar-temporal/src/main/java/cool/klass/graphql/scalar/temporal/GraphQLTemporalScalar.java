@@ -54,8 +54,7 @@ public class GraphQLTemporalScalar extends GraphQLScalarType
             catch (DateTimeException e)
             {
                 throw new CoercingSerializeException(
-                        "Unable to turn TemporalAccessor into OffsetDateTime because of : '" + e.getMessage() + "'."
-                );
+                        "Unable to turn TemporalAccessor into OffsetDateTime because of : '" + e.getMessage() + "'.");
             }
         }
 
