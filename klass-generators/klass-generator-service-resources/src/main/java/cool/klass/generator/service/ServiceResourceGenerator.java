@@ -15,7 +15,6 @@ import cool.klass.model.meta.domain.DomainModel;
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.criteria.AllCriteria;
 import cool.klass.model.meta.domain.criteria.Criteria;
-import cool.klass.model.meta.domain.projection.Projection;
 import cool.klass.model.meta.domain.service.Service;
 import cool.klass.model.meta.domain.service.ServiceGroup;
 import cool.klass.model.meta.domain.service.ServiceMultiplicity;
@@ -93,6 +92,7 @@ public class ServiceResourceGenerator
                 + "\n"
                 + "import " + klass.getPackageName() + ".*;\n"
                 + "import com.gs.fw.common.mithra.finder.Operation;\n"
+                + "import com.gs.fw.common.mithra.util.serializer.*;\n"
                 + "import org.eclipse.collections.api.set.primitive.*;\n"
                 + "import org.eclipse.collections.impl.factory.primitive.*;\n"
                 + "import org.eclipse.collections.impl.set.mutable.SetAdapter;\n"
@@ -110,9 +110,10 @@ public class ServiceResourceGenerator
     @Nonnull
     private String getServiceSourceCode(Service service, int index)
     {
-        Url                 url                 = service.getUrl();
-        Verb                verb                = service.getVerb();
-        ServiceMultiplicity serviceMultiplicity = service.getServiceMultiplicity();
+        Url                       url                 = service.getUrl();
+        Verb                      verb                = service.getVerb();
+        ServiceMultiplicity       serviceMultiplicity = service.getServiceMultiplicity();
+        ServiceProjectionDispatch projectionDispatch  = service.getProjectionDispatch();
 
         ServiceGroup                     serviceGroup    = url.getServiceGroup();
         ImmutableList<UrlPathSegment>    urlPathSegments = url.getUrlPathSegments();
@@ -122,7 +123,7 @@ public class ServiceResourceGenerator
         Klass  klass           = serviceGroup.getKlass();
         String klassName       = klass.getName();
         String returnType      = this.getReturnType(serviceMultiplicity, klassName);
-        String returnStatement = this.getReturnStatement(serviceMultiplicity, service);
+        String returnStatement = this.getReturnStatement(serviceMultiplicity, klassName);
 
         String executeOperationSourceCode = MessageFormat.format(
                 "        {0}List result = {0}Finder.findMany(queryOperation);\n",
@@ -174,7 +175,7 @@ public class ServiceResourceGenerator
                 + "        Operation conflictOperation  = " + conflictOperationSourceCode + ";\n"
                 + "\n"
                 + executeOperationSourceCode
-                + "        // TODO: Deep fetch\n"
+                + "        // TODO: Deep fetch using projection " + projectionDispatch.getProjection().getName() + "\n"
                 + "\n"
                 + "        boolean isAuthorized = !result.asEcList().allSatisfy(authorizeOperation::matches);\n"
                 + "        boolean isValidated  = !result.asEcList().allSatisfy(validateOperation::matches);\n"
@@ -189,34 +190,34 @@ public class ServiceResourceGenerator
     private String getReturnType(ServiceMultiplicity serviceMultiplicity, String klassName)
     {
         boolean uniqueResult = serviceMultiplicity == ServiceMultiplicity.ONE;
-
         return uniqueResult
-                ? klassName
-                : "List<" + klassName + ">";
+                ? "Serialized<" + klassName + ">"
+                : "SerializedList<" + klassName + ", " + klassName + "List>";
     }
 
     @Nonnull
-    private String getReturnStatement(ServiceMultiplicity serviceMultiplicity, Service service)
+    private String getReturnStatement(ServiceMultiplicity serviceMultiplicity, String klassName)
     {
-        ServiceProjectionDispatch projectionDispatch = service.getProjectionDispatch();
-        Projection                projection         = projectionDispatch.getProjection();
-        String                    projectionName     = projection.getName();
-
         boolean uniqueResult = serviceMultiplicity == ServiceMultiplicity.ONE;
 
         if (uniqueResult)
         {
             return ""
-                    + "        // TODO: Use Projection " + projectionName + "\n"
                     + "        if (result.isEmpty())\n"
                     + "        {\n"
                     + "            throw new NotFoundException();\n"
                     + "        }\n"
-                    + "        return Iterate.getOnly(result);\n";
+                    + "        SerializationConfig serializationConfig = SerializationConfig.withDeepFetchesFromList(\n"
+                    + "                " + klassName + "Finder.getFinderInstance(),\n"
+                    + "                result);\n"
+                    + "        return new Serialized<>(Iterate.getOnly(result), serializationConfig);\n";
         }
 
-        return "        // TODO: Use Projection " + projectionName + "\n"
-                + "        return result;\n";
+        return ""
+                + "        SerializationConfig serializationConfig = SerializationConfig.withDeepFetchesFromList(\n"
+                + "                " + klassName + "Finder.getFinderInstance(),\n"
+                + "                result);\n"
+                + "        return new SerializedList<>(result, serializationConfig);\n";
     }
 
     @Nonnull

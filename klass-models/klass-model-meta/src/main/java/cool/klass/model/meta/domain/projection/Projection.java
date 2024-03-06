@@ -31,6 +31,17 @@ public final class Projection extends ProjectionParent
         this.klass = Objects.requireNonNull(klass);
     }
 
+    @Nonnull
+    public Klass getKlass()
+    {
+        return this.klass;
+    }
+
+    public ImmutableList<ProjectionMember> getProjectionMembers()
+    {
+        return Objects.requireNonNull(this.projectionMembers);
+    }
+
     private void setProjectionMembers(@Nonnull ImmutableList<ProjectionMember> projectionMembers)
     {
         this.projectionMembers = Objects.requireNonNull(projectionMembers);
