@@ -20,6 +20,15 @@ import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.order.OrderByMemberReferencePath;
+import cool.klass.model.meta.domain.api.projection.Projection;
+import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
+import cool.klass.model.meta.domain.api.projection.ProjectionChild;
+import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
+import cool.klass.model.meta.domain.api.projection.ProjectionElement;
+import cool.klass.model.meta.domain.api.projection.ProjectionParent;
+import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
+import cool.klass.model.meta.domain.api.projection.ProjectionVisitor;
+import cool.klass.model.meta.domain.api.projection.ProjectionWithAssociationEnd;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.AssociationEndModifier;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
@@ -27,6 +36,9 @@ import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
+import cool.klass.model.meta.domain.api.service.Service;
+import cool.klass.model.meta.domain.api.service.ServiceGroup;
+import cool.klass.model.meta.domain.api.service.url.Url;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
 import klass.model.meta.domain.AssociationEndOrderBy;
 import klass.model.meta.domain.ClassifierInterfaceMapping;
@@ -37,6 +49,7 @@ import klass.model.meta.domain.MinLengthPropertyValidation;
 import klass.model.meta.domain.MinPropertyValidation;
 import klass.model.meta.domain.NamedElementAbstract;
 import klass.model.meta.domain.PackageableElementAbstract;
+import klass.model.meta.domain.ProjectionWithAssociationEndAbstract;
 
 public class KlassBootstrapWriter
 {
@@ -56,71 +69,199 @@ public class KlassBootstrapWriter
 
     private void bootstrapMetaModelInTransaction()
     {
-        for (Enumeration enumeration : this.domainModel.getEnumerations())
-        {
-            klass.model.meta.domain.Enumeration bootstrappedEnumeration = new klass.model.meta.domain.Enumeration();
-            KlassBootstrapWriter.handlePackageableElement(bootstrappedEnumeration, enumeration);
-            bootstrappedEnumeration.insert();
+        this.domainModel.getEnumerations().each(this::handleEnumeration);
+        this.domainModel.getInterfaces().each(this::handleInterface);
+        this.domainModel.getClasses().each(this::handleClass);
+        this.domainModel.getAssociations().each(this::handleAssociation);
+        this.domainModel.getProjections().each(this::handleProjection);
+        this.domainModel.getServiceGroups().each(this::handleServiceGroup);
+    }
 
-            for (EnumerationLiteral enumerationLiteral : enumeration.getEnumerationLiterals())
+    private void handleEnumeration(Enumeration enumeration)
+    {
+        klass.model.meta.domain.Enumeration bootstrappedEnumeration = new klass.model.meta.domain.Enumeration();
+        KlassBootstrapWriter.handlePackageableElement(bootstrappedEnumeration, enumeration);
+        bootstrappedEnumeration.insert();
+
+        for (EnumerationLiteral enumerationLiteral : enumeration.getEnumerationLiterals())
+        {
+            this.handleEnumerationLiteral(bootstrappedEnumeration, enumerationLiteral);
+        }
+    }
+
+    private void handleEnumerationLiteral(
+            klass.model.meta.domain.Enumeration bootstrappedEnumeration,
+            EnumerationLiteral enumerationLiteral)
+    {
+        klass.model.meta.domain.EnumerationLiteral bootstrappedEnumerationLiteral = new klass.model.meta.domain.EnumerationLiteral();
+        KlassBootstrapWriter.handleNamedElement(bootstrappedEnumerationLiteral, enumerationLiteral);
+        enumerationLiteral.getDeclaredPrettyName().ifPresent(bootstrappedEnumerationLiteral::setPrettyName);
+        bootstrappedEnumerationLiteral.setEnumeration(bootstrappedEnumeration);
+        bootstrappedEnumerationLiteral.insert();
+    }
+
+    private void handleInterface(Interface anInterface)
+    {
+        klass.model.meta.domain.Interface bootstrappedInterface = new klass.model.meta.domain.Interface();
+        KlassBootstrapWriter.handlePackageableElement(bootstrappedInterface, anInterface);
+        // TODO: Report Reladomo bug. If any non-nullable properties are not set on a transient object, insert() ought to throw but doesn't
+        bootstrappedInterface.insert();
+
+        this.handleSuperInterfaces(anInterface);
+        this.handleClassifierModifiers(anInterface);
+        this.handleDataTypeProperties(anInterface);
+    }
+
+    private void handleClass(Klass klass)
+    {
+        klass.model.meta.domain.Klass bootstrappedClass = new klass.model.meta.domain.Klass();
+        KlassBootstrapWriter.handlePackageableElement(bootstrappedClass, klass);
+        // TODO: Report Reladomo bug. If any non-nullable properties are not set on a transient object, insert() ought to throw but doesn't
+        bootstrappedClass.setInheritanceType(klass.getInheritanceType().getPrettyName());
+        bootstrappedClass.insert();
+
+        klass.getSuperClass()
+                .map(NamedElement::getName)
+                .ifPresent(bootstrappedClass::setSuperClassName);
+
+        this.handleSuperInterfaces(klass);
+        this.handleClassifierModifiers(klass);
+        this.handleDataTypeProperties(klass);
+    }
+
+    private void handleAssociation(Association association)
+    {
+        klass.model.meta.domain.Criteria bootstrappedCriteria = BootstrapCriteriaVisitor.convert(association.getCriteria());
+
+        klass.model.meta.domain.Association bootstrappedAssociation = new klass.model.meta.domain.Association();
+        KlassBootstrapWriter.handlePackageableElement(bootstrappedAssociation, association);
+        bootstrappedAssociation.setCriteria(bootstrappedCriteria);
+        bootstrappedAssociation.insert();
+
+        AssociationEnd sourceAssociationEnd = association.getSourceAssociationEnd();
+        AssociationEnd targetAssociationEnd = association.getTargetAssociationEnd();
+
+        this.bootstrapAssociationEnd(sourceAssociationEnd, "source");
+        this.bootstrapAssociationEnd(targetAssociationEnd, "target");
+    }
+
+    private void handleProjection(Projection projection)
+    {
+        klass.model.meta.domain.ServiceProjection bootstrappedProjection = new klass.model.meta.domain.ServiceProjection();
+        KlassBootstrapWriter.handlePackageableElement(bootstrappedProjection, projection);
+        bootstrappedProjection.setClassName(projection.getKlass().getName());
+        bootstrappedProjection.insert();
+
+        this.handleProjectionChildren(projection, bootstrappedProjection);
+    }
+
+    private void handleProjection(
+            ProjectionElement projectionElement,
+            klass.model.meta.domain.ProjectionElement bootstrappedProjectionParent)
+    {
+        projectionElement.visit(new ProjectionVisitor()
+        {
+            @Override
+            public void visitProjection(Projection projection)
             {
-                klass.model.meta.domain.EnumerationLiteral bootstrappedEnumerationLiteral = new klass.model.meta.domain.EnumerationLiteral();
-                KlassBootstrapWriter.handleNamedElement(bootstrappedEnumerationLiteral, enumerationLiteral);
-                enumerationLiteral.getDeclaredPrettyName().ifPresent(bootstrappedEnumerationLiteral::setPrettyName);
-                bootstrappedEnumerationLiteral.setEnumeration(bootstrappedEnumeration);
-                bootstrappedEnumerationLiteral.insert();
+                klass.model.meta.domain.ServiceProjection bootstrappedProjection = new klass.model.meta.domain.ServiceProjection();
+                KlassBootstrapWriter.handlePackageableElement(bootstrappedProjection, projection);
+                bootstrappedProjection.setClassName(projection.getKlass().getName());
+                bootstrappedProjection.insert();
+
+                KlassBootstrapWriter.this.handleProjectionChildren(projection, bootstrappedProjection);
             }
-        }
 
-        for (Interface anInterface : this.domainModel.getInterfaces())
+            @Override
+            public void visitProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
+            {
+                klass.model.meta.domain.ProjectionAssociationEnd bootstrappedProjection = new klass.model.meta.domain.ProjectionAssociationEnd();
+                this.handleProjectionWithAssociationEnd(projectionAssociationEnd, bootstrappedProjection);
+                bootstrappedProjection.insert();
+
+                KlassBootstrapWriter.this.handleProjectionChildren(projectionAssociationEnd, bootstrappedProjection);
+            }
+
+            @Override
+            public void visitProjectionProjectionReference(ProjectionProjectionReference projectionProjectionReference)
+            {
+                klass.model.meta.domain.ProjectionProjectionReference bootstrappedProjection = new klass.model.meta.domain.ProjectionProjectionReference();
+                this.handleProjectionWithAssociationEnd(projectionProjectionReference, bootstrappedProjection);
+                bootstrappedProjection.setProjectionName(projectionProjectionReference.getProjection().getName());
+                bootstrappedProjection.insert();
+            }
+
+            private void handleProjectionWithAssociationEnd(
+                    ProjectionWithAssociationEnd projectionWithAssociationEnd,
+                    ProjectionWithAssociationEndAbstract bootstrappedProjectionWithAssociationEnd)
+            {
+                KlassBootstrapWriter.handleNamedElement(
+                        bootstrappedProjectionWithAssociationEnd,
+                        projectionWithAssociationEnd);
+                bootstrappedProjectionWithAssociationEnd.setParentId(bootstrappedProjectionParent.getId());
+                bootstrappedProjectionWithAssociationEnd.setAssociationEndClass(projectionWithAssociationEnd.getProperty().getOwningClassifier().getName());
+                bootstrappedProjectionWithAssociationEnd.setAssociationEndName(projectionWithAssociationEnd.getProperty().getName());
+            }
+
+            @Override
+            public void visitProjectionDataTypeProperty(ProjectionDataTypeProperty projectionDataTypeProperty)
+            {
+                klass.model.meta.domain.ProjectionDataTypeProperty bootstrappedProjection = new klass.model.meta.domain.ProjectionDataTypeProperty();
+                KlassBootstrapWriter.handleNamedElement(bootstrappedProjection, projectionDataTypeProperty);
+                bootstrappedProjection.setParentId(bootstrappedProjectionParent.getId());
+                bootstrappedProjection.setPropertyClassifierName(projectionDataTypeProperty.getProperty().getOwningClassifier().getName());
+                bootstrappedProjection.setPropertyName(projectionDataTypeProperty.getProperty().getName());
+                bootstrappedProjection.insert();
+            }
+        });
+    }
+
+    private void handleProjectionChildren(ProjectionParent projectionParent, klass.model.meta.domain.ProjectionElement bootstrappedProjection)
+    {
+        for (ProjectionChild projectionChild : projectionParent.getChildren())
         {
-            klass.model.meta.domain.Interface bootstrappedInterface = new klass.model.meta.domain.Interface();
-            KlassBootstrapWriter.handlePackageableElement(bootstrappedInterface, anInterface);
-            // TODO: Report Reladomo bug. If any non-nullable properties are not set on a transient object, insert() ought to throw but doesn't
-            bootstrappedInterface.insert();
-
-            this.handleSuperInterfaces(anInterface);
-            this.handleClassifierModifiers(anInterface);
-            this.handleDataTypeProperties(anInterface);
+            this.handleProjection(projectionChild, bootstrappedProjection);
         }
+    }
 
-        for (Klass klass : this.domainModel.getClasses())
+    private void handleServiceGroup(ServiceGroup serviceGroup)
+    {
+        klass.model.meta.domain.ServiceGroup bootstrappedServiceGroup = new klass.model.meta.domain.ServiceGroup();
+        KlassBootstrapWriter.handlePackageableElement(bootstrappedServiceGroup, serviceGroup);
+        bootstrappedServiceGroup.setClassName(serviceGroup.getKlass().getName());
+        bootstrappedServiceGroup.insert();
+
+        for (Url url : serviceGroup.getUrls())
         {
-            klass.model.meta.domain.Klass bootstrappedClass = new klass.model.meta.domain.Klass();
-            KlassBootstrapWriter.handlePackageableElement(bootstrappedClass, klass);
-            // TODO: Report Reladomo bug. If any non-nullable properties are not set on a transient object, insert() ought to throw but doesn't
-            bootstrappedClass.setInheritanceType(klass.getInheritanceType().getPrettyName());
-            bootstrappedClass.insert();
-
-            klass.getSuperClass()
-                    .map(NamedElement::getName)
-                    .ifPresent(bootstrappedClass::setSuperClassName);
-
-            this.handleSuperInterfaces(klass);
-            this.handleClassifierModifiers(klass);
-            this.handleDataTypeProperties(klass);
+            this.handleUrl(serviceGroup, url);
         }
+    }
 
-        for (Association association : this.domainModel.getAssociations())
+    private void handleUrl(ServiceGroup serviceGroup, Url url)
+    {
+        klass.model.meta.domain.Url bootstrappedUrl = new klass.model.meta.domain.Url();
+        KlassBootstrapWriter.handleElement(bootstrappedUrl, url);
+        bootstrappedUrl.setClassName(serviceGroup.getKlass().getName());
+        bootstrappedUrl.setUrl(url.getUrlString());
+        bootstrappedUrl.insert();
+
+        for (Service service : url.getServices())
         {
-            klass.model.meta.domain.Criteria bootstrappedCriteria = BootstrapCriteriaVisitor.convert(association.getCriteria());
-
-            klass.model.meta.domain.Association bootstrappedAssociation = new klass.model.meta.domain.Association();
-            KlassBootstrapWriter.handlePackageableElement(bootstrappedAssociation, association);
-            bootstrappedAssociation.setCriteria(bootstrappedCriteria);
-            bootstrappedAssociation.insert();
-
-            AssociationEnd sourceAssociationEnd = association.getSourceAssociationEnd();
-            AssociationEnd targetAssociationEnd = association.getTargetAssociationEnd();
-
-            this.bootstrapAssociationEnd(sourceAssociationEnd, "source");
-            this.bootstrapAssociationEnd(targetAssociationEnd, "target");
+            this.handleService(serviceGroup, url, service);
         }
+    }
 
-        // TODO: Bootstrapped meta-model of projections and services
-        // for (ServiceGroup serviceGroup: this.domainModel.getServiceGroups())
-        // {
-        // }
+    private void handleService(ServiceGroup serviceGroup, Url url, Service service)
+    {
+        klass.model.meta.domain.Service bootstrappedService = new klass.model.meta.domain.Service();
+        KlassBootstrapWriter.handleElement(bootstrappedService, service);
+        bootstrappedService.setClassName(serviceGroup.getKlass().getName());
+        bootstrappedService.setUrlString(url.getUrlString());
+        bootstrappedService.setVerb(service.getVerb().name());
+        bootstrappedService.setServiceMultiplicity(service.getServiceMultiplicity().getPrettyName());
+        // TODO: Projections aren't required for write services
+        bootstrappedService.setProjectionName(service.getProjectionDispatch().getProjection().getName());
+        bootstrappedService.insert();
     }
 
     private void handleDataTypeProperties(Classifier classifier)

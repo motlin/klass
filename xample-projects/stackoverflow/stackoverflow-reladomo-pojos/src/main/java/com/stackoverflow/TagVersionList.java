@@ -8,7 +8,6 @@ public class TagVersionList extends TagVersionListAbstract
 {
     public TagVersionList()
     {
-        super();
     }
 
     public TagVersionList(int initialSize)

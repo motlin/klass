@@ -511,7 +511,7 @@ public class MetaResourceManualTest
                 + "  \"name\": \"DataTypePropertyHasModifiers\",\n"
                 + "  \"inferred\": false,\n"
                 + "  \"packageName\": \"klass.model.meta.domain\",\n"
-                + "  \"ordinal\": 63,\n"
+                + "  \"ordinal\": 68,\n"
                 + "  \"sourceCode\": \"association DataTypePropertyHasModifiers\\n{\\n    dataTypeProperty              : DataTypeProperty[1..1];\\n    propertyModifiers             : PropertyModifier[0..*]\\n        orderBy: this.ordinal;\\n\\n    relationship this.classifierName == PropertyModifier.classifierName\\n            && this.name == PropertyModifier.propertyName\\n}\",\n"
                 + "  \"sourceCodeWithInference\": \"association DataTypePropertyHasModifiers\\n{\\n    dataTypeProperty              : DataTypeProperty[1..1];\\n    propertyModifiers             : PropertyModifier[0..*]\\n        orderBy: this.ordinal;\\n\\n    relationship this.classifierName == PropertyModifier.classifierName\\n            && this.name == PropertyModifier.propertyName\\n}\",\n"
                 + "  \"associationEnds\": [\n"
@@ -704,6 +704,117 @@ public class MetaResourceManualTest
                 + "      }\n"
                 + "    }\n"
                 + "  }\n"
+                + "}";
+        JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    public void metaProjection() throws JSONException
+    {
+        Client client = this.getClient(
+                "klass.model.meta.domain.dropwizard.test.MetaResourceManualTest.metaProjection");
+
+        Response response = client.target(
+                String.format("http://localhost:%d/api/meta/projection/ProjectionElementSummaryProjection", RULE.getLocalPort()))
+                .request()
+                .get();
+
+        this.assertResponseStatus(response, Status.OK);
+
+        String jsonResponse = response.readEntity(String.class);
+        //language=JSON
+        String expected = "{\n"
+                + "  \"_type\": \"ServiceProjection\",\n"
+                + "  \"name\": \"ProjectionElementSummaryProjection\",\n"
+                + "  \"packageName\": \"klass.model.meta.domain\",\n"
+                + "  \"children\": [\n"
+                + "    {\n"
+                + "      \"_type\": \"ProjectionDataTypeProperty\",\n"
+                + "      \"name\": \"name\"\n"
+                + "    },\n"
+                + "    {\n"
+                + "      \"_type\": \"ProjectionDataTypeProperty\",\n"
+                + "      \"name\": \"packageName\"\n"
+                + "    },\n"
+                + "    {\n"
+                + "      \"_type\": \"ProjectionAssociationEnd\",\n"
+                + "      \"name\": \"projection\",\n"
+                + "      \"children\": [\n"
+                + "        {\n"
+                + "          \"_type\": \"ProjectionDataTypeProperty\",\n"
+                + "          \"name\": \"name\"\n"
+                + "        }\n"
+                + "      ]\n"
+                + "    },\n"
+                + "    {\n"
+                + "      \"_type\": \"ProjectionProjectionReference\",\n"
+                + "      \"name\": \"children\",\n"
+                + "      \"projection\": {\n"
+                + "        \"name\": \"ProjectionElementSummaryProjection\"\n"
+                + "      }\n"
+                + "    }\n"
+                + "  ]\n"
+                + "}";
+        JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    public void metaServiceGroup() throws JSONException
+    {
+        Client client = this.getClient(
+                "klass.model.meta.domain.dropwizard.test.MetaResourceManualTest.metaServiceGroup");
+
+        Response response = client.target(
+                String.format("http://localhost:%d/api/meta/serviceGroup/ServiceGroup", RULE.getLocalPort()))
+                .request()
+                .get();
+
+        this.assertResponseStatus(response, Status.OK);
+
+        String jsonResponse = response.readEntity(String.class);
+        //language=JSON
+        String expected = ""
+                + "{\n"
+                + "  \"name\": \"ServiceGroup\",\n"
+                + "  \"packageName\": \"klass.model.meta.domain\",\n"
+                + "  \"urls\": [\n"
+                + "    {\n"
+                + "      \"url\": \"/api/meta/serviceGroup\",\n"
+                + "      \"services\": [\n"
+                + "        {\n"
+                + "          \"verb\": \"GET\",\n"
+                + "          \"serviceMultiplicity\": \"many\",\n"
+                + "          \"projection\": {\n"
+                + "            \"name\": \"ServiceGroupSummaryProjection\"\n"
+                + "          }\n"
+                + "        }\n"
+                + "      ]\n"
+                + "    },\n"
+                + "    {\n"
+                + "      \"url\": \"/api/meta/serviceGroup/{serviceGroupName}\",\n"
+                + "      \"services\": [\n"
+                + "        {\n"
+                + "          \"verb\": \"GET\",\n"
+                + "          \"serviceMultiplicity\": \"one\",\n"
+                + "          \"projection\": {\n"
+                + "            \"name\": \"ServiceGroupProjection\"\n"
+                + "          }\n"
+                + "        }\n"
+                + "      ]\n"
+                + "    },\n"
+                + "    {\n"
+                + "      \"url\": \"/api/meta/serviceGroup/{serviceGroupName}/summary\",\n"
+                + "      \"services\": [\n"
+                + "        {\n"
+                + "          \"verb\": \"GET\",\n"
+                + "          \"serviceMultiplicity\": \"one\",\n"
+                + "          \"projection\": {\n"
+                + "            \"name\": \"ServiceGroupSummaryProjection\"\n"
+                + "          }\n"
+                + "        }\n"
+                + "      ]\n"
+                + "    }\n"
+                + "  ]\n"
                 + "}";
         JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
     }

@@ -32,7 +32,6 @@ public class ReladomoJsonTree implements JsonSerializable
 {
     private final DataStore    dataStore;
     private final MithraObject mithraObject;
-
     private final ProjectionParent projectionParent;
 
     public ReladomoJsonTree(

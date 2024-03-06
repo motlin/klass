@@ -103,4 +103,41 @@ public interface Classifier extends Type, PackageableElement
                     .collect(each -> "    " + each + '\n')
                     .makeString("");
     }
+
+    default boolean isStrictSuperTypeOf(Classifier classifier)
+    {
+        if (this == classifier)
+        {
+            return false;
+        }
+
+        ImmutableList<Interface> superInterfaces = classifier.getInterfaces();
+        if (superInterfaces.contains(this))
+        {
+            return true;
+        }
+
+        return superInterfaces.anySatisfy(this::isStrictSuperTypeOf);
+    }
+
+    default boolean isStrictSubTypeOf(Classifier classifier)
+    {
+        if (this == classifier)
+        {
+            return false;
+        }
+
+        if (classifier instanceof Klass)
+        {
+            return false;
+        }
+
+        ImmutableList<Interface> superInterfaces = this.getInterfaces();
+        if (superInterfaces.contains(classifier))
+        {
+            return true;
+        }
+
+        return superInterfaces.anySatisfyWith(Interface::isStrictSubTypeOf, classifier);
+    }
 }

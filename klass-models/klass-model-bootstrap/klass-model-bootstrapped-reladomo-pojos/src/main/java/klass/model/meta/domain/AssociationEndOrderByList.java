@@ -8,7 +8,6 @@ public class AssociationEndOrderByList extends AssociationEndOrderByListAbstract
 {
     public AssociationEndOrderByList()
     {
-        super();
     }
 
     public AssociationEndOrderByList(int initialSize)

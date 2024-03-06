@@ -7,6 +7,12 @@ import cool.klass.model.meta.domain.api.PackageableElement;
 public interface Projection extends PackageableElement, ProjectionParent
 {
     @Override
+    default void visit(ProjectionVisitor visitor)
+    {
+        visitor.visitProjection(this);
+    }
+
+    @Override
     default void enter(@Nonnull ProjectionListener listener)
     {
         listener.enterProjection(this);

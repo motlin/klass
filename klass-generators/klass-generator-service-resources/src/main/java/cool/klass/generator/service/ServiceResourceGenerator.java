@@ -14,7 +14,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
@@ -204,7 +203,6 @@ public class ServiceResourceGenerator
         ServiceProjectionDispatch projectionDispatch  = service.getProjectionDispatch();
 
         ServiceGroup           serviceGroup    = url.getServiceGroup();
-        ImmutableList<Element> urlPathSegments = url.getUrlPathSegments();
 
         ImmutableList<ObjectBooleanPair<Parameter>> pathParameters = url.getPathParameters()
                 .collectWith(PrimitiveTuples::pair, true);
@@ -217,7 +215,6 @@ public class ServiceResourceGenerator
         String projectionName  = projectionDispatch.getProjection().getName();
         String returnStatement = this.getReturnStatement(serviceMultiplicity, projectionName);
 
-        String urlPathString = urlPathSegments.makeString("/", "/", "");
         String queryParametersString = queryParameters.isEmpty()
                 ? ""
                 : queryParameters.collect(ObjectBooleanPair::getOne).makeString(" // ?", "&", "");
@@ -277,7 +274,7 @@ public class ServiceResourceGenerator
                 + "    @Timed\n"
                 + "    @ExceptionMetered\n"
                 + "    @" + verb.name() + "\n"
-                + "    @Path(\"" + urlPathString + "\")" + queryParametersString + "\n"
+                + "    @Path(\"" + url.getUrlString() + "\")" + queryParametersString + "\n"
                 + "    @Produces(MediaType.APPLICATION_JSON)\n"
                 + "    public " + returnType + " method" + index + "(" + parameterPrefix + parametersSourceCode + ")\n"
                 + "    {\n"

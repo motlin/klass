@@ -75,7 +75,7 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
             return;
         }
         AntlrClass serviceGroupKlass = this.serviceState.getUrlState().getServiceGroup().getKlass();
-        if (projectionKlass != serviceGroupKlass)
+        if (serviceGroupKlass != projectionKlass && !serviceGroupKlass.isSubTypeOf(projectionKlass))
         {
             String error = String.format(
                     "ERR_SRV_PRJ: Expected projection referencing '%s' but projection '%s' references '%s'.",

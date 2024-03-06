@@ -8,7 +8,6 @@ public class TagList extends TagListAbstract
 {
     public TagList()
     {
-        super();
     }
 
     public TagList(int initialSize)

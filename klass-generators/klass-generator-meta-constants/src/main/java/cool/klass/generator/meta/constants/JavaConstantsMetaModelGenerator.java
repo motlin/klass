@@ -635,7 +635,7 @@ public class JavaConstantsMetaModelGenerator
                 + "    @Override\n"
                 + "    public ImmutableList<Interface> getInterfaces()\n"
                 + "    {\n"
-                + "        return Lists.immutable.empty();\n"
+                + "        return Lists.immutable.with(" + eachInterface.getInterfaces().collect(this::getDomainModelConstant).makeString() + ");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -733,7 +733,7 @@ public class JavaConstantsMetaModelGenerator
                 + "    @Override\n"
                 + "    public ImmutableList<Interface> getInterfaces()\n"
                 + "    {\n"
-                + "        return Lists.immutable.empty();\n"
+                + "        return Lists.immutable.with(" + klass.getInterfaces().collect(this::getDomainModelConstant).makeString() + ");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -813,6 +813,12 @@ public class JavaConstantsMetaModelGenerator
                 + this.getAssociationEndsSourceCode(klass)
                 + "}\n";
         // @formatter:on
+    }
+
+    @Nonnull
+    private String getDomainModelConstant(NamedElement namedElement)
+    {
+        return String.format("%sDomainModel.%s", this.applicationName, namedElement.getName());
     }
 
     private String getSuperClassSourceCode(Klass klass)

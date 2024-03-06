@@ -8,7 +8,6 @@ public class QuestionTagMappingList extends QuestionTagMappingListAbstract
 {
     public QuestionTagMappingList()
     {
-        super();
     }
 
     public QuestionTagMappingList(int initialSize)

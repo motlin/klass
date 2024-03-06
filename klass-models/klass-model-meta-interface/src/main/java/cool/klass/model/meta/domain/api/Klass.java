@@ -151,13 +151,25 @@ public interface Klass extends Classifier
                 .orElse("");
     }
 
-    default boolean isSuperTypeOf(Klass klass)
+    @Override
+    default boolean isStrictSuperTypeOf(Classifier classifier)
     {
-        if (this == klass)
+        if (Classifier.super.isStrictSuperTypeOf(classifier))
+        {
+            return true;
+        }
+
+        if (this == classifier)
         {
             return false;
         }
 
+        if (classifier instanceof Interface)
+        {
+            return false;
+        }
+
+        Klass           klass              = (Klass) classifier;
         Optional<Klass> optionalSuperClass = klass.getSuperClass();
         if (!optionalSuperClass.isPresent())
         {
@@ -170,12 +182,18 @@ public interface Klass extends Classifier
             return true;
         }
 
-        return this.isSuperTypeOf(superClass);
+        return this.isStrictSuperTypeOf(superClass);
     }
 
-    default boolean isSubTypeOf(Klass klass)
+    @Override
+    default boolean isStrictSubTypeOf(Classifier classifier)
     {
-        if (this == klass)
+        if (Classifier.super.isStrictSubTypeOf(classifier))
+        {
+            return true;
+        }
+
+        if (this == classifier)
         {
             return false;
         }
@@ -187,11 +205,11 @@ public interface Klass extends Classifier
         }
 
         Klass superClass = optionalSuperClass.get();
-        if (superClass == klass)
+        if (superClass == classifier)
         {
             return true;
         }
 
-        return superClass.isSubTypeOf(klass);
+        return superClass.isStrictSubTypeOf(classifier);
     }
 }

@@ -593,31 +593,12 @@ association ParameterizedPropertyHasResultType
     relationship this.resultTypeName == Klass.name
 }
 
-class AssociationEndOrdering
-{
-    associationName: String key private;
-    name: String;
-    inferred: Boolean;
-    multiplicity: Multiplicity;
-    direction: AssociationEndDirection key;
-    orderingId: Long private;
-}
-
 class ParameterizedPropertyOrdering
 {
     owningClassName               : String private key;
     name                          : String key;
     inferred                      : Boolean;
     orderingId                    : Long private;
-}
-
-association AssociationEndHasOrdering
-{
-    associationEnd: AssociationEnd[1..1];
-    associationEndOrdering: AssociationEndOrdering[0..1] owned;
-
-    relationship this.associationName == AssociationEndOrdering.associationName
-            && this.direction == AssociationEndOrdering.direction
 }
 
 association ParameterizedPropertyHasOrdering
@@ -628,80 +609,6 @@ association ParameterizedPropertyHasOrdering
     relationship this.owningClassName == ParameterizedPropertyOrdering.owningClassName
             && this.name == ParameterizedPropertyOrdering.name
 }
-
-/*
-association AssociationEndOrderingHasParts
-{
-    associationEndOrdering: AssociationEndOrdering[1..1];
-    ordering: Ordering[1..*];
-
-    relationship this.orderingId == Ordering.id
-}
-
-association ParameterizedPropertyOrderingHasParts
-{
-    parameterizedPropertyOrdering: ParameterizedPropertyOrdering[1..1] owned;
-    ordering: Ordering[1..1];
-
-    // TODO: error when there's no "this"
-    // relationship ParameterizedPropertyOrdering.orderingId == Ordering.id
-    // TODO: error when the foreign key for a to-many is its entire primary key
-    // relationship ParameterizedPropertyOrdering.orderingId == Ordering.id
-    relationship this.orderingId == Ordering.id
-}
-
-class Ordering
-{
-    id                            : Long id key;
-    inferred                      : Boolean;
-}
-
-// Split into data type / enum type order bys?
-class OrderingPart
-{
-    orderingId                    : Long key;
-    inferred                      : Boolean;
-
-    // TODO: order keyword for properties meant for sorting?
-    ordinal                       : Integer key;
-    className                     : String private;
-    propertyName                  : String private;
-    direction                     : OrderingDirection;
-}
-
-association OrderingHasParts
-{
-    ordering: Ordering[1..1];
-    orderingParts: OrderingPart[1..*]
-        orderBy: this.ordinal;
-
-    relationship this.id == OrderingPart.orderingId
-}
-
-enumeration OrderingDirection
-{
-    ASCENDING("ascending"),
-    DESCENDING("descending"),
-}
-
-association OrderingPartHasDataTypeProperty
-{
-    orderingParts: OrderingPart[0..*];
-    dataTypeProperty: PrimitiveProperty[1..1];
-
-    relationship this.className == PrimitiveProperty.className
-            && this.propertyName == PrimitiveProperty.name
-}
-
-association OrderingPartHasEnumerationProperty
-{
-    orderingParts: OrderingPart[0..*];
-    enumerationProperty: EnumerationProperty[1..1];
-
-    relationship this.className == EnumerationProperty.className
-            && this.propertyName == EnumerationProperty.name
-}
-*/
 
 association ParameterizedPropertyHasParameters
 {
@@ -718,16 +625,129 @@ class ParameterizedPropertyParameter implements NamedElement
     parameterizedPropertyName     : String key;
 }
 
-/*
-association ParameterizedPropertyHasCriteria
+class ProjectionElement
+    abstract(table-per-class)
+    implements NamedElement
+{
+    id                            : Long key id;
+    parentId                      : Long? private;
+}
+
+// TODO: Rename to Projection, but clashes with names in generated code.
+class ServiceProjection
+    extends ProjectionElement
+    implements PackageableElement
+{
+    // TODO: unique constraint on name
+    // Override to make name not a key
+    name                          : String;
+    className                     : String private;
+}
+
+// TODO: When abstract class extends abstract class, validate that they have compatible inheritance types
+class ProjectionWithAssociationEnd
+    abstract(table-per-class)
+    extends ProjectionElement
+{
+    parentId                      : Long private;
+    associationEndClass           : String private;
+    associationEndName: String private;
+}
+
+class ProjectionAssociationEnd
+    extends ProjectionWithAssociationEnd
 {
 }
-*/
+
+class ProjectionProjectionReference
+    extends ProjectionWithAssociationEnd
+{
+    projectionName                  : String private;
+}
+
+class ProjectionDataTypeProperty
+    extends ProjectionElement
+{
+    propertyClassifierName        : String private;
+    propertyName: String private;
+}
+
+association ProjectionElementHasChildren
+{
+    // TODO: Validate that foreign key is optional if association end is optional and vice versa
+    parent                        : ProjectionElement[0..1];
+    children                      : ProjectionElement[0..*];
+
+    relationship this.id == ProjectionElement.parentId
+}
+
+association ProjectionWithAssociationEndHasAssociationEnd
+{
+    projectionWithAssociationEnd  : ProjectionWithAssociationEnd[0..*];
+    associationEnd                : AssociationEnd[1..1];
+
+    relationship this.associationEndClass == AssociationEnd.owningClassName
+            && this.associationEndName == AssociationEnd.name
+}
+
+association ProjectionDataTypePropertyHasDataTypeProperty
+{
+    projectionDataTypeProperty    : ProjectionDataTypeProperty[0..*];
+    dataTypeProperty              : DataTypeProperty[1..1];
+
+    relationship this.propertyClassifierName == DataTypeProperty.classifierName
+            && this.propertyName == DataTypeProperty.name
+}
+
+association ProjectionHasClass
+{
+    projection                    : ServiceProjection[0..*];
+    klass                         : Klass[1..1];
+
+    relationship this.className == Klass.name
+}
+
+association ProjectionProjectionReferenceHasProjection
+{
+    projectionProjectionReference : ProjectionProjectionReference[0..*];
+    projection                    : ServiceProjection[1..1];
+
+    relationship this.projectionName == ServiceProjection.name
+}
+
+class ServiceGroup
+    implements PackageableElement
+{
+    className                     : String key;
+}
+
+association ServiceGroupHasClass
+{
+    serviceGroup: ServiceGroup[0..1];
+    owningClass: Klass[1..1];
+
+    relationship this.className == Klass.name
+}
+
+class Url
+    implements Element
+{
+    className                     : String key;
+    url                           : String key;
+}
+
+association ServiceGroupHasUrls
+{
+    serviceGroup: ServiceGroup[1..1];
+    urls: Url[1..*];
+
+    relationship this.className == Url.className
+}
 
 enumeration ServiceMultiplicity
 {
-    ONE,
-    MANY,
+    ONE("one"),
+    MANY("many"),
 }
 
 enumeration Verb
@@ -740,38 +760,14 @@ enumeration Verb
 }
 
 class Service
+    implements Element
 {
     className                     : String key;
     urlString                     : String key;
     verb                          : Verb key;
-    serviceMultiplicity: ServiceMultiplicity;
-}
-
-class Url
-{
-    className          : String key;
-    url                : String key;
-}
-
-class ServiceGroup
-{
-    className          : String key;
-}
-
-association ServiceGroupHasClass
-{
-    serviceGroup: ServiceGroup[0..1];
-    owningClass: Klass[1..1];
-
-    relationship this.className == Klass.name
-}
-
-association ServiceGroupHasUrls
-{
-    serviceGroup: ServiceGroup[1..1];
-    urls: Url[1..*];
-
-    relationship this.className == Url.className
+    serviceMultiplicity           : ServiceMultiplicity;
+    projectionName                : String? private;
+    criteriaId: Long private;
 }
 
 association UrlHasServices
@@ -781,6 +777,22 @@ association UrlHasServices
 
     relationship this.className == Service.className
             && this.url == Service.urlString
+}
+
+association ServiceHasProjection
+{
+    services                      : Service[0..*];
+    projection                    : ServiceProjection[0..1];
+
+    relationship this.projectionName == ServiceProjection.name
+}
+
+association ServiceHasCriteria
+{
+    service                       : Service[0..1];
+    criteria                      : Criteria[1..1];
+
+    relationship this.criteriaId == Criteria.id
 }
 
 projection EnumerationProjection on Enumeration
@@ -1475,5 +1487,120 @@ service Association
             multiplicity: many;
             criteria    : all;
             projection  : AssociationSummaryProjection;
+            orderBy     : this.ordinal;
+        }
+}
+
+projection ProjectionElementProjection on ProjectionElement
+{
+    name                                       : "Projection name",
+    ServiceProjection.packageName              : "Projection package name",
+    ProjectionProjectionReference.projection   :
+    {
+        name: "Projection reference name",
+    },
+    children                                   : ProjectionElementSummaryProjection,
+}
+
+projection ProjectionElementSummaryProjection on ProjectionElement
+{
+    name                                       : "Projection name",
+    ServiceProjection.packageName              : "Projection package name",
+    ProjectionProjectionReference.projection   :
+    {
+        name: "Projection reference name",
+    },
+    children                                   : ProjectionElementSummaryProjection,
+}
+
+service ServiceProjection
+{
+    /api/meta/projection/{projectionName: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == projectionName;
+            projection  : ProjectionElementProjection;
+        }
+    /api/meta/projection/{projectionName: String[1..1]}/summary
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == projectionName;
+            projection  : ProjectionElementSummaryProjection;
+        }
+    /api/meta/projection
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : ProjectionElementSummaryProjection;
+            orderBy     : this.ordinal;
+        }
+}
+
+projection ServiceGroupProjection on ServiceGroup
+{
+    name       : "ServiceGroup name",
+    packageName: "ServiceGroup package name",
+    urls       :
+    {
+        url     : "ServiceGroup url",
+        services:
+        {
+            verb               : "ServiceGroup Url Service verb",
+            serviceMultiplicity: "ServiceGroup Url Service multiplicity",
+            projection         :
+            {
+                name: "ServiceGroup Url Service Projection name",
+            },
+            criteria           : CriteriaSummaryProjection,
+        },
+    },
+}
+
+projection ServiceGroupSummaryProjection on ServiceGroup
+{
+    name       : "ServiceGroup name",
+    packageName: "ServiceGroup package name",
+    urls       :
+    {
+        url     : "ServiceGroup url",
+        services:
+        {
+            verb               : "ServiceGroup Url Service verb",
+            serviceMultiplicity: "ServiceGroup Url Service multiplicity",
+            projection         :
+            {
+                name: "ServiceGroup Url Service Projection name",
+            },
+            criteria           : CriteriaSummaryProjection,
+        },
+    },
+}
+
+service ServiceGroup
+{
+    /api/meta/serviceGroup/{serviceGroupName: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == serviceGroupName;
+            projection  : ServiceGroupProjection;
+        }
+    /api/meta/serviceGroup/{serviceGroupName: String[1..1]}/summary
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == serviceGroupName;
+            projection  : ServiceGroupSummaryProjection;
+        }
+    /api/meta/serviceGroup
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : ServiceGroupSummaryProjection;
+            orderBy     : this.ordinal;
         }
 }

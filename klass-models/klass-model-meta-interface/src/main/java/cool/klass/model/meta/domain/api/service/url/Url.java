@@ -22,4 +22,9 @@ public interface Url extends Element
     ImmutableList<Parameter> getPathParameters();
 
     ImmutableList<Service> getServices();
+
+    default String getUrlString()
+    {
+        return this.getUrlPathSegments().makeString("/", "/", "");
+    }
 }
