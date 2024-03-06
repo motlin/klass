@@ -198,7 +198,7 @@ identifier
 
 keywordValidAsIdentifier
     : 'package'
-    | 'class' | 'enumeration' | 'association' | 'projection' | 'service' | 'user'
+    | 'enumeration' | 'interface' | 'class' | 'association' | 'projection' | 'service' | 'user'
     | 'native'
     | 'relationship'
     | 'multiplicity' | 'orderBy'
