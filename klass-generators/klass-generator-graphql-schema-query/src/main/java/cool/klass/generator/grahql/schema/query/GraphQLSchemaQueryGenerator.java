@@ -42,24 +42,24 @@ public class GraphQLSchemaQueryGenerator
     public void writeQueryFile(@Nonnull Path outputPath)
     {
         String allSourceCode = this.domainModel
-                .getClassifiers()
+                .getClasses()
                 .collect(this::getAllSourceCode)
                 .makeString("");
 
         String byKeySourceCode = this.domainModel
-                .getClassifiers()
+                .getClasses()
                 // TODO: Here we're skipping classifiers that have no key properties. This will still allow through Interfaces that do include key properties. Will those work?
                 .reject(each -> each.getKeyProperties().isEmpty())
                 .collect(this::getByKeySourceCode)
                 .makeString("");
 
         String byOperationSourceCode = this.domainModel
-                .getClassifiers()
+                .getClasses()
                 .collect(this::getByOperationSourceCode)
                 .makeString("");
 
         String byFinderSourceCode = this.domainModel
-                .getClassifiers()
+                .getClasses()
                 .collect(this::getByFinderSourceCode)
                 .makeString("");
 
