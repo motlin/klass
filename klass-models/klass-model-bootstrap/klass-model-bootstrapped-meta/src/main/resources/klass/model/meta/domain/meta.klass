@@ -521,7 +521,7 @@ class TypeMemberReferencePath
 {
 }
 
-association BinaryCriteraHasLeft
+association BinaryCriteriaHasLeft
 {
     ownerOfLeftCriteria : BinaryCriteria[0..1];
     left                : Criteria[1..1];
@@ -529,7 +529,7 @@ association BinaryCriteraHasLeft
     relationship this.leftId == Criteria.id
 }
 
-association BinaryCriteraHasRight
+association BinaryCriteriaHasRight
 {
     ownerOfRightCriteria: BinaryCriteria[0..1];
     right               : Criteria[1..1];
