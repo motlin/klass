@@ -308,9 +308,15 @@
         "enumeration": {
           "name": "InheritanceType"
         },
-        "propertyModifiers": [],
+        "propertyModifiers": [
+          {
+            "name": "private"
+          }
+        ],
         "minLengthValidation": null,
-        "maxLengthValidation": null
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -404,9 +410,15 @@
         "enumeration": {
           "name": "PrimitiveType"
         },
-        "propertyModifiers": [],
+        "propertyModifiers": [
+          {
+            "name": "private"
+          }
+        ],
         "minLengthValidation": null,
-        "maxLengthValidation": null
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -766,9 +778,15 @@
         "enumeration": {
           "name": "AssociationEndDirection"
         },
-        "propertyModifiers": [],
+        "propertyModifiers": [
+          {
+            "name": "private"
+          }
+        ],
         "minLengthValidation": null,
-        "maxLengthValidation": null
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "multiplicity",
@@ -777,9 +795,15 @@
         "enumeration": {
           "name": "Multiplicity"
         },
-        "propertyModifiers": [],
+        "propertyModifiers": [
+          {
+            "name": "private"
+          }
+        ],
         "minLengthValidation": null,
-        "maxLengthValidation": null
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1102,9 +1126,15 @@
         "enumeration": {
           "name": "Operator"
         },
-        "propertyModifiers": [],
+        "propertyModifiers": [
+          {
+            "name": "private"
+          }
+        ],
         "minLengthValidation": null,
-        "maxLengthValidation": null
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1354,9 +1384,15 @@
         "enumeration": {
           "name": "Multiplicity"
         },
-        "propertyModifiers": [],
+        "propertyModifiers": [
+          {
+            "name": "private"
+          }
+        ],
         "minLengthValidation": null,
-        "maxLengthValidation": null
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1448,9 +1484,15 @@
         "enumeration": {
           "name": "PrimitiveType"
         },
-        "propertyModifiers": [],
+        "propertyModifiers": [
+          {
+            "name": "private"
+          }
+        ],
         "minLengthValidation": null,
-        "maxLengthValidation": null
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1738,9 +1780,15 @@
         "enumeration": {
           "name": "Multiplicity"
         },
-        "propertyModifiers": [],
+        "propertyModifiers": [
+          {
+            "name": "private"
+          }
+        ],
         "minLengthValidation": null,
-        "maxLengthValidation": null
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1822,9 +1870,15 @@
         "enumeration": {
           "name": "OrderByDirection"
         },
-        "propertyModifiers": [],
+        "propertyModifiers": [
+          {
+            "name": "private"
+          }
+        ],
         "minLengthValidation": null,
-        "maxLengthValidation": null
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -2760,10 +2814,15 @@
         "propertyModifiers": [
           {
             "name": "key"
+          },
+          {
+            "name": "private"
           }
         ],
         "minLengthValidation": null,
-        "maxLengthValidation": null
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "serviceMultiplicity",
@@ -2772,9 +2831,15 @@
         "enumeration": {
           "name": "ServiceMultiplicity"
         },
-        "propertyModifiers": [],
+        "propertyModifiers": [
+          {
+            "name": "private"
+          }
+        ],
         "minLengthValidation": null,
-        "maxLengthValidation": null
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
