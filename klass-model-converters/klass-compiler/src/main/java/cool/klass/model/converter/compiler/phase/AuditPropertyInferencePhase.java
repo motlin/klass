@@ -9,7 +9,6 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
-import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -98,6 +97,7 @@ public class AuditPropertyInferencePhase
             this.runCompilerMacro("    lastUpdatedById: String lastUpdatedBy userId private;\n");
         }
 
+        /*
         if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isCreatedBy))
         {
             String createdBySourceCodeText = ""
@@ -108,6 +108,8 @@ public class AuditPropertyInferencePhase
 
             this.runCompilerMacro(createdBySourceCodeText);
         }
+        */
+        /*
         if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isLastUpdatedBy))
         {
             String lastUpdatedBySourceCodeText = ""
@@ -118,6 +120,7 @@ public class AuditPropertyInferencePhase
 
             this.runCompilerMacro(lastUpdatedBySourceCodeText);
         }
+        */
     }
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
