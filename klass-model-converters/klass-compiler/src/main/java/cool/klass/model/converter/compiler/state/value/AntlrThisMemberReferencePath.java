@@ -79,8 +79,9 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
         AntlrClass currentClassState = this.reportErrorsAssociationEnds(
                 compilerErrorHolder,
                 associationEndReferenceContexts);
-        if (currentClassState == null)
+        if (currentClassState == null || currentClassState == AntlrClass.AMBIGUOUS)
         {
+            // Covered by ERR_DUP_TOP
             return;
         }
 

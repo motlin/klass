@@ -118,7 +118,7 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
                 projectionMember.reportDuplicateMemberName(compilerErrorHolder);
             }
             // TODO: Move not-found and ambiguous error checking from compiler phase here for consistency
-            if (this.klass != AntlrClass.NOT_FOUND)
+            if (this.klass != AntlrClass.NOT_FOUND && this.klass != AntlrClass.AMBIGUOUS)
             {
                 projectionMember.reportErrors(compilerErrorHolder);
             }

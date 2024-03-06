@@ -458,6 +458,8 @@ public class AntlrDomainModel
                 .collect(AntlrServiceGroup::getKlass)
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
+                .reject(AntlrClass.AMBIGUOUS::equals)
+                .reject(AntlrClass.NOT_FOUND::equals)
                 .toImmutable();
     }
 

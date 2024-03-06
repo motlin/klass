@@ -24,7 +24,8 @@ import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferencePathContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
+public class AntlrTypeMemberReferencePath
+        extends AntlrMemberReferencePath
 {
     private TypeMemberReferencePathBuilder elementBuilder;
 
@@ -75,11 +76,16 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (this.classState == AntlrClass.AMBIGUOUS || this.classState == AntlrClass.NOT_FOUND)
+        if (this.classState == AntlrClass.AMBIGUOUS)
+        {
+            // Covered by ERR_DUP_TOP
+            return;
+        }
+
+        if (this.classState == AntlrClass.NOT_FOUND)
         {
             ClassReferenceContext offendingToken = this.getElementContext().classReference();
 
-            // TODO: This error message is firing for ambiguity, not just NOT_FOUND.
             String message = String.format(
                     "Cannot find class '%s'.",
                     offendingToken.getText());

@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
@@ -117,6 +118,12 @@ public class AntlrProjectionDataTypeProperty
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
+        if (this.antlrProjectionParent.getKlass() == AntlrClass.AMBIGUOUS)
+        {
+            // Covered by ERR_DUP_TOP
+            return;
+        }
+
         if (this.dataTypeProperty == AntlrEnumerationProperty.NOT_FOUND)
         {
             String message = String.format(
