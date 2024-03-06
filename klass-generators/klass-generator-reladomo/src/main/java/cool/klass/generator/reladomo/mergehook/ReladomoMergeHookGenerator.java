@@ -13,6 +13,7 @@ import com.google.common.base.Converter;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 
 // TODO: Consider moving this into its own module.
@@ -146,7 +147,8 @@ public class ReladomoMergeHookGenerator
 
     private String getKeyPropertySourceCode(DataTypeProperty keyProperty)
     {
-        String name = LOWER_CAMEL_TO_UPPER_CAMEL.convert(keyProperty.getName());
-        return "        version.set" + name + "(newObject.get" + name + "());\n";
+        String name   = LOWER_CAMEL_TO_UPPER_CAMEL.convert(keyProperty.getName());
+        String prefix = keyProperty.getType() == PrimitiveType.BOOLEAN ? "is" : "get";
+        return "        version.set" + name + "(newObject." + prefix + name + "());\n";
     }
 }
