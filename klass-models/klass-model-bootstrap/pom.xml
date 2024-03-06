@@ -29,7 +29,7 @@
         <module>klass-model-bootstrapped-reladomo-ddls</module>
         <module>klass-model-bootstrapped-services</module>
         <module>klass-model-bootstrapped-dtos</module>
-        <module>klass-model-bootstrapped-constants</module>
         <module>klass-model-bootstrapped-meta-model-constants</module>
+        <module>klass-model-bootstrapped-dropwizard-application</module>
     </modules>
 </project>

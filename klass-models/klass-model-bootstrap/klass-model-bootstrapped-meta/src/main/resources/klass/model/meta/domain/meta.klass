@@ -716,6 +716,7 @@ service Klass
             multiplicity: many;
             criteria    : all;
             projection  : ClassReadProjection;
+            orderBy     : this.ordinal;
         }
 }
 
