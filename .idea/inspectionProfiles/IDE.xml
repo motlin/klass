@@ -90,8 +90,6 @@
     </inspection_tool>
     <inspection_tool class="BadExpressionStatementJS" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="BadOddness" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="BeforeClassOrAfterClassIsPublicStaticVoidNoArg" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="BeforeOrAfterIsPublicVoidNoArg" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="BigDecimalEquals" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="BigDecimalLegacyMethod" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="BlockMarkerComments" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -192,6 +190,9 @@
       <option name="m_maxLength" value="99" />
     </inspection_tool>
     <inspection_tool class="ConstantOnLHSOfComparison" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="ConstantOnWrongSideOfComparison" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myConstantShouldGoLeft" value="false" />
+    </inspection_tool>
     <inspection_tool class="ConstantValueVariableUse" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ConstraintValidatorCreator" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ContinueOrBreakFromFinallyBlockJS" enabled="false" level="WARNING" enabled_by_default="false" />
@@ -416,7 +417,6 @@
     <inspection_tool class="InfiniteLoopJS" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="InfiniteRecursionJS" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="InjectionValueTypeInspection" enabled="false" level="Inspection" enabled_by_default="false" />
-    <inspection_tool class="InnerClassMayBeStatic" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="InnerClassOnInterface" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="m_ignoreInnerInterfaces" value="false" />
     </inspection_tool>
@@ -577,7 +577,6 @@
     <inspection_tool class="ListenerMayUseAdapter" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="checkForEmptyMethods" value="true" />
     </inspection_tool>
-    <inspection_tool class="LiteralAsArgToStringEquals" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="LocalCanBeFinal" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="REPORT_VARIABLES" value="false" />
       <option name="REPORT_PARAMETERS" value="true" />
@@ -662,6 +661,9 @@
     </inspection_tool>
     <inspection_tool class="MultipleTopLevelClassesInFile" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MultipleTypedDeclaration" enabled="true" level="Inspection" enabled_by_default="true" />
+    <inspection_tool class="MultipleVariablesInDeclaration" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoreForLoopDeclarations" value="false" />
+    </inspection_tool>
     <inspection_tool class="NakedNotify" enabled="true" level="INFO" enabled_by_default="true" />
     <inspection_tool class="NativeMethods" enabled="true" level="INFO" enabled_by_default="true" />
     <inspection_tool class="NegatedConditional" enabled="true" level="WARNING" enabled_by_default="true">
@@ -776,6 +778,7 @@
     <inspection_tool class="OneButtonGroup" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="OneWayWebMethod" enabled="false" level="Inspection" enabled_by_default="false" />
     <inspection_tool class="OptionalContainsCollection" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="OptionalUsedAsFieldOrParameterType" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="OverloadedMethodsWithSameNumberOfParameters" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoreInconvertibleTypes" value="true" />
     </inspection_tool>
@@ -1464,7 +1467,6 @@
     <inspection_tool class="StaticNonFinalField" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoreNonPublicFields" value="false" />
     </inspection_tool>
-    <inspection_tool class="StaticSuite" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="StaticVariableInitialization" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="m_ignorePrimitives" value="false" />
     </inspection_tool>
@@ -1545,16 +1547,13 @@
       <option name="ignoreSupers" value="true" />
     </inspection_tool>
     <inspection_tool class="TestMethodInProductCode" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="TestMethodIsPublicVoidNoArg" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="TestOnlyProblems" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="TextLabelInSwitchStatement" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ThisEscapedInConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ThisExpressionReferencesGlobalObjectJS" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ThreadDeathRethrown" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ThreadDumpStack" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ThreadLocalNotStaticFinal" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ThreadPriority" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="ThreadRun" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ThreadStartInConstruction" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ThreadStopSuspendResume" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ThreadWithDefaultRunMethod" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -1607,7 +1606,6 @@
     </inspection_tool>
     <inspection_tool class="UnaryPlus" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnconditionalWait" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="UnconstructableTestCase" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnitMethodDefinedLikeProcedure" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnknownGuard" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnnecessarilyQualifiedInnerClassAccess" enabled="true" level="WARNING" enabled_by_default="true">
