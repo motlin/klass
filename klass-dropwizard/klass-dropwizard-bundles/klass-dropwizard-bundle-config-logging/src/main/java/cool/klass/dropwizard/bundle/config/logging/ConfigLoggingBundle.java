@@ -53,10 +53,10 @@ public class ConfigLoggingBundle implements PrioritizedBundle<AbstractKlassConfi
             ObjectMapper objectMapper) throws JsonProcessingException, ReflectiveOperationException
     {
         String configurationString = objectMapper.writeValueAsString(configuration);
-        LOGGER.info("Inferred Dropwizard configuration:\n{}", configurationString);
+        LOGGER.debug("Inferred Dropwizard configuration:\n{}", configurationString);
 
         AbstractKlassConfiguration defaultConfiguration       = configuration.getClass().getConstructor().newInstance();
         String                     defaultConfigurationString = objectMapper.writeValueAsString(defaultConfiguration);
-        LOGGER.info("Default Dropwizard configuration:\n{}", defaultConfigurationString);
+        LOGGER.debug("Default Dropwizard configuration:\n{}", defaultConfigurationString);
     }
 }
