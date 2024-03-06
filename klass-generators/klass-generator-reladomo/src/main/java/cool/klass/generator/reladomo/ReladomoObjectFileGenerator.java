@@ -34,6 +34,7 @@ import cool.klass.model.meta.domain.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.property.PrimitiveType;
 import org.eclipse.collections.api.list.ImmutableList;
 
+// TODO: ⬆ Generate default order-bys (or infer default order-bys) and gererate order-bys on association ends.
 public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
 {
     public ReladomoObjectFileGenerator(DomainModel domainModel)

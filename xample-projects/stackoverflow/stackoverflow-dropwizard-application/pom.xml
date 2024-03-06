@@ -58,6 +58,13 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-meta</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-http-logging</artifactId>
             <version>${klass.version}</version>
         </dependency>
@@ -89,6 +96,18 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-meta</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-bootstrap-writer</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-services</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
@@ -144,6 +163,10 @@
                 <configuration>
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
                     <applicationName>${app.name}</applicationName>
+                    <klassSourcePackages>
+                        <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
+                        <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
+                    </klassSourcePackages>
                 </configuration>
                 <executions>
                     <execution>
@@ -153,11 +176,19 @@
                     </execution>
                 </executions>
                 <dependencies>
+
                     <dependency>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>${app.artifactId}-domain-model</artifactId>
                         <version>${project.version}</version>
                     </dependency>
+
+                    <dependency>
+                        <groupId>cool.klass</groupId>
+                        <artifactId>klass-model-bootstrapped-meta</artifactId>
+                        <version>${klass.version}</version>
+                    </dependency>
+
                 </dependencies>
             </plugin>
 

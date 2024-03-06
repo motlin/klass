@@ -4,6 +4,7 @@ import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
 import com.stackoverflow.service.resource.QuestionResourceManual;
 import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
@@ -38,5 +39,9 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
         super.run(configuration, environment);
 
         environment.jersey().register(new QuestionResourceManual(this.domainModel));
+
+        // TODO: Move up to generated superclass
+        KlassBootstrapWriter klassBootstrapWriter = new KlassBootstrapWriter(this.domainModel);
+        klassBootstrapWriter.bootstrapMetaModel();
     }
 }

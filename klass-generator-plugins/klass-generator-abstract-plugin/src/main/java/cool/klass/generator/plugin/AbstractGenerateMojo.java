@@ -1,5 +1,7 @@
 package cool.klass.generator.plugin;
 
+import java.net.URL;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -13,6 +15,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.impl.factory.Lists;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import org.reflections.util.ClasspathHelper;
@@ -20,16 +23,31 @@ import org.reflections.util.ConfigurationBuilder;
 
 public abstract class AbstractGenerateMojo extends AbstractMojo
 {
-    @Parameter(property = "rootPackageName", required = true, readonly = true)
-    protected String rootPackageName;
+    @Parameter(property = "klassSourcePackages", required = true, readonly = true)
+    protected List<String> klassSourcePackages;
 
     @Nullable
     protected DomainModel getDomainModel() throws MojoExecutionException
     {
-        Reflections reflections = new Reflections(new ConfigurationBuilder().setScanners(new ResourcesScanner())
-                .setUrls(ClasspathHelper.forPackage(this.rootPackageName)));
-        Set<String> klassLocations =
-                reflections.getResources(Pattern.compile(".*\\.klass"));
+        if (this.klassSourcePackages.isEmpty())
+        {
+            String message = ""
+                    + "Klass maven plugins must be configured with at least one klassSourcePackage. For example:\n"
+                    + "<klassSourcePackages>\n"
+                    + "    <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>\n"
+                    + "    <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>\n"
+                    + "</klassSourcePackages>";
+            throw new MojoExecutionException(message);
+        }
+
+        ImmutableList<String> klassSourcePackagesImmutable = Lists.immutable.withAll(this.klassSourcePackages);
+
+        ImmutableList<URL> urls = klassSourcePackagesImmutable.flatCollect(ClasspathHelper::forPackage);
+        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
+                .setScanners(new ResourcesScanner())
+                .setUrls(urls.castToList());
+        Reflections         reflections         = new Reflections(configurationBuilder);
+        Set<String>         klassLocations      = reflections.getResources(Pattern.compile(".*\\.klass"));
         CompilerErrorHolder compilerErrorHolder = new CompilerErrorHolder();
         KlassCompiler       klassCompiler       = new KlassCompiler(compilerErrorHolder);
         DomainModel         domainModel         = klassCompiler.compile(klassLocations);

@@ -22,7 +22,9 @@
                 <artifactId>klass-generator-reladomo-plugin</artifactId>
                 <version>${project.version}</version>
                 <configuration>
-                    <rootPackageName>klass.model.meta.domain</rootPackageName>
+                    <klassSourcePackages>
+                        <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
+                    </klassSourcePackages>
                 </configuration>
                 <executions>
                     <execution>

@@ -58,7 +58,7 @@ public abstract class AntlrMemberExpressionValue extends AntlrExpressionValue
             {
                 IdentifierContext identifier = associationEndReferenceContexts.get(i).identifier();
                 String message = String.format(
-                        "Cannot find member '%s.%s'.",
+                        "ERR_MEM_EXP: Cannot find member '%s.%s'.",
                         currentClassState.getName(),
                         identifier.getText());
                 compilerErrorHolder.add(

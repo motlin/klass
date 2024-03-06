@@ -82,29 +82,16 @@ public class AntlrServiceGroup extends AntlrPackageableElement
         this.reportDuplicateUrls(compilerErrorHolder);
         this.reportNoUrls(compilerErrorHolder);
 
-        for (AntlrUrl url : this.urls)
+        // TODO: Move not-found and ambiguous error checking from compiler phase here for consistency
+        if (this.klass != AntlrClass.NOT_FOUND)
         {
-            url.reportErrors(compilerErrorHolder);
+            for (AntlrUrl url : this.urls)
+            {
+                url.reportErrors(compilerErrorHolder);
+            }
         }
 
         // TODO: Not here, but report if there are more than one service group for a class.
-    }
-
-    @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        this.reportKeywordCollision(compilerErrorHolder);
-
-        if (!TYPE_NAME_PATTERN.matcher(this.name).matches())
-        {
-            String message = String.format(
-                    "ERR_SVC_NME: Name must match pattern %s but was %s",
-                    CONSTANT_NAME_PATTERN,
-                    this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext);
-        }
     }
 
     private void reportDuplicateUrls(CompilerErrorHolder compilerErrorHolder)
@@ -129,6 +116,23 @@ public class AntlrServiceGroup extends AntlrPackageableElement
                     this.getElementContext().classReference().getText());
 
             compilerErrorHolder.add(message, this.getElementContext());
+        }
+    }
+
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        this.reportKeywordCollision(compilerErrorHolder);
+
+        if (!TYPE_NAME_PATTERN.matcher(this.name).matches())
+        {
+            String message = String.format(
+                    "ERR_SVC_NME: Name must match pattern %s but was %s",
+                    CONSTANT_NAME_PATTERN,
+                    this.name);
+            compilerErrorHolder.add(
+                    message,
+                    this.nameContext);
         }
     }
 

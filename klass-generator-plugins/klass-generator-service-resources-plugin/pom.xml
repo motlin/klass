@@ -15,6 +15,10 @@
 
     <name>Klass Service Resource Generator Plugin</name>
 
+    <prerequisites>
+        <maven>3.0</maven>
+    </prerequisites>
+
     <dependencies>
 
         <dependency>

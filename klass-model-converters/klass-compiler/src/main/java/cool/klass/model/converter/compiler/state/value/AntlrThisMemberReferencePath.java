@@ -67,7 +67,7 @@ public class AntlrThisMemberReferencePath extends AntlrMemberExpressionValue
         {
             IdentifierContext identifier = this.getElementContext().memberReference().identifier();
             String message = String.format(
-                    "Cannot find member '%s.%s'.",
+                    "ERR_THS_MEM: Cannot find member '%s.%s'.",
                     currentClassState.getName(),
                     identifier.getText());
             compilerErrorHolder.add(

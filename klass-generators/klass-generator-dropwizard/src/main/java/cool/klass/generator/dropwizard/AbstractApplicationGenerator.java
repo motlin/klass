@@ -45,6 +45,8 @@ public class AbstractApplicationGenerator
         String sourceCode = ""
                 + "package " + this.packageName + ";\n"
                 + "\n"
+                + "import java.util.List;\n"
+                + "\n"
                 + "import javax.annotation.Nonnull;\n"
                 + "\n"
                 + "import cool.klass.dropwizard.bundle.httplogging.HttpLoggingBundle;\n"
@@ -61,6 +63,9 @@ public class AbstractApplicationGenerator
                 + "import io.dropwizard.Application;\n"
                 + "import io.dropwizard.setup.Bootstrap;\n"
                 + "import io.dropwizard.setup.Environment;\n"
+                // TODO: Iterate through the klassSourcePackages, append .service.resource.* and import
+                + "import klass.model.meta.domain.service.resource.*;\n"
+                + "import org.eclipse.collections.impl.factory.Lists;\n"
                 + "import org.slf4j.Logger;\n"
                 + "import org.slf4j.LoggerFactory;\n"
                 + "\n"
@@ -92,6 +97,7 @@ public class AbstractApplicationGenerator
                 + "        bootstrap.addBundle(new ReladomoBundle());\n"
                 + "    }\n"
                 + "\n"
+                + "    @Override\n"
                 + "    public void run(\n"
                 + "            " + this.applicationName + "Configuration configuration,\n"
                 + "            Environment environment)\n"
@@ -108,16 +114,15 @@ public class AbstractApplicationGenerator
                 + "            LOGGER.info(\"Klass configuration:\\n{}\", render);\n"
                 + "        }\n"
                 + "\n"
-                + "        this.domainModel = getDomainModel(klassConfig);\n"
+                + "        this.domainModel = this.getDomainModel(klassConfig);\n"
                 + "\n"
                 + this.getRegisterResourcesSourceCode()
                 + "    }\n"
                 + "\n"
                 + "    public DomainModel getDomainModel(Config klassConfig)\n"
                 + "    {\n"
-                + "        String rootPackage = klassConfig.getString(\"rootPackage\");\n"
-                + "\n"
-                + "        DomainModelLoader domainModelLoader = new DomainModelLoader(rootPackage);\n"
+                + "        List<String> klassSourcePackages = klassConfig.getStringList(\"klassSourcePackages\");\n"
+                + "        DomainModelLoader domainModelLoader = new DomainModelLoader(Lists.immutable.withAll(klassSourcePackages));\n"
                 + "        return domainModelLoader.load();\n"
                 + "    }\n"
                 + "}\n";
@@ -129,7 +134,7 @@ public class AbstractApplicationGenerator
         return this.domainModel
                 .getServiceGroups()
                 .collect(this::getRegisterResourceSourceCode)
-                .makeString();
+                .makeString("");
     }
 
     private String getRegisterResourceSourceCode(ServiceGroup serviceGroup)

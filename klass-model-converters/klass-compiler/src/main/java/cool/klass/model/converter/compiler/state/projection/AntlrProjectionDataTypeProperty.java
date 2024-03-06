@@ -95,7 +95,7 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
         if (this.dataTypeProperty == AntlrEnumerationProperty.NOT_FOUND)
         {
             String message = String.format(
-                    "Cannot find member '%s.%s'.",
+                    "ERR_PRJ_DTP: Cannot find member '%s.%s'.",
                     this.antlrProjectionParent.getKlass().getName(),
                     this.name);
             compilerErrorHolder.add(

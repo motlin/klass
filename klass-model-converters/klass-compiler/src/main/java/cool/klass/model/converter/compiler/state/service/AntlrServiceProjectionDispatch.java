@@ -50,7 +50,7 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
             if (projectionKlass != serviceGroupKlass)
             {
                 String error = String.format(
-                        "Expected projection referencing '%s' but projection '%s' references '%s'.",
+                        "ERR_SRV_PRJ: Expected projection referencing '%s' but projection '%s' references '%s'.",
                         serviceGroupKlass.getName(),
                         this.projection.getName(),
                         projectionKlass.getName());

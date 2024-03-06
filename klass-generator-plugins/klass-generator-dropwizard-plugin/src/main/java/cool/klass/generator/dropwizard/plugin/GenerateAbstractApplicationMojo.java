@@ -21,6 +21,9 @@ public class GenerateAbstractApplicationMojo extends AbstractGenerateMojo
     @Parameter(property = "applicationName", required = true, readonly = true)
     private String applicationName;
 
+    @Parameter(property = "rootPackageName", required = true, readonly = true)
+    private String rootPackageName;
+
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject mavenProject;
 

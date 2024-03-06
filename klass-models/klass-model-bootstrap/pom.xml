@@ -19,5 +19,6 @@
         <module>klass-model-bootstrapped-meta</module>
         <module>klass-model-bootstrapped-reladomo-definitions</module>
         <module>klass-model-bootstrapped-reladomo-pojos</module>
+        <module>klass-model-bootstrapped-services</module>
     </modules>
 </project>

@@ -31,6 +31,7 @@ enumeration Multiplicity
     ONE_TO_MANY("1..*"),
 }
 
+// TODO: ⬆ Model ordinal/order in the boostrapped meta model and add order-bys.
 class PrimitiveProperty
     transient
 {
@@ -40,6 +41,7 @@ class PrimitiveProperty
     key                           : Boolean;
     id                            : Boolean;
     optional                      : Boolean;
+    ordinal                       : Integer;
 }
 
 association ClassHasPrimitiveTypeProperties
@@ -57,6 +59,7 @@ class Enumeration
 {
     name                          : String key;
     packageName                   : String private;
+    ordinal                       : Integer;
 }
 
 class EnumerationLiteral
@@ -65,12 +68,14 @@ class EnumerationLiteral
     enumerationName               : String key;
     prettyName                    : String;
     name                          : String key;
+    ordinal                       : Integer;
 }
 
 association EnumerationHasLiterals
 {
     enumeration: Enumeration[1..1];
-    enumerationLiterals: EnumerationLiteral[1..*];
+    enumerationLiterals: EnumerationLiteral[1..*]
+        orderBy: this.ordinal;
 
     relationship this.name == EnumerationLiteral.enumerationName
 }
@@ -83,6 +88,7 @@ class EnumerationProperty
     enumerationName               : String private;
     key                           : Boolean;
     optional                      : Boolean;
+    ordinal                       : Integer;
 }
 
 association EnumerationPropertyHasEnumeration
@@ -96,7 +102,8 @@ association EnumerationPropertyHasEnumeration
 association ClassHasEnumerationProperties
 {
     owningClass: Class[1..1];
-    enumerationProperties: EnumerationProperty[0..*];
+    enumerationProperties: EnumerationProperty[0..*]
+        orderBy: this.ordinal;
 
     relationship this.name == EnumerationProperty.className
 }
@@ -112,6 +119,7 @@ class Association
 {
     name                          : String key;
     packageName                   : String private;
+    ordinal                       : Integer;
 
     source(): AssociationEnd[1..1]
     {
@@ -142,7 +150,8 @@ class AssociationEnd
 association AssociationHasEnds
 {
     owningAssociation: Association[1..1];
-    associationEnds: AssociationEnd[0..*];
+    associationEnds: AssociationEnd[0..*]
+        orderBy: this.direction;
 
     relationship this.name == AssociationEnd.associationName
 }
@@ -151,6 +160,7 @@ association ClassHasAssociationEnds
 {
     owningClass: Class[1..1];
     associationEnds: AssociationEnd[0..*];
+    // TODO: Order by this.owningAssociation.ordinal
 
     relationship this.name == AssociationEnd.owningClassName
 }
@@ -170,12 +180,14 @@ class ParameterizedProperty
     name                          : String key;
     multiplicity                  : Multiplicity;
     resultTypeName                : String private;
+    ordinal                       : Integer;
 }
 
 association ClassHasParameterizedProperties
 {
     owningClass: Class[1..1];
-    parameterizedProperties: ParameterizedProperty[0..*] owned;
+    parameterizedProperties: ParameterizedProperty[0..*] owned
+        orderBy: this.ordinal;
 
     relationship this.name == ParameterizedProperty.owningClassName
 }
@@ -195,7 +207,7 @@ class AssociationEndOrdering
     name                          : String;
     multiplicity                  : Multiplicity;
     direction                     : AssociationEndDirection key;
-    orderingId                     : Long private;
+    orderingId                    : Long private;
 }
 
 class ParameterizedPropertyOrdering
@@ -203,7 +215,7 @@ class ParameterizedPropertyOrdering
 {
     owningClassName               : String private key;
     name                          : String key;
-    orderingId                     : Long private;
+    orderingId                    : Long private;
 }
 
 association AssociationEndHasOrdering
@@ -254,7 +266,7 @@ class Ordering
 class OrderingPart
     transient
 {
-    orderingId                     : Long key;
+    orderingId                    : Long key;
 
     // TODO: order keyword for properties meant for sorting?
     ordinal                       : Integer key;
@@ -329,7 +341,8 @@ class Package
 association PackageHasClasses
 {
     owningPackage: Package[1..1];
-    classes: Class[0..*];
+    classes: Class[0..*]
+        orderBy: this.ordinal;
 
     relationship this.fullyQualifiedName == Class.packageName
 }
@@ -337,7 +350,8 @@ association PackageHasClasses
 association PackageHasEnumerations
 {
     owningPackage: Package[1..1];
-    enumerations: Enumeration[0..*];
+    enumerations: Enumeration[0..*]
+        orderBy: this.ordinal;
 
     relationship this.fullyQualifiedName == Enumeration.packageName
 }
@@ -345,7 +359,8 @@ association PackageHasEnumerations
 association PackageHasAssociations
 {
     owningPackage: Package[1..1];
-    associations: Association[0..*];
+    associations: Association[0..*]
+        orderBy: this.ordinal;
 
     relationship this.fullyQualifiedName == Association.packageName
 }
@@ -354,18 +369,21 @@ projection ClassReadProjection on Class
 {
     name                 : "Class name",
     packageName          : "Class package name",
+    ordinal              : "Class ordinal",
     primitiveProperties  :
     {
         name         : "Primitive property name",
         primitiveType: "Primitive property type",
         optional     : "Primitive property is optional",
         key          : "Primitive property is key",
+        ordinal      : "Primitive property ordinal",
     },
     enumerationProperties:
     {
         name       : "Enumeration property name",
         optional   : "Enumeration property is optional",
         key        : "Enumeration property is key",
+        ordinal    : "Enumeration property ordinal",
         enumeration:
         {
             name: "Enumeration name",
@@ -390,17 +408,17 @@ projection ClassReadProjection on Class
 service Class
 {
     /api/meta/class/{className: String[1..1]}
-    GET
-    {
-        multiplicity: one;
-        criteria: this.name == className;
-        projection: ClassReadProjection;
-    }
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == className;
+            projection  : ClassReadProjection;
+        }
     /api/meta/class
-    GET
-    {
-        multiplicity: many;
-        criteria: all;
-        projection: ClassReadProjection;
-    }
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : ClassReadProjection;
+        }
 }

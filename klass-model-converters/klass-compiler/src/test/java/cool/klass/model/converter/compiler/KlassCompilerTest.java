@@ -753,7 +753,7 @@ public class KlassCompilerTest
                         + "              ^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 23 Char: 5 Error: Cannot find member 'ClassWithUnresolved.unresolvedProjectionMember'.\n"
+                        + "File: example.klass Line: 23 Char: 5 Error: ERR_PRJ_DTP: Cannot find member 'ClassWithUnresolved.unresolvedProjectionMember'.\n"
                         + "projection EmptyProjection on ClassWithUnresolved\n"
                         + "{\n"
                         + "    unresolvedProjectionMember: \"Header\",\n"
@@ -1129,7 +1129,7 @@ public class KlassCompilerTest
         //</editor-fold>
 
         String error = ""
-                + "File: example.klass Line: 21 Char: 27 Error: Expected projection referencing 'Class2' but projection 'ExampleProjection' references 'Class1'.\n"
+                + "File: example.klass Line: 21 Char: 27 Error: ERR_SRV_PRJ: Expected projection referencing 'Class2' but projection 'ExampleProjection' references 'Class1'.\n"
                 + "service Class2\n"
                 + "{\n"
                 + "    /api/example\n"

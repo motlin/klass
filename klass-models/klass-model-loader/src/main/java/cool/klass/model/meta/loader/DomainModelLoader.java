@@ -1,5 +1,6 @@
 package cool.klass.model.meta.loader;
 
+import java.net.URL;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -21,19 +22,20 @@ public class DomainModelLoader
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(DomainModelLoader.class);
 
-    private final String rootPackageName;
+    private final ImmutableList<String> klassSourcePackages;
 
-    public DomainModelLoader(String rootPackageName)
+    public DomainModelLoader(ImmutableList<String> klassSourcePackages)
     {
-        this.rootPackageName = rootPackageName;
+        this.klassSourcePackages = klassSourcePackages;
     }
 
     @Nullable
     public DomainModel load()
     {
+        ImmutableList<URL> urls = this.klassSourcePackages.flatCollect(ClasspathHelper::forPackage);
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .setScanners(new ResourcesScanner())
-                .setUrls(ClasspathHelper.forPackage(this.rootPackageName));
+                .setUrls(urls.castToList());
         Reflections         reflections         = new Reflections(configurationBuilder);
         Set<String>         klassLocations      = reflections.getResources(Pattern.compile(".*\\.klass"));
         CompilerErrorHolder compilerErrorHolder = new CompilerErrorHolder();

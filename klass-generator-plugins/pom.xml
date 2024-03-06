@@ -16,9 +16,9 @@
     <name>Klass Generator Maven Plugins (Module Group)</name>
 
     <modules>
+        <module>klass-generator-abstract-plugin</module>
         <module>klass-generator-reladomo-plugin</module>
         <module>klass-generator-service-resources-plugin</module>
-        <module>klass-generator-abstract-plugin</module>
         <module>klass-generator-dropwizard-plugin</module>
     </modules>
 </project>

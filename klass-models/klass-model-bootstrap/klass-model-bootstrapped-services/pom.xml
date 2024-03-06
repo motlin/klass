@@ -3,46 +3,39 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>com.stackoverflow</groupId>
-        <artifactId>stackoverflow</artifactId>
+        <groupId>cool.klass</groupId>
+        <artifactId>klass-model-bootstrap</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>stackoverflow-services</artifactId>
+    <artifactId>klass-model-bootstrapped-services</artifactId>
 
-    <name>${app.name} Service Resources</name>
+    <name>Klass Bootstrapped Meta Model Service Resources</name>
 
     <dependencies>
 
-        <!--TODO: None of these dependencies are used when there are no services declared in the model-->
-
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-reladomo-pojos</artifactId>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-reladomo-pojos</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-meta</artifactId>
-            <version>${klass.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-serializer-json</artifactId>
-            <version>${klass.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.goldmansachs.reladomo</groupId>
-            <artifactId>reladomo</artifactId>
         </dependency>
 
         <dependency>
@@ -61,8 +54,13 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
+            <groupId>com.goldmansachs.reladomo</groupId>
+            <artifactId>reladomo</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
         </dependency>
 
     </dependencies>
@@ -73,11 +71,10 @@
             <plugin>
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-generator-service-resources-plugin</artifactId>
-                <version>${klass.version}</version>
+                <version>${project.version}</version>
                 <configuration>
                     <klassSourcePackages>
                         <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
-                        <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>
                 <executions>
@@ -89,8 +86,8 @@
                 </executions>
                 <dependencies>
                     <dependency>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>${app.artifactId}-domain-model</artifactId>
+                        <groupId>cool.klass</groupId>
+                        <artifactId>klass-model-bootstrapped-meta</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>

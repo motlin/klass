@@ -94,6 +94,8 @@ import org.eclipse.collections.api.list.MutableList;
 
 public class ErrorContextListener extends BaseErrorListener
 {
+    private int numProjectionAssociationEnds;
+
     public ErrorContextListener(MutableList<String> contextualStrings)
     {
         super(contextualStrings);
@@ -380,15 +382,22 @@ public class ErrorContextListener extends BaseErrorListener
     @Override
     public void enterProjectionAssociationEnd(ProjectionAssociationEndContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterProjectionAssociationEnd() not implemented yet");
+        this.numProjectionAssociationEnds++;
+
+        String indent = this.getIndent(this.numProjectionAssociationEnds);
+        this.addTextInclusive(indent, ctx.getStart(), ctx.projectionBody().getStart());
+    }
+
+    @Nonnull
+    public String getIndent(int indents)
+    {
+        return new String(new char[indents]).replace("\0", "    ");
     }
 
     @Override
     public void exitProjectionAssociationEnd(ProjectionAssociationEndContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitProjectionAssociationEnd() not implemented yet");
+        this.numProjectionAssociationEnds--;
     }
 
     @Override

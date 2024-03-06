@@ -31,6 +31,7 @@ enumeration Multiplicity
     ONE_TO_MANY("1..*"),
 }
 
+// TODO: ⬆ Model ordinal/order in the boostrapped meta model and add order-bys.
 class PrimitiveProperty
     transient
 {
@@ -56,8 +57,9 @@ association ClassHasPrimitiveTypeProperties
 class Enumeration
     transient
 {
-    name: String key;
-    packageName: String private;
+    name                          : String key;
+    packageName                   : String private;
+    ordinal                       : Integer;
 }
 
 class EnumerationLiteral
@@ -65,13 +67,15 @@ class EnumerationLiteral
 {
     enumerationName               : String key;
     prettyName                    : String;
-    name: String key;
+    name                          : String key;
+    ordinal                       : Integer;
 }
 
 association EnumerationHasLiterals
 {
     enumeration: Enumeration[1..1];
-    enumerationLiterals: EnumerationLiteral[1..*];
+    enumerationLiterals: EnumerationLiteral[1..*]
+        orderBy: this.ordinal;
 
     relationship this.name == EnumerationLiteral.enumerationName
 }
@@ -98,7 +102,8 @@ association EnumerationPropertyHasEnumeration
 association ClassHasEnumerationProperties
 {
     owningClass: Class[1..1];
-    enumerationProperties: EnumerationProperty[0..*];
+    enumerationProperties: EnumerationProperty[0..*]
+        orderBy: this.ordinal;
 
     relationship this.name == EnumerationProperty.className
 }
@@ -113,7 +118,8 @@ class Association
     transient
 {
     name                          : String key;
-    packageName: String private;
+    packageName                   : String private;
+    ordinal                       : Integer;
 
     source(): AssociationEnd[1..1]
     {
@@ -132,9 +138,9 @@ class AssociationEnd
     transient
 {
     owningClassName               : String key private;
-    name: String key;
-    associationName: String;
-    direction: AssociationEndDirection;
+    name                          : String key;
+    associationName               : String;
+    direction                     : AssociationEndDirection;
     multiplicity                  : Multiplicity;
     resultTypeName                : String private;
     ordinal                       : Integer;
@@ -144,7 +150,8 @@ class AssociationEnd
 association AssociationHasEnds
 {
     owningAssociation: Association[1..1];
-    associationEnds: AssociationEnd[0..*];
+    associationEnds: AssociationEnd[0..*]
+        orderBy: this.direction;
 
     relationship this.name == AssociationEnd.associationName
 }
@@ -153,6 +160,7 @@ association ClassHasAssociationEnds
 {
     owningClass: Class[1..1];
     associationEnds: AssociationEnd[0..*];
+    // TODO: Order by this.owningAssociation.ordinal
 
     relationship this.name == AssociationEnd.owningClassName
 }
@@ -170,14 +178,16 @@ class ParameterizedProperty
 {
     owningClassName               : String key private;
     name                          : String key;
-    multiplicity: Multiplicity;
-    resultTypeName: String private;
+    multiplicity                  : Multiplicity;
+    resultTypeName                : String private;
+    ordinal                       : Integer;
 }
 
 association ClassHasParameterizedProperties
 {
     owningClass: Class[1..1];
-    parameterizedProperties: ParameterizedProperty[0..*] owned;
+    parameterizedProperties: ParameterizedProperty[0..*] owned
+        orderBy: this.ordinal;
 
     relationship this.name == ParameterizedProperty.owningClassName
 }
@@ -195,7 +205,7 @@ class AssociationEndOrdering
 {
     associationName               : String key private;
     name                          : String;
-    multiplicity: Multiplicity;
+    multiplicity                  : Multiplicity;
     direction                     : AssociationEndDirection key;
     orderingId                    : Long private;
 }
@@ -205,7 +215,7 @@ class ParameterizedPropertyOrdering
 {
     owningClassName               : String private key;
     name                          : String key;
-    orderingId: Long private;
+    orderingId                    : Long private;
 }
 
 association AssociationEndHasOrdering
@@ -260,7 +270,7 @@ class OrderingPart
 
     // TODO: order keyword for properties meant for sorting?
     ordinal                       : Integer key;
-    className: String private;
+    className                     : String private;
     propertyName                  : String private;
     direction                     : OrderingDirection;
 }
@@ -311,8 +321,8 @@ class ParameterizedPropertyParameter
     transient
 {
     parameterizedPropertyClassName: String key private;
-    parameterizedPropertyName: String key;
-    name: String;
+    parameterizedPropertyName     : String key;
+    name                          : String;
 }
 
 /*
@@ -331,7 +341,8 @@ class Package
 association PackageHasClasses
 {
     owningPackage: Package[1..1];
-    classes: Class[0..*];
+    classes: Class[0..*]
+        orderBy: this.ordinal;
 
     relationship this.fullyQualifiedName == Class.packageName
 }
@@ -339,7 +350,8 @@ association PackageHasClasses
 association PackageHasEnumerations
 {
     owningPackage: Package[1..1];
-    enumerations: Enumeration[0..*];
+    enumerations: Enumeration[0..*]
+        orderBy: this.ordinal;
 
     relationship this.fullyQualifiedName == Enumeration.packageName
 }
@@ -347,7 +359,8 @@ association PackageHasEnumerations
 association PackageHasAssociations
 {
     owningPackage: Package[1..1];
-    associations: Association[0..*];
+    associations: Association[0..*]
+        orderBy: this.ordinal;
 
     relationship this.fullyQualifiedName == Association.packageName
 }
@@ -356,6 +369,7 @@ projection ClassReadProjection on Class
 {
     name                 : "Class name",
     packageName          : "Class package name",
+    ordinal              : "Class ordinal",
     primitiveProperties  :
     {
         name         : "Primitive property name",
@@ -370,6 +384,7 @@ projection ClassReadProjection on Class
         name       : "Enumeration property name",
         optional   : "Enumeration property is optional",
         key        : "Enumeration property is key",
+        ordinal    : "Enumeration property ordinal",
         enumeration:
         {
             name: "Enumeration name",
