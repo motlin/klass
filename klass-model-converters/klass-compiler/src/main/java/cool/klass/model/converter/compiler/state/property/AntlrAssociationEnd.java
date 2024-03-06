@@ -19,9 +19,7 @@ import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBu
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
@@ -247,13 +245,6 @@ public class AntlrAssociationEnd
         return (AssociationEndContext) super.getElementContext();
     }
 
-    @Override
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.getElementContext());
-        this.owningAssociationState.getParserRuleContexts(parserRuleContexts);
-    }
-
     public void addForeignKeyPropertyMatchingProperty(
             @Nonnull AntlrDataTypeProperty<?> foreignKeyProperty,
             @Nonnull AntlrDataTypeProperty<?> keyProperty)
@@ -261,12 +252,6 @@ public class AntlrAssociationEnd
         this.foreignKeys.put(foreignKeyProperty, keyProperty);
         foreignKeyProperty.setKeyMatchingThisForeignKey(this, keyProperty);
         keyProperty.setForeignKeyMatchingThisKey(this, foreignKeyProperty);
-    }
-
-    public boolean hasForeignKey()
-    {
-        return this.isToOneRequired() && this.opposite.isToMany()
-                || this.isToOneRequired() && this.opposite.isToOneOptional();
     }
 
     @Override

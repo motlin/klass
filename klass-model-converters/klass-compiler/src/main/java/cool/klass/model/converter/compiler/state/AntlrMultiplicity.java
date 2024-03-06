@@ -13,8 +13,6 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrMultiplicity extends AntlrElement
 {
-    public static final AntlrMultiplicity AMBIGUOUS = new AntlrMultiplicity();
-
     private String lowerBoundText;
     private String upperBoundText;
 

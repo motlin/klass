@@ -303,13 +303,6 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         return Objects.requireNonNull(this.elementBuilder);
     }
 
-    @Override
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.getElementContext());
-        this.urlState.getParserRuleContexts(parserRuleContexts);
-    }
-
     @Nonnull
     @Override
     public ServiceDeclarationContext getElementContext()

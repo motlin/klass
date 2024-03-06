@@ -23,7 +23,6 @@ import cool.klass.model.meta.domain.service.ServiceImpl.ServiceBuilder;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -205,13 +204,6 @@ public class AntlrUrl extends AntlrElement
     public UrlDeclarationContext getElementContext()
     {
         return (UrlDeclarationContext) super.getElementContext();
-    }
-
-    @Override
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.getElementContext());
-        this.serviceGroup.getParserRuleContexts(parserRuleContexts);
     }
 
     @Nonnull

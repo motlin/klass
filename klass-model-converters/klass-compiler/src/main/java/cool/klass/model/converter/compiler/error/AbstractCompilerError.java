@@ -350,29 +350,4 @@ public abstract class AbstractCompilerError
                 .fg(CYAN).a("Character: ").reset().a(this.getCharPositionInLine() + 1)
                 .toString();
     }
-
-    public AbstractCompilerError getUltimateCause()
-    {
-        return this.macroCause
-                .map(AbstractCompilerError::getUltimateCause)
-                .orElse(this);
-    }
-
-    @Nonnull
-    public String getSourceName()
-    {
-        return this.compilationUnit.getSourceName();
-    }
-
-    public ImmutableList<AbstractCompilerError> getCauseChain()
-    {
-        return this.populateCauseChain(Lists.mutable.empty()).toImmutable();
-    }
-
-    protected final MutableList<AbstractCompilerError> populateCauseChain(MutableList<AbstractCompilerError> list)
-    {
-        list.add(this);
-        this.macroCause.ifPresent(each -> each.populateCauseChain(list));
-        return list;
-    }
 }

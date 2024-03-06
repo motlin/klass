@@ -17,35 +17,11 @@ import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionProjectionReferenceImpl.ProjectionProjectionReferenceBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionProjectionReferenceContext;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.MutableList;
 
 public class AntlrProjectionProjectionReference
         extends AntlrIdentifierElement
         implements AntlrProjectionChild
 {
-    @Nonnull
-    public static final AntlrProjectionProjectionReference AMBIGUOUS = new AntlrProjectionProjectionReference(
-            new ProjectionProjectionReferenceContext(null, -1),
-            Optional.empty(),
-            -1,
-            new IdentifierContext(null, -1),
-            AntlrClass.AMBIGUOUS,
-            AntlrProjection.AMBIGUOUS,
-            AntlrAssociationEnd.AMBIGUOUS,
-            AntlrProjection.AMBIGUOUS);
-
-    @Nonnull
-    public static final AntlrProjectionProjectionReference NOT_FOUND = new AntlrProjectionProjectionReference(
-            new ProjectionProjectionReferenceContext(null, -1),
-            Optional.empty(),
-            -1,
-            new IdentifierContext(null, -1),
-            AntlrClass.NOT_FOUND,
-            AntlrProjection.NOT_FOUND,
-            AntlrAssociationEnd.NOT_FOUND,
-            AntlrProjection.AMBIGUOUS);
-
     @Nonnull
     private final AntlrClassifier           classifier;
     @Nonnull
@@ -155,12 +131,5 @@ public class AntlrProjectionProjectionReference
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".getNamePattern() not implemented yet");
-    }
-
-    @Override
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.elementContext);
-        this.antlrProjectionParent.getParserRuleContexts(parserRuleContexts);
     }
 }

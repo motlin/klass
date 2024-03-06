@@ -17,11 +17,9 @@ import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.tuple.Tuples;
 
@@ -150,13 +148,6 @@ public class AntlrProjection
     public ProjectionDeclarationContext getElementContext()
     {
         return (ProjectionDeclarationContext) super.getElementContext();
-    }
-
-    @Override
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.elementContext);
-        parserRuleContexts.add(this.compilationUnit.get().getParserContext());
     }
 
     @Override

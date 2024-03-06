@@ -44,7 +44,6 @@ public abstract class AbstractKlassCompilerErrorTestCase
         CompilationResult compilationResult = compiler.compile();
         if (compilationResult instanceof DomainModelCompilationResult)
         {
-            DomainModelCompilationResult domainModelResult = (DomainModelCompilationResult) compilationResult;
             fail("Expected a compile error but found:\n" + sourceCodeText);
         }
         else if (compilationResult instanceof ErrorsCompilationResult)

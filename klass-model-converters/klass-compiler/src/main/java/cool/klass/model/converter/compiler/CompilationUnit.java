@@ -40,8 +40,6 @@ public final class CompilationUnit
     @Nonnull
     private final String                            sourceCodeText;
     @Nonnull
-    private final String[]                          lines;
-    @Nonnull
     private final CharStream                        charStream;
     @Nonnull
     private final BufferedTokenStream               tokenStream;
@@ -59,7 +57,6 @@ public final class CompilationUnit
             @Nonnull Optional<AntlrElement> macroElement,
             @Nonnull String sourceName,
             @Nonnull String sourceCodeText,
-            @Nonnull String[] lines,
             @Nonnull CharStream charStream,
             @Nonnull BufferedTokenStream tokenStream,
             @Nonnull ParserRuleContext parserRuleContext)
@@ -68,7 +65,6 @@ public final class CompilationUnit
         this.macroElement   = Objects.requireNonNull(macroElement);
         this.sourceName     = Objects.requireNonNull(sourceName);
         this.sourceCodeText = Objects.requireNonNull(sourceCodeText);
-        this.lines          = Objects.requireNonNull(lines);
         this.charStream     = Objects.requireNonNull(charStream);
         this.tokenStream    = Objects.requireNonNull(tokenStream);
         this.parserContext  = Objects.requireNonNull(parserRuleContext);
@@ -109,11 +105,6 @@ public final class CompilationUnit
     public BufferedTokenStream getTokenStream()
     {
         return this.tokenStream;
-    }
-
-    public String getLine(int index)
-    {
-        return this.lines[index];
     }
 
     @Nonnull
@@ -187,7 +178,6 @@ public final class CompilationUnit
                 macroElement,
                 sourceName,
                 sourceCodeText,
-                lines,
                 charStream,
                 tokenStream,
                 parserRuleContext);

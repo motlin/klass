@@ -29,7 +29,6 @@ import cool.klass.model.meta.domain.property.validation.MaxPropertyValidationImp
 import cool.klass.model.meta.domain.property.validation.MinLengthPropertyValidationImpl.MinLengthPropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MinPropertyValidationImpl.MinPropertyValidationBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -70,13 +69,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         public boolean isValid()
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".isValid() not implemented yet");
-        }
-
-        @Override
-        public boolean isTemporal()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".isTemporal() not implemented yet");
         }
 
         @Nonnull
@@ -136,13 +128,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         public boolean isValid()
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".isValid() not implemented yet");
-        }
-
-        @Override
-        public boolean isTemporal()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".isTemporal() not implemented yet");
         }
 
         @Nonnull
@@ -245,11 +230,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         return this.getModifiers().anySatisfy(AntlrModifier::isCreatedOn);
     }
 
-    public boolean isDerived()
-    {
-        return this.getModifiers().anySatisfy(AntlrModifier::isDerived);
-    }
-
     public boolean isPrivate()
     {
         return this.getModifiers().anySatisfy(AntlrModifier::isPrivate);
@@ -269,8 +249,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     {
         return this.getModifiers().anySatisfy(AntlrModifier::isValid);
     }
-
-    public abstract boolean isTemporal();
 
     public boolean isValidRange()
     {
@@ -676,16 +654,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     public AntlrClassifier getOwningClassifierState()
     {
         return this.owningClassifierState;
-    }
-
-    @Override
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        if (this.elementContext instanceof ClassifierModifierContext)
-        {
-            return;
-        }
-        this.owningClassifierState.getParserRuleContexts(parserRuleContexts);
     }
 
     public String getShortString()

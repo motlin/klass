@@ -18,35 +18,13 @@ import cool.klass.model.meta.domain.projection.AbstractProjectionParent.Abstract
 import cool.klass.model.meta.domain.projection.ProjectionReferencePropertyImpl.ProjectionReferencePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferencePropertyContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.MutableList;
 
 public class AntlrProjectionReferenceProperty
         extends AntlrProjectionParent
         implements AntlrProjectionChild
 {
-    @Nonnull
-    public static final AntlrProjectionReferenceProperty AMBIGUOUS = new AntlrProjectionReferenceProperty(
-            new ProjectionReferencePropertyContext(null, -1),
-            Optional.empty(),
-            -1,
-            new IdentifierContext(null, -1),
-            AntlrClassifier.AMBIGUOUS,
-            AntlrProjection.AMBIGUOUS,
-            AntlrAssociationEnd.AMBIGUOUS);
-
-    @Nonnull
-    public static final AntlrProjectionReferenceProperty NOT_FOUND = new AntlrProjectionReferenceProperty(
-            new ProjectionReferencePropertyContext(null, -1),
-            Optional.empty(),
-            -1,
-            new IdentifierContext(null, -1),
-            AntlrClassifier.NOT_FOUND,
-            AntlrProjection.NOT_FOUND,
-            AntlrAssociationEnd.NOT_FOUND);
-
     @Nonnull
     private final AntlrProjectionParent              antlrProjectionParent;
     @Nonnull
@@ -158,12 +136,5 @@ public class AntlrProjectionReferenceProperty
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".getNamePattern() not implemented yet");
-    }
-
-    @Override
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.elementContext);
-        this.antlrProjectionParent.getParserRuleContexts(parserRuleContexts);
     }
 }

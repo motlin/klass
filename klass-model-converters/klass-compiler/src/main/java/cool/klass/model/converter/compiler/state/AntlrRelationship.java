@@ -28,11 +28,6 @@ public class AntlrRelationship
         this.association = Objects.requireNonNull(association);
     }
 
-    public AntlrAssociation getAssociation()
-    {
-        return this.association;
-    }
-
     public void setCriteria(AntlrCriteria criteria)
     {
         if (this.criteria != null)

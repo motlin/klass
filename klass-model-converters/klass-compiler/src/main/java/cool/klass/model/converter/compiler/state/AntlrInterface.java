@@ -20,7 +20,6 @@ import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -36,9 +35,7 @@ public class AntlrInterface extends AntlrClassifier
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
-            AntlrCompilationUnit.AMBIGUOUS,
-            new ParserRuleContext(),
-            "klass.meta")
+            AntlrCompilationUnit.AMBIGUOUS)
     {
         @Override
         public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
@@ -54,9 +51,7 @@ public class AntlrInterface extends AntlrClassifier
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
-            AntlrCompilationUnit.NOT_FOUND,
-            new ParserRuleContext(),
-            "klass.meta")
+            AntlrCompilationUnit.NOT_FOUND)
     {
         @Override
         public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
@@ -87,9 +82,7 @@ public class AntlrInterface extends AntlrClassifier
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
-            @Nonnull AntlrCompilationUnit compilationUnitState,
-            @Nonnull ParserRuleContext packageContext,
-            @Nonnull String packageName)
+            @Nonnull AntlrCompilationUnit compilationUnitState)
     {
         super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
     }
@@ -303,8 +296,7 @@ public class AntlrInterface extends AntlrClassifier
                 .toImmutable();
     }
 
-    @Override
-    protected ImmutableList<String> getDeclaredMemberNames()
+    private ImmutableList<String> getDeclaredMemberNames()
     {
         MutableList<String> topLevelNames = Lists.mutable.empty();
         this.dataTypePropertyStates.collect(AntlrProperty::getName, topLevelNames);
@@ -347,7 +339,6 @@ public class AntlrInterface extends AntlrClassifier
         return this.getInterfaceDataTypePropertyByName(name);
     }
 
-    @Override
     public AntlrModifier getModifierByName(String name)
     {
         if (this.modifiersByName.containsKey(name))

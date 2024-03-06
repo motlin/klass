@@ -24,18 +24,6 @@ public interface IAntlrElement
     @Nonnull
     Optional<AntlrElement> getMacroElement();
 
-    default IAntlrElement getOuterElement()
-    {
-        return this.getSurroundingElement()
-                .map(IAntlrElement::getOuterElement)
-                .orElse(this);
-    }
-
-    @Nonnull
-    ImmutableList<ParserRuleContext> getParserRuleContexts();
-
-    void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts);
-
     @Nonnull
     Optional<IAntlrElement> getSurroundingElement();
 

@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.error.RootCompilerError;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.test.constants.KlassTestConstants;
-import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.junit.Test;
 
@@ -1899,21 +1898,6 @@ public class KlassCompilerTest
         //</editor-fold>
 
         this.assertNoCompilerErrors(sourceCodeText);
-    }
-
-    @Nonnull
-    private String compilerErrorSourceCode(String compilerError)
-    {
-        return "                \"\"\n"
-                + "                        + \"" + this.wrapSourceCode(compilerError) + "\",\n";
-    }
-
-    @Nonnull
-    private String wrapSourceCode(String unwrappedSourceCode)
-    {
-        // https://stackoverflow.com/questions/11125459/java-regex-negative-lookahead
-        return StringEscapeUtils.escapeJava(unwrappedSourceCode)
-                .replaceAll("\\\\n(?!$)", "\\\\n\"\n                        + \"");
     }
 
     private void assertNoCompilerErrors(@Nonnull String sourceCodeText)

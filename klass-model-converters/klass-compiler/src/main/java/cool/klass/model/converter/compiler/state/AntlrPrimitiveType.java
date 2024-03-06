@@ -152,9 +152,4 @@ public final class AntlrPrimitiveType
             }
         }
     }
-
-    public boolean isTemporal()
-    {
-        return this == TEMPORAL_INSTANT || this == TEMPORAL_RANGE;
-    }
 }

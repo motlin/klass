@@ -44,9 +44,7 @@ public class ClassifierPhase
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.compilerState.getOrdinal(ctx),
                 identifier,
-                this.compilerState.getCompilerWalkState().getCompilationUnitState(),
-                this.compilerState.getCompilerWalkState().getPackageNameContext(),
-                this.compilerState.getCompilerWalkState().getPackageName());
+                this.compilerState.getCompilerWalkState().getCompilationUnitState());
         this.classifierState = this.interfaceState;
     }
 

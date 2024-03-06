@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.MutableList;
 
 public abstract class AntlrPackageableElement
         extends AntlrIdentifierElement
@@ -51,12 +50,5 @@ public abstract class AntlrPackageableElement
     protected Pattern getNamePattern()
     {
         return TYPE_NAME_PATTERN;
-    }
-
-    @Override
-    public final void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.elementContext);
-        parserRuleContexts.add(this.compilationUnit.get().getParserContext());
     }
 }

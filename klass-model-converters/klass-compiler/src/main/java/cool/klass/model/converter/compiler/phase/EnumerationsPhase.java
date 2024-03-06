@@ -50,7 +50,6 @@ public class EnumerationsPhase extends AbstractCompilerPhase
     public void enterEnumerationLiteral(@Nonnull EnumerationLiteralContext ctx)
     {
         super.enterEnumerationLiteral(ctx);
-        String literalName = ctx.identifier().getText();
 
         Optional<EnumerationPrettyNameContext> prettyNameContext = Optional.ofNullable(ctx.enumerationPrettyName());
 

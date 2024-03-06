@@ -18,9 +18,7 @@ import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.Associa
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.MutableList;
 
 public class AntlrAssociationEndSignature
         extends AntlrReferenceProperty<AntlrClassifier>
@@ -33,15 +31,6 @@ public class AntlrAssociationEndSignature
             -1,
             new IdentifierContext(null, -1),
             AntlrClassifier.AMBIGUOUS);
-
-    @Nullable
-    public static final AntlrAssociationEndSignature NOT_FOUND = new AntlrAssociationEndSignature(
-            new AssociationEndSignatureContext(null, -1),
-            Optional.empty(),
-            -1,
-            new IdentifierContext(null, -1),
-            // TODO: Not found here, instead of ambiguous
-            AntlrClassifier.NOT_FOUND);
 
     @Nonnull
     private final AntlrClassifier owningClassifierState;
@@ -138,13 +127,6 @@ public class AntlrAssociationEndSignature
     public AssociationEndSignatureContext getElementContext()
     {
         return (AssociationEndSignatureContext) super.getElementContext();
-    }
-
-    @Override
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.getElementContext());
-        this.owningClassifierState.getParserRuleContexts(parserRuleContexts);
     }
 
     @Nonnull

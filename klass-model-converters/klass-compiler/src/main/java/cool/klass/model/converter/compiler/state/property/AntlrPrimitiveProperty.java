@@ -68,12 +68,6 @@ public class AntlrPrimitiveProperty
         return this.getElementContext().primitiveType();
     }
 
-    @Override
-    public boolean isTemporal()
-    {
-        return this.antlrPrimitiveType.isTemporal();
-    }
-
     @Nonnull
     @Override
     public PrimitivePropertyBuilder build()

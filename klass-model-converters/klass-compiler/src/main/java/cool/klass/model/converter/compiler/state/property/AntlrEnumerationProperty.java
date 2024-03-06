@@ -70,12 +70,6 @@ public class AntlrEnumerationProperty
         return this.getElementContext().enumerationReference();
     }
 
-    @Override
-    public boolean isTemporal()
-    {
-        return false;
-    }
-
     @Nonnull
     @Override
     public EnumerationPropertyBuilder build()

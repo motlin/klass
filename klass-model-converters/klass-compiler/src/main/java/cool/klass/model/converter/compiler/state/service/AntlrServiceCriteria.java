@@ -11,10 +11,8 @@ import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.tuple.Pair;
 
 public class AntlrServiceCriteria extends AntlrElement
@@ -79,13 +77,6 @@ public class AntlrServiceCriteria extends AntlrElement
     public ServiceCriteriaDeclarationContext getElementContext()
     {
         return (ServiceCriteriaDeclarationContext) super.getElementContext();
-    }
-
-    @Override
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.elementContext);
-        this.serviceState.getParserRuleContexts(parserRuleContexts);
     }
 
     @Nonnull

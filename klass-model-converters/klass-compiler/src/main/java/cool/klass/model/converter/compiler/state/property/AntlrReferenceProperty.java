@@ -203,11 +203,6 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         return this.getModifiers().anySatisfy(AntlrModifier::isVersion);
     }
 
-    public boolean isAudit()
-    {
-        return this.getModifiers().anySatisfy(AntlrModifier::isAudit);
-    }
-
     protected void reportInvalidMultiplicity(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.multiplicityState.getMultiplicity() == null)
@@ -273,18 +268,6 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
                 "Cannot find class '%s'.",
                 offendingToken.getText());
         compilerErrorHolder.add("ERR_PRP_TYP", message, this, offendingToken);
-    }
-
-    public void reportDuplicatePropertyWithModifier(
-            @Nonnull CompilerErrorState compilerErrorHolder,
-            String modifier)
-    {
-        AntlrModifier modifierState = this.getModifiers().detectWith(AntlrModifier::is, modifier);
-        String message = String.format("Multiple %s properties on '%s'.", modifier, this.getOwningClassifierState().getName());
-        compilerErrorHolder.add(
-                "ERR_DUP_REF",
-                message,
-                modifierState);
     }
 
     protected abstract IdentifierContext getTypeIdentifier();

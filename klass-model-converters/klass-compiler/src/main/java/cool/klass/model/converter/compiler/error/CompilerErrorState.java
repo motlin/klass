@@ -6,7 +6,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -17,23 +16,6 @@ import org.eclipse.collections.impl.factory.Lists;
 public class CompilerErrorState
 {
     private final MutableList<RootCompilerError> compilerErrors = Lists.mutable.empty();
-
-    public void add(
-            @Nonnull CompilationUnit compilationUnit,
-            @Nonnull String errorCode,
-            @Nonnull String message,
-            @Nonnull ParserRuleContext offendingParserRuleContext,
-            AntlrElement... sourceContexts)
-    {
-        RootCompilerError compilerError = new RootCompilerError(
-                compilationUnit,
-                Optional.empty(),
-                Lists.immutable.with(offendingParserRuleContext),
-                Lists.immutable.with(sourceContexts),
-                errorCode,
-                message);
-        this.compilerErrors.add(compilerError);
-    }
 
     public void add(@Nonnull String errorCode, @Nonnull String message, @Nonnull IAntlrElement element)
     {

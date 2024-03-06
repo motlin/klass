@@ -9,7 +9,6 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
@@ -143,12 +142,6 @@ public abstract class AntlrClassifier
                 + ".getTypeGetter() not implemented yet");
     }
 
-    public AntlrModifier getModifierByName(String name)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getModifierByName() not implemented yet");
-    }
-
     public final ImmutableList<AntlrProperty> getProperties()
     {
         return this.getProperties(Lists.mutable.empty());
@@ -207,11 +200,6 @@ public abstract class AntlrClassifier
                 .toImmutable();
     }
 
-    public ImmutableList<AntlrReferenceProperty<?>> getDeclaredReferenceProperties()
-    {
-        return this.referencePropertyStates.toImmutable();
-    }
-
     private ImmutableList<AntlrModifier> getModifiers()
     {
         return this.getModifiers(Lists.mutable.empty());
@@ -244,12 +232,6 @@ public abstract class AntlrClassifier
     public boolean isTransient()
     {
         return this.getModifiers().anySatisfy(AntlrModifier::isTransient);
-    }
-
-    public AntlrAssociationEnd getAssociationEndByName(String name)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getAssociationEndByName() not implemented yet");
     }
 
     public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
@@ -532,12 +514,6 @@ public abstract class AntlrClassifier
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".getDuplicateMemberNames() not implemented yet");
-    }
-
-    protected ImmutableList<String> getDeclaredMemberNames()
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getDeclaredMemberNames() not implemented yet");
     }
 
     @OverridingMethodsMustInvokeSuper

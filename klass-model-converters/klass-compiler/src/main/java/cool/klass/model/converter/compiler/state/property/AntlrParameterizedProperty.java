@@ -19,8 +19,6 @@ import cool.klass.model.meta.domain.property.ParameterizedPropertyImpl.Parameter
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.MutableList;
 
 public class AntlrParameterizedProperty
         extends AntlrClassReferenceProperty
@@ -68,13 +66,6 @@ public class AntlrParameterizedProperty
     public ParameterizedPropertyContext getElementContext()
     {
         return (ParameterizedPropertyContext) super.getElementContext();
-    }
-
-    @Override
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.elementContext);
-        this.owningClassState.getParserRuleContexts(parserRuleContexts);
     }
 
     @Nonnull

@@ -60,7 +60,6 @@ public class PropertyPhase
     {
         super.enterPrimitiveProperty(ctx);
 
-        String             propertyName       = ctx.identifier().getText();
         boolean            isOptional         = ctx.optionalMarker() != null;
         String             primitiveTypeName  = ctx.primitiveType().getText();
         PrimitiveType      primitiveType      = PrimitiveType.byPrettyName(primitiveTypeName);
@@ -95,7 +94,6 @@ public class PropertyPhase
     {
         super.enterEnumerationProperty(ctx);
 
-        String           propertyName     = ctx.identifier().getText();
         boolean          isOptional       = ctx.optionalMarker() != null;
         AntlrDomainModel domainModelState = this.compilerState.getDomainModelState();
         String           enumerationName  = ctx.enumerationReference().getText();
@@ -223,7 +221,6 @@ public class PropertyPhase
             throw new IllegalStateException();
         }
 
-        String associationEndSignatureName = ctx.identifier().getText();
         this.associationEndSignatureState  = new AntlrAssociationEndSignature(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),

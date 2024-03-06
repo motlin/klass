@@ -13,11 +13,6 @@ import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
 
 public class AntlrServiceMultiplicity extends AntlrElement
 {
-    public static final AntlrServiceMultiplicity AMBIGUOUS = new AntlrServiceMultiplicity(
-            new ServiceMultiplicityContext(null, -1),
-            Optional.empty(),
-            ServiceMultiplicity.ONE);
-
     @Nonnull
     private final ServiceMultiplicity serviceMultiplicity;
 

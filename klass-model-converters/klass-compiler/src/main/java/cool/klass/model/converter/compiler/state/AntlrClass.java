@@ -658,8 +658,7 @@ public class AntlrClass
                 .toImmutable();
     }
 
-    @Override
-    protected ImmutableList<String> getDeclaredMemberNames()
+    private ImmutableList<String> getDeclaredMemberNames()
     {
         MutableList<String> topLevelNames = Lists.mutable.empty();
         this.getDataTypeProperties().collect(AntlrProperty::getName, topLevelNames);
@@ -724,7 +723,6 @@ public class AntlrClass
         return this.getInterfaceDataTypePropertyByName(name);
     }
 
-    @Override
     public AntlrAssociationEnd getAssociationEndByName(String name)
     {
         if (this.associationEndsByName.containsKey(name))
@@ -737,12 +735,6 @@ public class AntlrClass
                 .orElse(AntlrAssociationEnd.NOT_FOUND);
     }
 
-    public MutableList<AntlrAssociationEnd> getAssociationEndStates()
-    {
-        return this.associationEndStates.asUnmodifiable();
-    }
-
-    @Override
     public AntlrModifier getModifierByName(String name)
     {
         if (this.modifiersByName.containsKey(name))
@@ -768,11 +760,6 @@ public class AntlrClass
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".getTypeBuilder() not implemented yet");
-    }
-
-    public boolean hasVersion()
-    {
-        return this.associationEndStates.anySatisfy(AntlrAssociationEnd::isVersion);
     }
 
     public boolean isVersion()
