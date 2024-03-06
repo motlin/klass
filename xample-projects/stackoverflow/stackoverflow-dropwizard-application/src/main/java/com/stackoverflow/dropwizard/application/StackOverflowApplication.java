@@ -5,11 +5,14 @@ import java.time.Clock;
 import javax.annotation.Nonnull;
 
 import cool.klass.data.store.DataStore;
+import com.liftwizard.dropwizard.bundle.graphql.LiftwizardGraphQLBundle;
+import com.stackoverflow.graphql.runtime.wiring.StackOverflowRuntimeWiringBuilder;
 import com.stackoverflow.service.resource.QuestionResourceManual;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public class StackOverflowApplication extends AbstractStackOverflowApplication
+public class StackOverflowApplication
+        extends AbstractStackOverflowApplication
 {
     public static void main(String[] args) throws Exception
     {
@@ -21,8 +24,7 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
     {
         super.initialize(bootstrap);
 
-        // TODO: application initialization
-        bootstrap.addBundle(new StackOverflowGraphQLBundle());
+        bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new StackOverflowRuntimeWiringBuilder()));
     }
 
     @Override

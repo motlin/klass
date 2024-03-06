@@ -1,5 +1,7 @@
 package com.stackoverflow.graphql.runtime.wiring;
 
+import java.util.function.Supplier;
+
 import cool.klass.graphql.scalar.temporal.GraphQLTemporalScalar;
 import com.stackoverflow.graphql.data.fetcher.all.AllAnswerDataFetcher;
 import com.stackoverflow.graphql.data.fetcher.all.AllAnswerVersionDataFetcher;
@@ -31,8 +33,10 @@ import com.stackoverflow.graphql.type.runtime.wiring.UserTypeRuntimeWiringProvid
 import graphql.schema.idl.RuntimeWiring;
 
 public class StackOverflowRuntimeWiringBuilder
+        implements Supplier<RuntimeWiring>
 {
-    public RuntimeWiring buildRuntimeWiring()
+    @Override
+    public RuntimeWiring get()
     {
         return RuntimeWiring.newRuntimeWiring()
                 .scalar(new GraphQLTemporalScalar("Instant"))

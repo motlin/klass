@@ -52,12 +52,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <dependency>
-                <groupId>com.graphql-java</groupId>
-                <artifactId>graphql-java</artifactId>
-                <version>14.0</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 
