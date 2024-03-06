@@ -256,4 +256,18 @@ public interface Klass
                 .selectInstancesOf(PrimitiveProperty.class)
                 .detectOptional(DataTypeProperty::isLastUpdatedBy);
     }
+
+    default Optional<DataTypeProperty> getSystemFromProperty()
+    {
+        return this.getDataTypeProperties()
+                .select(DataTypeProperty::isSystem)
+                .detectOptional(DataTypeProperty::isFrom);
+    }
+
+    default Optional<DataTypeProperty> getSystemToProperty()
+    {
+        return this.getDataTypeProperties()
+                .select(DataTypeProperty::isSystem)
+                .detectOptional(DataTypeProperty::isTo);
+    }
 }
