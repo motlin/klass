@@ -116,16 +116,14 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     {
         MithraObject mithraObject = new MithraObject();
         this.convertCommonObject(klass, mithraObject);
+        mithraObject.setDefaultTable(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, klass.getName()));
+
         if (klass.isAbstract())
         {
             SuperClassType superClassType = new SuperClassType();
             // TODO: Configurable inheritance type
-            superClassType.with("table-per-subclass", mithraObject);
+            superClassType.with("table-per-class", mithraObject);
             mithraObject.setSuperClassType(superClassType);
-        }
-        else
-        {
-            mithraObject.setDefaultTable(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, klass.getName()));
         }
 
         ImmutableList<String> superInterfaceNames = klass.getInterfaces().collect(NamedElement::getName);
