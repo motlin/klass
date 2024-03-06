@@ -4,6 +4,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
@@ -27,24 +28,52 @@ import org.slf4j.LoggerFactory;
 public class DomainModelCompilerLoader
         implements DomainModelLoader
 {
+    public static final Pattern KLASS_FILE_EXTENSION = Pattern.compile(".*\\.klass");
+
     private static final Logger LOGGER = LoggerFactory.getLogger(DomainModelCompilerLoader.class);
 
     @Nonnull
-    private final ImmutableList<String> klassSourcePackages;
+    private final ImmutableList<String>            klassSourcePackages;
     @Nonnull
-    private final ClassLoader           classLoader;
+    private final ClassLoader                      classLoader;
+    @Nonnull
+    private final Consumer<RootCompilerAnnotation> compilerAnnotationHandler;
 
     public DomainModelCompilerLoader(@Nonnull ImmutableList<String> klassSourcePackages)
     {
-        this(klassSourcePackages, Thread.currentThread().getContextClassLoader());
+        this(
+                klassSourcePackages,
+                Thread.currentThread().getContextClassLoader(),
+                DomainModelCompilerLoader::logCompilerAnnotation);
     }
 
     public DomainModelCompilerLoader(
             @Nonnull ImmutableList<String> klassSourcePackages,
             @Nonnull ClassLoader classLoader)
     {
-        this.klassSourcePackages = Objects.requireNonNull(klassSourcePackages);
-        this.classLoader         = Objects.requireNonNull(classLoader);
+        this(klassSourcePackages, classLoader, DomainModelCompilerLoader::logCompilerAnnotation);
+    }
+
+    public DomainModelCompilerLoader(
+            @Nonnull ImmutableList<String> klassSourcePackages,
+            @Nonnull ClassLoader classLoader,
+            @Nonnull Consumer<RootCompilerAnnotation> compilerAnnotationHandler)
+    {
+        this.klassSourcePackages       = Objects.requireNonNull(klassSourcePackages);
+        this.classLoader               = Objects.requireNonNull(classLoader);
+        this.compilerAnnotationHandler = Objects.requireNonNull(compilerAnnotationHandler);
+    }
+
+    private static void logCompilerAnnotation(RootCompilerAnnotation compilerAnnotation)
+    {
+        if (compilerAnnotation.isError())
+        {
+            LOGGER.error("{}", compilerAnnotation);
+        }
+        else
+        {
+            LOGGER.warn("{}", compilerAnnotation);
+        }
     }
 
     @Override
@@ -82,8 +111,8 @@ public class DomainModelCompilerLoader
                 .setScanners(new ResourcesScanner())
                 .setUrls(urls.castToList())
                 .filterInputsBy(filterBuilder);
-        Reflections reflections = new Reflections(configurationBuilder);
-        ImmutableList<String> klassLocations = Lists.immutable.withAll(reflections.getResources(Pattern.compile(".*\\.klass")));
+        Reflections           reflections    = new Reflections(configurationBuilder);
+        ImmutableList<String> klassLocations = Lists.immutable.withAll(reflections.getResources(KLASS_FILE_EXTENSION));
 
         LOGGER.debug("Found source files on classpath: {}", klassLocations);
 
@@ -101,25 +130,17 @@ public class DomainModelCompilerLoader
     @Nonnull
     private DomainModelWithSourceCode handleResult(@Nonnull CompilationResult compilationResult)
     {
-        return compilationResult.domainModelWithSourceCode().isPresent()
-                ? this.handleSuccess(compilationResult)
-                : this.handleFailure(compilationResult);
-    }
-
-    @Nonnull
-    private DomainModelWithSourceCode handleFailure(@Nonnull CompilationResult compilationResult)
-    {
         ImmutableList<RootCompilerAnnotation> compilerAnnotations = compilationResult.compilerAnnotations();
         for (RootCompilerAnnotation compilerAnnotation : compilerAnnotations)
         {
-            LOGGER.warn(compilerAnnotation.toString());
+            this.compilerAnnotationHandler.accept(compilerAnnotation);
         }
-        throw new RuntimeException("There were compiler errors.");
-    }
 
-    @Nonnull
-    private DomainModelWithSourceCode handleSuccess(@Nonnull CompilationResult compilationResult)
-    {
+        if (compilationResult.domainModelWithSourceCode().isEmpty())
+        {
+            throw new RuntimeException("There were compiler errors.");
+        }
+
         return compilationResult.domainModelWithSourceCode().get();
     }
 }
