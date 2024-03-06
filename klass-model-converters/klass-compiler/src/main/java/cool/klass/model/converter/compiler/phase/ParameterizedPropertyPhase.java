@@ -18,7 +18,6 @@ import cool.klass.model.converter.compiler.state.parameter.AntlrParameterModifie
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.meta.domain.api.PrimitiveType;
-import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
@@ -35,9 +34,8 @@ import cool.klass.model.meta.grammar.KlassVisitor;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.MutableMap;
 
-public class ParameterizedPropertyPhase extends AbstractCompilerPhase
+public class ParameterizedPropertyPhase extends AbstractDomainModelCompilerPhase
 {
-    private final AntlrDomainModel           domainModelState;
     @Nullable
     private       AntlrParameterizedProperty parameterizedPropertyState;
     // TODO: Make better use of these Owner interfaces in shared compiler phases
@@ -47,8 +45,6 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     private       AntlrParameterOwner        parameterOwnerState;
 
     @Nullable
-    private AntlrClass     thisReference;
-    @Nullable
     private AntlrParameter parameterState;
 
     public ParameterizedPropertyPhase(
@@ -57,22 +53,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
             boolean isInference,
             AntlrDomainModel domainModelState)
     {
-        super(compilerErrorHolder, compilationUnitsByContext, isInference);
-        this.domainModelState = domainModelState;
-    }
-
-    @Override
-    public void enterClassDeclaration(ClassDeclarationContext ctx)
-    {
-        super.enterClassDeclaration(ctx);
-        this.thisReference = this.domainModelState.getClassByContext(this.classDeclarationContext);
-    }
-
-    @Override
-    public void exitClassDeclaration(ClassDeclarationContext ctx)
-    {
-        super.exitClassDeclaration(ctx);
-        this.thisReference = null;
+        super(compilerErrorHolder, compilationUnitsByContext, isInference, domainModelState);
     }
 
     @Override
@@ -212,8 +193,8 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
 
     private void enterParameterDeclaration(
             @Nonnull ParserRuleContext ctx,
-            AntlrType typeState,
-            IdentifierContext identifierContext, MultiplicityContext multiplicityContext)
+            @Nonnull AntlrType typeState,
+            @Nonnull IdentifierContext identifierContext, @Nonnull MultiplicityContext multiplicityContext)
     {
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 multiplicityContext,

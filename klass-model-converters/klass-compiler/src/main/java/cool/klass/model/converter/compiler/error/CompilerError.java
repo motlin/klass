@@ -15,12 +15,11 @@ import org.eclipse.collections.impl.factory.Lists;
 public class CompilerError implements Comparable<CompilerError>
 {
     @Nonnull
-    private final String                       message;
+    private final String                           message;
     @Nonnull
-    private final ParserRuleContext            offendingParserRuleContext;
-    // TODO: ❗ Change the list of contexts into a list of AntlrElements
+    private final ParserRuleContext                offendingParserRuleContext;
     private final ImmutableList<ParserRuleContext> parserRuleContexts;
-    private final Token                        offendingToken;
+    private final Token                            offendingToken;
 
     public CompilerError(
             @Nonnull String message,

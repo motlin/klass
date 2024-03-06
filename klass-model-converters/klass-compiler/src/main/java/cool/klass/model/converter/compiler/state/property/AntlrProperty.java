@@ -38,6 +38,8 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
     @Nonnull
     public abstract PropertyBuilder<T, ?, ?> build();
 
+    public abstract void reportErrors(CompilerErrorHolder compilerErrorHolder);
+
     public final void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format(

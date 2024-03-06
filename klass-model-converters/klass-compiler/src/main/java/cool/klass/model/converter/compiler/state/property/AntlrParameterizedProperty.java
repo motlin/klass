@@ -18,6 +18,7 @@ import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.ParameterizedPropertyImpl.ParameterizedPropertyBuilder;
+import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.MutableList;
@@ -49,6 +50,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
 
     // @Nonnull
     // private final ImmutableList<AntlrParameterizedPropertyModifier> parameterizedPropertyModifierStates;
+    @Nonnull
     private final AntlrClass owningClassState;
 
     private final ParameterHolder parameterHolder = new ParameterHolder();
@@ -86,10 +88,11 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
         this.owningClassState.getParserRuleContexts(parserRuleContexts);
     }
 
+    @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.ofNullable(this.owningClassState);
+        return Optional.of(this.owningClassState);
     }
 
     @Override
@@ -149,7 +152,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
         return this.parameterizedPropertyBuilder;
     }
 
-    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: Check that there are no duplicate modifiers
 
@@ -157,5 +160,20 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
         {
             this.orderByState.ifPresent(o -> o.reportErrors(compilerErrorHolder));
         }
+
+        this.reportTypeNotFound(compilerErrorHolder);
+    }
+
+    @Override
+    protected ClassTypeContext getClassType()
+    {
+        return this.getElementContext().classType();
+    }
+
+    @Nonnull
+    @Override
+    public AntlrClass getOwningClassState()
+    {
+        return Objects.requireNonNull(this.owningClassState);
     }
 }

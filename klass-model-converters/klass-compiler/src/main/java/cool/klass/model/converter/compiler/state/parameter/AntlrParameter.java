@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
@@ -16,6 +17,8 @@ import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.meta.domain.api.DataType.DataTypeGetter;
 import cool.klass.model.meta.domain.parameter.ParameterImpl.ParameterBuilder;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -55,6 +58,7 @@ public final class AntlrParameter extends AntlrNamedElement
     // TODO: Factor modifiers into type checking
     private final MutableList<AntlrParameterModifier> parameterModifiers = Lists.mutable.empty();
 
+    @Nullable
     private ParameterBuilder parameterBuilder;
 
     public AntlrParameter(
@@ -101,6 +105,26 @@ public final class AntlrParameter extends AntlrNamedElement
     public void enterParameterModifier(AntlrParameterModifier parameterModifierState)
     {
         this.parameterModifiers.add(parameterModifierState);
+    }
+
+    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        this.reportNameErrors(compilerErrorHolder);
+        this.reportTypeErrors(compilerErrorHolder);
+    }
+
+    private void reportTypeErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        if (this.typeState != AntlrEnumeration.NOT_FOUND)
+        {
+            return;
+        }
+
+        EnumerationReferenceContext offendingToken = ((EnumerationParameterDeclarationContext) this.getElementContext()).enumerationReference();
+        String message = String.format(
+                "ERR_ENM_PAR: Cannot find enumeration '%s'.",
+                offendingToken.getText());
+        compilerErrorHolder.add(message, offendingToken, this);
     }
 
     public void reportDuplicateParameterName(@Nonnull CompilerErrorHolder compilerErrorHolder)

@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.grammar.KlassBaseListener;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
@@ -192,6 +193,17 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
                 message,
                 offendingParserRuleContext,
                 parserRuleContexts);
+    }
+
+    public void error(
+            @Nonnull String message,
+            @Nonnull ParserRuleContext offendingParserRuleContext,
+            @Nonnull IAntlrElement element)
+    {
+        this.compilerErrorHolder.add(
+                message,
+                offendingParserRuleContext,
+                element);
     }
 
     public <T extends ParserRuleContext> void runCompilerMacro(

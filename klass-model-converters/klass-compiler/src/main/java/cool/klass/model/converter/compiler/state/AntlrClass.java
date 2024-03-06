@@ -95,6 +95,8 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         }
     };
 
+    // TODO: Unified list of dataType and parameterized properties
+
     private final MutableList<AntlrDataTypeProperty<?>>               dataTypePropertyStates   = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrDataTypeProperty<?>> dataTypePropertiesByName =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -296,6 +298,15 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             dataTypePropertyState.reportErrors(compilerErrorHolder);
         }
 
+        for (AntlrParameterizedProperty parameterizedPropertyState : this.parameterizedPropertyStates)
+        {
+            if (duplicateMemberNames.contains(parameterizedPropertyState.getName()))
+            {
+                parameterizedPropertyState.reportDuplicateMemberName(compilerErrorHolder);
+            }
+            parameterizedPropertyState.reportErrors(compilerErrorHolder);
+        }
+
         for (AntlrAssociationEnd associationEndState : this.associationEndStates)
         {
             if (duplicateMemberNames.contains(associationEndState.getName()))
@@ -350,6 +361,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
     {
         MutableList<String> topLevelNames = Lists.mutable.empty();
         this.dataTypePropertyStates.collect(AntlrProperty::getName, topLevelNames);
+        this.parameterizedPropertyStates.collect(AntlrNamedElement::getName, topLevelNames);
         this.associationEndStates.collect(AntlrProperty::getName, topLevelNames);
         return topLevelNames.toImmutable();
     }

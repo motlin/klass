@@ -6,6 +6,7 @@ import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.test.constants.KlassTestConstants;
+import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Ignore;
@@ -529,6 +530,14 @@ public class KlassCompilerTest
                         + "    ^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
+                        + "File: example.klass Line: 14 Char: 5 Error: ERR_DUP_PRP: Duplicate member: 'DuplicateTopLevelElement.duplicateMember'.\n"
+                        + "package dummy\n"
+                        + "class DuplicateTopLevelElement\n"
+                        + "{\n"
+                        + "    duplicateMember(duplicateParameter: String[1..1], duplicateParameter: String[1..1]): DuplicateTopLevelElement[1..1]\n"
+                        + "    ^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
                         + "File: example.klass Line: 20 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelElement'.\n"
                         + "package dummy\n"
                         + "association DuplicateTopLevelElement\n"
@@ -692,8 +701,7 @@ public class KlassCompilerTest
     {
         //<editor-fold desc="source code">
         //language=Klass
-        String sourceCodeText = ""
-                + "package dummy\n"
+        String sourceCodeText = "package dummy\n"
                 + "\n"
                 + "class ClassWithUnresolved\n"
                 + "{\n"
@@ -720,7 +728,7 @@ public class KlassCompilerTest
                 + "\n"
                 + "service ClassWithUnresolved\n"
                 + "{\n"
-                + "    /api/unresolved/{id: Long[1..1]}\n"
+                + "    /api/unresolved/{unresolvedParameterDeclaration: UnresolvedEnumeration[1..1]}\n"
                 + "        GET\n"
                 + "        {\n"
                 + "            multiplicity: one;\n"
@@ -734,7 +742,7 @@ public class KlassCompilerTest
 
         String[] errors = {
                 ""
-                        + "File: example.klass Line: 5 Char: 36 Error: Cannot find enumeration 'UnresolvedEnumeration'\n"
+                        + "File: example.klass Line: 5 Char: 36 Error: ERR_ENM_PRP: Cannot find enumeration 'UnresolvedEnumeration'.\n"
                         + "package dummy\n"
                         + "class ClassWithUnresolved\n"
                         + "{\n"
@@ -742,7 +750,7 @@ public class KlassCompilerTest
                         + "                                   ^^^^^^^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 7 Char: 40 Error: Cannot find class 'UnresolvedClass'\n"
+                        + "File: example.klass Line: 7 Char: 40 Error: ERR_PRP_TYP: Cannot find class 'UnresolvedClass'.\n"
                         + "package dummy\n"
                         + "class ClassWithUnresolved\n"
                         + "{\n"
@@ -750,7 +758,7 @@ public class KlassCompilerTest
                         + "                                       ^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 15 Char: 13 Error: ERR_END_TYP: Cannot find class 'UnresolvedClass'.\n"
+                        + "File: example.klass Line: 15 Char: 13 Error: ERR_PRP_TYP: Cannot find class 'UnresolvedClass'.\n"
                         + "package dummy\n"
                         + "association AssociationWithUnresolved\n"
                         + "{\n"
@@ -758,7 +766,7 @@ public class KlassCompilerTest
                         + "            ^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 16 Char: 15 Error: ERR_END_TYP: Cannot find class 'UnresolvedClass'.\n"
+                        + "File: example.klass Line: 16 Char: 15 Error: ERR_PRP_TYP: Cannot find class 'UnresolvedClass'.\n"
                         + "package dummy\n"
                         + "association AssociationWithUnresolved\n"
                         + "{\n"
@@ -773,12 +781,24 @@ public class KlassCompilerTest
                         + "    unresolvedProjectionMember: \"Header\",\n"
                         + "    ^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
                         + "}\n",
+                "File: example.klass Line: 28 Char: 54 Error: Cannot find enumeration 'UnresolvedEnumeration'\n"
+                        + "package dummy\n"
+                        + "    /api/unresolved/{unresolvedParameterDeclaration: UnresolvedEnumeration[1..1]}\n"
+                        + "                                                     ^^^^^^^^^^^^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 28 Char: 54 Error: ERR_ENM_PAR: Cannot find enumeration 'UnresolvedEnumeration'.\n"
+                        + "package dummy\n"
+                        + "service ClassWithUnresolved\n"
+                        + "{\n"
+                        + "    /api/unresolved/{unresolvedParameterDeclaration: UnresolvedEnumeration[1..1]}\n"
+                        + "                                                     ^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
                 ""
                         + "File: example.klass Line: 32 Char: 65 Error: ERR_VAR_REF: Cannot find parameter 'unresolvedParameter'.\n"
                         + "package dummy\n"
                         + "service ClassWithUnresolved\n"
                         + "{\n"
-                        + "    /api/unresolved/{id: Long[1..1]}\n"
+                        + "    /api/unresolved/{unresolvedParameterDeclaration: UnresolvedEnumeration[1..1]}\n"
                         + "        GET\n"
                         + "        {\n"
                         + "            criteria    : this.unresolvedEnumerationProperty == unresolvedParameter;\n"
@@ -1097,7 +1117,12 @@ public class KlassCompilerTest
         assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(true));
         ImmutableList<String> compilerErrors = this.compilerErrorHolder.getCompilerErrors().collect(CompilerError::toString);
 
-        assertThat(compilerErrors, is(Lists.immutable.with(expectedErrors)));
+    @Nonnull
+    private String wrapSourceCode(String unwrappedSourceCode)
+    {
+        // https://stackoverflow.com/questions/11125459/java-regex-negative-lookahead
+        return StringEscapeUtils.escapeJava(unwrappedSourceCode)
+                .replaceAll("\\\\n(?!$)", "\\\\n\"\n                        + \"");
     }
 
     private void assertNoCompilerErrors(String sourceCodeText)

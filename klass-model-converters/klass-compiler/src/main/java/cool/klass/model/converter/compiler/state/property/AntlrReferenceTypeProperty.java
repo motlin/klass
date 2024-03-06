@@ -6,11 +6,14 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
 import cool.klass.model.meta.domain.KlassImpl;
+import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AntlrReferenceTypeProperty extends AntlrProperty<KlassImpl> implements AntlrOrderByOwner
@@ -20,7 +23,6 @@ public abstract class AntlrReferenceTypeProperty extends AntlrProperty<KlassImpl
     protected final AntlrMultiplicity      multiplicityState;
     @Nonnull
     protected       Optional<AntlrOrderBy> orderByState = Optional.empty();
-    protected       AntlrClass             owningClassState;
 
     protected AntlrReferenceTypeProperty(
             @Nonnull ParserRuleContext elementContext,
@@ -41,24 +43,32 @@ public abstract class AntlrReferenceTypeProperty extends AntlrProperty<KlassImpl
     @Nonnull
     public AntlrClass getType()
     {
-        return this.type;
-    }
-
-    @Nonnull
-    @Override
-    public AntlrClass getOwningClassState()
-    {
-        return this.owningClassState;
-    }
-
-    public void setOwningClassState(@Nonnull AntlrClass owningClassState)
-    {
-        this.owningClassState = Objects.requireNonNull(owningClassState);
+        return Objects.requireNonNull(this.type);
     }
 
     @Override
     public void setOrderByState(@Nonnull Optional<AntlrOrderBy> orderByState)
     {
+        if (this.orderByState.isPresent())
+        {
+            throw new IllegalStateException();
+        }
         this.orderByState = Objects.requireNonNull(orderByState);
     }
+
+    public void reportTypeNotFound(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        if (this.type != AntlrClass.NOT_FOUND)
+        {
+            return;
+        }
+
+        ClassReferenceContext offendingToken = this.getClassType().classReference();
+        String message = String.format(
+                "ERR_PRP_TYP: Cannot find class '%s'.",
+                offendingToken.getText());
+        compilerErrorHolder.add(message, offendingToken, this);
+    }
+
+    protected abstract ClassTypeContext getClassType();
 }

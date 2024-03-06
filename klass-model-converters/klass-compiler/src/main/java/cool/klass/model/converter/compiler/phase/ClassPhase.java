@@ -28,10 +28,8 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
-public class ClassPhase extends AbstractCompilerPhase
+public class ClassPhase extends AbstractDomainModelCompilerPhase
 {
-    private final AntlrDomainModel domainModelState;
-
     @Nullable
     private AntlrClass classState;
 
@@ -41,8 +39,7 @@ public class ClassPhase extends AbstractCompilerPhase
             AntlrDomainModel domainModelState,
             boolean isInference)
     {
-        super(compilerErrorHolder, compilationUnitsByContext, isInference);
-        this.domainModelState = domainModelState;
+        super(compilerErrorHolder, compilationUnitsByContext, isInference, domainModelState);
     }
 
     @Override

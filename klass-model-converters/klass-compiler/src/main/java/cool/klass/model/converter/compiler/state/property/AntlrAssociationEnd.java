@@ -18,7 +18,7 @@ import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -54,7 +54,9 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
     @Nonnull
     private final MutableList<AntlrAssociationEndModifier> associationEndModifierStates = Lists.mutable.empty();
 
-    private AntlrAssociationEnd   opposite;
+    private AntlrClass          owningClassState;
+    private AntlrAssociationEnd opposite;
+
     private AssociationEndBuilder associationEndBuilder;
 
     public AntlrAssociationEnd(
@@ -123,6 +125,32 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
         return this.associationEndModifierStates.anySatisfy(AntlrAssociationEndModifier::isOwned);
     }
 
+    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    {
+        // TODO: Check that there are no duplicate modifiers
+
+        if (this.orderByState != null)
+        {
+            this.orderByState.ifPresent(o -> o.reportErrors(compilerErrorHolder));
+        }
+    }
+
+    @Nonnull
+    @Override
+    public AntlrClass getOwningClassState()
+    {
+        return Objects.requireNonNull(this.owningClassState);
+    }
+
+    public void setOwningClassState(@Nonnull AntlrClass owningClassState)
+    {
+        if (this.owningClassState != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.owningClassState = Objects.requireNonNull(owningClassState);
+    }
+
     public boolean isVersioned()
     {
         // TODO: ❗️ Error if both ends are version
@@ -143,16 +171,6 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
     public AssociationEndBuilder getElementBuilder()
     {
         return Objects.requireNonNull(this.associationEndBuilder);
-    }
-
-    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
-    {
-        // TODO: Check that there are no duplicate modifiers
-
-        if (this.orderByState != null)
-        {
-            this.orderByState.ifPresent(o -> o.reportErrors(compilerErrorHolder));
-        }
     }
 
     public void reportDuplicateVersionProperty(
@@ -182,18 +200,10 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
         this.associationEndModifierStates.add(antlrAssociationEndModifier);
     }
 
-    public void reportTypeNotFound(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    @Override
+    protected ClassTypeContext getClassType()
     {
-        if (this.getType() != AntlrClass.NOT_FOUND)
-        {
-            return;
-        }
-
-        ClassReferenceContext offendingToken = this.getElementContext().classType().classReference();
-        String message = String.format(
-                "ERR_END_TYP: Cannot find class '%s'.",
-                offendingToken.getText());
-        compilerErrorHolder.add(message, offendingToken, this);
+        return this.getElementContext().classType();
     }
 
     @Nonnull

@@ -340,8 +340,8 @@ public class ServicePhase extends AbstractCompilerPhase
 
     private void enterParameterDeclaration(
             @Nonnull ParserRuleContext ctx,
-            AntlrType antlrType,
-            IdentifierContext identifier, MultiplicityContext multiplicityContext)
+            @Nonnull AntlrType antlrType,
+            @Nonnull IdentifierContext identifier, @Nonnull MultiplicityContext multiplicityContext)
     {
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 multiplicityContext,

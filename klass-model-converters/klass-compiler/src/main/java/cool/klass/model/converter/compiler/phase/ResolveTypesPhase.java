@@ -4,12 +4,13 @@ import java.util.LinkedHashMap;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrEnumeration;
+import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.meta.grammar.KlassBaseListener;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassServiceModifierContext;
-import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
@@ -25,23 +26,23 @@ public class ResolveTypesPhase extends KlassBaseListener
 {
     private final ResolveTypeReferencesPhase resolveTypeReferencesPhase;
 
-    private final MutableOrderedMap<EnumerationPropertyContext, EnumerationDeclarationContext> enumerationPropertyTypes   = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
-    private final MutableOrderedMap<ParameterizedPropertyContext, ClassDeclarationContext>     parameterizedPropertyTypes = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
-    private final MutableOrderedMap<AssociationEndContext, ClassDeclarationContext>            associationEndTypes        = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
-    private final MutableOrderedMap<ClassServiceModifierContext, ProjectionDeclarationContext> classServiceModifiers      = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
-    private final MutableOrderedMap<ProjectionDeclarationContext, ClassDeclarationContext>     projectionDeclarations     = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
-    private final MutableOrderedMap<ServiceGroupDeclarationContext, ClassDeclarationContext>   serviceGroupDeclarations   = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
+    private final MutableOrderedMap<EnumerationPropertyContext, AntlrEnumeration>      enumerationPropertyTypes   =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<ParameterizedPropertyContext, AntlrClass>          parameterizedPropertyTypes =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<AssociationEndContext, AntlrClass>                 associationEndTypes        =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<ClassServiceModifierContext, AntlrProjection>      classServiceModifiers      =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<ProjectionDeclarationContext, AntlrClass>          projectionDeclarations     =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<ServiceGroupDeclarationContext, AntlrClass>        serviceGroupDeclarations   =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<ServiceProjectionDispatchContext, AntlrProjection> serviceProjectDispatches   =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    private final MutableOrderedMap<ServiceProjectionDispatchContext, ProjectionDeclarationContext>        serviceProjectDispatches  = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
-    private final MutableOrderedMap<EnumerationParameterDeclarationContext, EnumerationDeclarationContext> enumerationParameterTypes = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
+    private final MutableOrderedMap<EnumerationParameterDeclarationContext, AntlrEnumeration> enumerationParameterTypes =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     public ResolveTypesPhase(ResolveTypeReferencesPhase resolveTypeReferencesPhase)
     {
@@ -51,57 +52,58 @@ public class ResolveTypesPhase extends KlassBaseListener
     @Override
     public void enterClassServiceModifier(@Nonnull ClassServiceModifierContext ctx)
     {
-        ProjectionReferenceContext   reference   = ctx.projectionReference();
-        ProjectionDeclarationContext declaration = this.resolveTypeReferencesPhase.getProjectionByReference(reference);
-        this.classServiceModifiers.put(ctx, declaration);
+        ProjectionReferenceContext reference       = ctx.projectionReference();
+        AntlrProjection            projectionState = this.resolveTypeReferencesPhase.getProjectionByReference(reference);
+        this.classServiceModifiers.put(ctx, projectionState);
     }
 
     @Override
     public void enterAssociationEnd(@Nonnull AssociationEndContext ctx)
     {
-        ClassReferenceContext   reference   = ctx.classType().classReference();
-        ClassDeclarationContext declaration = this.resolveTypeReferencesPhase.getClassByReference(reference);
-        this.associationEndTypes.put(ctx, declaration);
+        ClassReferenceContext reference  = ctx.classType().classReference();
+        AntlrClass            classState = this.resolveTypeReferencesPhase.getClassByReference(reference);
+        this.associationEndTypes.put(ctx, classState);
     }
 
     @Override
     public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
-        ClassReferenceContext   reference   = ctx.classReference();
-        ClassDeclarationContext declaration = this.resolveTypeReferencesPhase.getClassByReference(reference);
-        this.projectionDeclarations.put(ctx, declaration);
+        ClassReferenceContext reference  = ctx.classReference();
+        AntlrClass            classState = this.resolveTypeReferencesPhase.getClassByReference(reference);
+        this.projectionDeclarations.put(ctx, classState);
     }
 
     @Override
     public void enterServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
     {
-        ClassReferenceContext   reference   = ctx.classReference();
-        ClassDeclarationContext declaration = this.resolveTypeReferencesPhase.getClassByReference(reference);
-        this.serviceGroupDeclarations.put(ctx, declaration);
+        ClassReferenceContext reference  = ctx.classReference();
+        AntlrClass            classState = this.resolveTypeReferencesPhase.getClassByReference(reference);
+        this.serviceGroupDeclarations.put(ctx, classState);
     }
 
     @Override
     public void enterServiceProjectionDispatch(@Nonnull ServiceProjectionDispatchContext ctx)
     {
-        ProjectionReferenceContext   reference   = ctx.projectionReference();
-        ProjectionDeclarationContext declaration = this.resolveTypeReferencesPhase.getProjectionByReference(reference);
-        this.serviceProjectDispatches.put(ctx, declaration);
+        ProjectionReferenceContext reference       = ctx.projectionReference();
+        AntlrProjection            projectionState = this.resolveTypeReferencesPhase.getProjectionByReference(reference);
+        this.serviceProjectDispatches.put(ctx, projectionState);
     }
 
     @Override
     public void enterEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
     {
-        EnumerationReferenceContext   reference   = ctx.enumerationReference();
-        EnumerationDeclarationContext declaration = this.resolveTypeReferencesPhase.getEnumerationByReference(reference);
-        this.enumerationPropertyTypes.put(ctx, declaration);
+        EnumerationReferenceContext reference = ctx.enumerationReference();
+        AntlrEnumeration enumerationState = this.resolveTypeReferencesPhase.getEnumerationByReference(
+                reference);
+        this.enumerationPropertyTypes.put(ctx, enumerationState);
     }
 
     @Override
     public void enterParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
     {
-        ClassReferenceContext   reference   = ctx.classType().classReference();
-        ClassDeclarationContext declaration = this.resolveTypeReferencesPhase.getClassByReference(reference);
-        this.parameterizedPropertyTypes.put(ctx, declaration);
+        ClassReferenceContext reference  = ctx.classType().classReference();
+        AntlrClass            classState = this.resolveTypeReferencesPhase.getClassByReference(reference);
+        this.parameterizedPropertyTypes.put(ctx, classState);
     }
 
     @Override
@@ -112,47 +114,47 @@ public class ResolveTypesPhase extends KlassBaseListener
         {
             return;
         }
-        EnumerationDeclarationContext declaration = this.resolveTypeReferencesPhase.getEnumerationByReference(
+        AntlrEnumeration enumerationState = this.resolveTypeReferencesPhase.getEnumerationByReference(
                 enumerationReferenceContext);
-        this.enumerationParameterTypes.put(ctx, declaration);
+        this.enumerationParameterTypes.put(ctx, enumerationState);
     }
 
-    public ClassDeclarationContext getType(AssociationEndContext ctx)
+    public AntlrClass getType(AssociationEndContext ctx)
     {
         return this.associationEndTypes.get(ctx);
     }
 
-    public ClassDeclarationContext getType(ProjectionDeclarationContext ctx)
+    public AntlrClass getType(ProjectionDeclarationContext ctx)
     {
         return this.projectionDeclarations.get(ctx);
     }
 
-    public EnumerationDeclarationContext getType(EnumerationPropertyContext ctx)
+    public AntlrEnumeration getType(EnumerationPropertyContext ctx)
     {
         return this.enumerationPropertyTypes.get(ctx);
     }
 
-    public EnumerationDeclarationContext getType(EnumerationParameterDeclarationContext ctx)
+    public AntlrEnumeration getType(EnumerationParameterDeclarationContext ctx)
     {
         return this.enumerationParameterTypes.get(ctx);
     }
 
-    public ClassDeclarationContext getType(ServiceGroupDeclarationContext ctx)
+    public AntlrClass getType(ServiceGroupDeclarationContext ctx)
     {
         return this.serviceGroupDeclarations.get(ctx);
     }
 
-    public ProjectionDeclarationContext getType(ServiceProjectionDispatchContext ctx)
+    public AntlrProjection getType(ServiceProjectionDispatchContext ctx)
     {
         return this.serviceProjectDispatches.get(ctx);
     }
 
-    public ProjectionDeclarationContext getType(ClassServiceModifierContext ctx)
+    public AntlrProjection getType(ClassServiceModifierContext ctx)
     {
         return this.classServiceModifiers.get(ctx);
     }
 
-    public ClassDeclarationContext getType(ParameterizedPropertyContext ctx)
+    public AntlrClass getType(ParameterizedPropertyContext ctx)
     {
         return this.parameterizedPropertyTypes.get(ctx);
     }

@@ -5,11 +5,14 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.meta.domain.EnumerationImpl;
 import cool.klass.model.meta.domain.property.EnumerationPropertyImpl.EnumerationPropertyBuilder;
 import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -105,5 +108,29 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
     public EnumerationPropertyBuilder getPropertyBuilder()
     {
         return Objects.requireNonNull(this.enumerationPropertyBuilder);
+    }
+
+    @Override
+    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        super.reportErrors(compilerErrorHolder);
+
+        if (this.enumerationState != AntlrEnumeration.NOT_FOUND)
+        {
+            return;
+        }
+
+        EnumerationReferenceContext offendingToken = this.getElementContext().enumerationReference();
+        String message = String.format(
+                "ERR_ENM_PRP: Cannot find enumeration '%s'.",
+                offendingToken.getText());
+        compilerErrorHolder.add(message, offendingToken, this);
+    }
+
+    @Nonnull
+    @Override
+    public EnumerationPropertyContext getElementContext()
+    {
+        return (EnumerationPropertyContext) super.getElementContext();
     }
 }

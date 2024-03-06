@@ -147,23 +147,12 @@ public class AntlrUrl extends AntlrElement
 
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        this.reportParameterErrors(compilerErrorHolder);
         this.reportDuplicateParameterErrors(compilerErrorHolder);
         this.reportDuplicateVerbErrors(compilerErrorHolder);
         this.reportNoVerbs(compilerErrorHolder);
 
-        for (AntlrService serviceState : this.serviceStates)
-        {
-            serviceState.reportErrors(compilerErrorHolder);
-        }
-    }
-
-    private void reportParameterErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        for (AntlrParameter parameterState : this.urlParameters.getParameterStates())
-        {
-            parameterState.reportNameErrors(compilerErrorHolder);
-        }
+        this.urlParameters.getParameterStates().forEachWith(AntlrParameter::reportErrors, compilerErrorHolder);
+        this.serviceStates.forEachWith(AntlrService::reportErrors, compilerErrorHolder);
     }
 
     private void reportDuplicateParameterErrors(CompilerErrorHolder compilerErrorHolder)

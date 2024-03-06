@@ -1,6 +1,5 @@
 package cool.klass.model.converter.compiler.phase;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -9,22 +8,15 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.phase.criteria.ExpressionValueVisitor;
-import cool.klass.model.converter.compiler.state.AntlrAssociation;
-import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByDirection;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByMemberReferencePath;
-import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
-import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.converter.compiler.state.value.AntlrThisMemberReferencePath;
-import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
@@ -35,15 +27,8 @@ import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.MutableMap;
 
-public class OrderByPhase extends AbstractCompilerPhase
+public class OrderByPhase extends AbstractDomainModelCompilerPhase
 {
-    @Nonnull
-    private final AntlrDomainModel domainModelState;
-
-    @Nullable
-    private AntlrAssociation           associationState;
-    @Nullable
-    private AntlrAssociationEnd        associationEndState;
     @Nullable
     private AntlrParameterizedProperty parameterizedPropertyState;
     @Nullable
@@ -51,14 +36,6 @@ public class OrderByPhase extends AbstractCompilerPhase
     @Nullable
     private AntlrUrl                   urlState;
 
-    @Nullable
-    private AntlrClass classState;
-
-    @Nullable
-    private AntlrOrderByOwner orderByOwnerState;
-
-    @Nullable
-    private AntlrClass             thisContext;
     @Nonnull
     private Optional<AntlrOrderBy> orderByState = Optional.empty();
     @Nullable
@@ -70,24 +47,7 @@ public class OrderByPhase extends AbstractCompilerPhase
             @Nonnull AntlrDomainModel domainModelState,
             boolean isInference)
     {
-        super(compilerErrorHolder, compilationUnitsByContext, isInference);
-        this.domainModelState = Objects.requireNonNull(domainModelState);
-    }
-
-    @Override
-    public void enterAssociationEnd(@Nonnull AssociationEndContext ctx)
-    {
-        this.associationEndState = this.associationState.getAssociationEndByContext(ctx);
-        this.thisContext = this.associationEndState.getType();
-        this.orderByOwnerState = this.associationEndState;
-    }
-
-    @Override
-    public void exitAssociationEnd(AssociationEndContext ctx)
-    {
-        this.associationEndState = null;
-        this.thisContext = null;
-        this.orderByOwnerState = null;
+        super(compilerErrorHolder, compilationUnitsByContext, isInference, domainModelState);
     }
 
     @Override
@@ -102,7 +62,7 @@ public class OrderByPhase extends AbstractCompilerPhase
                 ctx,
                 this.currentCompilationUnit,
                 false,
-                this.thisContext,
+                this.thisReference,
                 this.orderByOwnerState));
         this.orderByOwnerState.setOrderByState(this.orderByState);
     }
@@ -145,7 +105,7 @@ public class OrderByPhase extends AbstractCompilerPhase
     {
         ExpressionValueVisitor expressionValueVisitor = new ExpressionValueVisitor(
                 this.currentCompilationUnit,
-                this.thisContext,
+                this.thisReference,
                 this.domainModelState,
                 this.orderByState.get());
 
@@ -161,31 +121,6 @@ public class OrderByPhase extends AbstractCompilerPhase
                 orderByMemberReferencePathContext.orderByDirection(),
                 this.currentCompilationUnit,
                 false);
-    }
-
-    @Override
-    public void enterClassDeclaration(ClassDeclarationContext ctx)
-    {
-        this.classState = this.domainModelState.getClassByContext(ctx);
-    }
-
-    @Override
-    public void exitClassDeclaration(ClassDeclarationContext ctx)
-    {
-        this.classState = null;
-    }
-
-    @Override
-    public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
-    {
-        // TODO: ❗ Move this stuff up
-        this.associationState = this.domainModelState.getAssociationByContext(ctx);
-    }
-
-    @Override
-    public void exitAssociationDeclaration(AssociationDeclarationContext ctx)
-    {
-        this.associationState = null;
     }
 
     @Override
