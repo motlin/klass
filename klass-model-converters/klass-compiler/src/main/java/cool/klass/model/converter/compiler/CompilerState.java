@@ -1,6 +1,5 @@
 package cool.klass.model.converter.compiler;
 
-import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -24,9 +23,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.OrderedMaps;
 
 public class CompilerState
 {
@@ -35,9 +32,6 @@ public class CompilerState
     private final CompilerAnnotationHolder compilerAnnotationHolder = new CompilerAnnotationHolder();
     private final AntlrDomainModel         domainModel              = new AntlrDomainModel();
     private       CompilerWalkState        compilerWalk             = new CompilerWalkState(this.domainModel);
-
-    private final MutableOrderedMap<CompilationUnit, CompilerWalkState> macroCompilerWalks =
-            OrderedMaps.adapt(new LinkedHashMap<>());
 
     public CompilerState(@Nonnull ImmutableList<CompilationUnit> compilationUnits)
     {
@@ -155,21 +149,6 @@ public class CompilerState
     public CompilerWalkState getCompilerWalk()
     {
         return this.compilerWalk;
-    }
-
-    public void withCompilationUnit(CompilationUnit compilationUnit, @Nonnull Runnable runnable)
-    {
-        this.compilerWalk.assertEmpty();
-
-        CompilerWalkState compilerWalk = this.macroCompilerWalks.get(compilationUnit);
-
-        if (compilerWalk != null)
-        {
-            throw new AssertionError();
-        }
-
-        runnable.run();
-        this.compilerWalk.assertEmpty();
     }
 
     public Integer getOrdinal(@Nonnull ParserRuleContext ctx)

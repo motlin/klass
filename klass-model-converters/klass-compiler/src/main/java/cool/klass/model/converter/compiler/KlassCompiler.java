@@ -111,9 +111,9 @@ public class KlassCompiler
         {
             try
             {
-                this.compilerState.withCompilationUnit(
-                        compilationUnit,
-                        () -> parseTreeWalker.walk(compilerPhase, compilationUnit.getParserContext()));
+                this.compilerState.getCompilerWalk().assertEmpty();
+                parseTreeWalker.walk(compilerPhase, compilationUnit.getParserContext());
+                this.compilerState.getCompilerWalk().assertEmpty();
             }
             catch (RuntimeException e)
             {
