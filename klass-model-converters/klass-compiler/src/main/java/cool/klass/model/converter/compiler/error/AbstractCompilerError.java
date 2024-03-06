@@ -28,7 +28,7 @@ public abstract class AbstractCompilerError
     @Nonnull
     private final   ImmutableList<ParserRuleContext> offendingContexts;
     @Nonnull
-    private final   ImmutableList<IAntlrElement>      sourceContexts;
+    private final   ImmutableList<IAntlrElement>     sourceContexts;
 
     protected AbstractCompilerError(
             @Nonnull CompilationUnit compilationUnit,

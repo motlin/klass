@@ -5,7 +5,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.SourceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -15,12 +14,6 @@ public interface IAntlrElement
 {
     @Nonnull
     ParserRuleContext getElementContext();
-
-    @Nonnull
-    default SourceContext getSourceContext()
-    {
-        return new SourceContext(this.getCompilationUnit().get(), this.getElementContext());
-    }
 
     @Nonnull
     Optional<AntlrElement> getMacroElement();
