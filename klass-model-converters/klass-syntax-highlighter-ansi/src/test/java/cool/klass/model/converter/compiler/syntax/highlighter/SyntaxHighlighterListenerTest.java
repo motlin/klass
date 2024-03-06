@@ -12,8 +12,8 @@ import cool.klass.model.converter.compiler.token.categorizing.lexer.LexerBasedTo
 import cool.klass.model.converter.compiler.token.categorizing.parser.ParserBasedTokenCategorizer;
 import cool.klass.model.meta.grammar.KlassLexer;
 import cool.klass.model.meta.grammar.KlassParser;
-import cool.klass.test.constants.KlassTestConstants;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
+import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -49,7 +49,7 @@ public class SyntaxHighlighterListenerTest
     private void testColorScheme(AnsiColorScheme colorScheme)
     {
         Stopwatch           lexerStopwatch = Stopwatch.createStarted();
-        String              sourceCodeText = KlassTestConstants.STACK_OVERFLOW_SOURCE_CODE_TEXT;
+        String              sourceCodeText = FileMatchRule.slurp("stackoverflow.klass", this.getClass());
         String              sourceName     = "example.klass";
         CodePointCharStream charStream     = CharStreams.fromString(sourceCodeText, sourceName);
         KlassLexer          lexer          = new KlassLexer(charStream);
