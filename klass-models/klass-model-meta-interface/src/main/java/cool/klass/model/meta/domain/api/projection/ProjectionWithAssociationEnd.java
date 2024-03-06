@@ -17,4 +17,12 @@ public interface ProjectionWithAssociationEnd extends ProjectionParent, Projecti
     {
         return this.getProperty().getType();
     }
+
+    default boolean isLeaf()
+    {
+        return this.getChildren()
+                .asLazy()
+                .selectInstancesOf(ProjectionWithAssociationEnd.class)
+                .isEmpty();
+    }
 }

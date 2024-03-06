@@ -13,7 +13,6 @@ import cool.klass.model.meta.domain.api.criteria.CriteriaVisitor;
 import cool.klass.model.meta.domain.api.criteria.EdgePointCriteria;
 import cool.klass.model.meta.domain.api.criteria.OperatorCriteria;
 import cool.klass.model.meta.domain.api.criteria.OrCriteria;
-import cool.klass.model.meta.domain.api.operator.Operator;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.value.ExpressionValue;
@@ -22,17 +21,11 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public class BootstrapCriteriaVisitor implements CriteriaVisitor
 {
-    private final Criteria                         criteria;
-    private       klass.model.meta.domain.Criteria bootstrappedCriteria;
-
-    public BootstrapCriteriaVisitor(Criteria criteria)
-    {
-        this.criteria = criteria;
-    }
+    private klass.model.meta.domain.Criteria bootstrappedCriteria;
 
     public static klass.model.meta.domain.Criteria convert(Criteria criteria)
     {
-        BootstrapCriteriaVisitor visitor = new BootstrapCriteriaVisitor(criteria);
+        BootstrapCriteriaVisitor visitor = new BootstrapCriteriaVisitor();
         criteria.visit(visitor);
         return visitor.getResult();
     }
@@ -63,21 +56,22 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
     @Override
     public void visitOperator(@Nonnull OperatorCriteria operatorCriteria)
     {
+        ExpressionValue sourceValue = operatorCriteria.getSourceValue();
+        ExpressionValue targetValue = operatorCriteria.getTargetValue();
+
+        klass.model.meta.domain.ExpressionValue bootstrappedSourceValue =
+                BootstrapExpressionValueVisitor.convert(sourceValue);
+        klass.model.meta.domain.ExpressionValue bootstrappedTargetValue =
+                BootstrapExpressionValueVisitor.convert(targetValue);
+
         klass.model.meta.domain.OperatorCriteria bootstrappedCriteria = new klass.model.meta.domain.OperatorCriteria();
         KlassBootstrapWriter.handleElement(bootstrappedCriteria, operatorCriteria);
 
-        Operator operator = operatorCriteria.getOperator();
-        bootstrappedCriteria.setOperator(operator.getOperatorText());
-
-        ExpressionValue                         sourceValue             = operatorCriteria.getSourceValue();
-        ExpressionValue                         targetValue             = operatorCriteria.getTargetValue();
-        klass.model.meta.domain.ExpressionValue bootstrappedSourceValue = BootstrapExpressionValueVisitor.convert(
-                sourceValue);
-        klass.model.meta.domain.ExpressionValue bootstrappedTargetValue = BootstrapExpressionValueVisitor.convert(
-                targetValue);
-        // bootstrappedSourceValue.insert();
-        // bootstrappedTargetValue.insert();
-
+        bootstrappedCriteria.setOperator(operatorCriteria.getOperator().getOperatorText());
+        long sourceValueId = bootstrappedSourceValue.getId();
+        long targetValueId = bootstrappedTargetValue.getId();
+        bootstrappedCriteria.setSourceExpressionId(sourceValueId);
+        bootstrappedCriteria.setTargetExpressionId(targetValueId);
         bootstrappedCriteria.insert();
         this.bootstrappedCriteria = bootstrappedCriteria;
     }

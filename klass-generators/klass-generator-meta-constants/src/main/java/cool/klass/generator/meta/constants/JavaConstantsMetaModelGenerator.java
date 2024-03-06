@@ -1839,8 +1839,6 @@ public class JavaConstantsMetaModelGenerator
                 + "{\n"
                 + "    INSTANCE;\n"
                 + "\n"
-                + this.getProjectionChildrenConstantsSourceCode(projectionProjectionReference)
-                + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public String getName()\n"
@@ -1862,15 +1860,9 @@ public class JavaConstantsMetaModelGenerator
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
-                + "    public Optional<ProjectionParent> getParent()\n"
+                + "    public Projection getProjection()\n"
                 + "    {\n"
-                + "        return Optional.of(" + projectionParentName + ".INSTANCE);\n"
-                + "    }\n"
-                + "\n"
-                + "    @Override\n"
-                + "    public ImmutableList<? extends ProjectionChild> getChildren()\n"
-                + "    {\n"
-                + "        return Lists.immutable.with(" + projectionProjectionReference.getChildren().collect(ProjectionElement::getName).makeString() + ");\n"
+                + "        return " + this.applicationName + "DomainModel." + projectionProjectionReference.getProjection().getName() + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
@@ -1878,6 +1870,12 @@ public class JavaConstantsMetaModelGenerator
                 + "    public AssociationEnd getProperty()\n"
                 + "    {\n"
                 + "        return " + this.applicationName + "DomainModel." + associationEnd.getOwningClassifier().getName() + "." + associationEnd.getName() + ";\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public Optional<ProjectionParent> getParent()\n"
+                + "    {\n"
+                + "        return Optional.of(" + projectionParentName + ".INSTANCE);\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -1892,8 +1890,6 @@ public class JavaConstantsMetaModelGenerator
                 + "        return \"\"\n"
                 + "                + \"" + this.wrapSourceCode(projectionProjectionReference.getSourceCode()) + "\";\n"
                 + "    }\n"
-                + "\n"
-                + this.getProjectionChildrenSourceCode(projectionProjectionReference, uppercaseName + "_ProjectionProjectionReference")
                 + "}\n";
         // @formatter:on
     }

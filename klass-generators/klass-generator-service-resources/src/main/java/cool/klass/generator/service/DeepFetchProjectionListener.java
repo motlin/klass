@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.projection.BaseProjectionListener;
 import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
+import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
+import cool.klass.model.meta.domain.api.projection.ProjectionWithAssociationEnd;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.stack.MutableStack;
@@ -15,14 +17,44 @@ import org.eclipse.collections.impl.factory.Stacks;
 
 public final class DeepFetchProjectionListener extends BaseProjectionListener
 {
-    private final MutableStack<ProjectionAssociationEnd> associationEndStack = Stacks.mutable.empty();
+    private final MutableStack<ProjectionWithAssociationEnd> associationEndStack = Stacks.mutable.empty();
 
     private final MutableStack<String> stringStack = Stacks.mutable.empty();
     private final MutableList<String>  result      = Lists.mutable.empty();
     private       Klass                owningClassifier;
 
+    // TODO: Figure out how to deep fetch polymorphic projection properties
+
     @Override
     public void enterProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
+    {
+        this.enterProjectionWithAssociationEnd(projectionAssociationEnd);
+    }
+
+    @Override
+    public void exitProjectionAssociationEnd(@Nonnull ProjectionAssociationEnd projectionAssociationEnd)
+    {
+        this.exitProjectionWithAssociationEnd(projectionAssociationEnd);
+    }
+
+    @Override
+    public void enterProjectionProjectionReference(ProjectionProjectionReference projectionProjectionReference)
+    {
+        this.enterProjectionWithAssociationEnd(projectionProjectionReference);
+    }
+
+    @Override
+    public void exitProjectionProjectionReference(ProjectionProjectionReference projectionProjectionReference)
+    {
+        this.exitProjectionWithAssociationEnd(projectionProjectionReference);
+    }
+
+    public ImmutableList<String> getResult()
+    {
+        return this.result.toImmutable();
+    }
+
+    private void enterProjectionWithAssociationEnd(ProjectionWithAssociationEnd projectionWithAssociationEnd)
     {
         if (this.stringStack.isEmpty())
         {
@@ -30,17 +62,17 @@ public final class DeepFetchProjectionListener extends BaseProjectionListener
             {
                 throw new AssertionError();
             }
-            this.owningClassifier = projectionAssociationEnd.getProperty().getOwningClassifier();
+            this.owningClassifier = projectionWithAssociationEnd.getProperty().getOwningClassifier();
         }
-        this.associationEndStack.push(projectionAssociationEnd);
-        this.stringStack.push(projectionAssociationEnd.getProperty().getName());
+        this.associationEndStack.push(projectionWithAssociationEnd);
+        this.stringStack.push(projectionWithAssociationEnd.getProperty().getName());
     }
 
-    @Override
-    public void exitProjectionAssociationEnd(@Nonnull ProjectionAssociationEnd projectionAssociationEnd)
+    private void exitProjectionWithAssociationEnd(ProjectionWithAssociationEnd projectionWithAssociationEnd)
     {
         // TODO: Figure out how to deep fetch polymorphic projection properties
-        if (this.isLeaf(projectionAssociationEnd) && this.associationEndStack.noneSatisfy(ProjectionAssociationEnd::isPolymorphic))
+        if (projectionWithAssociationEnd.isLeaf()
+                && this.associationEndStack.noneSatisfy(ProjectionWithAssociationEnd::isPolymorphic))
         {
             String string = this.stringStack
                     .toList()
@@ -57,19 +89,5 @@ public final class DeepFetchProjectionListener extends BaseProjectionListener
             Objects.requireNonNull(this.owningClassifier);
             this.owningClassifier = null;
         }
-    }
-
-    public boolean isLeaf(ProjectionAssociationEnd projectionAssociationEnd)
-    {
-        return projectionAssociationEnd
-                .getChildren()
-                .asLazy()
-                .selectInstancesOf(ProjectionAssociationEnd.class)
-                .isEmpty();
-    }
-
-    public ImmutableList<String> getResult()
-    {
-        return this.result.toImmutable();
     }
 }
