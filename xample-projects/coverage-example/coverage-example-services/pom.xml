@@ -78,14 +78,21 @@
             <artifactId>jsr305</artifactId>
         </dependency>
 
-        <!--Uncomment these dependencies to enable write services-->
         <!--
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-deserializer-json</artifactId>
             <version>${klass.version}</version>
         </dependency>
+        -->
 
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-jersey</artifactId>
+        </dependency>
+
+        <!--Uncomment these dependencies to enable write services-->
+        <!--
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-reladomo-persistent-writer</artifactId>
@@ -102,7 +109,6 @@
             <artifactId>validation-api</artifactId>
         </dependency>
         -->
-
     </dependencies>
 
     <build>

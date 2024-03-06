@@ -63,7 +63,7 @@ public class PrimitiveVisitor implements PrimitiveTypeVisitor
     @Override
     public void visitLocalDate()
     {
-        String sourceCode = String.format("Timestamp.valueOf(%s.atStartOfDay())", this.parameterName);
+        String sourceCode = String.format("Timestamp.valueOf(%s.get().atStartOfDay())", this.parameterName);
         this.stringBuilder.append(sourceCode);
     }
 

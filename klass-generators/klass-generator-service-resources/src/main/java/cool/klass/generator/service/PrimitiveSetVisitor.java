@@ -64,24 +64,28 @@ public class PrimitiveSetVisitor implements PrimitiveTypeVisitor
     @Override
     public void visitInstant()
     {
-        this.stringBuilder.append(this.parameterName);
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitInstant() not implemented yet");
     }
 
     @Override
     public void visitLocalDate()
     {
-        this.stringBuilder.append(this.parameterName);
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitLocalDate() not implemented yet");
     }
 
     @Override
     public void visitTemporalInstant()
     {
-        this.stringBuilder.append(this.parameterName);
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitTemporalInstant() not implemented yet");
     }
 
     @Override
     public void visitTemporalRange()
     {
-        this.stringBuilder.append(this.parameterName);
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitTemporalRange() not implemented yet");
     }
 }

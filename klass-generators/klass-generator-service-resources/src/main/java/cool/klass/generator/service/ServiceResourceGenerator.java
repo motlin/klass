@@ -29,7 +29,6 @@ import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
 import cool.klass.model.meta.domain.api.service.Verb;
 import cool.klass.model.meta.domain.api.service.url.Url;
-import cool.klass.model.meta.domain.api.visitor.PrimitiveToJavaTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.tuple.primitive.ObjectBooleanPair;
 import org.eclipse.collections.impl.tuple.primitive.PrimitiveTuples;
@@ -101,11 +100,16 @@ public class ServiceResourceGenerator
                 .collectWithIndex(this::getServiceSourceCode)
                 .makeString("\n");
 
+        String jsr310Import = serviceGroup.getUrls().anySatisfy(this::hasDropwizardParamWrapper)
+                ? "import io.dropwizard.jersey.jsr310.*;\n"
+                : "";
+
         // @formatter:off
         //language=JAVA
         return ""
                 + "package " + packageName + ";\n"
                 + "\n"
+                + "import java.sql.Timestamp;\n"
                 + "import java.time.*;\n"
                 + "import java.util.*;\n"
                 + "\n"
@@ -125,6 +129,7 @@ public class ServiceResourceGenerator
                 + "import cool.klass.serializer.json.*;\n"
                 + "import org.eclipse.collections.api.list.*;\n"
                 + "import org.eclipse.collections.impl.factory.primitive.*;\n"
+                + jsr310Import
                 + "import org.eclipse.collections.impl.set.mutable.*;\n"
                 + "import org.eclipse.collections.impl.utility.*;\n"
                 + "\n"
@@ -158,6 +163,24 @@ public class ServiceResourceGenerator
                 + "    }\n"
                 + "}\n";
         // @formatter:on
+    }
+
+    private boolean hasDropwizardParamWrapper(Url url)
+    {
+        return url.getParameters().anySatisfy(this::hasDropwizardParamWrapper);
+    }
+
+    private boolean hasDropwizardParamWrapper(Parameter parameter)
+    {
+        DataType dataType = parameter.getType();
+        if (!(dataType instanceof PrimitiveType))
+        {
+            return false;
+        }
+
+        return ((PrimitiveType) dataType).isTemporal()
+                || dataType == PrimitiveType.LOCAL_DATE
+                || dataType == PrimitiveType.INSTANT;
     }
 
     @Nonnull
@@ -291,6 +314,7 @@ public class ServiceResourceGenerator
         if (uniqueResult)
         {
             // @formatter:off
+            //language=JAVA
             return ""
                     + "        if (result.isEmpty())\n"
                     + "        {\n"
@@ -321,8 +345,8 @@ public class ServiceResourceGenerator
 
         DataType parameterType = parameter.getType();
         String typeString = parameter.getMultiplicity().isToMany()
-                ? "Set<" + this.getType(parameterType) + ">"
-                : this.getType(parameterType);
+                ? "Set<" + this.getParameterType(parameterType) + ">"
+                : this.getParameterType(parameterType);
 
         return String.format(
                 "%s%s@%s(\"%s\") %s %s",
@@ -384,7 +408,7 @@ public class ServiceResourceGenerator
                 versionClause);
     }
 
-    private String getType(DataType dataType)
+    private String getParameterType(DataType dataType)
     {
         if (dataType instanceof Enumeration)
         {
@@ -392,7 +416,7 @@ public class ServiceResourceGenerator
         }
         if (dataType instanceof PrimitiveType)
         {
-            return PrimitiveToJavaTypeVisitor.getJavaType((PrimitiveType) dataType);
+            return PrimitiveToJavaParameterTypeVisitor.getJavaType((PrimitiveType) dataType);
         }
         throw new AssertionError();
     }
@@ -444,6 +468,10 @@ public class ServiceResourceGenerator
     @Nonnull
     private String getComment(@Nonnull Criteria criteria)
     {
-        return "        // " + criteria.getSourceCode().replaceAll("\\s+", " ") + "\n";
+        return "        // " + criteria.getSourceCode()
+                .replaceAll("\\s+", " ")
+                .replaceAll(" &&", "\n        //     &&")
+                .replaceAll(" \\|\\|", "\n        //     ||")
+                + "\n";
     }
 }
