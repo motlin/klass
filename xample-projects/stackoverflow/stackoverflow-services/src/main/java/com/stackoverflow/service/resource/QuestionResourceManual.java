@@ -1,9 +1,11 @@
 package com.stackoverflow.service.resource;
 
 import java.sql.Timestamp;
+import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -42,6 +44,7 @@ import cool.klass.deserializer.json.OperationMode;
 import cool.klass.deserializer.json.RequiredPropertiesValidator;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.reladomo.persistent.writer.IncomingUpdateDataModelValidator;
+import cool.klass.reladomo.persistent.writer.MutationContext;
 import cool.klass.reladomo.persistent.writer.PersistentCreator;
 import cool.klass.reladomo.persistent.writer.PersistentReplacer;
 import com.stackoverflow.Question;
@@ -60,11 +63,15 @@ import org.eclipse.collections.impl.utility.Iterate;
 @Path("/manual")
 public class QuestionResourceManual
 {
+    @Nonnull
     private final DataStore dataStore;
+    @Nonnull
+    private final Clock     clock;
 
-    public QuestionResourceManual(DataStore dataStore)
+    public QuestionResourceManual(@Nonnull DataStore dataStore, @Nonnull Clock clock)
     {
-        this.dataStore = dataStore;
+        this.dataStore = Objects.requireNonNull(dataStore);
+        this.clock = Objects.requireNonNull(clock);
     }
 
     @Nonnull
@@ -167,10 +174,9 @@ public class QuestionResourceManual
             throw new BadRequestException("Incoming data failed validation.", response);
         }
 
-        // TODO: Create a mutation context with now and the principal
-        // TODO: Only increment version number if data actually changed
-
-        PersistentReplacer replacer = new PersistentReplacer(this.dataStore);
+        Instant            transactionInstant = Instant.now(this.clock);
+        MutationContext    mutationContext    = new MutationContext(Optional.empty(), transactionInstant);
+        PersistentReplacer replacer           = new PersistentReplacer(mutationContext, this.dataStore);
         replacer.synchronize(StackOverflowDomainModel.Question, persistentInstance, incomingInstance);
     }
 
@@ -360,7 +366,9 @@ public class QuestionResourceManual
             question.generateAndSetId();
             Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
 
-            PersistentCreator creator = new PersistentCreator(this.dataStore);
+            Instant           transactionInstant = Instant.now(this.clock);
+            MutationContext   mutationContext    = new MutationContext(Optional.empty(), transactionInstant);
+            PersistentCreator creator            = new PersistentCreator(mutationContext, this.dataStore);
             creator.synchronize(projection.getKlass(), question, incomingInstance);
             question.insert();
             return question;

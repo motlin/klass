@@ -37,6 +37,7 @@ public abstract class AbstractKlassApplication<T extends AbstractKlassConfigurat
 
     protected DomainModel domainModel;
     protected DataStore   dataStore;
+    protected Clock       clock;
 
     protected AbstractKlassApplication(String name)
     {
@@ -143,9 +144,13 @@ public abstract class AbstractKlassApplication<T extends AbstractKlassConfigurat
     @Override
     public void run(T configuration, Environment environment) throws Exception
     {
+        this.initializeClock(configuration);
+    }
+
+    public void initializeClock(T configuration)
+    {
         KlassFactory klassFactory = configuration.getKlassFactory();
         ClockFactory clockFactory = klassFactory.getClockFactory();
-        Clock        clock        = clockFactory.createClock();
-        LOGGER.info("Clock type: {}", clock.getClass().getSimpleName());
+        this.clock = clockFactory.createClock();
     }
 }

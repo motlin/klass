@@ -336,7 +336,7 @@ public abstract class PersistentSynchronizer
 
     private void deleteOrTerminate(Klass klass, @Nonnull Object persistentInstance)
     {
-        PersistentDeleter reladomoPersistentDeleter = new PersistentDeleter(this.dataStore);
+        PersistentDeleter reladomoPersistentDeleter = new PersistentDeleter(this.mutationContext, this.dataStore);
         reladomoPersistentDeleter.deleteOrTerminate(klass, persistentInstance);
     }
 
@@ -366,7 +366,7 @@ public abstract class PersistentSynchronizer
                     associationEnd.getType());
             if (!incomingChildInstancesByKey.containsKey(keys))
             {
-                PersistentDeleter reladomoPersistentDeleter = new PersistentDeleter(this.dataStore);
+                PersistentDeleter reladomoPersistentDeleter = new PersistentDeleter(this.mutationContext, this.dataStore);
                 reladomoPersistentDeleter.deleteOrTerminate(
                         associationEnd.getType(),
                         persistentChildInstance);

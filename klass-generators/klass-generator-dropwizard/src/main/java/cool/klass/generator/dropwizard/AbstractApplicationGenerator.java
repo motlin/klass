@@ -104,7 +104,7 @@ public class AbstractApplicationGenerator
     private String getRegisterResourceSourceCode(@Nonnull ServiceGroup serviceGroup)
     {
         return String.format(
-                "        environment.jersey().register(new %sResource(this.dataStore));\n",
+                "        environment.jersey().register(new %sResource(this.dataStore, this.clock));\n",
                 serviceGroup.getKlass().getName());
     }
 

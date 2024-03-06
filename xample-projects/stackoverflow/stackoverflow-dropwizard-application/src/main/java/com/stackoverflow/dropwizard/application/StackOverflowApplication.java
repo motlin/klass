@@ -30,6 +30,6 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
     {
         super.run(configuration, environment);
 
-        environment.jersey().register(new QuestionResourceManual(this.dataStore));
+        environment.jersey().register(new QuestionResourceManual(this.dataStore, this.clock));
     }
 }
