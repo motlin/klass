@@ -1,6 +1,31 @@
 [
   {
     "@type": "klass.model.meta.domain.ServiceProjection",
+    "name": "EnumerationLiteralProjection",
+    "packageName": "klass.model.meta.domain",
+    "klass": {
+      "name": "EnumerationLiteral"
+    },
+    "children": [
+      {
+        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
+        "name": "name",
+        "children": []
+      },
+      {
+        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
+        "name": "prettyName",
+        "children": []
+      },
+      {
+        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
+        "name": "ordinal",
+        "children": []
+      }
+    ]
+  },
+  {
+    "@type": "klass.model.meta.domain.ServiceProjection",
     "name": "EnumerationProjection",
     "packageName": "klass.model.meta.domain",
     "klass": {
@@ -23,25 +48,12 @@
         "children": []
       },
       {
-        "@type": "klass.model.meta.domain.ProjectionReferenceProperty",
+        "@type": "klass.model.meta.domain.ProjectionProjectionReference",
         "name": "enumerationLiterals",
-        "children": [
-          {
-            "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "name",
-            "children": []
-          },
-          {
-            "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "prettyName",
-            "children": []
-          },
-          {
-            "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "ordinal",
-            "children": []
-          }
-        ]
+        "projection": {
+          "name": "EnumerationLiteralProjection"
+        },
+        "children": []
       }
     ]
   },

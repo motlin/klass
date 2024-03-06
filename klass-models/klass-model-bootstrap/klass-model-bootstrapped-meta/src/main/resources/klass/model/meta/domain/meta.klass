@@ -956,17 +956,19 @@ association ServiceOrderByHasMemberReferencePath
     relationship this.thisMemberReferencePathId == ThisMemberReferencePath.id
 }
 
+projection EnumerationLiteralProjection on EnumerationLiteral
+{
+    name                   : "Enumeration literal name",
+    prettyName             : "Enumeration literal pretty name",
+    ordinal                : "Enumeration literal ordinal",
+}
+
 projection EnumerationProjection on Enumeration
 {
     name                   : "Enumeration name",
     packageName            : "Enumeration package name",
     ordinal                : "Enumeration ordinal",
-    enumerationLiterals    :
-    {
-        name                   : "Enumeration literal name",
-        prettyName             : "Enumeration literal pretty name",
-        ordinal                : "Enumeration literal ordinal",
-    },
+    enumerationLiterals: EnumerationLiteralProjection,
 }
 
 projection EnumerationSummaryProjection on Enumeration
