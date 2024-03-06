@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.domain.AbstractElement.ElementBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.misc.Interval;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -74,15 +73,5 @@ public abstract class AntlrElement implements IAntlrElement
     public Optional<CompilationUnit> getCompilationUnit()
     {
         return this.compilationUnit;
-    }
-
-    @Nonnull
-    @Override
-    public String getSourceCode()
-    {
-        Interval interval = new Interval(
-                this.elementContext.getStart().getStartIndex(),
-                this.elementContext.getStop().getStopIndex());
-        return this.elementContext.getStart().getInputStream().getText(interval);
     }
 }

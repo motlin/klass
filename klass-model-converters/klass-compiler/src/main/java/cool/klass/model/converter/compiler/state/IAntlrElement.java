@@ -75,7 +75,4 @@ public interface IAntlrElement
 
     @Nonnull
     Optional<CompilationUnit> getCompilationUnit();
-
-    @Nonnull
-    String getSourceCode();
 }
