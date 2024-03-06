@@ -3,11 +3,15 @@ package cool.klass.dropwizard.configuration;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.sql.DataSource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
@@ -17,8 +21,13 @@ import cool.klass.dropwizard.configuration.sample.data.SampleDataFactoryProvider
 import com.liftwizard.dropwizard.configuration.auth.filter.AuthFilterFactory;
 import com.liftwizard.dropwizard.configuration.auth.filter.AuthFilterFactoryProvider;
 import com.liftwizard.dropwizard.configuration.config.logging.ConfigLoggingFactoryProvider;
+import com.liftwizard.dropwizard.configuration.connectionmanager.ConnectionManagerConfiguration;
+import com.liftwizard.dropwizard.configuration.connectionmanager.ConnectionManagerFactoryProvider;
 import com.liftwizard.dropwizard.configuration.cors.CorsFactory;
 import com.liftwizard.dropwizard.configuration.cors.CorsFactoryProvider;
+import com.liftwizard.dropwizard.configuration.datasource.NamedDataSourceConfiguration;
+import com.liftwizard.dropwizard.configuration.datasource.NamedDataSourceProvider;
+import com.liftwizard.dropwizard.configuration.ddl.executor.DdlExecutorFactory;
 import com.liftwizard.dropwizard.configuration.ddl.executor.DdlExecutorFactoryProvider;
 import com.liftwizard.dropwizard.configuration.enabled.EnabledFactory;
 import com.liftwizard.dropwizard.configuration.h2.H2Factory;
@@ -31,7 +40,10 @@ import com.liftwizard.dropwizard.configuration.reladomo.ReladomoFactory;
 import com.liftwizard.dropwizard.configuration.reladomo.ReladomoFactoryProvider;
 import com.liftwizard.dropwizard.configuration.uuid.UUIDSupplierFactory;
 import com.liftwizard.dropwizard.configuration.uuid.UUIDSupplierFactoryProvider;
+import com.liftwizard.dropwizard.db.NamedDataSourceFactory;
 import io.dropwizard.Configuration;
+import io.dropwizard.db.ManagedDataSource;
+import org.eclipse.collections.api.map.MapIterable;
 
 public class AbstractKlassConfiguration
         extends Configuration
@@ -46,19 +58,27 @@ public class AbstractKlassConfiguration
         ConfigLoggingFactoryProvider,
         DataStoreFactoryProvider,
         DomainModelFactoryProvider,
-        UUIDSupplierFactoryProvider
+        UUIDSupplierFactoryProvider,
+        NamedDataSourceProvider,
+        ConnectionManagerFactoryProvider
 {
     private @Valid @NotNull KlassFactory             klassFactory             = new KlassFactory();
     private @Valid @NotNull JerseyHttpLoggingFactory jerseyHttpLoggingFactory = new JerseyHttpLoggingFactory();
     private @Valid @NotNull H2Factory                h2Factory                = new H2Factory();
     private @Valid @NotNull CorsFactory              corsFactory              = new CorsFactory();
-    private @Valid @NotNull EnabledFactory           ddlExecutorFactory       = new EnabledFactory();
+    private @Valid @NotNull List<DdlExecutorFactory> ddlExecutorFactories     = Arrays.asList();
     private @Valid @NotNull List<AuthFilterFactory>  authFilterFactories      = Arrays.asList();
     private @Valid @NotNull ObjectMapperFactory      objectMapperFactory      = new ObjectMapperFactory();
     private @Valid @NotNull EnabledFactory           bootstrapFactory         = new EnabledFactory();
     private @Valid @NotNull ReladomoFactory          reladomoFactory          = new ReladomoFactory();
     private @Valid @NotNull SampleDataFactory        sampleDataFactory        = new SampleDataFactory();
     private @Valid @NotNull EnabledFactory           configLoggingFactory     = new EnabledFactory();
+
+    @JsonUnwrapped
+    private @Valid @NotNull NamedDataSourceConfiguration   namedDataSourceConfiguration   =
+            new NamedDataSourceConfiguration();
+    private @Valid @NotNull ConnectionManagerConfiguration connectionManagerConfiguration =
+            new ConnectionManagerConfiguration();
 
     @Override
     @JsonIgnore
@@ -67,6 +87,7 @@ public class AbstractKlassConfiguration
         return this.getKlassFactory().getDataStoreFactory();
     }
 
+    @Override
     @JsonIgnore
     public DomainModelFactory getDomainModelFactory()
     {
@@ -132,16 +153,16 @@ public class AbstractKlassConfiguration
     }
 
     @Override
-    @JsonProperty("ddlExecutor")
-    public EnabledFactory getDdlExecutorFactory()
+    @JsonProperty("ddlExecutors")
+    public List<DdlExecutorFactory> getDdlExecutorFactories()
     {
-        return this.ddlExecutorFactory;
+        return this.ddlExecutorFactories;
     }
 
-    @JsonProperty("ddlExecutor")
-    public void setDdlExecutor(EnabledFactory ddlExecutorFactory)
+    @JsonProperty("ddlExecutors")
+    public void setDdlExecutorFactories(List<DdlExecutorFactory> ddlExecutorFactories)
     {
-        this.ddlExecutorFactory = ddlExecutorFactory;
+        this.ddlExecutorFactories = ddlExecutorFactories;
     }
 
     @Override
@@ -208,6 +229,7 @@ public class AbstractKlassConfiguration
         this.sampleDataFactory = sampleDataFactory;
     }
 
+    @Override
     @JsonProperty("configLogging")
     public EnabledFactory getConfigLoggingFactory()
     {
@@ -218,5 +240,45 @@ public class AbstractKlassConfiguration
     public void setConfigLogging(EnabledFactory configLoggingFactory)
     {
         this.configLoggingFactory = configLoggingFactory;
+    }
+
+    @Override
+    public void initialize(@Nonnull MetricRegistry metricRegistry)
+    {
+        this.namedDataSourceConfiguration.initialize(metricRegistry);
+    }
+
+    @Override
+    @JsonProperty("dataSources")
+    public List<NamedDataSourceFactory> getNamedDataSourceFactories()
+    {
+        return this.namedDataSourceConfiguration.getNamedDataSourceFactories();
+    }
+
+    @Override
+    @JsonIgnore
+    public DataSource getDataSourceByName(@Nonnull String name)
+    {
+        return this.namedDataSourceConfiguration.getDataSourceByName(name);
+    }
+
+    @Override
+    @JsonIgnore
+    public MapIterable<String, ManagedDataSource> getDataSourcesByName()
+    {
+        return this.namedDataSourceConfiguration.getDataSourcesByName();
+    }
+
+    @JsonProperty("connectionManagers")
+    @Override
+    public ConnectionManagerConfiguration getConnectionManagerConfiguration()
+    {
+        return this.connectionManagerConfiguration;
+    }
+
+    @JsonProperty("connectionManagers")
+    public void setConnectionManagerConfiguration(ConnectionManagerConfiguration connectionManagerConfiguration)
+    {
+        this.connectionManagerConfiguration = connectionManagerConfiguration;
     }
 }
