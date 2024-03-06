@@ -16,7 +16,7 @@ import org.eclipse.collections.api.list.MutableList;
 
 public class RelationshipPhase extends AbstractCompilerPhase
 {
-    public RelationshipPhase(CompilerState compilerState)
+    public RelationshipPhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }
@@ -73,7 +73,7 @@ public class RelationshipPhase extends AbstractCompilerPhase
 
     private boolean hasPossibleJoinCriteria(
             @Nonnull CriteriaExpressionContext criteriaExpressionContext,
-            AntlrClass targetType)
+            @Nonnull AntlrClass targetType)
     {
         PossibleJoinCriteriaListener listener = new PossibleJoinCriteriaListener(
                 this.compilerState.getDomainModelState(),

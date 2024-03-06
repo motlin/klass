@@ -55,7 +55,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     @Nullable
     private AntlrMultiplicityOwner multiplicityOwnerState;
 
-    public ParameterizedPropertyPhase(CompilerState compilerState)
+    public ParameterizedPropertyPhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }
@@ -106,7 +106,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitParameterizedProperty(ParameterizedPropertyContext ctx)
+    public void exitParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
     {
         this.parameterizedPropertyState = null;
         this.parameterOwnerState        = null;
@@ -152,7 +152,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitPrimitiveParameterDeclaration(PrimitiveParameterDeclarationContext ctx)
+    public void exitPrimitiveParameterDeclaration(@Nonnull PrimitiveParameterDeclarationContext ctx)
     {
         this.parameterState = null;
         this.multiplicityOwnerState = null;
@@ -178,7 +178,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitEnumerationParameterDeclaration(EnumerationParameterDeclarationContext ctx)
+    public void exitEnumerationParameterDeclaration(@Nonnull EnumerationParameterDeclarationContext ctx)
     {
         this.parameterState = null;
         this.multiplicityOwnerState = null;
@@ -187,14 +187,14 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterParameterDeclarationList(ParameterDeclarationListContext ctx)
+    public void enterParameterDeclarationList(@Nonnull ParameterDeclarationListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".enterParameterDeclarationList() not implemented yet");
     }
 
     @Override
-    public void exitParameterDeclarationList(ParameterDeclarationListContext ctx)
+    public void exitParameterDeclarationList(@Nonnull ParameterDeclarationListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitParameterDeclarationList() not implemented yet");
@@ -241,13 +241,14 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
         this.parameterOwnerState.enterParameterDeclaration(this.parameterState);
     }
 
+    @Nullable
     protected AntlrClassTypeOwner getAntlrClassTypeOwner()
     {
         return this.parameterizedPropertyState;
     }
 
     @Override
-    public void enterClassType(ClassTypeContext ctx)
+    public void enterClassType(@Nonnull ClassTypeContext ctx)
     {
         super.enterClassType(ctx);
 
@@ -274,7 +275,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitClassType(ClassTypeContext ctx)
+    public void exitClassType(@Nonnull ClassTypeContext ctx)
     {
         this.classTypeState = null;
         this.multiplicityOwnerState = null;
@@ -283,7 +284,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterClassReference(ClassReferenceContext ctx)
+    public void enterClassReference(@Nonnull ClassReferenceContext ctx)
     {
         super.enterClassReference(ctx);
 
@@ -300,7 +301,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterMultiplicity(MultiplicityContext ctx)
+    public void enterMultiplicity(@Nonnull MultiplicityContext ctx)
     {
         super.enterMultiplicity(ctx);
 

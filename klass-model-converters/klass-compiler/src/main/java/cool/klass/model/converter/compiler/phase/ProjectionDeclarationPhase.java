@@ -17,7 +17,7 @@ public class ProjectionDeclarationPhase extends AbstractCompilerPhase
     @Nullable
     private AntlrProjection projectionState;
 
-    public ProjectionDeclarationPhase(CompilerState compilerState)
+    public ProjectionDeclarationPhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }
@@ -42,7 +42,7 @@ public class ProjectionDeclarationPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitProjectionDeclaration(ProjectionDeclarationContext ctx)
+    public void exitProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
         this.compilerState.getDomainModelState().exitProjectionDeclaration(this.projectionState);
 

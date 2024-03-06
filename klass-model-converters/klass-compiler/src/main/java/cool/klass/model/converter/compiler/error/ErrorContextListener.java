@@ -36,7 +36,7 @@ public class ErrorContextListener extends AbstractErrorListener
     }
 
     @Override
-    public void exitCompilationUnit(CompilationUnitContext ctx)
+    public void exitCompilationUnit(@Nonnull CompilationUnitContext ctx)
     {
         // Deliberately empty
     }
@@ -117,7 +117,7 @@ public class ErrorContextListener extends AbstractErrorListener
     }
 
     @Override
-    public void exitProjectionAssociationEnd(ProjectionAssociationEndContext ctx)
+    public void exitProjectionAssociationEnd(@Nonnull ProjectionAssociationEndContext ctx)
     {
         this.numProjectionAssociationEnds--;
     }
@@ -141,7 +141,7 @@ public class ErrorContextListener extends AbstractErrorListener
     }
 
     @Override
-    public void exitUrlDeclaration(UrlDeclarationContext ctx)
+    public void exitUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
     {
         // Deliberately empty
     }

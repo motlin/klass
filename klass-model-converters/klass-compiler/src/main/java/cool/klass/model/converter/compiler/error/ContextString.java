@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 public class ContextString extends AbstractContextString
 {
-    public ContextString(int line, String string)
+    public ContextString(int line, @Nonnull String string)
     {
         super(line, string);
     }

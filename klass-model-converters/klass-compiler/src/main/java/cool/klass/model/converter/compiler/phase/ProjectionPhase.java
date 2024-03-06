@@ -31,7 +31,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
 {
     private final MutableStack<AntlrProjectionParent> elementStack = Stacks.mutable.empty();
 
-    public ProjectionPhase(CompilerState compilerState)
+    public ProjectionPhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }
@@ -47,7 +47,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitProjectionDeclaration(ProjectionDeclarationContext ctx)
+    public void exitProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
         this.elementStack.pop();
         super.exitProjectionDeclaration(ctx);
@@ -120,7 +120,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitProjectionAssociationEnd(ProjectionAssociationEndContext ctx)
+    public void exitProjectionAssociationEnd(@Nonnull ProjectionAssociationEndContext ctx)
     {
         this.elementStack.pop();
         super.exitProjectionAssociationEnd(ctx);
@@ -161,20 +161,20 @@ public class ProjectionPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitProjectionProjectionReference(ProjectionProjectionReferenceContext ctx)
+    public void exitProjectionProjectionReference(@Nonnull ProjectionProjectionReferenceContext ctx)
     {
         super.exitProjectionProjectionReference(ctx);
     }
 
     @Override
-    public void enterProjectionParameterizedProperty(ProjectionParameterizedPropertyContext ctx)
+    public void enterProjectionParameterizedProperty(@Nonnull ProjectionParameterizedPropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".enterProjectionParameterizedProperty() not implemented yet");
     }
 
     @Override
-    public void exitProjectionParameterizedProperty(ProjectionParameterizedPropertyContext ctx)
+    public void exitProjectionParameterizedProperty(@Nonnull ProjectionParameterizedPropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitProjectionParameterizedProperty() not implemented yet");

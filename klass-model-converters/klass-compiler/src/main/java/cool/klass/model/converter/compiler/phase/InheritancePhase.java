@@ -16,7 +16,7 @@ import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 
 public class InheritancePhase extends AbstractCompilerPhase
 {
-    public InheritancePhase(CompilerState compilerState)
+    public InheritancePhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }

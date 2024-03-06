@@ -27,7 +27,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
     @Nullable
     private AntlrClass      classState;
 
-    public ClassifierPhase(CompilerState compilerState)
+    public ClassifierPhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }
@@ -50,7 +50,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    public void exitInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
     {
         this.compilerState.getDomainModelState().exitInterfaceDeclaration(this.interfaceState);
         this.interfaceState  = null;
@@ -78,7 +78,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitClassDeclaration(ClassDeclarationContext ctx)
+    public void exitClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
         this.compilerState.getDomainModelState().exitClassDeclaration(this.classState);
         this.classState      = null;
@@ -87,7 +87,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterAbstractDeclaration(AbstractDeclarationContext ctx)
+    public void enterAbstractDeclaration(@Nonnull AbstractDeclarationContext ctx)
     {
         super.enterAbstractDeclaration(ctx);
 

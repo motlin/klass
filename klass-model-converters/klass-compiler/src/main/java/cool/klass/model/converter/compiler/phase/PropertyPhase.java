@@ -53,7 +53,7 @@ public class PropertyPhase extends AbstractCompilerPhase
     @Nullable
     private AntlrClassifierTypeOwner classifierTypeOwnerState;
 
-    public PropertyPhase(CompilerState compilerState)
+    public PropertyPhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }
@@ -92,7 +92,7 @@ public class PropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitPrimitiveProperty(PrimitivePropertyContext ctx)
+    public void exitPrimitiveProperty(@Nonnull PrimitivePropertyContext ctx)
     {
         Objects.requireNonNull(this.dataTypePropertyState);
         this.dataTypePropertyState = null;
@@ -134,7 +134,7 @@ public class PropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitEnumerationProperty(EnumerationPropertyContext ctx)
+    public void exitEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
     {
         super.exitEnumerationProperty(ctx);
         Objects.requireNonNull(this.dataTypePropertyState);
@@ -261,7 +261,7 @@ public class PropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitAssociationEndSignature(AssociationEndSignatureContext ctx)
+    public void exitAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
     {
         Objects.requireNonNull(this.associationEndSignatureState);
         this.associationEndSignatureState = null;
@@ -298,7 +298,7 @@ public class PropertyPhase extends AbstractCompilerPhase
 
 
     @Override
-    public void enterClassifierType(ClassifierTypeContext ctx)
+    public void enterClassifierType(@Nonnull ClassifierTypeContext ctx)
     {
         super.enterClassifierType(ctx);
 
@@ -320,7 +320,7 @@ public class PropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitClassifierType(ClassifierTypeContext ctx)
+    public void exitClassifierType(@Nonnull ClassifierTypeContext ctx)
     {
         this.classifierTypeState = null;
 
@@ -328,7 +328,7 @@ public class PropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterClassifierReference(ClassifierReferenceContext ctx)
+    public void enterClassifierReference(@Nonnull ClassifierReferenceContext ctx)
     {
         super.enterClassifierReference(ctx);
 
@@ -345,7 +345,7 @@ public class PropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterMultiplicity(MultiplicityContext ctx)
+    public void enterMultiplicity(@Nonnull MultiplicityContext ctx)
     {
         super.enterMultiplicity(ctx);
 

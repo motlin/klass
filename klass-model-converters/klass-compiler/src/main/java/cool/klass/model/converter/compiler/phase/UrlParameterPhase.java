@@ -36,7 +36,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
     @Nullable
     private AntlrMultiplicityOwner multiplicityOwnerState;
 
-    public UrlParameterPhase(CompilerState compilerState)
+    public UrlParameterPhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }
@@ -71,7 +71,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterQueryParameterList(QueryParameterListContext ctx)
+    public void enterQueryParameterList(@Nonnull QueryParameterListContext ctx)
     {
         super.enterQueryParameterList(ctx);
         this.inQueryParameterList = true;
@@ -95,7 +95,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitPrimitiveParameterDeclaration(PrimitiveParameterDeclarationContext ctx)
+    public void exitPrimitiveParameterDeclaration(@Nonnull PrimitiveParameterDeclarationContext ctx)
     {
         this.parameterState = null;
         this.multiplicityOwnerState = null;
@@ -121,7 +121,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitEnumerationParameterDeclaration(EnumerationParameterDeclarationContext ctx)
+    public void exitEnumerationParameterDeclaration(@Nonnull EnumerationParameterDeclarationContext ctx)
     {
         this.parameterState = null;
         this.multiplicityOwnerState = null;
@@ -181,7 +181,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterMultiplicity(MultiplicityContext ctx)
+    public void enterMultiplicity(@Nonnull MultiplicityContext ctx)
     {
         super.enterMultiplicity(ctx);
 

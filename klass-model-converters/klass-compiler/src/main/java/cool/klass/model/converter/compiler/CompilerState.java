@@ -211,7 +211,7 @@ public class CompilerState
     public class ListenerView extends KlassBaseListener
     {
         @Override
-        public void enterCompilationUnit(CompilationUnitContext ctx)
+        public void enterCompilationUnit(@Nonnull CompilationUnitContext ctx)
         {
             super.enterCompilationUnit(ctx);
 
@@ -236,7 +236,7 @@ public class CompilerState
         }
 
         @Override
-        public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)
+        public void enterTopLevelDeclaration(@Nonnull TopLevelDeclarationContext ctx)
         {
             super.enterTopLevelDeclaration(ctx);
 
@@ -244,7 +244,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitTopLevelDeclaration(TopLevelDeclarationContext ctx)
+        public void exitTopLevelDeclaration(@Nonnull TopLevelDeclarationContext ctx)
         {
             super.exitTopLevelDeclaration(ctx);
 
@@ -252,7 +252,7 @@ public class CompilerState
         }
 
         @Override
-        public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
+        public void enterInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
         {
             super.enterInterfaceDeclaration(ctx);
 
@@ -260,7 +260,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitInterfaceDeclaration(InterfaceDeclarationContext ctx)
+        public void exitInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
         {
             super.exitInterfaceDeclaration(ctx);
 
@@ -268,7 +268,7 @@ public class CompilerState
         }
 
         @Override
-        public void enterClassDeclaration(ClassDeclarationContext ctx)
+        public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
         {
             super.enterClassDeclaration(ctx);
 
@@ -276,7 +276,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitClassDeclaration(ClassDeclarationContext ctx)
+        public void exitClassDeclaration(@Nonnull ClassDeclarationContext ctx)
         {
             super.exitClassDeclaration(ctx);
 
@@ -284,7 +284,7 @@ public class CompilerState
         }
 
         @Override
-        public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
+        public void enterEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
         {
             super.enterEnumerationDeclaration(ctx);
 
@@ -292,7 +292,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitEnumerationDeclaration(EnumerationDeclarationContext ctx)
+        public void exitEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
         {
             super.exitEnumerationDeclaration(ctx);
 
@@ -300,7 +300,7 @@ public class CompilerState
         }
 
         @Override
-        public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
+        public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
         {
             super.enterAssociationDeclaration(ctx);
 
@@ -308,7 +308,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitAssociationDeclaration(AssociationDeclarationContext ctx)
+        public void exitAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
         {
             super.exitAssociationDeclaration(ctx);
 
@@ -324,7 +324,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitAssociationEnd(AssociationEndContext ctx)
+        public void exitAssociationEnd(@Nonnull AssociationEndContext ctx)
         {
             super.exitAssociationEnd(ctx);
 
@@ -332,7 +332,7 @@ public class CompilerState
         }
 
         @Override
-        public void enterAssociationEndSignature(AssociationEndSignatureContext ctx)
+        public void enterAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
         {
             super.enterAssociationEndSignature(ctx);
 
@@ -340,7 +340,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitAssociationEndSignature(AssociationEndSignatureContext ctx)
+        public void exitAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
         {
             super.exitAssociationEndSignature(ctx);
 
@@ -348,7 +348,7 @@ public class CompilerState
         }
 
         @Override
-        public void enterRelationship(RelationshipContext ctx)
+        public void enterRelationship(@Nonnull RelationshipContext ctx)
         {
             super.enterRelationship(ctx);
 
@@ -356,7 +356,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitRelationship(RelationshipContext ctx)
+        public void exitRelationship(@Nonnull RelationshipContext ctx)
         {
             super.exitRelationship(ctx);
 
@@ -364,7 +364,7 @@ public class CompilerState
         }
 
         @Override
-        public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
+        public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
         {
             super.enterProjectionDeclaration(ctx);
 
@@ -372,7 +372,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitProjectionDeclaration(ProjectionDeclarationContext ctx)
+        public void exitProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
         {
             super.exitProjectionDeclaration(ctx);
 
@@ -380,7 +380,7 @@ public class CompilerState
         }
 
         @Override
-        public void enterServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
+        public void enterServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
         {
             super.enterServiceGroupDeclaration(ctx);
 
@@ -388,7 +388,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
+        public void exitServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
         {
             super.exitServiceGroupDeclaration(ctx);
 
@@ -396,7 +396,7 @@ public class CompilerState
         }
 
         @Override
-        public void enterUrlDeclaration(UrlDeclarationContext ctx)
+        public void enterUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
         {
             super.enterUrlDeclaration(ctx);
 
@@ -404,7 +404,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitUrlDeclaration(UrlDeclarationContext ctx)
+        public void exitUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
         {
             super.exitUrlDeclaration(ctx);
 
@@ -412,7 +412,7 @@ public class CompilerState
         }
 
         @Override
-        public void enterServiceDeclaration(ServiceDeclarationContext ctx)
+        public void enterServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
         {
             super.enterServiceDeclaration(ctx);
 
@@ -420,7 +420,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitServiceDeclaration(ServiceDeclarationContext ctx)
+        public void exitServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
         {
             super.exitServiceDeclaration(ctx);
 
@@ -428,7 +428,7 @@ public class CompilerState
         }
 
         @Override
-        public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
+        public void enterParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
         {
             super.enterParameterizedProperty(ctx);
 
@@ -436,7 +436,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitParameterizedProperty(ParameterizedPropertyContext ctx)
+        public void exitParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
         {
             super.exitParameterizedProperty(ctx);
 
@@ -444,7 +444,7 @@ public class CompilerState
         }
 
         @Override
-        public void enterClassModifier(ClassModifierContext ctx)
+        public void enterClassModifier(@Nonnull ClassModifierContext ctx)
         {
             super.enterClassModifier(ctx);
 
@@ -452,7 +452,7 @@ public class CompilerState
         }
 
         @Override
-        public void exitClassModifier(ClassModifierContext ctx)
+        public void exitClassModifier(@Nonnull ClassModifierContext ctx)
         {
             super.exitClassModifier(ctx);
 

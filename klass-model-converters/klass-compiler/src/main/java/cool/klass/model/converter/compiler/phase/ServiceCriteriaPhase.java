@@ -14,7 +14,7 @@ import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaKeywordContext;
 
 public class ServiceCriteriaPhase extends AbstractCompilerPhase
 {
-    public ServiceCriteriaPhase(CompilerState compilerState)
+    public ServiceCriteriaPhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }

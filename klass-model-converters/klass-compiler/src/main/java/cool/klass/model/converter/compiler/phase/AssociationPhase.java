@@ -35,7 +35,7 @@ public class AssociationPhase extends AbstractCompilerPhase
     @Nullable
     private AntlrClassTypeOwner classTypeOwnerState;
 
-    public AssociationPhase(CompilerState compilerState)
+    public AssociationPhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }
@@ -62,7 +62,7 @@ public class AssociationPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitAssociationDeclaration(AssociationDeclarationContext ctx)
+    public void exitAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
         this.associationState.exitAssociationDeclaration();
         this.compilerState.getDomainModelState().exitAssociationDeclaration(this.associationState);
@@ -99,7 +99,7 @@ public class AssociationPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitAssociationEnd(AssociationEndContext ctx)
+    public void exitAssociationEnd(@Nonnull AssociationEndContext ctx)
     {
         Objects.requireNonNull(this.associationEndState);
         this.associationEndState = null;
@@ -124,7 +124,7 @@ public class AssociationPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterClassType(ClassTypeContext ctx)
+    public void enterClassType(@Nonnull ClassTypeContext ctx)
     {
         super.enterClassType(ctx);
 
@@ -146,7 +146,7 @@ public class AssociationPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitClassType(ClassTypeContext ctx)
+    public void exitClassType(@Nonnull ClassTypeContext ctx)
     {
         this.classTypeState = null;
 
@@ -154,7 +154,7 @@ public class AssociationPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterClassReference(ClassReferenceContext ctx)
+    public void enterClassReference(@Nonnull ClassReferenceContext ctx)
     {
         super.enterClassReference(ctx);
 
@@ -171,7 +171,7 @@ public class AssociationPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterMultiplicity(MultiplicityContext ctx)
+    public void enterMultiplicity(@Nonnull MultiplicityContext ctx)
     {
         super.enterMultiplicity(ctx);
 

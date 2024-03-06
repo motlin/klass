@@ -16,7 +16,7 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public class VersionAssociationInferencePhase extends AbstractCompilerPhase
 {
-    public VersionAssociationInferencePhase(CompilerState compilerState)
+    public VersionAssociationInferencePhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }

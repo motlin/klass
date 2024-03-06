@@ -35,7 +35,7 @@ public class ServicePhase extends AbstractCompilerPhase
     @Nullable
     private AntlrService      serviceState;
 
-    public ServicePhase(CompilerState compilerState)
+    public ServicePhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }
@@ -60,7 +60,7 @@ public class ServicePhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
+    public void exitServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
     {
         this.compilerState.getDomainModelState().exitServiceGroupDeclaration(this.serviceGroupState);
         this.serviceGroupState = null;

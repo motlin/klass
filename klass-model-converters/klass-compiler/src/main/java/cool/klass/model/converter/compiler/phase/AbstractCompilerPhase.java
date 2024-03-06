@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
@@ -24,11 +26,12 @@ import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 
 public abstract class AbstractCompilerPhase extends KlassBaseListener
 {
+    @Nonnull
     protected final CompilerState compilerState;
 
-    protected AbstractCompilerPhase(CompilerState compilerState)
+    protected AbstractCompilerPhase(@Nonnull CompilerState compilerState)
     {
-        this.compilerState = compilerState;
+        this.compilerState = Objects.requireNonNull(compilerState);
     }
 
     @Nonnull
@@ -39,7 +42,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterCompilationUnit(CompilationUnitContext ctx)
+    public void enterCompilationUnit(@Nonnull CompilationUnitContext ctx)
     {
         super.enterCompilationUnit(ctx);
         this.compilerState.asListener().enterCompilationUnit(ctx);
@@ -47,7 +50,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitCompilationUnit(CompilationUnitContext ctx)
+    public void exitCompilationUnit(@Nonnull CompilationUnitContext ctx)
     {
         this.compilerState.asListener().exitCompilationUnit(ctx);
         super.exitCompilationUnit(ctx);
@@ -63,7 +66,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)
+    public void enterTopLevelDeclaration(@Nonnull TopLevelDeclarationContext ctx)
     {
         super.enterTopLevelDeclaration(ctx);
         this.compilerState.asListener().enterTopLevelDeclaration(ctx);
@@ -71,14 +74,14 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitTopLevelDeclaration(TopLevelDeclarationContext ctx)
+    public void exitTopLevelDeclaration(@Nonnull TopLevelDeclarationContext ctx)
     {
         this.compilerState.asListener().exitTopLevelDeclaration(ctx);
         super.exitTopLevelDeclaration(ctx);
     }
 
     @Override
-    public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    public void enterInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
     {
         super.enterInterfaceDeclaration(ctx);
         this.compilerState.asListener().enterInterfaceDeclaration(ctx);
@@ -86,7 +89,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    public void exitInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
     {
         this.compilerState.asListener().exitInterfaceDeclaration(ctx);
         super.exitInterfaceDeclaration(ctx);
@@ -94,7 +97,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterClassDeclaration(ClassDeclarationContext ctx)
+    public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
         super.enterClassDeclaration(ctx);
         this.compilerState.asListener().enterClassDeclaration(ctx);
@@ -102,7 +105,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitClassDeclaration(ClassDeclarationContext ctx)
+    public void exitClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
         this.compilerState.asListener().exitClassDeclaration(ctx);
         super.exitClassDeclaration(ctx);
@@ -110,7 +113,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
+    public void enterEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
     {
         super.enterEnumerationDeclaration(ctx);
         this.compilerState.asListener().enterEnumerationDeclaration(ctx);
@@ -118,7 +121,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitEnumerationDeclaration(EnumerationDeclarationContext ctx)
+    public void exitEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
     {
         this.compilerState.asListener().exitEnumerationDeclaration(ctx);
         super.exitEnumerationDeclaration(ctx);
@@ -126,7 +129,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
+    public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
         super.enterAssociationDeclaration(ctx);
         this.compilerState.asListener().enterAssociationDeclaration(ctx);
@@ -134,7 +137,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitAssociationDeclaration(AssociationDeclarationContext ctx)
+    public void exitAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
         this.compilerState.asListener().exitAssociationDeclaration(ctx);
         super.exitAssociationDeclaration(ctx);
@@ -150,7 +153,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitAssociationEnd(AssociationEndContext ctx)
+    public void exitAssociationEnd(@Nonnull AssociationEndContext ctx)
     {
         this.compilerState.asListener().exitAssociationEnd(ctx);
         super.exitAssociationEnd(ctx);
@@ -158,7 +161,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterAssociationEndSignature(AssociationEndSignatureContext ctx)
+    public void enterAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
     {
         super.enterAssociationEndSignature(ctx);
         this.compilerState.asListener().enterAssociationEndSignature(ctx);
@@ -166,7 +169,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitAssociationEndSignature(AssociationEndSignatureContext ctx)
+    public void exitAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
     {
         this.compilerState.asListener().exitAssociationEndSignature(ctx);
         super.exitAssociationEndSignature(ctx);
@@ -174,7 +177,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterRelationship(RelationshipContext ctx)
+    public void enterRelationship(@Nonnull RelationshipContext ctx)
     {
         super.enterRelationship(ctx);
         this.compilerState.asListener().enterRelationship(ctx);
@@ -182,7 +185,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitRelationship(RelationshipContext ctx)
+    public void exitRelationship(@Nonnull RelationshipContext ctx)
     {
         this.compilerState.asListener().exitRelationship(ctx);
         super.exitRelationship(ctx);
@@ -190,7 +193,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
+    public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
         super.enterProjectionDeclaration(ctx);
         this.compilerState.asListener().enterProjectionDeclaration(ctx);
@@ -198,7 +201,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitProjectionDeclaration(ProjectionDeclarationContext ctx)
+    public void exitProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
         this.compilerState.asListener().exitProjectionDeclaration(ctx);
         super.exitProjectionDeclaration(ctx);
@@ -206,7 +209,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
+    public void enterServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
     {
         super.enterServiceGroupDeclaration(ctx);
         this.compilerState.asListener().enterServiceGroupDeclaration(ctx);
@@ -214,7 +217,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
+    public void exitServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
     {
         this.compilerState.asListener().exitServiceGroupDeclaration(ctx);
         super.exitServiceGroupDeclaration(ctx);
@@ -222,7 +225,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterUrlDeclaration(UrlDeclarationContext ctx)
+    public void enterUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
     {
         super.enterUrlDeclaration(ctx);
         this.compilerState.asListener().enterUrlDeclaration(ctx);
@@ -230,7 +233,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitUrlDeclaration(UrlDeclarationContext ctx)
+    public void exitUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
     {
         this.compilerState.asListener().exitUrlDeclaration(ctx);
         super.exitUrlDeclaration(ctx);
@@ -238,7 +241,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterServiceDeclaration(ServiceDeclarationContext ctx)
+    public void enterServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
     {
         super.enterServiceDeclaration(ctx);
         this.compilerState.asListener().enterServiceDeclaration(ctx);
@@ -246,7 +249,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitServiceDeclaration(ServiceDeclarationContext ctx)
+    public void exitServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
     {
         this.compilerState.asListener().exitServiceDeclaration(ctx);
         super.exitServiceDeclaration(ctx);
@@ -254,7 +257,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
+    public void enterParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
     {
         super.enterParameterizedProperty(ctx);
         this.compilerState.asListener().enterParameterizedProperty(ctx);
@@ -262,7 +265,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitParameterizedProperty(ParameterizedPropertyContext ctx)
+    public void exitParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
     {
         this.compilerState.asListener().exitParameterizedProperty(ctx);
         super.exitParameterizedProperty(ctx);
@@ -270,7 +273,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterClassModifier(ClassModifierContext ctx)
+    public void enterClassModifier(@Nonnull ClassModifierContext ctx)
     {
         super.enterClassModifier(ctx);
         this.compilerState.asListener().enterClassModifier(ctx);
@@ -278,7 +281,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitClassModifier(ClassModifierContext ctx)
+    public void exitClassModifier(@Nonnull ClassModifierContext ctx)
     {
         this.compilerState.asListener().exitClassModifier(ctx);
         super.exitClassModifier(ctx);

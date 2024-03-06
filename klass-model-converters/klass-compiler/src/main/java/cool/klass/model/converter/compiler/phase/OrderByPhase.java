@@ -20,7 +20,7 @@ public class OrderByPhase extends AbstractCompilerPhase
     @Nonnull
     private Optional<AntlrOrderBy> orderByState = Optional.empty();
 
-    public OrderByPhase(CompilerState compilerState)
+    public OrderByPhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }
@@ -45,7 +45,7 @@ public class OrderByPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitOrderByDeclaration(OrderByDeclarationContext ctx)
+    public void exitOrderByDeclaration(@Nonnull OrderByDeclarationContext ctx)
     {
         this.orderByState = null;
         super.exitOrderByDeclaration(ctx);

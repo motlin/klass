@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 public class UnderlineContextString extends AbstractContextString
 {
-    public UnderlineContextString(int line, String string)
+    public UnderlineContextString(int line, @Nonnull String string)
     {
         super(line, string);
     }

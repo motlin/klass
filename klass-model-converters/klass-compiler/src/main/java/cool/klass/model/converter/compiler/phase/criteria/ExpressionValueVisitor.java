@@ -80,8 +80,8 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     }
 
     private AbstractAntlrLiteralValue getAntlrLiteralValue(
-            LiteralContext literalCtx,
-            IAntlrElement expressionValueOwner)
+            @Nonnull LiteralContext literalCtx,
+            @Nonnull IAntlrElement expressionValueOwner)
     {
         // TODO: Recurse here using a different owner?
         KlassVisitor<AbstractAntlrLiteralValue> visitor = new LiteralValueVisitor(

@@ -16,7 +16,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 // TODO: Only put audit properties onto version types
 public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
 {
-    public ClassAuditPropertyInferencePhase(CompilerState compilerState)
+    public ClassAuditPropertyInferencePhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }

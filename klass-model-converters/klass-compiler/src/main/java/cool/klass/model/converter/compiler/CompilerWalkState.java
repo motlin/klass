@@ -705,7 +705,7 @@ public class CompilerWalkState
         }
 
         @Override
-        public void enterParameterDeclaration(ParameterDeclarationContext ctx)
+        public void enterParameterDeclaration(@Nonnull ParameterDeclarationContext ctx)
         {
             super.enterParameterDeclaration(ctx);
 
@@ -721,7 +721,7 @@ public class CompilerWalkState
         }
 
         @Override
-        public void exitParameterDeclaration(ParameterDeclarationContext ctx)
+        public void exitParameterDeclaration(@Nonnull ParameterDeclarationContext ctx)
         {
             super.exitParameterDeclaration(ctx);
 

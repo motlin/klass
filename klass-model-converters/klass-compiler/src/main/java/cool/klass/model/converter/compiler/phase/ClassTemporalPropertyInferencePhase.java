@@ -12,7 +12,7 @@ import org.eclipse.collections.api.block.predicate.Predicate;
 
 public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
 {
-    public ClassTemporalPropertyInferencePhase(CompilerState compilerState)
+    public ClassTemporalPropertyInferencePhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }

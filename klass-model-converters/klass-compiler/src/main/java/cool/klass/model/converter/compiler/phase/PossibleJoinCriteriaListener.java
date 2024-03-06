@@ -47,21 +47,21 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
     }
 
     @Override
-    public void enterCriteriaEdgePoint(CriteriaEdgePointContext ctx)
+    public void enterCriteriaEdgePoint(@Nonnull CriteriaEdgePointContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".enterCriteriaEdgePoint() not implemented yet");
     }
 
     @Override
-    public void enterCriteriaNative(CriteriaNativeContext ctx)
+    public void enterCriteriaNative(@Nonnull CriteriaNativeContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".enterCriteriaNative() not implemented yet");
     }
 
     @Override
-    public void enterCriteriaAll(CriteriaAllContext ctx)
+    public void enterCriteriaAll(@Nonnull CriteriaAllContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".enterCriteriaAll() not implemented yet");
@@ -91,7 +91,7 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
     }
 
     @Override
-    public void enterCriteriaExpressionOr(CriteriaExpressionOrContext ctx)
+    public void enterCriteriaExpressionOr(@Nonnull CriteriaExpressionOrContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".enterCriteriaExpressionOr() not implemented yet");
@@ -122,7 +122,7 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
     }
 
     @Override
-    public void enterLiteral(LiteralContext ctx)
+    public void enterLiteral(@Nonnull LiteralContext ctx)
     {
         super.enterLiteral(ctx);
 

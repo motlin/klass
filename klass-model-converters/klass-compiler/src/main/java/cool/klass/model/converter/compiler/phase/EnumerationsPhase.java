@@ -19,7 +19,7 @@ public class EnumerationsPhase extends AbstractCompilerPhase
     @Nullable
     private AntlrEnumeration enumerationState;
 
-    public EnumerationsPhase(CompilerState compilerState)
+    public EnumerationsPhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }
@@ -41,7 +41,7 @@ public class EnumerationsPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitEnumerationDeclaration(EnumerationDeclarationContext ctx)
+    public void exitEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
     {
         this.compilerState.getDomainModelState().exitEnumerationDeclaration(this.enumerationState);
         this.enumerationState = null;
