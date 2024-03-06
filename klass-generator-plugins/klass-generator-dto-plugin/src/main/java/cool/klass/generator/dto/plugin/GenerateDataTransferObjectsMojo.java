@@ -17,7 +17,7 @@ import org.apache.maven.project.MavenProject;
 @Mojo(name = "generate-data-transfer-objects", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
 public class GenerateDataTransferObjectsMojo extends AbstractGenerateMojo
 {
-    @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/service-resources")
+    @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/data-transfer-objects")
     private File outputDirectory;
 
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
