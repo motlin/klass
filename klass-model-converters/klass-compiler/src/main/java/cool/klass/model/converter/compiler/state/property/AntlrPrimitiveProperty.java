@@ -130,6 +130,27 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
         this.reportInvalidNumericValidations(compilerErrorHolder);
     }
 
+    @Override
+    protected void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
+        if (primitiveType.isId())
+        {
+            return;
+        }
+
+        ImmutableList<AntlrPropertyModifier> idModifiers = this.modifierStates.select(AntlrPropertyModifier::isID);
+        for (AntlrPropertyModifier idModifier : idModifiers)
+        {
+            ParserRuleContext offendingToken = idModifier.getElementContext();
+            String message = String.format(
+                    "Primitive properties with type %s may not be auto-generated ids. Only types %s may be id properties.",
+                    primitiveType.getPrettyName(),
+                    PrimitiveType.ID_PRIMITIVE_TYPES);
+            compilerErrorHolder.add("ERR_PRP_IDP", message, this, offendingToken);
+        }
+    }
+
     private void reportInvalidStringValidations(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();

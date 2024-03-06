@@ -221,6 +221,11 @@ public enum PrimitiveType implements Element, DataType, DataTypeGetter
             TEMPORAL_INSTANT,
             TEMPORAL_RANGE);
 
+    public static final ImmutableList<PrimitiveType> ID_PRIMITIVE_TYPES = Lists.immutable.with(
+            INTEGER,
+            LONG,
+            STRING);
+
     private static final ImmutableMap<String, PrimitiveType> BY_PRETTY_NAME =
             PRIMITIVE_TYPES.groupByUniqueKey(PrimitiveType::getPrettyName);
 
@@ -269,6 +274,11 @@ public enum PrimitiveType implements Element, DataType, DataTypeGetter
     public boolean isTemporalInstant()
     {
         return this == TEMPORAL_INSTANT;
+    }
+
+    public boolean isId()
+    {
+        return ID_PRIMITIVE_TYPES.contains(this);
     }
 
     public boolean isNumeric()

@@ -141,6 +141,18 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
         compilerErrorHolder.add("ERR_ENM_PRP", message, this, offendingToken);
     }
 
+    @Override
+    protected void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        ImmutableList<AntlrPropertyModifier> idModifiers = this.modifierStates.select(AntlrPropertyModifier::isID);
+        for (AntlrPropertyModifier idModifier : idModifiers)
+        {
+            ParserRuleContext offendingToken = idModifier.getElementContext();
+            String            message        = "Enumeration properties may not be auto-generated ids.";
+            compilerErrorHolder.add("ERR_ENM_IDP", message, this, offendingToken);
+        }
+    }
+
     @Nonnull
     @Override
     public EnumerationPropertyContext getElementContext()

@@ -204,10 +204,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     {
         this.reportDuplicateModifiers(compilerErrorHolder);
         this.reportDuplicateValidations(compilerErrorHolder);
+        this.reportInvalidIdProperties(compilerErrorHolder);
 
         // TODO: ☑ Check for nullable key properties
         // TODO: ☑ Check that ID properties are key properties
-        // TODO: ☑ Only Integer and Long may be ID (no enums either)
     }
 
     private void reportDuplicateModifiers(@Nonnull CompilerErrorState compilerErrorHolder)
@@ -255,6 +255,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
             }
         }
     }
+
+    protected abstract void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder);
 
     @Nonnull
     @Override
