@@ -33,7 +33,6 @@ public class AntlrServiceGroup
         extends AntlrPackageableElement
         implements AntlrTopLevelElement
 {
-    @Nonnull
     public static final AntlrServiceGroup AMBIGUOUS = new AntlrServiceGroup(
             new ServiceGroupDeclarationContext(null, -1),
             Optional.empty(),

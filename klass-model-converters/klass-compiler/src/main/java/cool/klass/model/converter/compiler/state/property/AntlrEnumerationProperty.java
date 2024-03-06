@@ -22,7 +22,7 @@ import org.eclipse.collections.api.list.ListIterable;
 public class AntlrEnumerationProperty
         extends AntlrDataTypeProperty<EnumerationImpl>
 {
-    @Nonnull
+    //<editor-fold desc="AMBIGUOUS">
     public static final AntlrEnumerationProperty AMBIGUOUS = new AntlrEnumerationProperty(
             new EnumerationPropertyContext(null, -1),
             Optional.empty(),
@@ -38,8 +38,9 @@ public class AntlrEnumerationProperty
             return "AntlrEnumerationProperty.AMBIGUOUS";
         }
     };
+    //</editor-fold>
 
-    @Nonnull
+    //<editor-fold desc="NOT_FOUND">
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
             new EnumerationPropertyContext(null, -1),
             Optional.empty(),
@@ -55,6 +56,7 @@ public class AntlrEnumerationProperty
             return "AntlrEnumerationProperty.NOT_FOUND";
         }
     };
+    //</editor-fold>
 
     // TODO: Check that it's not NOT_FOUND
     @Nonnull

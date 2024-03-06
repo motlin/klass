@@ -27,7 +27,6 @@ public final class AntlrPrimitiveType
     public static final AntlrPrimitiveType TEMPORAL_INSTANT = new AntlrPrimitiveType(PrimitiveType.TEMPORAL_INSTANT);
     public static final AntlrPrimitiveType TEMPORAL_RANGE   = new AntlrPrimitiveType(PrimitiveType.TEMPORAL_RANGE);
 
-    @Nonnull
     public static final AntlrPrimitiveType AMBIGUOUS = new AntlrPrimitiveType(null);
 
     public static final ImmutableList<AntlrPrimitiveType> PRIMITIVE_TYPES = Lists.immutable.with(

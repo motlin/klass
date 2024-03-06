@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -24,7 +23,6 @@ public class AntlrAssociationEndSignature
         extends AntlrReferenceProperty<AntlrClassifier>
         implements AntlrClassifierReferenceOwner
 {
-    @Nullable
     public static final AntlrAssociationEndSignature AMBIGUOUS = new AntlrAssociationEndSignature(
             new AssociationEndSignatureContext(null, -1),
             Optional.empty(),

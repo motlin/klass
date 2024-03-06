@@ -21,7 +21,6 @@ import org.eclipse.collections.api.list.ListIterable;
 public class AntlrPrimitiveProperty
         extends AntlrDataTypeProperty<PrimitiveType>
 {
-    @Nonnull
     public static final AntlrPrimitiveProperty AMBIGUOUS = new AntlrPrimitiveProperty(
             new PrimitivePropertyContext(null, -1),
             Optional.empty(),

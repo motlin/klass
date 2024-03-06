@@ -35,7 +35,7 @@ public abstract class AntlrClassifier
         extends AntlrPackageableElement
         implements AntlrType, AntlrTopLevelElement
 {
-    @Nonnull
+    //<editor-fold desc="AMBIGUOUS">
     public static final AntlrClassifier AMBIGUOUS = new AntlrClassifier(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
@@ -61,8 +61,9 @@ public abstract class AntlrClassifier
             return AntlrClassifier.class.getSimpleName() + ".AMBIGUOUS";
         }
     };
+    //</editor-fold>
 
-    @Nonnull
+    //<editor-fold desc="NOT_FOUND">
     public static final AntlrClassifier NOT_FOUND = new AntlrClassifier(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
@@ -88,6 +89,7 @@ public abstract class AntlrClassifier
             return AntlrClassifier.class.getSimpleName() + ".NOT_FOUND";
         }
     };
+    //</editor-fold>
 
     protected final MutableList<AntlrAssociationEndSignature>               associationEndSignatureStates  =
             Lists.mutable.empty();

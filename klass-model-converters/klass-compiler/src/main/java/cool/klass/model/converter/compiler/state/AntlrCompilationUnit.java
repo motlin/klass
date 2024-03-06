@@ -16,12 +16,10 @@ import org.eclipse.collections.impl.tuple.Tuples;
 public class AntlrCompilationUnit
         extends AntlrElement
 {
-    @Nonnull
     public static final AntlrCompilationUnit AMBIGUOUS = new AntlrCompilationUnit(
             new CompilationUnitContext(null, -1),
             Optional.empty());
 
-    @Nonnull
     public static final AntlrCompilationUnit NOT_FOUND = new AntlrCompilationUnit(
             new CompilationUnitContext(null, -1),
             Optional.empty());

@@ -43,7 +43,7 @@ import org.eclipse.collections.impl.tuple.Tuples;
 public abstract class AntlrDataTypeProperty<T extends DataType>
         extends AntlrProperty
 {
-    @Nonnull
+    //<editor-fold desc="AMBIGUOUS">
     public static final AntlrDataTypeProperty AMBIGUOUS = new AntlrDataTypeProperty(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
@@ -95,8 +95,9 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     + ".reportInvalidIdProperties() not implemented yet");
         }
     };
+    //</editor-fold>
 
-    @Nonnull
+    //<editor-fold desc="NOT_FOUND">
     public static final AntlrDataTypeProperty NOT_FOUND = new AntlrDataTypeProperty(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
@@ -148,6 +149,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     + ".reportInvalidIdProperties() not implemented yet");
         }
     };
+    //</editor-fold>
 
     private static final ImmutableList<PrimitiveType> ALLOWED_VERSION_TYPES =
             Lists.immutable.with(

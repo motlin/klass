@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -27,7 +26,7 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 public class AntlrAssociationEnd
         extends AntlrClassReferenceProperty
 {
-    @Nullable
+    //<editor-fold desc="AMBIGUOUS">
     public static final AntlrAssociationEnd AMBIGUOUS = new AntlrAssociationEnd(
             new AssociationEndContext(null, -1),
             Optional.empty(),
@@ -48,8 +47,9 @@ public class AntlrAssociationEnd
             return AntlrAssociationEnd.class.getSimpleName() + ".AMBIGUOUS";
         }
     };
+    //</editor-fold>
 
-    @Nullable
+    //<editor-fold desc="NOT_FOUND">
     public static final AntlrAssociationEnd NOT_FOUND = new AntlrAssociationEnd(
             new AssociationEndContext(null, -1),
             Optional.empty(),
@@ -70,6 +70,7 @@ public class AntlrAssociationEnd
             return AntlrAssociationEnd.class.getSimpleName() + ".NOT_FOUND";
         }
     };
+    //</editor-fold>
 
     @Nonnull
     private final AntlrAssociation owningAssociationState;

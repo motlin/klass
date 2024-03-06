@@ -33,7 +33,6 @@ public final class AntlrParameter
         extends AntlrIdentifierElement
         implements AntlrMultiplicityOwner
 {
-    @Nonnull
     public static final AntlrParameter AMBIGUOUS = new AntlrParameter(
             new ParserRuleContext(null, -1),
             Optional.empty(),
@@ -42,7 +41,6 @@ public final class AntlrParameter
             AntlrEnumeration.AMBIGUOUS,
             AntlrParameterizedProperty.AMBIGUOUS);
 
-    @Nonnull
     public static final AntlrParameter NOT_FOUND = new AntlrParameter(
             new ParserRuleContext(null, -1),
             Optional.empty(),

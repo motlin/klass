@@ -24,14 +24,13 @@ public class AntlrParameterizedProperty
         extends AntlrClassReferenceProperty
         implements AntlrParameterOwner
 {
-    @Nullable
     public static final AntlrParameterizedProperty AMBIGUOUS = new AntlrParameterizedProperty(
             new ParameterizedPropertyContext(null, -1),
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
             AntlrClass.AMBIGUOUS);
-    @Nullable
+
     public static final AntlrParameterizedProperty NOT_FOUND = new AntlrParameterizedProperty(
             new ParameterizedPropertyContext(null, -1),
             Optional.empty(),

@@ -40,7 +40,6 @@ import org.eclipse.collections.impl.tuple.Tuples;
 
 public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 {
-    @Nonnull
     public static final AntlrService AMBIGUOUS = new AntlrService(
             new ServiceDeclarationContext(null, -1),
             Optional.empty(),

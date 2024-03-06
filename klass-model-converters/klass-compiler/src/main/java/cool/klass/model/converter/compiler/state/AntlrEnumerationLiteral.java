@@ -17,7 +17,6 @@ import org.eclipse.collections.api.tuple.Pair;
 public class AntlrEnumerationLiteral
         extends AntlrIdentifierElement
 {
-    @Nonnull
     public static final AntlrEnumerationLiteral AMBIGUOUS = new AntlrEnumerationLiteral(
             new EnumerationLiteralContext(null, -1),
             Optional.empty(),
@@ -25,7 +24,7 @@ public class AntlrEnumerationLiteral
             new IdentifierContext(null, -1),
             Optional.empty(),
             AntlrEnumeration.AMBIGUOUS);
-    @Nonnull
+
     public static final AntlrEnumerationLiteral NOT_FOUND = new AntlrEnumerationLiteral(
             new EnumerationLiteralContext(null, -1),
             Optional.empty(),

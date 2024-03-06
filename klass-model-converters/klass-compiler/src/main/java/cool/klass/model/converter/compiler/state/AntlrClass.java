@@ -44,7 +44,7 @@ import org.eclipse.collections.impl.tuple.Tuples;
 public class AntlrClass
         extends AntlrClassifier
 {
-    @Nonnull
+    //<editor-fold desc="AMBIGUOUS">
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
@@ -80,8 +80,9 @@ public class AntlrClass
                     + ".enterParameterizedProperty() not implemented yet");
         }
     };
+    //</editor-fold>
 
-    @Nonnull
+    //<editor-fold desc="NOT_FOUND">
     public static final AntlrClass NOT_FOUND = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
@@ -117,6 +118,7 @@ public class AntlrClass
                     + ".enterParameterizedProperty() not implemented yet");
         }
     };
+    //</editor-fold>
 
     // TODO: Unified list of dataType and parameterized properties
 

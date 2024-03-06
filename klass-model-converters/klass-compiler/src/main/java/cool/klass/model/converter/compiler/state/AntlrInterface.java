@@ -29,7 +29,7 @@ import org.eclipse.collections.impl.factory.Sets;
 
 public class AntlrInterface extends AntlrClassifier
 {
-    @Nonnull
+    //<editor-fold desc="AMBIGUOUS">
     public static final AntlrInterface AMBIGUOUS = new AntlrInterface(
             new InterfaceDeclarationContext(null, -1),
             Optional.empty(),
@@ -44,8 +44,9 @@ public class AntlrInterface extends AntlrClassifier
                     + ".enterDataTypeProperty() not implemented yet");
         }
     };
+    //</editor-fold>
 
-    @Nonnull
+    //<editor-fold desc="NOT_FOUND">
     public static final AntlrInterface NOT_FOUND = new AntlrInterface(
             new InterfaceDeclarationContext(null, -1),
             Optional.empty(),
@@ -60,6 +61,7 @@ public class AntlrInterface extends AntlrClassifier
                     + ".enterDataTypeProperty() not implemented yet");
         }
     };
+    //</editor-fold>
 
     // TODO: Unified list of all members
 

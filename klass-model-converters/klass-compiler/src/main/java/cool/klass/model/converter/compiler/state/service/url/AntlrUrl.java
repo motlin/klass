@@ -36,7 +36,6 @@ import org.eclipse.collections.impl.tuple.Tuples;
 
 public class AntlrUrl extends AntlrElement
 {
-    @Nonnull
     public static final AntlrUrl AMBIGUOUS = new AntlrUrl(
             new UrlDeclarationContext(null, -1),
             Optional.empty(),

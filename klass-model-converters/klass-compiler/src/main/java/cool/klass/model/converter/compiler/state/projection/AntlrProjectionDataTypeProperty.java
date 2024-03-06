@@ -26,7 +26,6 @@ public class AntlrProjectionDataTypeProperty
         extends AntlrIdentifierElement
         implements AntlrProjectionChild
 {
-    @Nonnull
     public static final AntlrProjectionDataTypeProperty AMBIGUOUS = new AntlrProjectionDataTypeProperty(
             new ProjectionPrimitiveMemberContext(null, -1),
             Optional.empty(),

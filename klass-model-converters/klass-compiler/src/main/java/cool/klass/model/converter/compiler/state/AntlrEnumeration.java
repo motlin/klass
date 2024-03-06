@@ -24,7 +24,7 @@ public class AntlrEnumeration
         extends AntlrPackageableElement
         implements AntlrType, AntlrTopLevelElement
 {
-    @Nonnull
+    //<editor-fold desc="AMBIGUOUS">
     public static final AntlrEnumeration AMBIGUOUS = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             Optional.empty(),
@@ -38,8 +38,9 @@ public class AntlrEnumeration
             return AntlrEnumeration.class.getSimpleName() + ".AMBIGUOUS";
         }
     };
+    //</editor-fold>
 
-    @Nonnull
+    //<editor-fold desc="NOT_FOUND">
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             Optional.empty(),
@@ -53,6 +54,7 @@ public class AntlrEnumeration
             return AntlrEnumeration.class.getSimpleName() + ".NOT_FOUND";
         }
     };
+    //</editor-fold>
 
     private final MutableList<AntlrEnumerationLiteral>               enumerationLiteralStates  = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrEnumerationLiteral> enumerationLiteralsByName =
