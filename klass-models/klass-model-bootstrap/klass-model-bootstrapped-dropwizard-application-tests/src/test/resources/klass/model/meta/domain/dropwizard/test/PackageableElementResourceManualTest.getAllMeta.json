@@ -4578,7 +4578,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "UrlParameterProjection",
+    "name": "ParameterProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 12
@@ -4586,7 +4586,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "ServiceProjection",
+    "name": "UrlParameterProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 13
@@ -4594,10 +4594,18 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "ServiceOrderByProjection",
+    "name": "ServiceProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 14
+    }
+  },
+  {
+    "__typename": "klass.model.meta.domain.NamedProjection",
+    "name": "ServiceOrderByProjection",
+    "packageName": "klass.model.meta.domain",
+    "rootProjection": {
+      "id": 15
     }
   },
   {
@@ -4614,7 +4622,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 1
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 1,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -4694,7 +4706,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 2
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 2,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -4765,7 +4781,7 @@
     "name": "InterfaceProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 15
+      "id": 16
     }
   },
   {
@@ -4782,7 +4798,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 3
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 3,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -4853,7 +4873,7 @@
     "name": "NumericPropertyValidationProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 16
+      "id": 17
     }
   },
   {
@@ -4861,7 +4881,7 @@
     "name": "DataTypePropertyProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 17
+      "id": 18
     }
   },
   {
@@ -4869,7 +4889,7 @@
     "name": "KlassProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 18
+      "id": 19
     }
   },
   {
@@ -4886,7 +4906,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 4
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 4,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -4957,7 +4981,7 @@
     "name": "ClassifierProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 19
+      "id": 20
     }
   },
   {
@@ -4974,7 +4998,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 5
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 5,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -5045,7 +5073,7 @@
     "name": "ThisMemberReferencePathProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 20
+      "id": 21
     }
   },
   {
@@ -5053,7 +5081,7 @@
     "name": "AssociationEndModifierProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 21
+      "id": 22
     }
   },
   {
@@ -5061,7 +5089,7 @@
     "name": "AssociationEndOrderByProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 22
+      "id": 23
     }
   },
   {
@@ -5069,7 +5097,7 @@
     "name": "AssociationEndProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 23
+      "id": 24
     }
   },
   {
@@ -5077,7 +5105,7 @@
     "name": "MemberReferencePathAssociationEndMappingProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 24
+      "id": 25
     }
   },
   {
@@ -5085,7 +5113,7 @@
     "name": "ExpressionValueProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 25
+      "id": 26
     }
   },
   {
@@ -5093,7 +5121,7 @@
     "name": "MemberReferencePathProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 26
+      "id": 27
     }
   },
   {
@@ -5101,7 +5129,7 @@
     "name": "CriteriaProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 27
+      "id": 28
     }
   },
   {
@@ -5109,7 +5137,7 @@
     "name": "AssociationProjection",
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
-      "id": 28
+      "id": 29
     }
   },
   {
@@ -5126,7 +5154,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 6
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 6,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -5206,7 +5238,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 7
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 7,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -5286,7 +5322,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 8
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 8,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],

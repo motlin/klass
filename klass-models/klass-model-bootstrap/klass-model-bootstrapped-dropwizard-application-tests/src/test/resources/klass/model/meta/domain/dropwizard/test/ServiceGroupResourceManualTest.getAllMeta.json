@@ -12,7 +12,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 1
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 1,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -91,7 +95,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 2
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 2,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -170,7 +178,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 3
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 3,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -249,7 +261,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 4
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 4,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -328,7 +344,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 5
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 5,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -407,7 +427,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 6
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 6,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -486,7 +510,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 7
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 7,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],
@@ -565,7 +593,11 @@
           {
             "type": "path",
             "parameter": {
-              "id": 8
+              "__typename": "klass.model.meta.domain.PrimitiveParameter",
+              "id": 8,
+              "name": "name",
+              "multiplicity": "1..1",
+              "primitiveType": "String"
             }
           }
         ],

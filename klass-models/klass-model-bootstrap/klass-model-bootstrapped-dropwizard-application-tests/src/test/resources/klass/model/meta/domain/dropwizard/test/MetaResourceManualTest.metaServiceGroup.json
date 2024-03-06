@@ -11,7 +11,11 @@
         {
           "type": "path",
           "parameter": {
-            "id": 8
+            "__typename": "klass.model.meta.domain.PrimitiveParameter",
+            "id": 8,
+            "name": "name",
+            "multiplicity": "1..1",
+            "primitiveType": "String"
           }
         }
       ],

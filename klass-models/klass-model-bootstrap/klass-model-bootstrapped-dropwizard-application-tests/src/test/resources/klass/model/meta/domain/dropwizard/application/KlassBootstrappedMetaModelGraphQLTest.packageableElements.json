@@ -4632,7 +4632,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "UrlParameterProjection",
+        "name": "ParameterProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 12
@@ -4640,7 +4640,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ServiceProjection",
+        "name": "UrlParameterProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 13
@@ -4648,7 +4648,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ServiceOrderByProjection",
+        "name": "ServiceProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 14
@@ -4656,7 +4656,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "InterfaceProjection",
+        "name": "ServiceOrderByProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 15
@@ -4664,7 +4664,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "NumericPropertyValidationProjection",
+        "name": "InterfaceProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 16
@@ -4672,7 +4672,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "DataTypePropertyProjection",
+        "name": "NumericPropertyValidationProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 17
@@ -4680,7 +4680,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "KlassProjection",
+        "name": "DataTypePropertyProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 18
@@ -4688,7 +4688,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ClassifierProjection",
+        "name": "KlassProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 19
@@ -4696,7 +4696,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ThisMemberReferencePathProjection",
+        "name": "ClassifierProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 20
@@ -4704,7 +4704,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "AssociationEndModifierProjection",
+        "name": "ThisMemberReferencePathProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 21
@@ -4712,7 +4712,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "AssociationEndOrderByProjection",
+        "name": "AssociationEndModifierProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 22
@@ -4720,7 +4720,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "AssociationEndProjection",
+        "name": "AssociationEndOrderByProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 23
@@ -4728,7 +4728,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "MemberReferencePathAssociationEndMappingProjection",
+        "name": "AssociationEndProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 24
@@ -4736,7 +4736,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ExpressionValueProjection",
+        "name": "MemberReferencePathAssociationEndMappingProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 25
@@ -4744,7 +4744,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "MemberReferencePathProjection",
+        "name": "ExpressionValueProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 26
@@ -4752,7 +4752,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "CriteriaProjection",
+        "name": "MemberReferencePathProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 27
@@ -4760,10 +4760,18 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "AssociationProjection",
+        "name": "CriteriaProjection",
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 28
+        }
+      },
+      {
+        "__typename": "NamedProjection",
+        "name": "AssociationProjection",
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 29
         }
       },
       {

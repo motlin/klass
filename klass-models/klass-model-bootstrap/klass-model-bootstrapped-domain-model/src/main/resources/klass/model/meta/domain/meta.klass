@@ -1018,7 +1018,7 @@ projection ServiceGroupProjection on ServiceGroup
     packageName: "PackageableElement packageName",
     owningClass: {
         name: "NamedElement name",
-        },
+    },
     urls: UrlProjection,
 }
 
@@ -1029,12 +1029,21 @@ projection UrlProjection on Url
     services: ServiceProjection,
 }
 
+projection ParameterProjection on Parameter
+{
+    id: "Parameter id",
+    name: "Parameter name",
+    multiplicity: "Parameter multiplicity",
+    EnumerationParameter.enumeration: {
+        NamedElement.name: "NamedElement name",
+    },
+    PrimitiveParameter.primitiveType: "PrimitiveParameter primitiveType",
+}
+
 projection UrlParameterProjection on UrlParameter
 {
     type: "UrlParameter type",
-    parameter: {
-        id: "Parameter id",
-    },
+    parameter: ParameterProjection,
 }
 
 projection ServiceProjection on Service
