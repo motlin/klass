@@ -37,6 +37,8 @@ public final class DatabaseDdlExecutor
         Reflections        reflections  = new Reflections(configurationBuilder);
         MutableSet<String> ddlLocations = SetAdapter.adapt(reflections.getResources(Pattern.compile(".*\\.ddl")));
         MutableSet<String> idxLocations = SetAdapter.adapt(reflections.getResources(Pattern.compile(".*\\.idx")));
+        LOGGER.info("SQL script ddl: {}", ddlLocations.makeString("\n", "\n", "\n"));
+        LOGGER.info("SQL script idx: {}", idxLocations.makeString("\n", "\n", "\n"));
 
         ddlLocations.forEachWith(DatabaseDdlExecutor::runScript, connection);
         idxLocations.forEachWith(DatabaseDdlExecutor::runScript, connection);
@@ -44,7 +46,6 @@ public final class DatabaseDdlExecutor
 
     private static void runScript(String ddlLocation, @Nonnull Connection connection)
     {
-        LOGGER.info("Running sql script {}.", ddlLocation);
         InputStream inputStream = DatabaseDdlExecutor.class.getResourceAsStream("/" + ddlLocation);
         if (inputStream == null)
         {
