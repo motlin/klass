@@ -30,12 +30,16 @@ import org.eclipse.collections.impl.set.mutable.SetAdapter;
 import org.eclipse.collections.impl.tuple.Tuples;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.fusesource.jansi.Ansi.Color.CYAN;
 import static org.fusesource.jansi.Ansi.ansi;
 
 public abstract class AbstractCompilerAnnotation
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCompilerAnnotation.class);
+
     private static final Comparator<Token> TOKEN_COMPARATOR = Comparator
             .comparing(Token::getLine)
             .thenComparing(Token::getCharPositionInLine);
@@ -174,12 +178,12 @@ public abstract class AbstractCompilerAnnotation
                     .collect(Token::getText)
                     .toList()
                     .makeString("");
-            throw new AssertionError(message);
+            LOGGER.warn("Not all underlined tokens are in the context: {}", message);
         }
 
         if (!contextLines.containsAll(underlinedLines))
         {
-            throw new AssertionError();
+            LOGGER.warn("Not all underlined lines are in the context: {}", underlinedLines);
         }
 
         ImmutableList<TokenLine>           tokenLines     = this.getTokenLines(contextTokens);
