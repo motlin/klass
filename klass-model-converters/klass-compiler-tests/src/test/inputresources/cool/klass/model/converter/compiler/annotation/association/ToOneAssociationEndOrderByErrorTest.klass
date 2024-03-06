@@ -1,0 +1,18 @@
+package cool.klass.model.converter.compiler.annotation.test
+
+class Parent
+{
+    key: String key;
+}
+
+class Child
+{
+    key: String key;
+    parentKey: String private;
+}
+
+association ParentHasChildren
+{
+    parent: Parent[1..1] orderBy: this.key ascending;
+    children: Child[0..*];
+}

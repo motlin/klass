@@ -263,6 +263,15 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         return this.orderByState;
     }
 
+    //<editor-fold desc="Report Compiler Errors">
+    @Override
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    {
+        super.reportErrors(compilerAnnotationHolder);
+
+        this.reportToOneOrderBy(compilerAnnotationHolder);
+    }
+
     public void reportTypeNotFound(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.getType() != AntlrClass.NOT_FOUND)
@@ -276,6 +285,27 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
                 offendingToken.getText());
         compilerAnnotationHolder.add("ERR_REF_TYP", message, this, offendingToken);
     }
+
+    public void reportToOneOrderBy(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    {
+        if (!this.isToOne())
+        {
+            return;
+        }
+
+        if (this.orderByState.isEmpty())
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Reference property '%s.%s' is to-one but has an order-by clause. Order by clauses are only valid for "
+                        + "to-many properties.",
+                this.getOwningClassifierState().getName(),
+                this.getName());
+        compilerAnnotationHolder.add("ERR_REF_ORD", message, this.orderByState.get());
+    }
+    //</editor-fold>
 
     protected abstract IdentifierContext getTypeIdentifier();
 

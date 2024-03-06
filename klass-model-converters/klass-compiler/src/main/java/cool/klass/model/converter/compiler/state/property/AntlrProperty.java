@@ -246,7 +246,6 @@ public abstract class AntlrProperty
                 this,
                 modifierStates.collect(AntlrElement::getElementContext));
     }
-    //</editor-fold>
 
     public void reportUnreferencedPrivateProperty(CompilerAnnotationState compilerAnnotationState)
     {
@@ -257,6 +256,7 @@ public abstract class AntlrProperty
         // TODO: 💡 Some name errors should really just be warnings. Rename CompilerError to CompilerAnnotation and implement severity.
         compilerAnnotationState.add("ERR_PRP_REF", message, this, AnnotationSeverity.WARNING);
     }
+    //</editor-fold>
 
     @Override
     protected Pattern getNamePattern()
