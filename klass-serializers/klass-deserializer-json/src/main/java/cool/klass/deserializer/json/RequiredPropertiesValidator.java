@@ -36,6 +36,7 @@ public class RequiredPropertiesValidator
     @Nonnull
     protected final Optional<AssociationEnd> pathHere;
     protected final boolean                  isRoot;
+    protected final boolean                  isInProjection;
 
     public RequiredPropertiesValidator(
             @Nonnull Klass klass,
@@ -45,7 +46,8 @@ public class RequiredPropertiesValidator
             @Nonnull MutableList<String> warnings,
             @Nonnull MutableStack<String> contextStack,
             @Nonnull Optional<AssociationEnd> pathHere,
-            boolean isRoot)
+            boolean isRoot,
+            boolean isInProjection)
     {
         this.klass         = Objects.requireNonNull(klass);
         this.objectNode    = Objects.requireNonNull(objectNode);
@@ -55,6 +57,7 @@ public class RequiredPropertiesValidator
         this.contextStack  = Objects.requireNonNull(contextStack);
         this.pathHere      = Objects.requireNonNull(pathHere);
         this.isRoot        = isRoot;
+        this.isInProjection = isInProjection;
     }
 
     public static void validate(
@@ -72,6 +75,7 @@ public class RequiredPropertiesValidator
                 warnings,
                 Stacks.mutable.empty(),
                 Optional.empty(),
+                true,
                 true);
         validator.validate();
     }
@@ -124,6 +128,32 @@ public class RequiredPropertiesValidator
         {
             this.handleKeyProperty(dataTypeProperty);
         }
+        else if (dataTypeProperty.isAudit())
+        {
+            if (dataTypeProperty.isPrivate())
+            {
+                this.handleErrorIfPresent(dataTypeProperty, "audit");
+            }
+            else
+            {
+                this.handleWarnIfPresent(dataTypeProperty, "audit");
+            }
+        }
+        else if (dataTypeProperty.isForeignKey())
+        {
+            if (dataTypeProperty.isPrivate())
+            {
+                this.handleErrorIfPresent(dataTypeProperty, "foreign key");
+            }
+            else
+            {
+                this.handleWarnIfPresent(dataTypeProperty, "foreign key");
+            }
+        }
+        else if (dataTypeProperty.isPrivate())
+        {
+            this.handleErrorIfPresent(dataTypeProperty, "private");
+        }
         else if (dataTypeProperty.isDerived())
         {
             this.handleWarnIfPresent(dataTypeProperty, "derived");
@@ -132,14 +162,7 @@ public class RequiredPropertiesValidator
         {
             this.handleWarnIfPresent(dataTypeProperty, "temporal");
         }
-        else if (dataTypeProperty.isAudit())
-        {
-            this.handleWarnIfPresent(dataTypeProperty, "audit");
-        }
-        else if (dataTypeProperty.isForeignKey())
-        {
-            this.handleWarnIfPresent(dataTypeProperty, "foreign key");
-        }
+
         else
         {
             this.handlePlainProperty(dataTypeProperty);
@@ -185,6 +208,7 @@ public class RequiredPropertiesValidator
             return;
         }
 
+        // TODO: Exclude path here
         if (this.isForeignKeyMatchingRequiredNested(dataTypeProperty))
         {
             this.handleWarnIfPresent(dataTypeProperty, "foreign key matching key of required nested object");
@@ -205,10 +229,15 @@ public class RequiredPropertiesValidator
 
         if (this.pathHere.isPresent() && dataTypeProperty.isForeignKeyMatchingKeyOnPath(this.pathHere.get()))
         {
-            this.handleWarnIfPresent(this.pathHere.get(), dataTypeProperty.getName());
+            this.handleAnnotationIfPresent(this.pathHere.get(), dataTypeProperty.getName());
             return;
         }
 
+        this.handleMissingKeyProperty(dataTypeProperty);
+    }
+
+    protected void handleMissingKeyProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    {
         this.handlePlainProperty(dataTypeProperty);
     }
 
@@ -229,7 +258,21 @@ public class RequiredPropertiesValidator
         return this.pathHere.map(dataTypeProperty::isForeignKeyMatchingKeyOnPath).orElse(false);
     }
 
-    protected void handleWarnIfPresent(@Nonnull DataTypeProperty property, String propertyKind)
+    protected void handleErrorIfPresent(@Nonnull DataTypeProperty dataTypeProperty, String propertyKind)
+    {
+        this.handleAnnotationIfPresent(dataTypeProperty, propertyKind, this.errors, "Error");
+    }
+
+    protected void handleWarnIfPresent(@Nonnull DataTypeProperty dataTypeProperty, String propertyKind)
+    {
+        this.handleAnnotationIfPresent(dataTypeProperty, propertyKind, this.warnings, "Warning");
+    }
+
+    protected void handleAnnotationIfPresent(
+            @Nonnull DataTypeProperty property,
+            String propertyKind,
+            MutableList<String> annotations,
+            String severityString)
     {
         JsonNode jsonNode = this.objectNode.path(property.getName());
         if (jsonNode.isMissingNode())
@@ -238,8 +281,9 @@ public class RequiredPropertiesValidator
         }
 
         String jsonNodeString = jsonNode.isNull() ? "" : ": " + jsonNode;
-        String warning = String.format(
-                "Warning at %s. Didn't expect to receive value for %s property '%s.%s: %s%s' but value was %s%s.",
+        String annotation = String.format(
+                "%s at %s. Didn't expect to receive value for %s property '%s.%s: %s%s' but value was %s%s.",
+                severityString,
                 this.getContextString(),
                 propertyKind,
                 property.getOwningClassifier().getName(),
@@ -248,10 +292,10 @@ public class RequiredPropertiesValidator
                 property.isOptional() ? "?" : "",
                 jsonNode.getNodeType().toString().toLowerCase(),
                 jsonNodeString);
-        this.warnings.add(warning);
+        annotations.add(annotation);
     }
 
-    protected void handleWarnIfPresent(@Nonnull AssociationEnd property, String propertyKind)
+    protected void handleAnnotationIfPresent(@Nonnull AssociationEnd property, String propertyKind)
     {
         JsonNode jsonNode = this.objectNode.path(property.getName());
         if (jsonNode.isMissingNode())
@@ -277,6 +321,12 @@ public class RequiredPropertiesValidator
     {
         if (!property.isRequired())
         {
+            return;
+        }
+
+        if (!this.isInProjection)
+        {
+            this.handleWarnIfPresent(property, "outside projection");
             return;
         }
 
@@ -314,7 +364,7 @@ public class RequiredPropertiesValidator
     {
         if (this.isBackward(associationEnd))
         {
-            this.handleWarnIfPresent(associationEnd, "opposite");
+            this.handleAnnotationIfPresent(associationEnd, "opposite");
         }
         else if (associationEnd.isVersion())
         {
@@ -744,7 +794,7 @@ public class RequiredPropertiesValidator
         else if (this.operationMode == OperationMode.REFERENCE_OUTSIDE_PROJECTION)
         {
             // TODO: Recurse and check that it matches if present
-            this.handleWarnIfPresent(associationEnd, "version");
+            this.handleAnnotationIfPresent(associationEnd, "version");
         }
         else
         {
@@ -766,7 +816,8 @@ public class RequiredPropertiesValidator
                 this.warnings,
                 this.contextStack,
                 Optional.of(associationEnd),
-                false);
+                false,
+                this.isInProjection && associationEnd.isOwned());
         validator.validate();
     }
 

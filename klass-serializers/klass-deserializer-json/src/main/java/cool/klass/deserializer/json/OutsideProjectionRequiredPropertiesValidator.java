@@ -24,43 +24,12 @@ public class OutsideProjectionRequiredPropertiesValidator
             @Nonnull Optional<AssociationEnd> pathHere,
             boolean isRoot)
     {
-        super(klass, objectNode, operationMode, errors, warnings, contextStack, pathHere, isRoot);
+        super(klass, objectNode, operationMode, errors, warnings, contextStack, pathHere, isRoot, false);
     }
 
     @Override
-    protected void handleKeyProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    protected void handleMissingKeyProperty(@Nonnull DataTypeProperty dataTypeProperty)
     {
-        if (this.isForeignKeyMatchingKeyOnPath(dataTypeProperty))
-        {
-            this.handleWarnIfPresent(dataTypeProperty, "foreign key matching key on path");
-            return;
-        }
-
-        // TODO: Exclude path here
-        if (this.isForeignKeyMatchingRequiredNested(dataTypeProperty))
-        {
-            this.handleWarnIfPresent(dataTypeProperty, "foreign key matching key of required nested object");
-            return;
-        }
-
-        if (this.isRoot)
-        {
-            this.handleWarnIfPresent(dataTypeProperty, "root key");
-            return;
-        }
-
-        if (dataTypeProperty.isForeignKeyWithOpposite())
-        {
-            this.handleWarnIfPresent(dataTypeProperty, "foreign key");
-            return;
-        }
-
-        if (this.pathHere.isPresent() && dataTypeProperty.isForeignKeyMatchingKeyOnPath(this.pathHere.get()))
-        {
-            this.handleWarnIfPresent(this.pathHere.get(), dataTypeProperty.getName());
-            return;
-        }
-
         if (!this.objectNode.has(dataTypeProperty.getName()))
         {
             String error = String.format(
@@ -74,17 +43,6 @@ public class OutsideProjectionRequiredPropertiesValidator
     }
 
     @Override
-    protected void handlePlainProperty(@Nonnull DataTypeProperty property)
-    {
-        if (!property.isRequired())
-        {
-            return;
-        }
-
-        this.handleWarnIfPresent(property, "outside projection");
-    }
-
-    @Override
     protected void handleAssociationEndOutsideProjection(AssociationEnd associationEnd)
     {
         if (!associationEnd.isRequired())
@@ -92,7 +50,7 @@ public class OutsideProjectionRequiredPropertiesValidator
             return;
         }
 
-        this.handleWarnIfPresent(associationEnd, "outside projection");
+        this.handleAnnotationIfPresent(associationEnd, "outside projection");
     }
 
     @Override

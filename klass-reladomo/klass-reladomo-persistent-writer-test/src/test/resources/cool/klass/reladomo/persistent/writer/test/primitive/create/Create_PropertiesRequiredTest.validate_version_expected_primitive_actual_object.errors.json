@@ -22,5 +22,8 @@
   "Error at PropertiesRequired.version.systemTo. Expected property with type 'PropertiesRequiredVersion.systemTo: TemporalInstant?' but got '{}' with type 'object'.",
   "Error at PropertiesRequired.version.createdById. Expected property with type 'PropertiesRequiredVersion.createdById: String' but got '{}' with type 'object'.",
   "Error at PropertiesRequired.version.createdOn. Expected property with type 'PropertiesRequiredVersion.createdOn: Instant' but got '{}' with type 'object'.",
-  "Error at PropertiesRequired.version.lastUpdatedById. Expected property with type 'PropertiesRequiredVersion.lastUpdatedById: String' but got '{}' with type 'object'."
+  "Error at PropertiesRequired.version.lastUpdatedById. Expected property with type 'PropertiesRequiredVersion.lastUpdatedById: String' but got '{}' with type 'object'.",
+  "Error at PropertiesRequired.system. Didn't expect to receive value for private property 'PropertiesRequired.system: TemporalRange?' but value was object: {}.",
+  "Error at PropertiesRequired.createdById. Didn't expect to receive value for audit property 'PropertiesRequired.createdById: String' but value was object: {}.",
+  "Error at PropertiesRequired.lastUpdatedById. Didn't expect to receive value for audit property 'PropertiesRequired.lastUpdatedById: String' but value was object: {}."
 ]

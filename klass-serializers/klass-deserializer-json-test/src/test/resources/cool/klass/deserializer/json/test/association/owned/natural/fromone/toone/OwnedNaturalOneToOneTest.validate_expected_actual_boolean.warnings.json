@@ -1,4 +1,3 @@
 [
-  "Warning at OwnedNaturalOneToOneSource.key. Didn't expect to receive value for root key property 'OwnedNaturalOneToOneSource.key: String' but value was boolean: true.",
-  "Warning at OwnedNaturalOneToOneSource.target.sourceKey. Didn't expect to receive value for foreign key property 'OwnedNaturalOneToOneTarget.sourceKey: String' but value was boolean: true."
+  "Warning at OwnedNaturalOneToOneSource.key. Didn't expect to receive value for root key property 'OwnedNaturalOneToOneSource.key: String' but value was boolean: true."
 ]

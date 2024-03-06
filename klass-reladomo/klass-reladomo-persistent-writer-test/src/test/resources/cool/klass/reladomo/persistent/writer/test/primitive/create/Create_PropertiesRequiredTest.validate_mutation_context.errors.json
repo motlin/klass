@@ -1,4 +1,7 @@
 [
+  "Error at PropertiesRequired.system. Didn't expect to receive value for private property 'PropertiesRequired.system: TemporalRange?' but value was string: \"2000-01-01T00:00:00Z\".",
+  "Error at PropertiesRequired.createdById. Didn't expect to receive value for audit property 'PropertiesRequired.createdById: String' but value was string: \"different user\".",
+  "Error at PropertiesRequired.lastUpdatedById. Didn't expect to receive value for audit property 'PropertiesRequired.lastUpdatedById: String' but value was string: \"different user\".",
   "Expected audit property 'createdById' to match current user 'test user 1' but got 'different user'.",
   "Expected createdOn property 'createdOn' to match current transaction time '1999-12-31T23:59:59.999Z' but got '2000-01-01T00:00:00Z'.",
   "Expected audit property 'lastUpdatedById' to match current user 'test user 1' but got 'different user'.",

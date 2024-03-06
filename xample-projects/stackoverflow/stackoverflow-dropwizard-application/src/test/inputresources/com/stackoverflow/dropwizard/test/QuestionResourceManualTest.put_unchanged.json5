@@ -6,9 +6,13 @@
   "deleted": false,
   "systemFrom": "1999-12-31T23:59:59.999Z",
   "systemTo": null,
-  "createdById": "test user 1",
+  "createdBy": {
+    "userId": "test user 1"
+  },
   "createdOn": "1999-12-31T23:59:59.999Z",
-  "lastUpdatedById": "test user 1",
+  "lastUpdatedBy": {
+    "userId": "test user 1"
+  },
   "tags": [
     {
       "tag": {

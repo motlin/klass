@@ -12,6 +12,9 @@
   "Incoming 'PropertiesRequired' has property 'systemTo: TemporalInstant? system to' but got '\"PropertiesRequired requiredString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
   "Incoming 'PropertiesRequired' has property 'createdOn: Instant createdOn final' but got '\"PropertiesRequired requiredString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
   "Error at PropertiesRequired.version. Expected json object but value was string: \"PropertiesRequired requiredString 1 ☝\".",
+  "Error at PropertiesRequired.system. Didn't expect to receive value for private property 'PropertiesRequired.system: TemporalRange?' but value was string: \"PropertiesRequired requiredString 1 ☝\".",
+  "Error at PropertiesRequired.createdById. Didn't expect to receive value for audit property 'PropertiesRequired.createdById: String' but value was string: \"PropertiesRequired requiredString 1 ☝\".",
+  "Error at PropertiesRequired.lastUpdatedById. Didn't expect to receive value for audit property 'PropertiesRequired.lastUpdatedById: String' but value was string: \"PropertiesRequired requiredString 1 ☝\".",
   "Error at PropertiesRequired.createdById. Mismatched value for user id property 'PropertiesRequired.createdById: String'. Expected absent value or 'test user 1' but value was 'PropertiesRequired requiredString 1 ☝'.",
   "Error at PropertiesRequired.lastUpdatedById. Mismatched value for user id property 'PropertiesRequired.lastUpdatedById: String'. Expected absent value or 'test user 1' but value was 'PropertiesRequired requiredString 1 ☝'."
 ]
