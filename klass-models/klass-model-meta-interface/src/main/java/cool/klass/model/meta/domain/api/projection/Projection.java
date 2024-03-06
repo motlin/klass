@@ -2,11 +2,11 @@ package cool.klass.model.meta.domain.api.projection;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.TopLevelElement;
 import cool.klass.model.meta.domain.api.TopLevelElementVisitor;
 
-public interface Projection extends PackageableElement, ProjectionParent, TopLevelElement
+public interface Projection
+        extends ProjectionParent, TopLevelElement
 {
     @Override
     default void visit(TopLevelElementVisitor visitor)
