@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 @AutoService(PrioritizedBundle.class)
 public class SampleDataGeneratorBundle
-        implements PrioritizedBundle<SampleDataFactoryProvider>
+        implements PrioritizedBundle<Object>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(SampleDataGeneratorBundle.class);
 
@@ -37,10 +37,17 @@ public class SampleDataGeneratorBundle
     }
 
     @Override
-    public void run(@Nonnull SampleDataFactoryProvider configuration, Environment environment)
+    public void run(@Nonnull Object configuration, Environment environment)
     {
-        boolean enabled = configuration.getSampleDataFactory().isEnabled();
-        if (!enabled)
+        SampleDataFactoryProvider  sampleDataFactoryProvider  =
+                this.safeCastConfiguration(SampleDataFactoryProvider.class, configuration);
+        DomainModelFactoryProvider domainModelFactoryProvider =
+                this.safeCastConfiguration(DomainModelFactoryProvider.class, configuration);
+        DataStoreFactoryProvider   dataStoreFactoryProvider   =
+                this.safeCastConfiguration(DataStoreFactoryProvider.class, configuration);
+
+        SampleDataFactory sampleDataFactory = sampleDataFactoryProvider.getSampleDataFactory();
+        if (!sampleDataFactory.isEnabled())
         {
             LOGGER.info("{} disabled.", SampleDataGeneratorBundle.class.getSimpleName());
             return;
@@ -48,12 +55,11 @@ public class SampleDataGeneratorBundle
 
         LOGGER.info("Running {}.", SampleDataGeneratorBundle.class.getSimpleName());
 
-        SampleDataFactory     sampleDataFactory = configuration.getSampleDataFactory();
-        Instant               dataInstant       = sampleDataFactory.getDataInstant();
-        ImmutableList<String> skippedPackages   = sampleDataFactory.getSkippedPackages();
+        Instant               dataInstant     = sampleDataFactory.getDataInstant();
+        ImmutableList<String> skippedPackages = sampleDataFactory.getSkippedPackages();
 
-        DomainModel domainModel = getDomainModel(configuration);
-        DataStore   dataStore   = getDataStore(configuration);
+        DomainModel domainModel = domainModelFactoryProvider.getDomainModelFactory().createDomainModel();
+        DataStore dataStore = dataStoreFactoryProvider.getDataStoreFactory().createDataStore();
 
         SampleDataGenerator sampleDataGenerator = new SampleDataGenerator(
                 domainModel,
@@ -63,36 +69,5 @@ public class SampleDataGeneratorBundle
         sampleDataGenerator.generate();
 
         LOGGER.info("Completing {}.", SampleDataGeneratorBundle.class.getSimpleName());
-    }
-
-    @Nonnull
-    private static DomainModel getDomainModel(@Nonnull Object configuration)
-    {
-        if (!(configuration instanceof DomainModelFactoryProvider))
-        {
-            String message = String.format(
-                    "Expected configuration to implement %s but found %s",
-                    DomainModelFactoryProvider.class.getCanonicalName(),
-                    configuration.getClass().getCanonicalName());
-            throw new IllegalStateException(message);
-        }
-
-        DomainModelFactoryProvider domainModelFactoryProvider = (DomainModelFactoryProvider) configuration;
-        return domainModelFactoryProvider.getDomainModelFactory().createDomainModel();
-    }
-
-    private static DataStore getDataStore(@Nonnull Object configuration)
-    {
-        if (!(configuration instanceof DataStoreFactoryProvider))
-        {
-            String message = String.format(
-                    "Expected configuration to implement %s but found %s",
-                    DataStoreFactoryProvider.class.getCanonicalName(),
-                    configuration.getClass().getCanonicalName());
-            throw new IllegalStateException(message);
-        }
-
-        DataStoreFactoryProvider dataStoreFactoryProvider = (DataStoreFactoryProvider) configuration;
-        return dataStoreFactoryProvider.getDataStoreFactory().createDataStore();
     }
 }
