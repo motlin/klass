@@ -2,6 +2,7 @@ package cool.klass.xample.coverage.dropwizard.application;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
 import cool.klass.servlet.filter.mdc.jsonview.JsonViewDynamicFeature;
 import cool.klass.servlet.logging.structured.klass.response.KlassResponseStructuredLoggingFilter;
@@ -40,7 +41,6 @@ public class CoverageExampleApplication
         super.registerLoggingFilters(environment);
 
         environment.jersey().register(KlassResponseStructuredLoggingFilter.class);
-        environment.jersey().register(JsonViewDynamicFeature.class);
     }
 
     @Override
@@ -56,6 +56,10 @@ public class CoverageExampleApplication
             @Nonnull CoverageExampleConfiguration configuration,
             @Nonnull Environment environment) throws Exception
     {
+        DomainModel domainModel = configuration.getKlassFactory().getDomainModelFactory().createDomainModel();
+
+        environment.jersey().register(new JsonViewDynamicFeature(domainModel));
+
         super.run(configuration, environment);
     }
 }

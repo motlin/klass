@@ -14,14 +14,4 @@
 
     <name>Klass Serialization: Jackson Json View API</name>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-model-meta-interface</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-    </dependencies>
-
 </project>

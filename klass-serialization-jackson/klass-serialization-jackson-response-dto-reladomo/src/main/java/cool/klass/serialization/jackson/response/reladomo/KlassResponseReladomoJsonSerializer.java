@@ -11,18 +11,25 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.gs.fw.common.mithra.MithraObject;
 import cool.klass.data.store.DataStore;
+import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.serialization.jackson.response.KlassResponse;
 import cool.klass.serialization.jackson.response.KlassResponseMetadata;
 
 // TODO: Split into one for non-null lists and one for nullable MithraObjects
-public class KlassResponseReladomoJsonSerializer extends JsonSerializer<KlassResponse>
+public class KlassResponseReladomoJsonSerializer
+        extends JsonSerializer<KlassResponse>
 {
     @Nonnull
-    private final DataStore dataStore;
+    private final DomainModel domainModel;
+    @Nonnull
+    private final DataStore   dataStore;
 
-    public KlassResponseReladomoJsonSerializer(@Nonnull DataStore dataStore)
+    public KlassResponseReladomoJsonSerializer(
+            @Nonnull DomainModel domainModel,
+            @Nonnull DataStore dataStore)
     {
-        this.dataStore = Objects.requireNonNull(dataStore);
+        this.domainModel = Objects.requireNonNull(domainModel);
+        this.dataStore   = Objects.requireNonNull(dataStore);
     }
 
     @Override
@@ -116,6 +123,7 @@ public class KlassResponseReladomoJsonSerializer extends JsonSerializer<KlassRes
         KlassResponseMetadata metadata = klassResponse.getMetadata();
 
         return new ReladomoContextJsonSerializer(
+                this.domainModel,
                 this.dataStore,
                 metadata);
     }

@@ -13,6 +13,7 @@ import com.gs.fw.common.mithra.MithraObject;
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DataType;
+import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.Multiplicity;
@@ -34,11 +35,16 @@ public class ReladomoJsonViewSerializer
         extends JsonSerializer<MithraObject>
 {
     @Nonnull
-    private final DataStore dataStore;
+    private final DomainModel domainModel;
+    @Nonnull
+    private final DataStore   dataStore;
 
-    public ReladomoJsonViewSerializer(@Nonnull DataStore dataStore)
+    public ReladomoJsonViewSerializer(
+            @Nonnull DomainModel domainModel,
+            @Nonnull DataStore dataStore)
     {
-        this.dataStore = Objects.requireNonNull(dataStore);
+        this.domainModel = Objects.requireNonNull(domainModel);
+        this.dataStore   = Objects.requireNonNull(dataStore);
     }
 
     @Override
@@ -58,8 +64,9 @@ public class ReladomoJsonViewSerializer
         {
             throw new IllegalStateException(activeViewClass.getCanonicalName());
         }
-        KlassJsonView klassJsonView = this.instantiate(activeViewClass);
-        Projection    projection    = klassJsonView.getProjection();
+        KlassJsonView klassJsonView  = this.instantiate(activeViewClass);
+        String        projectionName = klassJsonView.getProjectionName();
+        Projection    projection     = this.domainModel.getProjectionByName(projectionName);
 
         // This would work if we consistently used the same DomainModel everywhere (instead of sometimes compiled and sometimes code generated).
         // Projection projection = this.domainModel.getProjections().selectInstancesOf(activeView).getOnly();

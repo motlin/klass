@@ -384,7 +384,6 @@
 
         <!--region Compile dependencies -->
 
-
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>

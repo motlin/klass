@@ -7,8 +7,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.auto.service.AutoService;
 import com.gs.fw.common.mithra.MithraObject;
 import cool.klass.data.store.DataStore;
-import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
+import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactoryProvider;
+import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.serialization.jackson.jsonview.reladomo.ReladomoJsonViewSerializer;
 import io.dropwizard.setup.Environment;
 import io.liftwizard.dropwizard.bundle.prioritized.PrioritizedBundle;
@@ -30,15 +31,19 @@ public class ReladomoJsonViewBundle
     @Override
     public void runWithMdc(@Nonnull Object configuration, @Nonnull Environment environment)
     {
+        DomainModelFactoryProvider domainModelFactoryProvider =
+                this.safeCastConfiguration(DomainModelFactoryProvider.class, configuration);
+
         DataStoreFactoryProvider dataStoreFactoryProvider = this.safeCastConfiguration(
                 DataStoreFactoryProvider.class,
                 configuration);
 
         LOGGER.info("Running {}.", ReladomoJsonViewBundle.class.getSimpleName());
 
-        DataStoreFactory             dataStoreFactory = dataStoreFactoryProvider.getDataStoreFactory();
-        DataStore                    dataStore        = dataStoreFactory.createDataStore();
-        JsonSerializer<MithraObject> serializer       = new ReladomoJsonViewSerializer(dataStore);
+        DomainModel domainModel = domainModelFactoryProvider.getDomainModelFactory().createDomainModel();
+        DataStore   dataStore   = dataStoreFactoryProvider.getDataStoreFactory().createDataStore();
+
+        JsonSerializer<MithraObject> serializer = new ReladomoJsonViewSerializer(domainModel, dataStore);
 
         SimpleModule module = new SimpleModule();
         module.addSerializer(MithraObject.class, serializer);

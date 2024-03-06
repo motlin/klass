@@ -6,8 +6,9 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
-import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
+import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactoryProvider;
+import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.serialization.jackson.response.KlassResponse;
 import cool.klass.serialization.jackson.response.reladomo.KlassResponseReladomoJsonSerializer;
 import io.dropwizard.setup.Environment;
@@ -32,16 +33,19 @@ public class ReladomoResponseBundle
             @Nonnull Object configuration,
             @Nonnull Environment environment)
     {
+        DomainModelFactoryProvider domainModelFactoryProvider =
+                this.safeCastConfiguration(DomainModelFactoryProvider.class, configuration);
+
         DataStoreFactoryProvider dataStoreFactoryProvider = this.safeCastConfiguration(
                 DataStoreFactoryProvider.class,
                 configuration);
 
         LOGGER.info("Running {}.", ReladomoResponseBundle.class.getSimpleName());
 
-        DataStoreFactory dataStoreFactory = dataStoreFactoryProvider.getDataStoreFactory();
-        DataStore        dataStore        = dataStoreFactory.createDataStore();
+        DomainModel domainModel = domainModelFactoryProvider.getDomainModelFactory().createDomainModel();
+        DataStore   dataStore   = dataStoreFactoryProvider.getDataStoreFactory().createDataStore();
 
-        JsonSerializer<KlassResponse> serializer = new KlassResponseReladomoJsonSerializer(dataStore);
+        JsonSerializer<KlassResponse> serializer = new KlassResponseReladomoJsonSerializer(domainModel, dataStore);
 
         SimpleModule module = new SimpleModule();
         module.addSerializer(KlassResponse.class, serializer);
