@@ -140,7 +140,9 @@ public final class DataFetcherSourceCodePropertyVisitor
         String typeName        = referenceProperty.getType().getName();
         String propertyName    = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, referenceProperty.getName());
         String owningClassName = this.owningClassifier.getName();
-        return "                new GraphQLPropertyDataDeepFetcher<" + typeName + ">(\n"
+
+        return ""
+                + "new GraphQLPropertyDataDeepFetcher<" + typeName + ">(\n"
                 + "                        " + owningClassName + "::get" + propertyName + ",\n"
                 + "                        " + typeName + "Finder.getFinderInstance())";
     }
