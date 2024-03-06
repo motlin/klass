@@ -29,6 +29,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
         this.compilerState = compilerState;
     }
 
+    @Nonnull
     public String getName()
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getName() not implemented yet");
@@ -123,7 +124,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterAssociationEnd(AssociationEndContext ctx)
+    public void enterAssociationEnd(@Nonnull AssociationEndContext ctx)
     {
         super.enterAssociationEnd(ctx);
         this.compilerState.enterAssociationEnd(ctx);

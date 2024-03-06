@@ -27,7 +27,6 @@ import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.grammar.KlassListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.impl.factory.Lists;
 import org.fusesource.jansi.AnsiConsole;
 
@@ -67,7 +66,7 @@ public class KlassCompiler
     public void executeCompilerPhase(KlassListener compilerPhase)
     {
         // Compiler macros may add new compilation units within a compiler phase, so take an immutable copy
-        ImmutableSet<CompilationUnit> immutableCompilationUnits =
+        ImmutableList<CompilationUnit> immutableCompilationUnits =
                 this.compilerState.getCompilerInputState().getCompilationUnits().toImmutable();
 
         ParseTreeWalker parseTreeWalker = new ParseTreeWalker();

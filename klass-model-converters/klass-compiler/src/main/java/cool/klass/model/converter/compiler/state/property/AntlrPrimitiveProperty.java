@@ -9,7 +9,6 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
@@ -25,7 +24,6 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
     @Nonnull
     public static final AntlrPrimitiveProperty AMBIGUOUS = new AntlrPrimitiveProperty(
             new PrimitivePropertyContext(null, -1),
-            null,
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
             "ambiguous primitive property name",
@@ -42,12 +40,11 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
 
     public AntlrPrimitiveProperty(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            AntlrClassifier owningClassifierState,
+            @Nonnull AntlrClassifier owningClassifierState,
             boolean isOptional,
             @Nonnull ImmutableList<AntlrPropertyModifier> propertyModifierStates,
             @Nonnull AntlrPrimitiveType antlrPrimitiveType)
@@ -55,7 +52,6 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
         super(
                 elementContext,
                 compilationUnit,
-                macroElement,
                 nameContext,
                 name,
                 ordinal,
@@ -104,7 +100,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
 
         this.elementBuilder = new PrimitivePropertyBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,
@@ -126,7 +122,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
     }
 
     @Override
-    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         super.reportErrors(compilerErrorHolder);
 
@@ -134,7 +130,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
         this.reportInvalidNumericValidations(compilerErrorHolder);
     }
 
-    private void reportInvalidStringValidations(CompilerErrorState compilerErrorHolder)
+    private void reportInvalidStringValidations(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
         if (primitiveType == PrimitiveType.STRING)
@@ -146,7 +142,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
         this.maxLengthValidationStates.each(each -> each.reportInvalidType(compilerErrorHolder, primitiveType));
     }
 
-    private void reportInvalidNumericValidations(CompilerErrorState compilerErrorHolder)
+    private void reportInvalidNumericValidations(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
         if (primitiveType.isNumeric())

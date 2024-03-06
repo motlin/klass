@@ -22,7 +22,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
 import org.reflections.Reflections;
@@ -67,7 +66,7 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
         Set<String> klassLocations = reflections.getResources(Pattern.compile(".*\\.klass"));
         this.getLog().debug("Found klass locations: " + SetAdapter.adapt(klassLocations).makeString());
 
-        MutableSet<CompilationUnit> compilationUnits = SetAdapter.adapt(klassLocations)
+        MutableList<CompilationUnit> compilationUnits = Lists.mutable.withAll(klassLocations)
                 .collectWith(CompilationUnit::createFromClasspathLocation, classLoader);
 
         CompilerState compilerState = new CompilerState(compilationUnits);

@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -18,18 +17,17 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public final class AntlrStringLiteralValue extends AbstractAntlrLiteralValue
 {
-    private final String value;
+    private final String                    value;
     private       StringLiteralValueBuilder elementBuilder;
 
     public AntlrStringLiteralValue(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
-            String value,
-            IAntlrElement expressionValueOwner)
+            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull String value,
+            @Nonnull IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, macroElement, expressionValueOwner);
-        this.value = value;
+        super(elementContext, compilationUnit, expressionValueOwner);
+        this.value = Objects.requireNonNull(value);
     }
 
     @Override
@@ -47,7 +45,7 @@ public final class AntlrStringLiteralValue extends AbstractAntlrLiteralValue
         }
         this.elementBuilder = new StringLiteralValueBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.value);
         return this.elementBuilder;
     }

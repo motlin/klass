@@ -5,7 +5,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.domain.AbstractNamedElement.NamedElementBuilder;
@@ -15,13 +14,12 @@ public class AntlrParameterModifier extends AntlrModifier
 {
     public AntlrParameterModifier(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, name, ordinal);
     }
 
     @Nonnull
@@ -47,12 +45,14 @@ public class AntlrParameterModifier extends AntlrModifier
         return this.name.equals("version");
     }
 
+    @Nonnull
     @Override
     public NamedElementBuilder<?> build()
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".build() not implemented yet");
     }
 
+    @Nonnull
     @Override
     public NamedElementBuilder<?> getElementBuilder()
     {

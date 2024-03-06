@@ -1,6 +1,7 @@
 package cool.klass.generator.service.test;
 
 import java.time.Instant;
+import java.util.Optional;
 
 import cool.klass.generator.service.ServiceResourceGenerator;
 import cool.klass.model.converter.compiler.CompilationUnit;
@@ -24,6 +25,7 @@ public class ServiceResourceGeneratorTest
     public void stackOverflow()
     {
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                Optional.empty(),
                 "example.klass",
                 KlassTestConstants.STACK_OVERFLOW_SOURCE_CODE_TEXT);
         CompilerState         compilerState  = new CompilerState(compilationUnit);

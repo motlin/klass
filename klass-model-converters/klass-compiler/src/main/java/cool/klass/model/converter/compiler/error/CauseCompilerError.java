@@ -5,6 +5,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.SourceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -14,16 +15,9 @@ public class CauseCompilerError extends AbstractCompilerError
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull Optional<CauseCompilerError> macroCause,
             @Nonnull ImmutableList<ParserRuleContext> offendingContexts,
-            @Nonnull ImmutableList<ParserRuleContext> parserRuleContexts)
+            @Nonnull ImmutableList<SourceContext> sourceContexts)
     {
-        super(compilationUnit, macroCause, offendingContexts, parserRuleContexts);
-    }
-
-    @Override
-    @Nonnull
-    protected String getFilenameWithoutDirectory()
-    {
-        return this.compilationUnit.getSourceName();
+        super(compilationUnit, macroCause, offendingContexts, sourceContexts);
     }
 
     @Nonnull

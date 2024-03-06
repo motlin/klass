@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
@@ -28,8 +30,7 @@ public class ServiceCriteriaPhase extends AbstractCompilerPhase
 
         AntlrServiceCriteria serviceCriteriaState = new AntlrServiceCriteria(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 serviceCriteriaKeyword,
                 this.compilerState.getCompilerWalkState().getServiceState());
 

@@ -5,8 +5,10 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.SourceContext;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -21,13 +23,13 @@ public class CompilerErrorState
             @Nonnull String errorCode,
             @Nonnull String message,
             @Nonnull ParserRuleContext offendingParserRuleContext,
-            ParserRuleContext... parserRuleContexts)
+            SourceContext... sourceContexts)
     {
         RootCompilerError compilerError = new RootCompilerError(
                 compilationUnit,
                 Optional.empty(),
                 Lists.immutable.with(offendingParserRuleContext),
-                Lists.immutable.with(parserRuleContexts),
+                Lists.immutable.with(sourceContexts),
                 errorCode,
                 message);
         this.compilerErrors.add(compilerError);
@@ -67,8 +69,8 @@ public class CompilerErrorState
             @Nonnull String errorCode,
             @Nonnull String message,
             @Nonnull IAntlrElement element,
-            ImmutableList<IAntlrElement> surroundingElements,
-            ImmutableList<ParserRuleContext> offendingContexts)
+            @Nonnull ImmutableList<IAntlrElement> surroundingElements,
+            @Nonnull ImmutableList<ParserRuleContext> offendingContexts)
     {
         RootCompilerError compilerError = this.getCompilerError(
                 errorCode,
@@ -80,26 +82,20 @@ public class CompilerErrorState
     }
 
     @Nonnull
-    public RootCompilerError getCompilerError(
+    private RootCompilerError getCompilerError(
             @Nonnull String errorCode,
             @Nonnull String message,
             @Nonnull IAntlrElement element,
-            ImmutableList<IAntlrElement> surroundingElements,
-            ImmutableList<ParserRuleContext> offendingContexts)
+            @Nonnull ImmutableList<IAntlrElement> surroundingElements,
+            @Nonnull ImmutableList<ParserRuleContext> offendingContexts)
     {
-        Optional<CauseCompilerError> macroCause = getCauseCompilerError(element);
+        Optional<CauseCompilerError> macroCause = this.getCauseCompilerError(element);
 
-        ParserRuleContext outerContext = element.getCompilationUnit().getParserContext();
+        ImmutableList<SourceContext> allParserRuleContexts = this.getSourceContexts(element, surroundingElements);
 
-        ImmutableList<ParserRuleContext> innerContexts = surroundingElements
-                .collect(IAntlrElement::getElementContext);
-
-        ImmutableList<ParserRuleContext> allParserRuleContexts = Lists.immutable
-                .withAll(innerContexts)
-                .newWith(outerContext);
-
+        CompilationUnit compilationUnit = element.getCompilationUnit().get();
         return new RootCompilerError(
-                element.getCompilationUnit(),
+                compilationUnit,
                 macroCause,
                 offendingContexts,
                 allParserRuleContexts,
@@ -110,25 +106,42 @@ public class CompilerErrorState
     @Nonnull
     public CauseCompilerError getCauseCompilerError(
             @Nonnull IAntlrElement element,
-            ImmutableList<IAntlrElement> surroundingElements,
-            ImmutableList<ParserRuleContext> offendingContexts)
+            @Nonnull ImmutableList<IAntlrElement> surroundingElements,
+            @Nonnull ImmutableList<ParserRuleContext> offendingContexts)
     {
-        Optional<CauseCompilerError> macroCause = getCauseCompilerError(element);
+        Optional<CauseCompilerError> macroCause = this.getCauseCompilerError(element);
 
-        ParserRuleContext outerContext = element.getCompilationUnit().getParserContext();
+        ImmutableList<SourceContext> sourceContexts = this.getSourceContexts(element, surroundingElements);
 
-        ImmutableList<ParserRuleContext> innerContexts = surroundingElements
-                .collect(IAntlrElement::getElementContext);
-
-        ImmutableList<ParserRuleContext> allParserRuleContexts = Lists.immutable
-                .withAll(innerContexts)
-                .newWith(outerContext);
-
+        CompilationUnit compilationUnit = element.getCompilationUnit().get();
         return new CauseCompilerError(
-                element.getCompilationUnit(),
+                compilationUnit,
                 macroCause,
                 offendingContexts,
-                allParserRuleContexts);
+                sourceContexts);
+    }
+
+    private ImmutableList<SourceContext> getSourceContexts(
+            @Nonnull IAntlrElement element,
+            @Nonnull ImmutableList<IAntlrElement> surroundingElements)
+    {
+        IAntlrElement     outerElement                 = element.getOuterElement();
+        CompilationUnit   outerElementCompilationUnit  = outerElement.getCompilationUnit().get();
+        ParserRuleContext compilationUnitParserContext = outerElementCompilationUnit.getParserContext();
+        SourceContext outerContext = new SourceContext(
+                outerElementCompilationUnit,
+                compilationUnitParserContext);
+        if (!(compilationUnitParserContext instanceof CompilationUnitContext))
+        {
+            throw new AssertionError(outerContext.getClass().getSimpleName());
+        }
+
+        ImmutableList<SourceContext> innerContexts = surroundingElements
+                .collect(IAntlrElement::getSourceContext);
+
+        return Lists.immutable
+                .withAll(innerContexts)
+                .newWith(outerContext);
     }
 
     public Optional<CauseCompilerError> getCauseCompilerError(@Nonnull IAntlrElement element)

@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrElement;
@@ -16,7 +15,6 @@ public class AntlrServiceMultiplicity extends AntlrElement
 {
     public static final AntlrServiceMultiplicity AMBIGUOUS = new AntlrServiceMultiplicity(
             new ParserRuleContext(),
-            null,
             Optional.empty(),
             ServiceMultiplicity.ONE);
 
@@ -25,11 +23,10 @@ public class AntlrServiceMultiplicity extends AntlrElement
 
     public AntlrServiceMultiplicity(
             @Nonnull ParserRuleContext elementContext,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ServiceMultiplicity serviceMultiplicity)
     {
-        super(elementContext, compilationUnit, macroElement);
+        super(elementContext, compilationUnit);
         this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
     }
 

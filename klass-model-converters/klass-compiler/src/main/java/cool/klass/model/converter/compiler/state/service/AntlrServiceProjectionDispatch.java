@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -27,12 +26,11 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
 
     public AntlrServiceProjectionDispatch(
             @Nonnull ParserRuleContext elementContext,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrService serviceState,
             @Nonnull AntlrProjection projection)
     {
-        super(elementContext, compilationUnit, macroElement);
+        super(elementContext, compilationUnit);
         this.serviceState = Objects.requireNonNull(serviceState);
         this.projection = Objects.requireNonNull(projection);
     }
@@ -103,7 +101,7 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
         }
         this.elementBuilder = new ServiceProjectionDispatchBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.projection.getElementBuilder());
         return this.elementBuilder;
     }

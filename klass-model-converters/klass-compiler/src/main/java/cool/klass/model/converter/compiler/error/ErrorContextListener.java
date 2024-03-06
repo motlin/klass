@@ -48,19 +48,19 @@ public class ErrorContextListener extends AbstractErrorListener
     }
 
     @Override
-    public void exitEnumerationDeclaration(EnumerationDeclarationContext ctx)
+    public void exitEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
     {
         this.addTextInclusive("", ctx.getStop(), ctx.getStop());
     }
 
     @Override
-    public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    public void enterInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
     {
         this.addTextInclusive("", ctx.getStart(), ctx.interfaceBody().getStart());
     }
 
     @Override
-    public void exitInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    public void exitInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
     {
         this.addTextInclusive("", ctx.getStop(), ctx.getStop());
     }
@@ -72,7 +72,7 @@ public class ErrorContextListener extends AbstractErrorListener
     }
 
     @Override
-    public void exitClassDeclaration(ClassDeclarationContext ctx)
+    public void exitClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
         this.addTextInclusive("", ctx.getStop(), ctx.getStop());
     }
@@ -84,7 +84,7 @@ public class ErrorContextListener extends AbstractErrorListener
     }
 
     @Override
-    public void exitAssociationDeclaration(AssociationDeclarationContext ctx)
+    public void exitAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
         this.addTextInclusive("", ctx.getStop(), ctx.getStop());
     }
@@ -96,7 +96,7 @@ public class ErrorContextListener extends AbstractErrorListener
     }
 
     @Override
-    public void exitProjectionDeclaration(ProjectionDeclarationContext ctx)
+    public void exitProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
         this.addTextInclusive("", ctx.getStop(), ctx.getStop());
     }
@@ -129,7 +129,7 @@ public class ErrorContextListener extends AbstractErrorListener
     }
 
     @Override
-    public void exitServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
+    public void exitServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
     {
         this.addTextInclusive("", ctx.getStop(), ctx.getStop());
     }
@@ -153,7 +153,7 @@ public class ErrorContextListener extends AbstractErrorListener
     }
 
     @Override
-    public void exitServiceDeclaration(ServiceDeclarationContext ctx)
+    public void exitServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
     {
         this.addTextInclusive("        ", ctx.getStop(), ctx.getStop());
     }

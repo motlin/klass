@@ -1,8 +1,10 @@
 package cool.klass.model.converter.compiler.phase;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
@@ -40,6 +42,7 @@ import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
 public class ClassifierPhase extends AbstractCompilerPhase
 {
+    @Nullable
     private AntlrDataTypeProperty<?> dataTypePropertyState;
 
     public ClassifierPhase(CompilerState compilerState)
@@ -48,14 +51,13 @@ public class ClassifierPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    public void enterInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
     {
         super.enterInterfaceDeclaration(ctx);
 
         AntlrInterface interfaceState = new AntlrInterface(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.interfaceHeader().identifier(),
                 ctx.interfaceHeader().identifier().getText(),
                 this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,
@@ -74,8 +76,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
 
         AntlrClass classState = new AntlrClass(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.classHeader().identifier(),
                 ctx.classHeader().identifier().getText(),
                 this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,
@@ -95,7 +96,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterInheritanceType(InheritanceTypeContext ctx)
+    public void enterInheritanceType(@Nonnull InheritanceTypeContext ctx)
     {
         super.enterInheritanceType(ctx);
 
@@ -114,8 +115,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
 
         AntlrClassModifier classModifierState = new AntlrClassModifier(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,
                 ctx.getText(),
                 ordinal + 1,
@@ -147,8 +147,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
         }
         this.dataTypePropertyState = new AntlrPrimitiveProperty(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.identifier(),
                 propertyName,
                 classifierState.getNumMembers() + 1,
@@ -190,8 +189,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
         }
         this.dataTypePropertyState = new AntlrEnumerationProperty(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.identifier(),
                 propertyName,
                 classifierState.getNumMembers() + 1,
@@ -211,7 +209,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterMinLengthValidation(MinLengthValidationContext ctx)
+    public void enterMinLengthValidation(@Nonnull MinLengthValidationContext ctx)
     {
         super.enterMinLengthValidation(ctx);
 
@@ -219,15 +217,14 @@ public class ClassifierPhase extends AbstractCompilerPhase
         int                   length                = this.getIntegerFromLiteral(integerLiteralContext);
         AntlrMinLengthPropertyValidation minLengthValidationState = new AntlrMinLengthPropertyValidation(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.dataTypePropertyState,
                 length);
         this.dataTypePropertyState.addMinLengthValidationState(minLengthValidationState);
     }
 
     @Override
-    public void enterMaxLengthValidation(MaxLengthValidationContext ctx)
+    public void enterMaxLengthValidation(@Nonnull MaxLengthValidationContext ctx)
     {
         super.enterMaxLengthValidation(ctx);
 
@@ -235,15 +232,14 @@ public class ClassifierPhase extends AbstractCompilerPhase
         int                   length                = this.getIntegerFromLiteral(integerLiteralContext);
         AntlrMaxLengthPropertyValidation maxLengthValidationState = new AntlrMaxLengthPropertyValidation(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.dataTypePropertyState,
                 length);
         this.dataTypePropertyState.addMaxLengthValidationState(maxLengthValidationState);
     }
 
     @Override
-    public void enterMinValidation(MinValidationContext ctx)
+    public void enterMinValidation(@Nonnull MinValidationContext ctx)
     {
         super.enterMinValidation(ctx);
 
@@ -251,15 +247,14 @@ public class ClassifierPhase extends AbstractCompilerPhase
         int                   minimum               = this.getIntegerFromLiteral(integerLiteralContext);
         AntlrMinPropertyValidation minValidationState = new AntlrMinPropertyValidation(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.dataTypePropertyState,
                 minimum);
         this.dataTypePropertyState.addMinValidationState(minValidationState);
     }
 
     @Override
-    public void enterMaxValidation(MaxValidationContext ctx)
+    public void enterMaxValidation(@Nonnull MaxValidationContext ctx)
     {
         super.enterMaxValidation(ctx);
 
@@ -267,14 +262,13 @@ public class ClassifierPhase extends AbstractCompilerPhase
         int                   maximum               = this.getIntegerFromLiteral(integerLiteralContext);
         AntlrMaxPropertyValidation maxValidationState = new AntlrMaxPropertyValidation(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.dataTypePropertyState,
                 maximum);
         this.dataTypePropertyState.addMaxValidationState(maxValidationState);
     }
 
-    private int getIntegerFromLiteral(IntegerLiteralContext integerLiteralContext)
+    private int getIntegerFromLiteral(@Nonnull IntegerLiteralContext integerLiteralContext)
     {
         String integerText        = integerLiteralContext.getText();
         String withoutUnderscores = integerText.replaceAll("_", "");
@@ -286,8 +280,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
     {
         return new AntlrPropertyModifier(
                 context,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 context,
                 context.getText(),
                 ordinal + 1);

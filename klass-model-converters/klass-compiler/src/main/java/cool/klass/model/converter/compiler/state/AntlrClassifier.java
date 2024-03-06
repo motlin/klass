@@ -38,19 +38,18 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     protected AntlrClassifier(
-            ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
-            ParserRuleContext nameContext,
-            String name,
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
             int ordinal,
-            ParserRuleContext packageContext,
-            String packageName)
+            @Nonnull ParserRuleContext packageContext,
+            @Nonnull String packageName)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
     }
 
-    protected ImmutableList<AntlrDataTypeProperty<?>> getDataTypeProperties(MutableList<AntlrClassifier> visited)
+    protected ImmutableList<AntlrDataTypeProperty<?>> getDataTypeProperties(@Nonnull MutableList<AntlrClassifier> visited)
     {
         if (visited.contains(this))
         {
@@ -79,7 +78,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         return this.getDataTypeProperties(Lists.mutable.empty());
     }
 
-    protected ImmutableList<AntlrClassModifier> getClassModifiers(MutableList<AntlrClassifier> visited)
+    protected ImmutableList<AntlrClassModifier> getClassModifiers(@Nonnull MutableList<AntlrClassifier> visited)
     {
         if (visited.contains(this))
         {
@@ -251,7 +250,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         }
     }
 
-    protected void reportRedundantInterface(CompilerErrorState compilerErrorHolder)
+    protected void reportRedundantInterface(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         MutableSet<AntlrInterface> visitedInterfaceStates = Sets.mutable.empty();
 

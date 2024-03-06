@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
@@ -23,7 +22,6 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
     @Nonnull
     public static final AntlrProjection AMBIGUOUS = new AntlrProjection(
             new ProjectionDeclarationContext(null, -1),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "ambiguous projection",
@@ -34,7 +32,6 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
     @Nonnull
     public static final AntlrProjection NOT_FOUND = new AntlrProjection(
             new ProjectionDeclarationContext(null, -1),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "not found projection",
@@ -48,15 +45,14 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
 
     public AntlrProjection(
             @Nonnull ProjectionDeclarationContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull AntlrClass klass,
             String packageName)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, klass);
+        super(elementContext, compilationUnit, nameContext, name, ordinal, klass);
         this.packageName = packageName;
     }
 
@@ -75,7 +71,7 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
 
         this.projectionBuilder = new ProjectionBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,
@@ -149,6 +145,6 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
     public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
     {
         parserRuleContexts.add(this.elementContext);
-        parserRuleContexts.add(this.compilationUnit.getParserContext());
+        parserRuleContexts.add(this.compilationUnit.get().getParserContext());
     }
 }

@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -38,7 +37,6 @@ public class AntlrUrl extends AntlrElement
     @Nonnull
     public static final AntlrUrl AMBIGUOUS = new AntlrUrl(
             new ParserRuleContext(),
-            null,
             Optional.empty(),
             AntlrServiceGroup.AMBIGUOUS);
 
@@ -62,11 +60,10 @@ public class AntlrUrl extends AntlrElement
 
     public AntlrUrl(
             @Nonnull ParserRuleContext elementContext,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrServiceGroup serviceGroup)
     {
-        super(elementContext, compilationUnit, macroElement);
+        super(elementContext, compilationUnit);
         this.serviceGroup = Objects.requireNonNull(serviceGroup);
     }
 
@@ -244,7 +241,7 @@ public class AntlrUrl extends AntlrElement
 
         this.elementBuilder = new UrlBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.serviceGroup.getElementBuilder());
 
         ImmutableList<ElementBuilder<?>> pathSegments = this.urlPathSegments
@@ -278,6 +275,7 @@ public class AntlrUrl extends AntlrElement
         return this.elementBuilder;
     }
 
+    @Nonnull
     private ElementBuilder<?> buildPathSegment(IAntlrElement element)
     {
         if (element instanceof AntlrUrlConstant)

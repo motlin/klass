@@ -32,8 +32,7 @@ public class EnumerationsPhase extends AbstractCompilerPhase
         IdentifierContext identifier = ctx.identifier();
         this.enumerationState = new AntlrEnumeration(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 identifier,
                 identifier.getText(),
                 this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,
@@ -63,8 +62,7 @@ public class EnumerationsPhase extends AbstractCompilerPhase
 
         AntlrEnumerationLiteral enumerationLiteralState = new AntlrEnumerationLiteral(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.identifier(),
                 literalName,
                 this.enumerationState.getNumLiterals() + 1,
@@ -74,7 +72,7 @@ public class EnumerationsPhase extends AbstractCompilerPhase
     }
 
     @Nonnull
-    private String trimQuotes(String text)
+    private String trimQuotes(@Nonnull String text)
     {
         return text.substring(1, text.length() - 1);
     }

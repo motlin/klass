@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.validation.AbstractAntlrPropertyValidation;
@@ -54,16 +53,15 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
 
     protected AntlrDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            AntlrClassifier owningClassifierState,
+            @Nonnull AntlrClassifier owningClassifierState,
             @Nonnull ImmutableList<AntlrPropertyModifier> modifierStates,
             boolean isOptional)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.isOptional = isOptional;
         this.modifierStates = Objects.requireNonNull(modifierStates);
         this.owningClassifierState = Objects.requireNonNull(owningClassifierState);
@@ -189,8 +187,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     }
 
     public static <InputKey, InputValue, OutputKey, OutputValue> ImmutableListMultimap<OutputKey, OutputValue> collectKeyMultiValues(
-            MutableListMultimap<InputKey, InputValue> multimap,
-            Function<? super InputKey, ? extends OutputKey> keyFunction,
+            @Nonnull MutableListMultimap<InputKey, InputValue> multimap,
+            @Nonnull Function<? super InputKey, ? extends OutputKey> keyFunction,
             Function<? super InputValue, ? extends OutputValue> valueFunction)
     {
         MutableListMultimap<OutputKey, OutputValue> result = Multimaps.mutable.list.empty();
@@ -202,7 +200,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     }
 
     @Override
-    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.reportDuplicateModifiers(compilerErrorHolder);
         this.reportDuplicateValidations(compilerErrorHolder);
@@ -212,7 +210,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         // TODO: ☑ Only Integer and Long may be ID (no enums either)
     }
 
-    private void reportDuplicateModifiers(CompilerErrorState compilerErrorHolder)
+    private void reportDuplicateModifiers(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         MutableBag<String> duplicateModifiers = this.modifierStates
                 .asLazy()
@@ -233,7 +231,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         }
     }
 
-    private void reportDuplicateValidations(CompilerErrorState compilerErrorHolder)
+    private void reportDuplicateValidations(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.reportDuplicateValidations(compilerErrorHolder, this.minLengthValidationStates);
         this.reportDuplicateValidations(compilerErrorHolder, this.maxLengthValidationStates);
@@ -242,8 +240,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     }
 
     private void reportDuplicateValidations(
-            CompilerErrorState compilerErrorHolder,
-            ListIterable<? extends AbstractAntlrPropertyValidation> validationStates)
+            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull ListIterable<? extends AbstractAntlrPropertyValidation> validationStates)
     {
         if (validationStates.size() > 1)
         {

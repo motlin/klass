@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
@@ -27,17 +26,16 @@ public abstract class AntlrReferenceTypeProperty extends AntlrProperty<KlassImpl
 
     protected AntlrReferenceTypeProperty(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull AntlrClass type,
-            AntlrMultiplicity multiplicityState)
+            @Nonnull AntlrMultiplicity multiplicityState)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.type = Objects.requireNonNull(type);
-        this.multiplicityState = multiplicityState;
+        this.multiplicityState = Objects.requireNonNull(multiplicityState);
     }
 
     @Override

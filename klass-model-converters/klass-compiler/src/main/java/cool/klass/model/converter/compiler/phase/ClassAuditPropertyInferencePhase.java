@@ -17,6 +17,7 @@ public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
         super(compilerState);
     }
 
+    @Nonnull
     @Override
     public String getName()
     {
@@ -66,7 +67,7 @@ public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
                 + "    }\n");
     }
 
-    private void runCompilerMacro(@Nonnull ParserRuleContext ctx, String sourceCodeText)
+    private void runCompilerMacro(@Nonnull ParserRuleContext ctx, @Nonnull String sourceCodeText)
     {
         AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
         ParseTreeListener  compilerPhase      = new ClassifierPhase(this.compilerState);

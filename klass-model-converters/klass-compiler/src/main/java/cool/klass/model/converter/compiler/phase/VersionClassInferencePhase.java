@@ -21,6 +21,7 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
         super(compilerState);
     }
 
+    @Nonnull
     @Override
     public String getName()
     {
@@ -81,7 +82,7 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
         return sourceCode;
     }
 
-    private String getSourceCode(AntlrDataTypeProperty<?> dataTypeProperty)
+    private String getSourceCode(@Nonnull AntlrDataTypeProperty<?> dataTypeProperty)
     {
         ImmutableList<AntlrPropertyModifier> propertyModifiers = dataTypeProperty.getPropertyModifiers()
                 .reject(AntlrPropertyModifier::isID);

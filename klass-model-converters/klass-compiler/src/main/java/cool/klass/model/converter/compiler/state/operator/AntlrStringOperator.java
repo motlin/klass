@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.StringOperatorImpl.StringOperatorBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -19,11 +18,10 @@ public class AntlrStringOperator extends AntlrOperator
 
     public AntlrStringOperator(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
-            String operatorText)
+            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull String operatorText)
     {
-        super(elementContext, compilationUnit, macroElement, operatorText);
+        super(elementContext, compilationUnit, operatorText);
     }
 
     @Nonnull
@@ -36,7 +34,7 @@ public class AntlrStringOperator extends AntlrOperator
         }
         this.elementBuilder = new StringOperatorBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.operatorText);
         return this.elementBuilder;
     }

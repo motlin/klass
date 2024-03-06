@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -60,8 +62,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
 
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 classTypeContext.multiplicity(),
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement());
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()));
 
         // TODO: Parameterized Property modifiers
         /*
@@ -73,8 +74,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
         AntlrClass thisReference = (AntlrClass) this.compilerState.getCompilerWalkState().getThisReference();
         this.parameterizedPropertyState = new AntlrParameterizedProperty(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.identifier(),
                 parameterizedPropertyName,
                 thisReference.getNumMembers() + 1,
@@ -188,8 +188,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
         int ordinal = this.parameterState.getNumModifiers();
         AntlrParameterModifier parameterModifierState = new AntlrParameterModifier(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,
                 ctx.getText(),
                 ordinal);
@@ -203,13 +202,11 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     {
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 multiplicityContext,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement());
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()));
 
         AntlrParameter parameterState = new AntlrParameter(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 identifierContext,
                 identifierContext.getText(),
                 this.parameterOwnerState.getNumParameters() + 1,

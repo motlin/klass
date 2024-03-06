@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -69,6 +71,7 @@ public class CompilerWalkState
     private AntlrClassifier    thisReference;
     @Nullable
     private AntlrOrderByOwner  orderByOwnerState;
+    @Nullable
     private AntlrClassModifier classModifierState;
 
     public CompilerWalkState(AntlrDomainModel domainModelState)
@@ -148,7 +151,7 @@ public class CompilerWalkState
         return this.classModifierState;
     }
 
-    public void withCompilationUnit(CompilationUnit compilationUnit, Runnable runnable)
+    public void withCompilationUnit(CompilationUnit compilationUnit, @Nonnull Runnable runnable)
     {
         CompilationUnit oldCompilationUnit = this.currentCompilationUnit;
 
@@ -166,7 +169,7 @@ public class CompilerWalkState
     @Nullable
     public CompilationUnit getCurrentCompilationUnit()
     {
-        return this.currentCompilationUnit;
+        return Objects.requireNonNull(this.currentCompilationUnit);
     }
 
     public void enterCompilationUnit(CompilationUnit currentCompilationUnit)
@@ -180,7 +183,7 @@ public class CompilerWalkState
         this.packageName = null;
     }
 
-    public void enterPackageDeclaration(PackageDeclarationContext ctx)
+    public void enterPackageDeclaration(@Nonnull PackageDeclarationContext ctx)
     {
         PackageNameContext packageNameContext = ctx.packageName();
         this.packageName = packageNameContext.getText();
@@ -416,7 +419,7 @@ public class CompilerWalkState
         this.classModifierState = null;
     }
 
-    private static void assertNull(Object object)
+    private static void assertNull(@Nullable Object object)
     {
         if (object != null)
         {
@@ -424,6 +427,7 @@ public class CompilerWalkState
         }
     }
 
+    @Nonnull
     public CompilerWalkState withCompilationUnit(CompilationUnit compilationUnit)
     {
         // TODO: It's too easy for this list to get out of sync with the declared fields

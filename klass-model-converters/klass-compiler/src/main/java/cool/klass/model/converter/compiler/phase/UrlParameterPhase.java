@@ -1,8 +1,11 @@
 package cool.klass.model.converter.compiler.phase;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
@@ -52,11 +55,11 @@ public class UrlParameterPhase extends AbstractCompilerPhase
     public void enterUrlConstant(@Nonnull UrlConstantContext ctx)
     {
         super.enterUrlConstant(ctx);
-        AntlrUrl urlState = this.compilerState.getCompilerWalkState().getUrlState();
+        AntlrUrl        urlState               = this.compilerState.getCompilerWalkState().getUrlState();
+        CompilationUnit currentCompilationUnit = this.compilerState.getCompilerWalkState().getCurrentCompilationUnit();
         AntlrUrlConstant antlrUrlConstant = new AntlrUrlConstant(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(currentCompilationUnit),
                 ctx.identifier(),
                 ctx.identifier().getText(),
                 urlState.getNumPathSegments() + 1);
@@ -120,10 +123,11 @@ public class UrlParameterPhase extends AbstractCompilerPhase
             @Nonnull AntlrType antlrType,
             @Nonnull IdentifierContext identifier, @Nonnull MultiplicityContext multiplicityContext)
     {
+        CompilationUnit currentCompilationUnit = this.compilerState.getCompilerWalkState().getCurrentCompilationUnit();
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 multiplicityContext,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement());
+                Optional.of(currentCompilationUnit)
+        );
 
         AntlrUrl urlState = this.compilerState.getCompilerWalkState().getUrlState();
         int ordinal = this.inQueryParameterList
@@ -132,8 +136,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
 
         this.parameterState = new AntlrParameter(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(currentCompilationUnit),
                 identifier,
                 identifier.getText(),
                 ordinal,
@@ -156,10 +159,10 @@ public class UrlParameterPhase extends AbstractCompilerPhase
     {
         super.enterParameterModifier(ctx);
         int ordinal = this.parameterState.getNumModifiers();
+        CompilationUnit currentCompilationUnit = this.compilerState.getCompilerWalkState().getCurrentCompilationUnit();
         AntlrParameterModifier parameterModifierState = new AntlrParameterModifier(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(currentCompilationUnit),
                 ctx,
                 ctx.getText(),
                 ordinal);

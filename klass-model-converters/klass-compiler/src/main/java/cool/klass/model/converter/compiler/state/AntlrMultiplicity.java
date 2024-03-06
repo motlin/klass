@@ -21,20 +21,20 @@ public class AntlrMultiplicity extends AntlrElement
 
     public AntlrMultiplicity(
             @Nonnull MultiplicityContext context,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement)
+            @Nonnull Optional<CompilationUnit> compilationUnit)
     {
-        super(context, compilationUnit, macroElement);
+        super(context, compilationUnit);
         this.multiplicity = this.getMultiplicity(context);
     }
 
     private AntlrMultiplicity()
     {
-        super(new ParserRuleContext(), null, Optional.empty());
+        super(new ParserRuleContext(), Optional.empty());
         this.multiplicity = Multiplicity.ONE_TO_ONE;
     }
 
-    private Multiplicity getMultiplicity(MultiplicityContext multiplicityContext)
+    @Nullable
+    private Multiplicity getMultiplicity(@Nonnull MultiplicityContext multiplicityContext)
     {
         MultiplicityBodyContext multiplicityBodyContext = multiplicityContext.multiplicityBody();
 

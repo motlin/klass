@@ -11,7 +11,6 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
@@ -35,18 +34,16 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
     @Nullable
     public static final AntlrAssociationEnd AMBIGUOUS = new AntlrAssociationEnd(
             new AssociationEndContext(null, -1),
-            null,
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
             "ambiguous association end",
             -1,
             AntlrAssociation.AMBIGUOUS,
             AntlrClass.AMBIGUOUS,
-            null);
+            AntlrMultiplicity.AMBIGUOUS);
     @Nullable
     public static final AntlrAssociationEnd NOT_FOUND = new AntlrAssociationEnd(
             new AssociationEndContext(null, -1),
-            null,
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
             "not found association end",
@@ -54,7 +51,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
             // TODO: Not found here, instead of ambiguous
             AntlrAssociation.AMBIGUOUS,
             AntlrClass.NOT_FOUND,
-            null);
+            AntlrMultiplicity.AMBIGUOUS);
 
     @Nonnull
     private final AntlrAssociation owningAssociationState;
@@ -78,16 +75,15 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
 
     public AntlrAssociationEnd(
             @Nonnull AssociationEndContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull AntlrAssociation owningAssociationState,
             @Nonnull AntlrClass type,
-            AntlrMultiplicity multiplicityState)
+            @Nonnull AntlrMultiplicity multiplicityState)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, type, multiplicityState);
+        super(elementContext, compilationUnit, nameContext, name, ordinal, type, multiplicityState);
         this.owningAssociationState = Objects.requireNonNull(owningAssociationState);
     }
 
@@ -121,7 +117,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
         // TODO: 🔗 Set association end's opposite
         this.associationEndBuilder = new AssociationEndBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,
@@ -149,7 +145,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
     }
 
     @Override
-    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // TODO: ☑ Check that there are no duplicate modifiers
 
@@ -228,7 +224,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
         compilerErrorHolder.add("ERR_VER_END", message, this);
     }
 
-    public void enterAssociationEndModifier(AntlrAssociationEndModifier associationEndModifierState)
+    public void enterAssociationEndModifier(@Nonnull AntlrAssociationEndModifier associationEndModifierState)
     {
         this.associationEndModifierStates.add(associationEndModifierState);
         this.associationEndModifiersByName.compute(
@@ -282,8 +278,8 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
     }
 
     public void addForeignKeyPropertyMatchingProperty(
-            AntlrDataTypeProperty<?> foreignKeyProperty,
-            AntlrDataTypeProperty<?> keyProperty)
+            @Nonnull AntlrDataTypeProperty<?> foreignKeyProperty,
+            @Nonnull AntlrDataTypeProperty<?> keyProperty)
     {
         this.foreignKeys.put(foreignKeyProperty, keyProperty);
         foreignKeyProperty.setKeyMatchingThisForeignKey(this, keyProperty);

@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -30,12 +29,11 @@ public class AntlrVariableReference extends AntlrExpressionValue
 
     public AntlrVariableReference(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull String variableName,
-            IAntlrElement expressionValueOwner)
+            @Nonnull IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, macroElement, expressionValueOwner);
+        super(elementContext, compilationUnit, expressionValueOwner);
         this.variableName = Objects.requireNonNull(variableName);
     }
 
@@ -49,7 +47,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
         }
         this.elementBuilder = new VariableReferenceBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.antlrParameter.getElementBuilder());
         return this.elementBuilder;
     }

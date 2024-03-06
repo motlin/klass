@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.phase.criteria;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -39,8 +40,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
         int value = Integer.parseInt(ctx.getText());
         return new AntlrIntegerLiteralValue(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 value,
                 this.expressionValueOwner);
     }
@@ -77,19 +77,18 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
         String text       = quotedText.substring(1, quotedText.length() - 1);
         return new AntlrStringLiteralValue(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 text,
                 this.expressionValueOwner);
     }
 
+    @Nonnull
     @Override
-    public AbstractAntlrLiteralValue visitNullLiteral(NullLiteralContext ctx)
+    public AbstractAntlrLiteralValue visitNullLiteral(@Nonnull NullLiteralContext ctx)
     {
         return new AntlrNullLiteral(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.expressionValueOwner);
     }
 }

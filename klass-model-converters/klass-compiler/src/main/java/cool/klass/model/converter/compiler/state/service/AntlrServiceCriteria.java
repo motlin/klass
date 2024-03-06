@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -27,12 +26,11 @@ public class AntlrServiceCriteria extends AntlrElement
 
     public AntlrServiceCriteria(
             @Nonnull ServiceCriteriaDeclarationContext elementContext,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull String serviceCriteriaKeyword,
-            AntlrService serviceState)
+            @Nonnull AntlrService serviceState)
     {
-        super(elementContext, compilationUnit, macroElement);
+        super(elementContext, compilationUnit);
         this.serviceCriteriaKeyword = Objects.requireNonNull(serviceCriteriaKeyword);
         this.serviceState = Objects.requireNonNull(serviceState);
     }

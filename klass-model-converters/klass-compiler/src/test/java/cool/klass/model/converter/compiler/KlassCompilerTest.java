@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.error.RootCompilerError;

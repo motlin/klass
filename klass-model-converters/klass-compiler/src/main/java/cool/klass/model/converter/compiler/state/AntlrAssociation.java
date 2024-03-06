@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -28,7 +29,6 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
     @Nonnull
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
             new ParserRuleContext(),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "ambiguous association",
@@ -54,15 +54,14 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
 
     public AntlrAssociation(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            ParserRuleContext packageContext,
-            String packageName)
+            @Nonnull ParserRuleContext packageContext,
+            @Nonnull String packageName)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
     }
 
     public MutableList<AntlrAssociationEnd> getAssociationEndStates()
@@ -139,7 +138,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
 
         this.associationBuilder = new AssociationBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,
@@ -279,6 +278,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
         return this.associationEndStates.get(1);
     }
 
+    @Nullable
     public AntlrAssociationEnd getEndWithForeignKeys()
     {
         boolean sourceHasForeignKeys = this.getSourceEnd().hasForeignKeys();

@@ -10,7 +10,6 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
@@ -31,14 +30,13 @@ public abstract class AntlrMemberReferencePath extends AntlrExpressionValue
 
     protected AntlrMemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrClass classState,
-            ImmutableList<AntlrAssociationEnd> associationEndStates,
+            @Nonnull ImmutableList<AntlrAssociationEnd> associationEndStates,
             @Nonnull AntlrDataTypeProperty<?> dataTypePropertyState,
-            IAntlrElement expressionValueOwner)
+            @Nonnull IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, macroElement, expressionValueOwner);
+        super(elementContext, compilationUnit, expressionValueOwner);
         this.classState = Objects.requireNonNull(classState);
         this.associationEndStates = Objects.requireNonNull(associationEndStates);
         this.dataTypePropertyState = Objects.requireNonNull(dataTypePropertyState);

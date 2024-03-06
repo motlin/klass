@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
@@ -7,6 +9,7 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndModifier;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.grammar.KlassParser;
@@ -19,6 +22,7 @@ public class ServiceVersionInferencePhase extends AbstractCompilerPhase
         super(compilerState);
     }
 
+    @Nonnull
     @Override
     public String getName()
     {
@@ -58,9 +62,10 @@ public class ServiceVersionInferencePhase extends AbstractCompilerPhase
         }
 
         // Detect one arbitrary version association end to use for the compiler error context.
-        return classState
+        AntlrAssociationEndModifier associationEndModifier = classState
                 .getAssociationEndStates()
                 .detect(AntlrAssociationEnd::isVersion)
                 .getAssociationEndModifierByName("version");
+        return Objects.requireNonNull(associationEndModifier);
     }
 }

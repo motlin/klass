@@ -2,12 +2,14 @@ package cool.klass.model.converter.compiler;
 
 import java.io.InputStream;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.phase.AbstractCompilerPhase;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.meta.grammar.KlassLexer;
 import cool.klass.model.meta.grammar.KlassParser;
 import org.antlr.v4.runtime.ANTLRErrorListener;
@@ -24,61 +26,75 @@ public final class CompilationUnit
     private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\r?\\n");
 
     @Nonnull
-    private final String            sourceName;
+    private final Optional<AntlrElement> macroElement;
     @Nonnull
-    private final String[]          lines;
+    private final String                 sourceName;
     @Nonnull
-    private final CharStream        charStream;
+    private final String[]               lines;
     @Nonnull
-    private final TokenStream       tokenStream;
+    private final CharStream             charStream;
     @Nonnull
-    private final ParserRuleContext parserContext;
+    private final TokenStream            tokenStream;
+    @Nonnull
+    private final ParserRuleContext      parserContext;
 
     private CompilationUnit(
+            @Nonnull Optional<AntlrElement> macroElement,
             @Nonnull String sourceName,
             @Nonnull String[] lines,
             @Nonnull CharStream charStream,
             @Nonnull TokenStream tokenStream,
             @Nonnull ParserRuleContext parserRuleContext)
     {
+        this.macroElement = Objects.requireNonNull(macroElement);
         this.sourceName = Objects.requireNonNull(sourceName);
         this.lines = Objects.requireNonNull(lines);
         this.charStream = Objects.requireNonNull(charStream);
         this.tokenStream = Objects.requireNonNull(tokenStream);
         this.parserContext = Objects.requireNonNull(parserRuleContext);
+
+        if (macroElement.isPresent() && !sourceName.contains("macro"))
+        {
+            throw new AssertionError(sourceName);
+        }
     }
 
     @Nonnull
-    public static CompilationUnit createFromClasspathLocation(String classpathLocation, ClassLoader classLoader)
+    public static CompilationUnit createFromClasspathLocation(@Nonnull String classpathLocation, @Nonnull ClassLoader classLoader)
     {
         String sourceCodeText = slurp(classpathLocation, classLoader);
-        return CompilationUnit.createFromText(classpathLocation, sourceCodeText);
+        return CompilationUnit.createFromText(Optional.empty(), classpathLocation, sourceCodeText);
     }
 
+    @Nonnull
     public static CompilationUnit createFromClasspathLocation(@Nonnull String classpathLocation)
     {
         return createFromClasspathLocation(classpathLocation, CompilationUnit.class.getClassLoader());
     }
 
     @Nonnull
-    public static String slurp(String classpathLocation, ClassLoader classLoader)
+    public static String slurp(String classpathLocation, @Nonnull ClassLoader classLoader)
     {
         InputStream inputStream = classLoader.getResourceAsStream(classpathLocation);
         Objects.requireNonNull(inputStream);
         return CompilationUnit.slurp(inputStream);
     }
 
+    @Nonnull
     public static CompilationUnit createFromText(
+            @Nonnull Optional<AntlrElement> macroElement,
             @Nonnull String sourceName,
             @Nonnull String sourceCodeText)
     {
-        return createFromText(sourceName, sourceCodeText, KlassParser::compilationUnit);
+        return createFromText(macroElement, sourceName, sourceCodeText, KlassParser::compilationUnit);
     }
 
+    @Nonnull
     public static CompilationUnit createFromText(
-            String sourceName,
+            @Nonnull Optional<AntlrElement> macroElement,
+            @Nonnull String sourceName,
             @Nonnull String sourceCodeText,
-            Function<KlassParser, ? extends ParserRuleContext> parserRule)
+            @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule)
     {
         String[]            lines             = NEWLINE_PATTERN.split(sourceCodeText);
         ANTLRErrorListener  errorListener     = new ThrowingErrorListener(sourceName, lines);
@@ -88,6 +104,7 @@ public final class CompilationUnit
         KlassParser         parser            = CompilationUnit.getParser(errorListener, tokenStream);
         ParserRuleContext   parserRuleContext = parserRule.apply(parser);
         return new CompilationUnit(
+                macroElement,
                 sourceName,
                 lines,
                 charStream,
@@ -123,12 +140,19 @@ public final class CompilationUnit
 
     @Nonnull
     public static CompilationUnit getMacroCompilationUnit(
+            @Nonnull AntlrElement macroElement,
             @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
             @Nonnull String sourceCodeText,
             @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule)
     {
         String sourceName = macroExpansionCompilerPhase.getName() + " macro";
-        return createFromText(sourceName, sourceCodeText, parserRule);
+        return createFromText(Optional.of(macroElement), sourceName, sourceCodeText, parserRule);
+    }
+
+    @Nonnull
+    public Optional<AntlrElement> getMacroElement()
+    {
+        return this.macroElement;
     }
 
     @Nonnull

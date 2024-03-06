@@ -7,10 +7,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
-import cool.klass.model.meta.domain.AbstractElement.ElementBuilder;
 import cool.klass.model.meta.domain.criteria.AllCriteriaImpl.AllCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
 import org.eclipse.collections.api.map.OrderedMap;
@@ -21,11 +19,10 @@ public class AllAntlrCriteria extends AntlrCriteria
 
     public AllAntlrCriteria(
             @Nonnull CriteriaAllContext elementContext,
-            @Nonnull CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull IAntlrElement criteriaOwner)
     {
-        super(elementContext, compilationUnit, macroElement, criteriaOwner);
+        super(elementContext, compilationUnit, criteriaOwner);
     }
 
     @Nonnull
@@ -45,7 +42,7 @@ public class AllAntlrCriteria extends AntlrCriteria
         }
         this.elementBuilder = new AllCriteriaBuilder(
                 this.elementContext,
-                this.macroElement.<ElementBuilder<?>>map(AntlrElement::getElementBuilder));
+                this.getMacroElementBuilder());
         return this.elementBuilder;
     }
 

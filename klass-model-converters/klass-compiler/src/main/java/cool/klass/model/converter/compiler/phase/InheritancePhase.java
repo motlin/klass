@@ -2,6 +2,8 @@ package cool.klass.model.converter.compiler.phase;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
@@ -20,7 +22,7 @@ public class InheritancePhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterExtendsDeclaration(ExtendsDeclarationContext ctx)
+    public void enterExtendsDeclaration(@Nonnull ExtendsDeclarationContext ctx)
     {
         super.enterExtendsDeclaration(ctx);
 
@@ -34,7 +36,7 @@ public class InheritancePhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterImplementsDeclaration(ImplementsDeclarationContext ctx)
+    public void enterImplementsDeclaration(@Nonnull ImplementsDeclarationContext ctx)
     {
         super.enterImplementsDeclaration(ctx);
 

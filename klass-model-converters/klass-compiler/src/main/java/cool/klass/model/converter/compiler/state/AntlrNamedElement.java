@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -86,13 +85,12 @@ public abstract class AntlrNamedElement extends AntlrElement
 
     protected AntlrNamedElement(
             @Nonnull ParserRuleContext elementContext,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, compilationUnit, macroElement);
+        super(elementContext, compilationUnit);
         this.name = Objects.requireNonNull(name);
         this.nameContext = Objects.requireNonNull(nameContext);
         this.ordinal = ordinal;

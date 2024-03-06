@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -29,14 +28,13 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
 
     public AntlrOrderByMemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrOrderBy orderByState,
             int ordinal,
             AntlrThisMemberReferencePath thisMemberReferencePathState,
             AntlrOrderByDirection orderByDirectionState)
     {
-        super(elementContext, compilationUnit, macroElement);
+        super(elementContext, compilationUnit);
         this.orderByState = Objects.requireNonNull(orderByState);
         this.ordinal = ordinal;
         this.thisMemberReferencePathState = Objects.requireNonNull(thisMemberReferencePathState);
@@ -80,7 +78,7 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
 
         this.elementBuilder = new OrderByMemberReferencePathBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.orderByState.getElementBuilder(),
                 this.ordinal,
                 thisMemberReferencePathBuilder,

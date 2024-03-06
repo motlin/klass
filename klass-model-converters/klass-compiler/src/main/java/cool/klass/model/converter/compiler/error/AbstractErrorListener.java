@@ -29,15 +29,14 @@ public class AbstractErrorListener extends KlassThrowingListener
     protected final MutableList<AbstractContextString> contextualStrings;
 
     public AbstractErrorListener(
-            @Nonnull
-                    CompilationUnit compilationUnit, @Nonnull
-            MutableList<AbstractContextString> contextualStrings)
+            @Nonnull CompilationUnit compilationUnit,
+            @Nonnull MutableList<AbstractContextString> contextualStrings)
     {
         this.compilationUnit = Objects.requireNonNull(compilationUnit);
         this.contextualStrings = Objects.requireNonNull(contextualStrings);
     }
 
-    protected static String colorize(Token token)
+    protected static String colorize(@Nonnull Token token)
     {
         String text = token.getText();
 
@@ -156,12 +155,12 @@ public class AbstractErrorListener extends KlassThrowingListener
         }
     }
 
-    private static String getStringBright(String text, Color color)
+    private static String getStringBright(String text, @Nonnull Color color)
     {
         return ansi().bg(BLACK).fgBright(color).a(text).toString();
     }
 
-    private static String getStringDim(String text, Color color)
+    private static String getStringDim(String text, @Nonnull Color color)
     {
         return ansi().bg(BLACK).fg(color).a(text).toString();
     }

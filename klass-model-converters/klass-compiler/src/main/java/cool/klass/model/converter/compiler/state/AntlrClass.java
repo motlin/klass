@@ -39,7 +39,6 @@ public class AntlrClass extends AntlrClassifier
     @Nonnull
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
             new ClassDeclarationContext(null, -1),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "ambiguous class",
@@ -73,7 +72,6 @@ public class AntlrClass extends AntlrClassifier
     @Nonnull
     public static final AntlrClass NOT_FOUND = new AntlrClass(
             new ClassDeclarationContext(null, -1),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "not found class",
@@ -125,21 +123,20 @@ public class AntlrClass extends AntlrClassifier
 
     public AntlrClass(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            ParserRuleContext packageContext,
-            String packageName,
+            @Nonnull ParserRuleContext packageContext,
+            @Nonnull String packageName,
             boolean isUser)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
         this.isUser = isUser;
     }
 
     @Override
-    protected ImmutableList<AntlrDataTypeProperty<?>> getInheritedProperties(MutableList<AntlrClassifier> visited)
+    protected ImmutableList<AntlrDataTypeProperty<?>> getInheritedProperties(@Nonnull MutableList<AntlrClassifier> visited)
     {
         ImmutableList<AntlrDataTypeProperty<?>> superClassProperties = this.superClassState
                 .map(antlrClass -> antlrClass.getDataTypeProperties(visited))
@@ -153,7 +150,7 @@ public class AntlrClass extends AntlrClassifier
     }
 
     @Override
-    protected ImmutableList<AntlrClassModifier> getInheritedModifiers(MutableList<AntlrClassifier> visited)
+    protected ImmutableList<AntlrClassModifier> getInheritedModifiers(@Nonnull MutableList<AntlrClassifier> visited)
     {
         ImmutableList<AntlrClassModifier> superClassModifiers = this.superClassState
                 .map(antlrClass -> antlrClass.getClassModifiers(visited)).orElseGet(Lists.immutable::empty);
@@ -221,7 +218,7 @@ public class AntlrClass extends AntlrClassifier
         this.inheritanceType = inheritanceType;
     }
 
-    public void enterExtendsDeclaration(AntlrClass superClassState)
+    public void enterExtendsDeclaration(@Nonnull AntlrClass superClassState)
     {
         this.superClassState = Optional.of(superClassState);
     }
@@ -255,7 +252,7 @@ public class AntlrClass extends AntlrClassifier
 
         this.klassBuilder = new KlassBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,
@@ -434,7 +431,7 @@ public class AntlrClass extends AntlrClassifier
         }
     }
 
-    private void reportExtendsConcrete(CompilerErrorState compilerErrorHolder)
+    private void reportExtendsConcrete(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (!this.superClassState.isPresent()
                 || this.superClassState.equals(Optional.of(NOT_FOUND)))
@@ -452,7 +449,7 @@ public class AntlrClass extends AntlrClassifier
         }
     }
 
-    private void reportTransientInheritance(CompilerErrorState compilerErrorHolder)
+    private void reportTransientInheritance(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.isTransient()
                 || !this.superClassState.isPresent()
@@ -468,7 +465,7 @@ public class AntlrClass extends AntlrClassifier
         compilerErrorHolder.add("ERR_EXT_TNS", message, this, offendingToken);
     }
 
-    private void reportTransientIdProperties(CompilerErrorState compilerErrorHolder)
+    private void reportTransientIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (!this.isTransient()
                 || this.getDataTypeProperties().noneSatisfy(AntlrDataTypeProperty::isID))
@@ -484,7 +481,7 @@ public class AntlrClass extends AntlrClassifier
     }
 
     @Override
-    protected void reportCircularInheritance(CompilerErrorState compilerErrorHolder)
+    protected void reportCircularInheritance(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (!this.superClassState.isPresent())
         {
@@ -500,7 +497,7 @@ public class AntlrClass extends AntlrClassifier
         }
     }
 
-    private boolean extendsClass(AntlrClass antlrClass, MutableSet<AntlrClass> visitedClasses)
+    private boolean extendsClass(@Nonnull AntlrClass antlrClass, @Nonnull MutableSet<AntlrClass> visitedClasses)
     {
         if (!this.superClassState.isPresent())
         {

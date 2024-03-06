@@ -47,7 +47,7 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
 
     private AntlrPrimitiveType(PrimitiveType primitiveType)
     {
-        super(new ParserRuleContext(), null, Optional.empty());
+        super(new ParserRuleContext(), Optional.empty());
         this.primitiveType = primitiveType;
     }
 
@@ -76,6 +76,7 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
         return Objects.requireNonNull(this.primitiveType);
     }
 
+    @Nonnull
     @Override
     public String toString()
     {
@@ -94,7 +95,7 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
     {
         return new PrimitiveTypeBuilder(
                 this.getElementContext(),
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.primitiveType);
     }
 

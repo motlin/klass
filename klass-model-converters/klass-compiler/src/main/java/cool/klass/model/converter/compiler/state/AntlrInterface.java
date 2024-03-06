@@ -28,7 +28,6 @@ public class AntlrInterface extends AntlrClassifier
     @Nonnull
     public static final AntlrInterface AMBIGUOUS = new AntlrInterface(
             new ClassDeclarationContext(null, -1),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "ambiguous interface",
@@ -47,7 +46,6 @@ public class AntlrInterface extends AntlrClassifier
     @Nonnull
     public static final AntlrInterface NOT_FOUND = new AntlrInterface(
             new ClassDeclarationContext(null, -1),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "not found interface",
@@ -81,15 +79,14 @@ public class AntlrInterface extends AntlrClassifier
 
     public AntlrInterface(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            ParserRuleContext packageContext,
-            String packageName)
+            @Nonnull ParserRuleContext packageContext,
+            @Nonnull String packageName)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
     }
 
     @Override
@@ -107,7 +104,7 @@ public class AntlrInterface extends AntlrClassifier
 
         this.interfaceBuilder = new InterfaceBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,
@@ -205,7 +202,7 @@ public class AntlrInterface extends AntlrClassifier
     }
     */
 
-    private void reportTransientModifier(CompilerErrorState compilerErrorHolder)
+    private void reportTransientModifier(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // Only need to check declared modifiers
         Optional<AntlrClassModifier> transientModifier = this.classModifierStates
@@ -224,7 +221,7 @@ public class AntlrInterface extends AntlrClassifier
     }
 
     @Override
-    protected void reportCircularInheritance(CompilerErrorState compilerErrorHolder)
+    protected void reportCircularInheritance(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         for (int i = 0; i < this.interfaceStates.size(); i++)
         {
@@ -240,7 +237,9 @@ public class AntlrInterface extends AntlrClassifier
         }
     }
 
-    private boolean extendsInterface(AntlrInterface interfaceState, MutableSet<AntlrInterface> visitedInterfaces)
+    private boolean extendsInterface(
+            AntlrInterface interfaceState,
+            @Nonnull MutableSet<AntlrInterface> visitedInterfaces)
     {
         if (this.interfaceStates.contains(interfaceState))
         {

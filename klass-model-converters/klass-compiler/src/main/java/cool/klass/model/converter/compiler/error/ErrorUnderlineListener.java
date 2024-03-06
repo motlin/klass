@@ -1,8 +1,7 @@
 package cool.klass.model.converter.compiler.error;
 
-import java.util.regex.Pattern;
-
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
@@ -44,8 +43,6 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 public class ErrorUnderlineListener extends AbstractErrorListener
 {
-    private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\r?\\n");
-
     public ErrorUnderlineListener(
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull MutableList<AbstractContextString> contextualStrings)
@@ -54,7 +51,7 @@ public class ErrorUnderlineListener extends AbstractErrorListener
     }
 
     @Override
-    public void enterPackageName(PackageNameContext ctx)
+    public void enterPackageName(@Nonnull PackageNameContext ctx)
     {
         this.addUnderlinedRange(ctx);
     }
@@ -90,31 +87,31 @@ public class ErrorUnderlineListener extends AbstractErrorListener
     }
 
     @Override
-    public void enterMinLengthValidation(MinLengthValidationContext ctx)
+    public void enterMinLengthValidation(@Nonnull MinLengthValidationContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override
-    public void enterMaxLengthValidation(MaxLengthValidationContext ctx)
+    public void enterMaxLengthValidation(@Nonnull MaxLengthValidationContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override
-    public void enterMinValidation(MinValidationContext ctx)
+    public void enterMinValidation(@Nonnull MinValidationContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override
-    public void enterMaxValidation(MaxValidationContext ctx)
+    public void enterMaxValidation(@Nonnull MaxValidationContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override
-    public void enterMultiplicity(MultiplicityContext ctx)
+    public void enterMultiplicity(@Nonnull MultiplicityContext ctx)
     {
         this.addUnderlinedRange(ctx);
     }
@@ -132,7 +129,7 @@ public class ErrorUnderlineListener extends AbstractErrorListener
     }
 
     @Override
-    public void enterClassModifier(ClassModifierContext ctx)
+    public void enterClassModifier(@Nonnull ClassModifierContext ctx)
     {
         InterfaceHeaderContext interfaceDeclarationHeaderContext = this.getParentOfType(
                 ctx,
@@ -168,7 +165,7 @@ public class ErrorUnderlineListener extends AbstractErrorListener
     }
 
     @Override
-    public void enterInterfaceReference(InterfaceReferenceContext ctx)
+    public void enterInterfaceReference(@Nonnull InterfaceReferenceContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
@@ -205,7 +202,7 @@ public class ErrorUnderlineListener extends AbstractErrorListener
         this.addUnderlinedToken(ctx.getStart());
     }
 
-    private void addUnderlinedRange(ParserRuleContext ctx)
+    private void addUnderlinedRange(@Nonnull ParserRuleContext ctx)
     {
         Token startToken = ctx.getStart();
         Token stopToken  = ctx.getStop();
@@ -272,7 +269,7 @@ public class ErrorUnderlineListener extends AbstractErrorListener
     }
 
     @Nonnull
-    private static String getErrorLineStringUnderlined(Token startToken, Token stopToken)
+    private static String getErrorLineStringUnderlined(@Nonnull Token startToken, @Nonnull Token stopToken)
     {
         int start              = startToken.getStartIndex();
         int stop               = stopToken.getStopIndex();
@@ -322,7 +319,8 @@ public class ErrorUnderlineListener extends AbstractErrorListener
         }
     }
 
-    private <T> T getParentOfType(@Nonnull ParserRuleContext ctx, Class<T> aClass /* klass? */)
+    @Nullable
+    private <T> T getParentOfType(@Nonnull ParserRuleContext ctx, @Nonnull Class<T> aClass /* klass? */)
     {
         if (aClass.isInstance(ctx))
         {

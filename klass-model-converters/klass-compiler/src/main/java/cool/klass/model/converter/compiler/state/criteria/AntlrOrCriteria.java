@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.criteria.OrCriteriaImpl.OrCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionOrContext;
@@ -18,11 +17,10 @@ public class AntlrOrCriteria extends AntlrBinaryCriteria
 
     public AntlrOrCriteria(
             @Nonnull CriteriaExpressionOrContext elementContext,
-            @Nonnull CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull IAntlrElement criteriaOwner)
     {
-        super(elementContext, compilationUnit, macroElement, criteriaOwner);
+        super(elementContext, compilationUnit, criteriaOwner);
     }
 
     @Nonnull
@@ -42,7 +40,7 @@ public class AntlrOrCriteria extends AntlrBinaryCriteria
         }
         this.elementBuilder = new OrCriteriaBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.left.build(),
                 this.right.build());
         return this.elementBuilder;

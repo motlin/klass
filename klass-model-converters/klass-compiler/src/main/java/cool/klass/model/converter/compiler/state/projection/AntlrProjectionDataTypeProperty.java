@@ -5,11 +5,9 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
@@ -25,7 +23,6 @@ public class AntlrProjectionDataTypeProperty
     @Nonnull
     public static final AntlrProjectionDataTypeProperty AMBIGUOUS = new AntlrProjectionDataTypeProperty(
             new ParserRuleContext(),
-            null,
             Optional.empty(),
             new ParserRuleContext(), "ambiguous projection member",
             -1,
@@ -47,8 +44,7 @@ public class AntlrProjectionDataTypeProperty
 
     public AntlrProjectionDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -57,7 +53,7 @@ public class AntlrProjectionDataTypeProperty
             @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull AntlrDataTypeProperty<?> dataTypeProperty)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.headerText = Objects.requireNonNull(headerText);
         this.headerContext = Objects.requireNonNull(headerContext);
@@ -80,7 +76,7 @@ public class AntlrProjectionDataTypeProperty
         }
         this.projectionDataTypePropertyBuilder = new ProjectionDataTypePropertyBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

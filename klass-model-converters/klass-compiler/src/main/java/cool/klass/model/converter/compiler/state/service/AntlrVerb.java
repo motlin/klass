@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrElement;
@@ -15,18 +14,17 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public class AntlrVerb extends AntlrElement
 {
     @Nonnull
-    public static final AntlrVerb AMBIGUOUS = new AntlrVerb(new ParserRuleContext(), null, Optional.empty(), Verb.GET);
+    public static final AntlrVerb AMBIGUOUS = new AntlrVerb(new ParserRuleContext(), Optional.empty(), Verb.GET);
 
     @Nonnull
     private final Verb verb;
 
     public AntlrVerb(
             @Nonnull ParserRuleContext elementContext,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull Verb verb)
     {
-        super(elementContext, compilationUnit, macroElement);
+        super(elementContext, compilationUnit);
         this.verb = Objects.requireNonNull(verb);
     }
 

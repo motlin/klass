@@ -6,7 +6,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
@@ -20,11 +19,10 @@ public abstract class AbstractAntlrLiteralValue extends AntlrExpressionValue
 
     protected AbstractAntlrLiteralValue(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
-            IAntlrElement expressionValueOwner)
+            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, macroElement, expressionValueOwner);
+        super(elementContext, compilationUnit, expressionValueOwner);
     }
 
     @Override

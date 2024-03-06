@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
@@ -16,7 +15,6 @@ public class AntlrClassModifier extends AntlrModifier
 {
     public static final AntlrClassModifier NOT_FOUND = new AntlrClassModifier(
             new ParserRuleContext(),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "not found class modifier",
@@ -25,7 +23,6 @@ public class AntlrClassModifier extends AntlrModifier
 
     public static final AntlrClassModifier AMBIGUOUS = new AntlrClassModifier(
             new ParserRuleContext(),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "ambiguous class modifier",
@@ -37,14 +34,13 @@ public class AntlrClassModifier extends AntlrModifier
 
     public AntlrClassModifier(
             @Nonnull ParserRuleContext elementContext,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             AntlrClassifier owningClassifierState)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.owningClassifierState = owningClassifierState;
     }
 
@@ -82,7 +78,7 @@ public class AntlrClassModifier extends AntlrModifier
         }
         this.elementBuilder = new ClassModifierBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

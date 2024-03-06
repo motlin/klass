@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
@@ -23,7 +22,6 @@ public class AntlrProjectionProjectionReference extends AntlrNamedElement implem
     @Nonnull
     public static final AntlrProjectionProjectionReference AMBIGUOUS = new AntlrProjectionProjectionReference(
             new ProjectionProjectionReferenceContext(null, -1),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "ambiguous projection",
@@ -36,7 +34,6 @@ public class AntlrProjectionProjectionReference extends AntlrNamedElement implem
     @Nonnull
     public static final AntlrProjectionProjectionReference NOT_FOUND = new AntlrProjectionProjectionReference(
             new ProjectionProjectionReferenceContext(null, -1),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "not found projection",
@@ -59,8 +56,7 @@ public class AntlrProjectionProjectionReference extends AntlrNamedElement implem
 
     public AntlrProjectionProjectionReference(
             @Nonnull ProjectionProjectionReferenceContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -69,7 +65,7 @@ public class AntlrProjectionProjectionReference extends AntlrNamedElement implem
             @Nonnull AntlrAssociationEnd associationEnd,
             @Nonnull AntlrProjection referencedProjectionState)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.klass = Objects.requireNonNull(klass);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.associationEnd = Objects.requireNonNull(associationEnd);
@@ -87,7 +83,7 @@ public class AntlrProjectionProjectionReference extends AntlrNamedElement implem
 
         this.projectionProjectionReferenceBuilder = new ProjectionProjectionReferenceBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

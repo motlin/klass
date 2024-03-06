@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
@@ -51,7 +52,7 @@ public class AntlrWalkState
         this.packageContext = null;
     }
 
-    public void enterPackageDeclaration(PackageDeclarationContext ctx)
+    public void enterPackageDeclaration(@Nonnull PackageDeclarationContext ctx)
     {
         this.packageContext = ctx.packageName();
     }
@@ -163,7 +164,7 @@ public class AntlrWalkState
         this.classModifierContext = null;
     }
 
-    private static void assertNull(Object object)
+    private static void assertNull(@Nullable Object object)
     {
         if (object != null)
         {
@@ -171,6 +172,7 @@ public class AntlrWalkState
         }
     }
 
+    @Nonnull
     public AntlrWalkState copy()
     {
         AntlrWalkState antlrWalkState = new AntlrWalkState();

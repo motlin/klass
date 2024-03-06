@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -30,17 +29,15 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
 
     public AntlrTypeMemberReferencePath(
             @Nonnull TypeMemberReferencePathContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrClass classState,
-            ImmutableList<AntlrAssociationEnd> associationEndStates,
+            @Nonnull ImmutableList<AntlrAssociationEnd> associationEndStates,
             @Nonnull AntlrDataTypeProperty<?> dataTypePropertyState,
-            IAntlrElement expressionValueOwner)
+            @Nonnull IAntlrElement expressionValueOwner)
     {
         super(
                 elementContext,
                 compilationUnit,
-                macroElement,
                 classState,
                 associationEndStates,
                 dataTypePropertyState,
@@ -57,7 +54,7 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
         }
         this.elementBuilder = new TypeMemberReferencePathBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.classState.getElementBuilder(),
                 this.associationEndStates.collect(AntlrAssociationEnd::getElementBuilder),
                 this.dataTypePropertyState.getElementBuilder());

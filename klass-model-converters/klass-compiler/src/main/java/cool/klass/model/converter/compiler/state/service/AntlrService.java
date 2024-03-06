@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -43,7 +42,6 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     @Nonnull
     public static final AntlrService AMBIGUOUS = new AntlrService(
             new ParserRuleContext(),
-            null,
             Optional.empty(),
             AntlrUrl.AMBIGUOUS,
             AntlrVerb.AMBIGUOUS,
@@ -76,13 +74,12 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
     public AntlrService(
             @Nonnull ParserRuleContext elementContext,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrUrl urlState,
             @Nonnull AntlrVerb verbState,
             @Nonnull AntlrServiceMultiplicity serviceMultiplicityState)
     {
-        super(elementContext, compilationUnit, macroElement);
+        super(elementContext, compilationUnit);
         this.urlState = Objects.requireNonNull(urlState);
         this.verbState = Objects.requireNonNull(verbState);
         this.serviceMultiplicityState = Objects.requireNonNull(serviceMultiplicityState);
@@ -238,7 +235,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         ServiceMultiplicity serviceMultiplicity = this.serviceMultiplicityState.getServiceMultiplicity();
         this.elementBuilder = new ServiceBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 urlBuilder,
                 verb,
                 serviceMultiplicity);

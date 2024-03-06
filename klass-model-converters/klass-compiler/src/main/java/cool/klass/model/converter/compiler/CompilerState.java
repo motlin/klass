@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler;
 
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -29,14 +30,14 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
-import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.OrderedMaps;
-import org.eclipse.collections.impl.factory.Sets;
 
 public class CompilerState
 {
+    @Nonnull
     private final CompilerInputState compilerInputState;
     private final CompilerErrorState compilerErrorHolder = new CompilerErrorState();
     private final AntlrDomainModel   domainModelState    = new AntlrDomainModel();
@@ -48,10 +49,10 @@ public class CompilerState
 
     public CompilerState(CompilationUnit compilationUnit)
     {
-        this(Sets.mutable.with(compilationUnit));
+        this(Lists.mutable.with(compilationUnit));
     }
 
-    public CompilerState(MutableSet<CompilationUnit> compilationUnits)
+    public CompilerState(@Nonnull MutableList<CompilationUnit> compilationUnits)
     {
         this.compilerInputState = new CompilerInputState(compilationUnits);
     }
@@ -64,7 +65,10 @@ public class CompilerState
             @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule,
             ParseTreeListener... listeners)
     {
+        Objects.requireNonNull(macroElement);
+
         CompilationUnit compilationUnit = CompilationUnit.getMacroCompilationUnit(
+                macroElement,
                 macroExpansionCompilerPhase,
                 sourceCodeText,
                 parserRule);
@@ -76,12 +80,12 @@ public class CompilerState
 
         this.compilerWalkState.withCompilationUnit(compilationUnit, () ->
         {
-            this.compilerInputState.runCompilerMacro(macroElement, compilationUnit, Lists.immutable.with(listeners));
+            this.compilerInputState.runCompilerMacro(compilationUnit, Lists.immutable.with(listeners));
         });
     }
 
     public void runRootCompilerMacro(
-            @Nonnull AntlrElement elementState,
+            @Nonnull AntlrElement macroElement,
             @Nonnull ParserRuleContext parserContext,
             @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
             @Nonnull String sourceCodeText,
@@ -89,7 +93,7 @@ public class CompilerState
             ParseTreeListener... listeners)
     {
         this.runRootCompilerMacro(
-                elementState,
+                macroElement,
                 parserContext,
                 macroExpansionCompilerPhase,
                 sourceCodeText,
@@ -98,25 +102,25 @@ public class CompilerState
     }
 
     public void runRootCompilerMacro(
-            @Nonnull AntlrElement elementState,
+            @Nonnull AntlrElement macroElement,
             @Nonnull ParserRuleContext parserContext,
             @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
             @Nonnull String sourceCodeText,
             @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule,
-            ImmutableList<ParseTreeListener> listeners)
+            @Nonnull ImmutableList<ParseTreeListener> listeners)
     {
         CompilationUnit compilationUnit = CompilationUnit.getMacroCompilationUnit(
+                macroElement,
                 macroExpansionCompilerPhase,
                 sourceCodeText,
                 parserRule);
 
-        this.runRootCompilerMacro(elementState, listeners, compilationUnit);
+        this.runRootCompilerMacro(listeners, compilationUnit);
     }
 
     public void runRootCompilerMacro(
-            @Nonnull AntlrElement elementState,
-            ImmutableList<ParseTreeListener> listeners,
-            CompilationUnit compilationUnit)
+            @Nonnull ImmutableList<ParseTreeListener> listeners,
+            @Nonnull CompilationUnit compilationUnit)
     {
         CompilerWalkState oldCompilerWalkState = this.compilerWalkState;
         AntlrWalkState    oldAntlrWalkState    = this.antlrWalkState;
@@ -125,7 +129,7 @@ public class CompilerState
             this.compilerWalkState = new CompilerWalkState(this.domainModelState);
             this.antlrWalkState = new AntlrWalkState();
 
-            this.compilerInputState.runCompilerMacro(elementState, compilationUnit, listeners);
+            this.compilerInputState.runCompilerMacro(compilationUnit, listeners);
         }
         finally
         {
@@ -139,6 +143,7 @@ public class CompilerState
         this.domainModelState.reportErrors(this.compilerErrorHolder);
     }
 
+    @Nullable
     public DomainModel buildDomainModel()
     {
         if (!this.compilerErrorHolder.hasCompilerErrors())
@@ -149,11 +154,13 @@ public class CompilerState
         throw new AssertionError(this.compilerErrorHolder.getCompilerErrors().makeString());
     }
 
+    @Nonnull
     public AntlrDomainModel getDomainModelState()
     {
         return this.domainModelState;
     }
 
+    @Nonnull
     public CompilerInputState getCompilerInputState()
     {
         return this.compilerInputState;
@@ -181,7 +188,7 @@ public class CompilerState
         this.compilerWalkState.exitCompilationUnit();
     }
 
-    public void enterPackageDeclaration(PackageDeclarationContext ctx)
+    public void enterPackageDeclaration(@Nonnull PackageDeclarationContext ctx)
     {
         this.antlrWalkState.enterPackageDeclaration(ctx);
         this.compilerWalkState.enterPackageDeclaration(ctx);
@@ -332,7 +339,7 @@ public class CompilerState
         return this.compilerErrorHolder.getCompilerErrors();
     }
 
-    public void withCompilationUnit(CompilationUnit compilationUnit, Runnable runnable)
+    public void withCompilationUnit(CompilationUnit compilationUnit, @Nonnull Runnable runnable)
     {
         CompilerWalkState compilerWalkState = this.macroCompilerWalkStates.get(compilationUnit);
         AntlrWalkState    antlrWalkState    = this.macroAntlrWalkStates.get(compilationUnit);

@@ -24,7 +24,6 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
     @Nonnull
     public static final AntlrEnumeration AMBIGUOUS = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "ambiguous enumeration",
@@ -35,7 +34,6 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
     @Nonnull
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "not found enumeration",
@@ -51,15 +49,14 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
 
     public AntlrEnumeration(
             @Nonnull EnumerationDeclarationContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            ParserRuleContext packageContext,
-            String packageName)
+            @Nonnull ParserRuleContext packageContext,
+            @Nonnull String packageName)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
     }
 
     public int getNumLiterals()
@@ -86,7 +83,7 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
 
         this.enumerationBuilder = new EnumerationBuilder(
                 this.getElementContext(),
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.getElementContext().identifier(),
                 this.name,
                 this.ordinal,

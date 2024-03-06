@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.InequalityOperatorImpl.InequalityOperatorBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
@@ -20,11 +19,10 @@ public class AntlrInequalityOperator extends AntlrOperator
 
     public AntlrInequalityOperator(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
-            String operatorText)
+            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull String operatorText)
     {
-        super(elementContext, compilationUnit, macroElement, operatorText);
+        super(elementContext, compilationUnit, operatorText);
     }
 
     @Nonnull
@@ -37,7 +35,7 @@ public class AntlrInequalityOperator extends AntlrOperator
         }
         this.elementBuilder = new InequalityOperatorBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.operatorText);
         return this.elementBuilder;
     }
@@ -51,9 +49,9 @@ public class AntlrInequalityOperator extends AntlrOperator
 
     @Override
     public void checkTypes(
-            CompilerErrorState compilerErrorHolder,
-            ListIterable<AntlrType> sourceTypes,
-            ListIterable<AntlrType> targetTypes)
+            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull ListIterable<AntlrType> sourceTypes,
+            @Nonnull ListIterable<AntlrType> targetTypes)
     {
         if (sourceTypes.isEmpty() || targetTypes.isEmpty())
         {

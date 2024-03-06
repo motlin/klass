@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.operator.AntlrOperator;
@@ -38,12 +37,11 @@ public class OperatorAntlrCriteria extends AntlrCriteria
 
     public OperatorAntlrCriteria(
             @Nonnull CriteriaOperatorContext elementContext,
-            @Nonnull CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull IAntlrElement criteriaOwner,
             @Nonnull AntlrOperator operator)
     {
-        super(elementContext, compilationUnit, macroElement, criteriaOwner);
+        super(elementContext, compilationUnit, criteriaOwner);
         this.operator = Objects.requireNonNull(operator);
     }
 
@@ -95,7 +93,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         // TODO: Refactor to build the parent before the children
         this.elementBuilder = new OperatorCriteriaBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.operator.build(),
                 this.sourceValue.build(),
                 this.targetValue.build());
@@ -153,7 +151,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     @Override
     public void addForeignKeys(
             boolean foreignKeysOnThis,
-            AntlrAssociationEnd endWithForeignKeys)
+            @Nonnull AntlrAssociationEnd endWithForeignKeys)
     {
         AntlrThisMemberReferencePath thisMemberReferencePathState = this.getThisMemberRefrencePathState();
         AntlrTypeMemberReferencePath typeMemberReferencePathState = this.getTypeMemberRefrencePathState();
@@ -182,6 +180,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         }
     }
 
+    @Nullable
     private AntlrThisMemberReferencePath getThisMemberRefrencePathState()
     {
         if (this.sourceValue instanceof AntlrThisMemberReferencePath)
@@ -197,6 +196,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         throw new AssertionError();
     }
 
+    @Nullable
     private AntlrTypeMemberReferencePath getTypeMemberRefrencePathState()
     {
         if (this.sourceValue instanceof AntlrTypeMemberReferencePath)

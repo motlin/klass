@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.phase.criteria;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -39,8 +40,7 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
     {
         return new AntlrEqualityOperator(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.getText());
     }
 
@@ -50,8 +50,7 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
     {
         return new AntlrInequalityOperator(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.getText());
     }
 
@@ -61,8 +60,7 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
     {
         return new AntlrInOperator(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.getText());
     }
 
@@ -72,8 +70,7 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
     {
         return new AntlrStringOperator(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.getText());
     }
 }

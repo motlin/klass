@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -17,15 +16,15 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AbstractAntlrPropertyValidation extends AntlrElement
 {
+    @Nonnull
     protected final AntlrDataTypeProperty<?> owningPropertyState;
 
     protected AbstractAntlrPropertyValidation(
             @Nonnull ParserRuleContext elementContext,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
-            AntlrDataTypeProperty<?> owningPropertyState)
+            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull AntlrDataTypeProperty<?> owningPropertyState)
     {
-        super(elementContext, compilationUnit, macroElement);
+        super(elementContext, compilationUnit);
         this.owningPropertyState = Objects.requireNonNull(owningPropertyState);
     }
 
@@ -35,6 +34,7 @@ public abstract class AbstractAntlrPropertyValidation extends AntlrElement
         return true;
     }
 
+    @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
@@ -43,11 +43,12 @@ public abstract class AbstractAntlrPropertyValidation extends AntlrElement
 
     public abstract PropertyValidationBuilder build();
 
+    @Nonnull
     public abstract PropertyValidationBuilder getElementBuilder();
 
     public void reportInvalidType(
-            CompilerErrorState compilerErrorHolder,
-            PrimitiveType primitiveType)
+            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull PrimitiveType primitiveType)
     {
         ParserRuleContext offendingToken = this.getElementContext();
         String message = String.format(

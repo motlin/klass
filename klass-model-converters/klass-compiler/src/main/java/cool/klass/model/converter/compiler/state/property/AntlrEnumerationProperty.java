@@ -9,7 +9,6 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.meta.domain.EnumerationImpl;
 import cool.klass.model.meta.domain.property.EnumerationPropertyImpl.EnumerationPropertyBuilder;
@@ -25,7 +24,6 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
     @Nonnull
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
             new ParserRuleContext(),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "not found enumeration property",
@@ -43,12 +41,11 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
 
     public AntlrEnumerationProperty(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            AntlrClassifier owningClassifierState,
+            @Nonnull AntlrClassifier owningClassifierState,
             boolean isOptional,
             @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
             @Nonnull AntlrEnumeration enumerationState)
@@ -56,7 +53,6 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
         super(
                 elementContext,
                 compilationUnit,
-                macroElement,
                 nameContext,
                 name,
                 ordinal,
@@ -107,7 +103,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
 
         this.elementBuilder = new EnumerationPropertyBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

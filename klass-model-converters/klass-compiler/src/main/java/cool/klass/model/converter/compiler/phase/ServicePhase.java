@@ -50,8 +50,7 @@ public class ServicePhase extends AbstractCompilerPhase
 
         this.serviceGroupState = new AntlrServiceGroup(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 classNameContext,
                 className,
                 this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,
@@ -74,8 +73,7 @@ public class ServicePhase extends AbstractCompilerPhase
         super.enterUrlDeclaration(ctx);
         this.urlState = new AntlrUrl(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.serviceGroupState);
         this.serviceGroupState.enterUrlDeclaration(this.urlState);
     }
@@ -94,29 +92,27 @@ public class ServicePhase extends AbstractCompilerPhase
         VerbContext verb = ctx.verb();
         AntlrVerb antlrVerb = new AntlrVerb(
                 verb,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 Verb.valueOf(verb.getText()));
         AntlrServiceMultiplicity serviceMultiplicity =
                 this.getServiceMultiplicity(ctx.serviceDeclarationBody().serviceMultiplicityDeclaration());
 
         this.serviceState = new AntlrService(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.urlState,
                 antlrVerb,
                 serviceMultiplicity);
     }
 
+    @Nonnull
     private AntlrServiceMultiplicity getServiceMultiplicity(@Nullable ServiceMultiplicityDeclarationContext serviceMultiplicityDeclarationContext)
     {
         if (serviceMultiplicityDeclarationContext == null)
         {
             return new AntlrServiceMultiplicity(
                     new ParserRuleContext(),
-                    this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                    Optional.empty(),
+                    Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                     ServiceMultiplicity.ONE);
         }
 
@@ -124,13 +120,12 @@ public class ServicePhase extends AbstractCompilerPhase
 
         return new AntlrServiceMultiplicity(
                 serviceMultiplicityContext,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.getServiceMultiplicity(serviceMultiplicityContext));
     }
 
     @Nonnull
-    private ServiceMultiplicity getServiceMultiplicity(ServiceMultiplicityContext serviceMultiplicityContext)
+    private ServiceMultiplicity getServiceMultiplicity(@Nonnull ServiceMultiplicityContext serviceMultiplicityContext)
     {
         if (serviceMultiplicityContext.one != null)
         {
@@ -167,8 +162,7 @@ public class ServicePhase extends AbstractCompilerPhase
 
         AntlrServiceProjectionDispatch projectionDispatch = new AntlrServiceProjectionDispatch(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.serviceState,
                 projection);
 

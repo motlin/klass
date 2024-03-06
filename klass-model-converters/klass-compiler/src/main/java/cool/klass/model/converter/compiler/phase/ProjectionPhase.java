@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -75,8 +76,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
 
         AntlrProjectionDataTypeProperty projectionPrimitiveMemberState = new AntlrProjectionDataTypeProperty(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 nameContext,
                 name,
                 projectionParentState.getNumChildren() + 1,
@@ -106,8 +106,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
 
         AntlrProjectionAssociationEnd projectionAssociationEndState = new AntlrProjectionAssociationEnd(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 nameContext,
                 name,
                 projectionParentState.getNumChildren() + 1,
@@ -128,7 +127,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterProjectionProjectionReference(ProjectionProjectionReferenceContext ctx)
+    public void enterProjectionProjectionReference(@Nonnull ProjectionProjectionReferenceContext ctx)
     {
         super.enterProjectionProjectionReference(ctx);
 
@@ -149,8 +148,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
 
         AntlrProjectionProjectionReference projectionProjectionReferenceState = new AntlrProjectionProjectionReference(
                 ctx,
-                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().getMacroElement(),
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 nameContext,
                 name,
                 projectionParentState.getNumChildren() + 1,

@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent;
@@ -26,7 +25,6 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     @Nonnull
     public static final AntlrProjectionAssociationEnd AMBIGUOUS = new AntlrProjectionAssociationEnd(
             new ProjectionAssociationEndContext(null, -1),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "ambiguous projection",
@@ -38,7 +36,6 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     @Nonnull
     public static final AntlrProjectionAssociationEnd NOT_FOUND = new AntlrProjectionAssociationEnd(
             new ProjectionAssociationEndContext(null, -1),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "not found projection",
@@ -57,8 +54,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
 
     public AntlrProjectionAssociationEnd(
             @Nonnull ProjectionAssociationEndContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -66,7 +62,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
             @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull AntlrAssociationEnd associationEnd)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, klass);
+        super(elementContext, compilationUnit, nameContext, name, ordinal, klass);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
@@ -82,7 +78,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
 
         this.projectionAssociationEndBuilder = new ProjectionAssociationEndBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

@@ -2,6 +2,8 @@ package cool.klass.model.converter.compiler.phase;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.meta.grammar.KlassBaseListener;
@@ -66,7 +68,7 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
     }
 
     @Override
-    public void enterCriteriaOperator(CriteriaOperatorContext ctx)
+    public void enterCriteriaOperator(@Nonnull CriteriaOperatorContext ctx)
     {
         super.enterCriteriaOperator(ctx);
         if (ctx.operator().equalityOperator() == null)
@@ -95,7 +97,7 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
     }
 
     @Override
-    public void enterTypeMemberReferencePath(TypeMemberReferencePathContext ctx)
+    public void enterTypeMemberReferencePath(@Nonnull TypeMemberReferencePathContext ctx)
     {
         super.enterTypeMemberReferencePath(ctx);
         ClassReferenceContext                classReferenceContext           = ctx.classReference();

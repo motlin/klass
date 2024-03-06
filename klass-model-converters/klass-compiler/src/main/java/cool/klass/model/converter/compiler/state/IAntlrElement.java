@@ -5,6 +5,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.SourceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -16,7 +17,20 @@ public interface IAntlrElement
     ParserRuleContext getElementContext();
 
     @Nonnull
+    default SourceContext getSourceContext()
+    {
+        return new SourceContext(this.getCompilationUnit().get(), this.getElementContext());
+    }
+
+    @Nonnull
     Optional<AntlrElement> getMacroElement();
+
+    default IAntlrElement getOuterElement()
+    {
+        return this.getSurroundingElement()
+                .map(IAntlrElement::getOuterElement)
+                .orElse(this);
+    }
 
     @Nonnull
     ImmutableList<ParserRuleContext> getParserRuleContexts();
@@ -37,7 +51,7 @@ public interface IAntlrElement
         return this.gatherSurroundingElements(Lists.mutable.empty());
     }
 
-    default ImmutableList<IAntlrElement> gatherSurroundingElements(MutableList<IAntlrElement> result)
+    default ImmutableList<IAntlrElement> gatherSurroundingElements(@Nonnull MutableList<IAntlrElement> result)
     {
         boolean omitParent = this.omitParentFromSurroundingElements();
         this.getSurroundingElement().ifPresent(element -> element.gatherSurroundingElements(result, omitParent));
@@ -55,8 +69,8 @@ public interface IAntlrElement
                 this.omitParentFromSurroundingElements()));
     }
 
-    @Nullable
-    CompilationUnit getCompilationUnit();
+    @Nonnull
+    Optional<CompilationUnit> getCompilationUnit();
 
     String getSourceCode();
 }

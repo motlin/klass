@@ -16,20 +16,16 @@ import org.eclipse.collections.impl.factory.Lists;
 public abstract class AntlrElement implements IAntlrElement
 {
     @Nonnull
-    protected final ParserRuleContext      elementContext;
-    @Nullable
-    protected final CompilationUnit        compilationUnit;
+    protected final ParserRuleContext         elementContext;
     @Nonnull
-    protected final Optional<AntlrElement> macroElement;
+    protected final Optional<CompilationUnit> compilationUnit;
 
     protected AntlrElement(
             @Nonnull ParserRuleContext elementContext,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement)
+            @Nonnull Optional<CompilationUnit> compilationUnit)
     {
         this.elementContext = Objects.requireNonNull(elementContext);
-        this.compilationUnit = compilationUnit;
-        this.macroElement = macroElement;
+        this.compilationUnit = Objects.requireNonNull(compilationUnit);
     }
 
     @Override
@@ -49,7 +45,12 @@ public abstract class AntlrElement implements IAntlrElement
     @Nonnull
     public Optional<AntlrElement> getMacroElement()
     {
-        return this.macroElement;
+        return this.compilationUnit.flatMap(CompilationUnit::getMacroElement);
+    }
+
+    protected Optional<ElementBuilder<?>> getMacroElementBuilder()
+    {
+        return this.getMacroElement().map(AntlrElement::getElementBuilder);
     }
 
     @Override
@@ -68,8 +69,7 @@ public abstract class AntlrElement implements IAntlrElement
 
     @Nonnull
     @Override
-    @Nullable
-    public CompilationUnit getCompilationUnit()
+    public Optional<CompilationUnit> getCompilationUnit()
     {
         return this.compilationUnit;
     }

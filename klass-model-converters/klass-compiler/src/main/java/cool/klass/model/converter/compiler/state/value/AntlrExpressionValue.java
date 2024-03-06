@@ -22,11 +22,10 @@ public abstract class AntlrExpressionValue extends AntlrElement
 
     protected AntlrExpressionValue(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
-            IAntlrElement expressionValueOwner)
+            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, macroElement);
+        super(elementContext, compilationUnit);
         this.expressionValueOwner = Objects.requireNonNull(expressionValueOwner);
     }
 

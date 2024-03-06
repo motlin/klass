@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
@@ -23,11 +22,10 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
 
     public AntlrLiteralListValue(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
-            IAntlrElement expressionValueOwner)
+            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, macroElement, expressionValueOwner);
+        super(elementContext, compilationUnit, expressionValueOwner);
     }
 
     public void setLiteralStates(ImmutableList<AbstractAntlrLiteralValue> literalStates)
@@ -49,7 +47,7 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
         }
         this.elementBuilder = new LiteralListValueBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.getInferredType().getTypeGetter());
 
         ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders = this.literalStates

@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
@@ -29,25 +28,23 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
     @Nullable
     public static final AntlrParameterizedProperty AMBIGUOUS = new AntlrParameterizedProperty(
             new ParameterizedPropertyContext(null, -1),
-            null,
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
             "ambiguous association end",
             -1,
             AntlrClass.AMBIGUOUS,
             AntlrClass.AMBIGUOUS,
-            null);
+            AntlrMultiplicity.AMBIGUOUS);
     @Nullable
     public static final AntlrParameterizedProperty NOT_FOUND = new AntlrParameterizedProperty(
             new ParameterizedPropertyContext(null, -1),
-            null,
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
             "not found association end",
             -1,
             AntlrClass.AMBIGUOUS,
             AntlrClass.AMBIGUOUS,
-            null);
+            AntlrMultiplicity.AMBIGUOUS);
 
     // @Nonnull
     // private final ImmutableList<AntlrParameterizedPropertyModifier> parameterizedPropertyModifierStates;
@@ -62,16 +59,15 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
 
     public AntlrParameterizedProperty(
             @Nonnull ParameterizedPropertyContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull AntlrClass owningClassState,
             @Nonnull AntlrClass type,
-            AntlrMultiplicity multiplicityState)
+            @Nonnull AntlrMultiplicity multiplicityState)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, type, multiplicityState);
+        super(elementContext, compilationUnit, nameContext, name, ordinal, type, multiplicityState);
         this.owningClassState = Objects.requireNonNull(owningClassState);
     }
 
@@ -139,7 +135,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
 
         this.parameterizedPropertyBuilder = new ParameterizedPropertyBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

@@ -1,12 +1,12 @@
 package cool.klass.model.converter.compiler.state.property;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
@@ -14,9 +14,9 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrAssociationEndModifier extends AntlrModifier
 {
+    @Nullable
     public static final AntlrAssociationEndModifier AMBIGUOUS = new AntlrAssociationEndModifier(
             new AssociationEndModifierContext(null, -1),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "ambiguous association end modifier",
@@ -28,15 +28,14 @@ public class AntlrAssociationEndModifier extends AntlrModifier
 
     public AntlrAssociationEndModifier(
             @Nonnull AssociationEndModifierContext elementContext,
-            @Nullable CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            AntlrAssociationEnd surroundingElement)
+            @Nonnull AntlrAssociationEnd surroundingElement)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
-        this.surroundingElement = surroundingElement;
+        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        this.surroundingElement = Objects.requireNonNull(surroundingElement);
     }
 
     @Nonnull
@@ -72,7 +71,7 @@ public class AntlrAssociationEndModifier extends AntlrModifier
         }
         this.elementBuilder = new AssociationEndModifierBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

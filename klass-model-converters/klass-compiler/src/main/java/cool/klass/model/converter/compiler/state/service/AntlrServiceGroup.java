@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrPackageableElement;
 import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
@@ -33,7 +32,6 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
     @Nonnull
     public static final AntlrServiceGroup AMBIGUOUS = new AntlrServiceGroup(
             new ParserRuleContext(),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "ambiguous service group",
@@ -53,16 +51,15 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
 
     public AntlrServiceGroup(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            ParserRuleContext packageContext,
-            String packageName,
+            @Nonnull ParserRuleContext packageContext,
+            @Nonnull String packageName,
             @Nonnull AntlrClass klass)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
         this.klass = Objects.requireNonNull(klass);
     }
 
@@ -115,7 +112,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
         // TODO: Not here, but report if there are more than one service group for a class.
     }
 
-    private void reportTypeNotFound(CompilerErrorState compilerErrorHolder)
+    private void reportTypeNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.klass != AntlrClass.NOT_FOUND)
         {
@@ -173,7 +170,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
 
         this.serviceGroupBuilder = new ServiceGroupBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

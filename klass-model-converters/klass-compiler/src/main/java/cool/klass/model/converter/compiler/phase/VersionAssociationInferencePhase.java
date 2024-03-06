@@ -20,6 +20,7 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
         super(compilerState);
     }
 
+    @Nonnull
     @Override
     public String getName()
     {
@@ -60,7 +61,7 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
     }
 
     @Nonnull
-    private String getSourceCode(ImmutableList<AntlrDataTypeProperty<?>> keyProperties)
+    private String getSourceCode(@Nonnull ImmutableList<AntlrDataTypeProperty<?>> keyProperties)
     {
         AntlrClass classState = this.compilerState.getCompilerWalkState().getClassState();
         String     className  = classState.getName();

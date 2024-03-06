@@ -15,23 +15,24 @@ public abstract class AntlrPackageableElement extends AntlrNamedElement
 {
     @Nonnull
     protected final ParserRuleContext packageContext;
+    @Nonnull
     protected final String            packageName;
 
     protected AntlrPackageableElement(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull ParserRuleContext packageContext,
-            String packageName)
+            @Nonnull String packageName)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.packageContext = Objects.requireNonNull(packageContext);
         this.packageName = Objects.requireNonNull(packageName);
     }
 
+    @Nonnull
     public String getPackageName()
     {
         return this.packageName;
@@ -48,7 +49,7 @@ public abstract class AntlrPackageableElement extends AntlrNamedElement
                     "Package name must match pattern %s but was '%s'.",
                     PACKAGE_NAME_PATTERN,
                     this.packageName);
-            compilerErrorHolder.add(this.getCompilationUnit(), "ERR_PKG_PAT", message, this.packageContext);
+            compilerErrorHolder.add(this.getCompilationUnit().get(), "ERR_PKG_PAT", message, this.packageContext);
         }
     }
 
@@ -63,6 +64,6 @@ public abstract class AntlrPackageableElement extends AntlrNamedElement
     public final void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
     {
         parserRuleContexts.add(this.elementContext);
-        parserRuleContexts.add(this.compilationUnit.getParserContext());
+        parserRuleContexts.add(this.compilationUnit.get().getParserContext());
     }
 }

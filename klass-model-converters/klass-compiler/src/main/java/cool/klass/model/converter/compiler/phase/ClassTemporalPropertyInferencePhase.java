@@ -25,6 +25,7 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
         super(compilerState);
     }
 
+    @Nonnull
     @Override
     public String getName()
     {
@@ -73,7 +74,7 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
 
     private void runCompilerMacro(
             @Nonnull ParserRuleContext ctx,
-            String sourceCodeText)
+            @Nonnull String sourceCodeText)
     {
         AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
         ParseTreeListener  compilerPhase      = new ClassifierPhase(this.compilerState);

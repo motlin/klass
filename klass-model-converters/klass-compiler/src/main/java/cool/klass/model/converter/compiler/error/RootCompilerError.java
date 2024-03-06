@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.SourceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -22,21 +23,13 @@ public class RootCompilerError extends AbstractCompilerError implements Comparab
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull Optional<CauseCompilerError> macroCause,
             @Nonnull ImmutableList<ParserRuleContext> offendingContexts,
-            @Nonnull ImmutableList<ParserRuleContext> parserRuleContexts,
+            @Nonnull ImmutableList<SourceContext> sourceContexts,
             @Nonnull String errorCode,
             @Nonnull String message)
     {
-        super(compilationUnit, macroCause, offendingContexts, parserRuleContexts);
+        super(compilationUnit, macroCause, offendingContexts, sourceContexts);
         this.errorCode = Objects.requireNonNull(errorCode);
         this.message = Objects.requireNonNull(message);
-    }
-
-    @Override
-    @Nonnull
-    protected String getFilenameWithoutDirectory()
-    {
-        String sourceName = this.compilationUnit.getSourceName();
-        return sourceName.substring(sourceName.lastIndexOf('/') + 1);
     }
 
     @Override

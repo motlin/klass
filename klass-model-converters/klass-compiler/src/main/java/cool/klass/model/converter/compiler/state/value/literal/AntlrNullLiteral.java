@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -22,11 +21,10 @@ public class AntlrNullLiteral extends AbstractAntlrLiteralValue
 
     public AntlrNullLiteral(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
-            IAntlrElement expressionValueOwner)
+            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, macroElement, expressionValueOwner);
+        super(elementContext, compilationUnit, expressionValueOwner);
     }
 
     @Override
@@ -44,7 +42,7 @@ public class AntlrNullLiteral extends AbstractAntlrLiteralValue
         }
         this.elementBuilder = new NullLiteralBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder));
+                this.getMacroElementBuilder());
         return this.elementBuilder;
     }
 

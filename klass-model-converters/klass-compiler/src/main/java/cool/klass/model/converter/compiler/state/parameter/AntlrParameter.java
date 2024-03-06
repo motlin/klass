@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
@@ -29,7 +28,6 @@ public final class AntlrParameter extends AntlrNamedElement
     @Nonnull
     public static final AntlrParameter AMBIGUOUS = new AntlrParameter(
             new ParserRuleContext(),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "ambiguous enumeration url parameter",
@@ -40,7 +38,6 @@ public final class AntlrParameter extends AntlrNamedElement
     @Nonnull
     public static final AntlrParameter NOT_FOUND = new AntlrParameter(
             new ParserRuleContext(),
-            null,
             Optional.empty(),
             new ParserRuleContext(),
             "not found enumeration url parameter",
@@ -64,8 +61,7 @@ public final class AntlrParameter extends AntlrNamedElement
 
     public AntlrParameter(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -73,7 +69,7 @@ public final class AntlrParameter extends AntlrNamedElement
             @Nonnull AntlrMultiplicity multiplicityState,
             @Nonnull IAntlrElement parameterOwner)
     {
-        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.typeState = Objects.requireNonNull(typeState);
         this.multiplicityState = Objects.requireNonNull(multiplicityState);
         this.parameterOwner = Objects.requireNonNull(parameterOwner);
@@ -89,7 +85,7 @@ public final class AntlrParameter extends AntlrNamedElement
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.of((IAntlrElement) this.parameterOwner);
+        return Optional.of(this.parameterOwner);
     }
 
     @Override
@@ -149,7 +145,7 @@ public final class AntlrParameter extends AntlrNamedElement
         }
         this.elementBuilder = new ParameterBuilder(
                 this.elementContext,
-                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
                 this.ordinal,

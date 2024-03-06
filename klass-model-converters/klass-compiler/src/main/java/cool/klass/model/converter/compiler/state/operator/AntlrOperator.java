@@ -22,12 +22,11 @@ public abstract class AntlrOperator extends AntlrElement
 
     protected AntlrOperator(
             @Nonnull ParserRuleContext elementContext,
-            CompilationUnit compilationUnit,
-            Optional<AntlrElement> macroElement,
-            String operatorText)
+            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull String operatorText)
     {
-        super(elementContext, compilationUnit, macroElement);
-        this.operatorText = operatorText;
+        super(elementContext, compilationUnit);
+        this.operatorText = Objects.requireNonNull(operatorText);
     }
 
     @Override
