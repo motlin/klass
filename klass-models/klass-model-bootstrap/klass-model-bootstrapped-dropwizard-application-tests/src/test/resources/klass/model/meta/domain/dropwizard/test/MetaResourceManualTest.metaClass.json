@@ -54,7 +54,12 @@
         "packageName": "klass.model.meta.domain",
         "name": "ClassifierModifier"
       },
-      "associationEndModifiers": [],
+      "associationEndModifiers": [
+        {
+          "keyword": "owned",
+          "ordinal": 1
+        }
+      ],
       "orderBys": [
         {
           "orderByDirection": "ascending",

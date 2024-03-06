@@ -183,7 +183,11 @@
         "resultType": {
           "name": "ClassifierModifier"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned"
+          }
+        ],
         "orderBys": [
           {
             "thisMemberReferencePath": {

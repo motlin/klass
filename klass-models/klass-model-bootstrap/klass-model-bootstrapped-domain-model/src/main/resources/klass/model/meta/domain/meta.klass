@@ -80,7 +80,7 @@ class ClassifierModifier
 association ClassifierHasModifiers
 {
     owningClassifier: Classifier[1..1];
-    classifierModifiers: ClassifierModifier[0..*]
+    classifierModifiers: ClassifierModifier[0..*] owned
         orderBy: this.ordinal ascending;
 }
 
