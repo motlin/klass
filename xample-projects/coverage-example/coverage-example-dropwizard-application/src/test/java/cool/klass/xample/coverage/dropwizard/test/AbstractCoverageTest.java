@@ -28,7 +28,6 @@ public class AbstractCoverageTest
 
     protected final TestRule logMarkerTestRule = new LogMarkerTestRule();
 
-    // TODO: Write Znai documentation for LogMarkerTestRule explaining that it needs to be an inner rule, with any other rules that tear down logging outer to it.
     @Rule
     public final TestRule rule = RuleChain
             .outerRule(this.appRule)
