@@ -2711,4 +2711,36 @@ public class KlassCompilerTest
 
         this.assertCompilerErrors(sourceCodeText, errors);
     }
+
+    @Test
+    public void tablePerClassWithoutKey()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = ""
+                + "package example\n"
+                + "\n"
+                + "class SuperClass\n"
+                + "    abstract(table-per-class)\n"
+                + "{\n"
+                + "    nonKey: String;\n"
+                + "}\n"
+                + "\n"
+                + "class SubClass\n"
+                + "    extends SuperClass\n"
+                + "{\n"
+                + "    alsoNonKey: String;\n"
+                + "}";
+        //</editor-fold>
+
+        String[] errors = {
+                ""
+                        + "File: example.klass Line: 3 Char: 7 Error: ERR_CLS_KEY: Class 'SuperClass' must have at least one key property.\n"
+                        + "package example\n"
+                        + "class SuperClass\n"
+                        + "      ^^^^^^^^^^\n",
+        };
+
+        this.assertCompilerErrors(sourceCodeText, errors);
+    }
 }
