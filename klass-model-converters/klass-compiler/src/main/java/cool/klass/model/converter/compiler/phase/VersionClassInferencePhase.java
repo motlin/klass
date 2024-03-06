@@ -64,7 +64,7 @@ public class VersionClassInferencePhase
         AntlrClass classState = this.compilerState.getCompilerWalkState().getClassState();
         String keyPropertySourceCode = classState
                 .getDataTypeProperties()
-                .select(AntlrDataTypeProperty::isKey)
+                .select(property -> property.isKey() || property.isValid() || property.isSystem() || property.isAudit())
                 .collect(this::getSourceCode)
                 .collect(each -> String.format("    %s\n", each))
                 .makeString("");
@@ -86,14 +86,18 @@ public class VersionClassInferencePhase
 
     private String getSourceCode(@Nonnull AntlrDataTypeProperty<?> dataTypeProperty)
     {
+        String isOptionalString = dataTypeProperty.isOptional() ? "?" : "";
+
         ListIterable<AntlrModifier> modifiers = dataTypeProperty.getModifiers().reject(AntlrModifier::isId);
         String modifierSourceCode = modifiers.isEmpty()
                 ? ""
                 : modifiers.collect(AntlrNamedElement::getName).makeString(" ", " ", "");
+
         return String.format(
-                "%s: %s%s;",
+                "%s: %s%s%s;",
                 dataTypeProperty.getName(),
                 dataTypeProperty.getType(),
+                isOptionalString,
                 modifierSourceCode);
     }
 }
