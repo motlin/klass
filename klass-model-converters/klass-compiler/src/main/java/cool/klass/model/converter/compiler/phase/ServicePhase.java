@@ -206,7 +206,7 @@ public class ServicePhase extends AbstractCompilerPhase
         if (this.serviceState.needsVersionCriteriaInferred())
         {
             // TODO: Get names from model (system, version, number, version)
-            String sourceCodeText = "            version: this.system equalsEdgePoint && this.version.number == version";
+            String sourceCodeText = "            version: this.system equalsEdgePoint && this.version.number == version;";
             this.runCompilerMacro(
                     ctx.getStart(),
                     ServicePhase.class.getSimpleName(),
@@ -217,7 +217,7 @@ public class ServicePhase extends AbstractCompilerPhase
         if (this.serviceState.needsConflictCriteriaInferred())
         {
             // TODO: Get names from model (version, version)
-            String sourceCodeText = "            conflict: this.version.number == version";
+            String sourceCodeText = "            conflict: this.version.number == version;";
             this.runCompilerMacro(
                     ctx.getStart(),
                     ServicePhase.class.getSimpleName(),

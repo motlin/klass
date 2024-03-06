@@ -34,7 +34,8 @@ enumerationPrettyName: StringLiteral;
 // association
 associationDeclaration: 'association' identifier versions? associationBody;
 associationBody: '{' associationEnd? associationEnd? relationship? '}';
-associationEnd: identifier ':' classType associationEndModifier* orderByDeclaration?;
+associationEnd: identifier ':' classType associationEndModifier* orderByDeclaration? ';'
+    | identifier ':' classType associationEndModifier* orderByDeclaration? {notifyErrorListeners("Missing semi-colon after association end declaration.");};
 relationship: 'relationship' criteriaExpression;
 
 // projection
@@ -59,19 +60,26 @@ queryParameterList: '?' urlParameterDeclaration ('&' urlParameterDeclaration)*;
 urlParameterDeclaration: '{' parameterDeclaration '}';
 // service
 serviceDeclaration: verb serviceDeclarationBody;
-serviceDeclarationBody : '{' serviceMultiplicityDeclaration? serviceCriteriaDeclaration* serviceProjectionDispatch orderByDeclaration? '}' ;
-serviceMultiplicityDeclaration: 'multiplicity' ':' serviceMultiplicity;
+serviceDeclarationBody : '{' serviceMultiplicityDeclaration? serviceCriteriaDeclaration* serviceProjectionDispatch serviceOrderByDeclaration? '}' ;
+serviceMultiplicityDeclaration: 'multiplicity' ':' serviceMultiplicity ';'
+    | 'multiplicity' ':' serviceMultiplicity {notifyErrorListeners("Missing semi-colon after service multiplicity declaration.");};
 serviceMultiplicity: one='one' | many='many';
-serviceCriteriaDeclaration: serviceCriteriaKeyword ':' criteriaExpression;
+serviceCriteriaDeclaration: serviceCriteriaKeyword ':' criteriaExpression ';'
+    | serviceCriteriaKeyword ':' criteriaExpression {notifyErrorListeners("Missing semi-colon after service criteria declaration.");};
 serviceCriteriaKeyword: 'criteria' | 'authorize' | 'validate' | 'conflict' | 'version';
-serviceProjectionDispatch: 'projection' ':' projectionReference argumentList?;
+serviceProjectionDispatch: 'projection' ':' projectionReference argumentList? ';'
+    | 'projection' ':' projectionReference argumentList? {notifyErrorListeners("Missing semi-colon after service projection dispatch.");};
+serviceOrderByDeclaration: orderByDeclaration ';'
+    | orderByDeclaration {notifyErrorListeners("Missing semi-colon after service order-by declaration.");};
 verb: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 // member
 classMember: dataTypeProperty | parameterizedProperty;
-dataTypeProperty : primitiveProperty | enumerationProperty;
-primitiveProperty : identifier ':' primitiveType optionalMarker? propertyModifier*;
-enumerationProperty : identifier ':' enumerationReference optionalMarker? propertyModifier*;
+dataTypeProperty: primitiveProperty | enumerationProperty;
+primitiveProperty: identifier ':' primitiveType optionalMarker? propertyModifier* ';'
+    | identifier ':' primitiveType optionalMarker? propertyModifier* {notifyErrorListeners("Missing semi-colon after primitive property declaration.");};
+enumerationProperty: identifier ':' enumerationReference optionalMarker? propertyModifier* ';'
+    | identifier ':' enumerationReference optionalMarker? propertyModifier* {notifyErrorListeners("Missing semi-colon after enumeration property declaration.");};
 parameterizedProperty: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classType orderByDeclaration? '{' criteriaExpression '}';
 optionalMarker: '?';
 

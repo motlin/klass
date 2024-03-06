@@ -70,7 +70,7 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
                 + "class " + className + "Version systemTemporal versions(" + className + ")\n"
                 + "{\n"
                 + keyPropertySourceCode
-                + "    number: Integer\n"
+                + "    number: Integer;\n"
                 + "}\n";
 
         String contextMessage = this.getContextMessage(ctx.getStart());

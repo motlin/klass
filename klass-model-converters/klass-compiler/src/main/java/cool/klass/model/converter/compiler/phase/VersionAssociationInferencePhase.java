@@ -76,8 +76,8 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
                 + "\n"
                 + "association " + className + "HasVersion versions(" + className + "Version)\n"
                 + "{\n"
-                + "    " + associationEndName + ": " + className + "[1..1]\n"
-                + "    version : " + className + "Version[1..1] owned\n"
+                + "    " + associationEndName + ": " + className + "[1..1];\n"
+                + "    version: " + className + "Version[1..1] owned;\n"
                 + "\n"
                 + "    relationship " + relationshipKeyClauses + "\n"
                 + "}\n";

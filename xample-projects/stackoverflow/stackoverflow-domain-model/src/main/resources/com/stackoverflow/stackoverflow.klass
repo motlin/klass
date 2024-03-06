@@ -11,13 +11,13 @@ user User
 {
     // `read` keyword with no projection means create read services with the default read projection
     // The default read projection includes just this class and all its properties
-    userId        : String key userId
+    userId        : String key userId;
 
     // TODO: String max lengths
-    firstName         : String?
-    lastName          : String?
+    firstName         : String?;
+    lastName          : String?;
     // TODO: Consider adding primitive types like email address and url
-    email             : String?
+    email             : String?;
 
     // TODO: Unique property sets
 }
@@ -43,13 +43,13 @@ class Question
     audited
     optimisticallyLocked
 {
-    id                : Long key id
-    title             : String
-    body              : String
+    id                : Long key id;
+    title             : String;
+    body              : String;
 
     // TODO: Statemachine
-    status            : Status
-    deleted           : Boolean
+    status            : Status;
+    deleted           : Boolean;
 
     // TODO: Consider type inference on paramterized property parameters based on usage in relationship
     // orderBy natural key ascending is the default
@@ -71,21 +71,21 @@ class Question
     // TODO: system known: TemporalRange
 
     // This isn't even a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
-    system            : TemporalRange
+    system            : TemporalRange;
 
     // These two properties are implied by systemTemporal, and are not supposed to actually be declared
-    systemFrom        : TemporalInstant
-    systemTo          : TemporalInstant
+    systemFrom        : TemporalInstant;
+    systemTo          : TemporalInstant;
 
     // TODO: private properties must not be used in projections
 
     // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared
     // They could automatically be part of read projections and not write projections
-    private createdById       : String
+    createdById       : String private;
 
     // createdOn, or createdDate?
-    createdOn         : Instant
-    private lastUpdatedById   : String
+    createdOn         : Instant;
+    lastUpdatedById   : String private;
 
     createdBy(): User[1..1]
     {
@@ -122,9 +122,9 @@ class QuestionVersion
 association QuestionHasAnswer
 {
     // TODO: *final* question: Question[1..1]
-    question: Question[1..1]
+    question: Question[1..1];
     answers: Answer[0..*]
-        orderBy: this.id ascending
+        orderBy: this.id ascending;
 
     // TODO: check that the foreign key (questionId) is required since the to-one relationship end is also required (question: Question[1..1])
     // ordering by primary key ascending is the default
@@ -136,8 +136,8 @@ association QuestionHasAnswer
 /*
 association QuestionHasVersion
 {
-    question: Question[1..1]
-    version: QuestionVersion[1..1]
+    question: Question[1..1];
+    version: QuestionVersion[1..1];
 
     // implied
     relationship this.id == QuestionVersion.id
@@ -151,11 +151,11 @@ class Answer
     audited
     optimisticallyLocked
 {
-    id                : Long key id
-    body              : String
-    deleted           : Boolean
-    // TODO: private *final* questionId: Long
-    private questionId: Long
+    id                : Long key id;
+    body              : String;
+    deleted           : Boolean;
+    // TODO: questionId: Long private *final*
+    questionId: Long private;
 }
 
 // TODO Model AnswerVote
@@ -166,9 +166,9 @@ class QuestionVote
     systemTemporal
     audited
 {
-    questionId    : Long key
-    createdById   : String key
-    direction         : VoteDirection
+    questionId    : Long key;
+    createdById   : String key;
+    direction         : VoteDirection;
 }
 
 enumeration VoteDirection
@@ -258,58 +258,58 @@ service Question
     /api/question/{id: Long[1..1]}
         GET
         {
-            multiplicity: one
-            criteria    : this.id == id
-            projection  : QuestionReadProjection
+            multiplicity: one;
+            criteria    : this.id == id;
+            projection  : QuestionReadProjection;
             // TODO: format: json
         }
         PUT
         {
             // PUT, PATCH, and DELETE should implicitly get ?{version: Integer[1..1]} due to optimistic locking
             // TODO Version should be a primitive type, as in {version: Version[1..1]}
-            multiplicity: one
-            criteria    : this.id == id
+            multiplicity: one;
+            criteria    : this.id == id;
             // TODO: Consider 'conflict' 409, 412 Precondition Failed, or 417 Expectation Failed
             // TODO: Allow anonymous/undeclared projections created from all owned association ends
-            projection  : QuestionWriteProjection
+            projection  : QuestionWriteProjection;
         }
         DELETE
         {
             // TODO
             // PUT, PATCH, and DELETE should implicitly get ?version={version} due to optimistic locking
-            multiplicity: one
-            criteria    : this.id == id
+            multiplicity: one;
+            criteria    : this.id == id;
             // 'authorize' is like 'validate' but should give 401 Unauthorized or 403 forbidden instead of 400
             // TODO: conditions implemented in code, like `|| native(UserIsModeratorClass)`
-            authorize   : this.createdById == user
-            projection  : QuestionWriteProjection
+            authorize   : this.createdById == user;
+            projection  : QuestionWriteProjection;
         }
     /api/question/in?{ids: Long[0..*]}
         GET
         {
-            multiplicity: many
-            criteria    : this.id in ids
-            projection  : QuestionReadProjection
+            multiplicity: many;
+            criteria    : this.id in ids;
+            projection  : QuestionReadProjection;
         }
     /api/question/firstTwo
         GET
         {
             // TODO: Warn if multiplicity is one and criteria uses in clause, or anything other than equality on a unique property
-            multiplicity: many
-            criteria    : this.id in (1, 2)
-            projection  : QuestionReadProjection
+            multiplicity: many;
+            criteria    : this.id in (1, 2);
+            projection  : QuestionReadProjection;
         }
     /api/question
         POST
         {
-            multiplicity: one
-            projection  : QuestionWriteProjection
+            multiplicity: one;
+            projection  : QuestionWriteProjection;
         }
         GET
         {
-            multiplicity: many
-            criteria    : this.title startsWith "Why do"
-            projection  : QuestionReadProjection
+            multiplicity: many;
+            criteria    : this.title startsWith "Why do";
+            projection  : QuestionReadProjection;
         }
 
     // TODO: Type inference on url parameters
@@ -318,12 +318,12 @@ service Question
         GET
         {
             //?page=1&pageSize=25
-            multiplicity: many
-            criteria    : this.createdById == userId
-            projection  : QuestionWriteProjection
+            multiplicity: many;
+            criteria    : this.createdById == userId;
+            projection  : QuestionWriteProjection;
 
             // Deliberately shallow
-            orderBy     : this.createdOn
+            orderBy     : this.createdOn;
 
             // pageSize: ???
             // page: ???
