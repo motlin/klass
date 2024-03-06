@@ -258,11 +258,11 @@
             <version>${klass.version}</version>
         </dependency>
 
-        <!--TODO: This should be a runtime dependency, but the DdlExecutorCommand currently has a hard dependency-->
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-connection-manager-h2</artifactId>
             <version>${klass.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
