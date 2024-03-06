@@ -803,7 +803,7 @@ service Enumeration
         {
             multiplicity: many;
             criteria    : all;
-            projection  : EnumerationProjection;
+            projection  : EnumerationSummaryProjection;
             orderBy     : this.ordinal;
         }
 }
@@ -941,7 +941,7 @@ service Interface
         {
             multiplicity: many;
             criteria    : all;
-            projection  : InterfaceProjection;
+            projection  : InterfaceSummaryProjection;
             orderBy     : this.ordinal;
         }
 }
@@ -1207,7 +1207,7 @@ service Klass
         {
             multiplicity: many;
             criteria    : all;
-            projection  : ClassProjection;
+            projection  : ClassSummaryProjection;
             orderBy     : this.ordinal;
         }
 }
@@ -1438,6 +1438,6 @@ service Association
         {
             multiplicity: many;
             criteria    : all;
-            projection  : AssociationProjection;
+            projection  : AssociationSummaryProjection;
         }
 }
