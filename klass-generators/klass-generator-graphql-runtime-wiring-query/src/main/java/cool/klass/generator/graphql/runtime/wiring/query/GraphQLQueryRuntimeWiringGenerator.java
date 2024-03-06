@@ -38,14 +38,16 @@ public class GraphQLQueryRuntimeWiringGenerator
 
     public void writeQueryRuntimeWiringFile(@Nonnull Path outputPath)
     {
+        ImmutableList<Klass> concreteClasses = this.domainModel.getClasses().reject(Klass::isAbstract);
+
         //language=JAVA
         String sourceCode = ""
                 + "package " + this.rootPackageName + ".graphql.runtime.wiring.query;\n"
                 + "\n"
                 + "import cool.klass.graphql.type.runtime.wiring.provider.GraphQLTypeRuntimeWiringProvider;\n"
-                + "import " + this.rootPackageName + ".graphql.data.fetcher.all.*;\n"
-                + "import " + this.rootPackageName + ".graphql.data.fetcher.key.*;\n"
-                + this.domainModel.getClasses().reject(Klass::isAbstract).collect(this::getImport).makeString("")
+                + concreteClasses.collect(this::getFinderImport).makeString("")
+                + concreteClasses.collect(this::getAllFetcherImport).makeString("")
+                + concreteClasses.collect(this::getKeyFetcherImport).makeString("")
                 + "import graphql.schema.idl.TypeRuntimeWiring.Builder;\n"
                 + "import io.liftwizard.graphql.reladomo.finder.fetcher.ReladomoFinderDataFetcher;\n"
                 + "import io.liftwizard.graphql.reladomo.operation.fetcher.ReladomoOperationDataFetcher;\n"
@@ -78,9 +80,19 @@ public class GraphQLQueryRuntimeWiringGenerator
         this.printStringToFile(querySchemaOutputPath, sourceCode);
     }
 
-    private String getImport(Klass klass)
+    private String getFinderImport(Klass klass)
     {
         return "import " + klass.getFullyQualifiedName() + "Finder;\n";
+    }
+
+    private String getAllFetcherImport(Klass klass)
+    {
+        return "import " + klass.getPackageName() + ".graphql.data.fetcher.all.All" + klass.getName() + "DataFetcher;\n";
+    }
+
+    private String getKeyFetcherImport(Klass klass)
+    {
+        return "import " + klass.getPackageName() + ".graphql.data.fetcher.key." + klass.getName() + "ByKeyDataFetcher;\n";
     }
 
     private ImmutableList<String> getAllDataFetchersSourceCode()
