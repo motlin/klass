@@ -22,5 +22,6 @@
         <module>klass-generator-dropwizard-plugin</module>
         <module>klass-compiler-plugin</module>
         <module>klass-generator-dto-plugin</module>
+        <module>klass-generator-meta-constants-plugin</module>
     </modules>
 </project>

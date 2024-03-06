@@ -21,5 +21,6 @@
         <module>klass-generator-dropwizard</module>
         <module>klass-generator-dto</module>
         <module>klass-generator-reladomo-test-data</module>
+        <module>klass-generator-meta-constants</module>
     </modules>
 </project>
