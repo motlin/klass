@@ -37,7 +37,7 @@
     </modules>
 
     <properties>
-        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.release>21</maven.compiler.release>
         <maven.compiler.parameters>true</maven.compiler.parameters>
 
         <checkstyle.configuration>${maven.multiModuleProjectDirectory}/checkstyle-configuration.xml</checkstyle.configuration>
