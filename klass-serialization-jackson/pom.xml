@@ -21,6 +21,9 @@
         <module>klass-serialization-jackson-jsonview</module>
         <module>klass-serialization-jackson-response-dto</module>
         <module>klass-serialization-jackson-module-meta-model</module>
+        <module>klass-serialization-jackson-response-dto-reladomo</module>
+        <module>klass-serialization-jackson-model-data-property</module>
+        <module>klass-serialization-jackson-jsonview-reladomo</module>
     </modules>
 
     <dependencyManagement>

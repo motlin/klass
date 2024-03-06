@@ -1,4 +1,4 @@
-package cool.klass.serializer.json;
+package cool.klass.serialization.jackson.response.reladomo;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -28,6 +28,7 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import cool.klass.serialization.jackson.jsonview.KlassJsonView;
+import cool.klass.serialization.jackson.model.data.property.SerializeValueToJsonFieldPrimitiveTypeVisitor;
 import cool.klass.serialization.jackson.response.KlassResponseMetadata;
 import org.eclipse.collections.api.list.ImmutableList;
 

@@ -38,7 +38,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-serializer-json</artifactId>
+            <artifactId>klass-serialization-jackson-jsonview-reladomo</artifactId>
             <version>${klass.version}</version>
         </dependency>
 

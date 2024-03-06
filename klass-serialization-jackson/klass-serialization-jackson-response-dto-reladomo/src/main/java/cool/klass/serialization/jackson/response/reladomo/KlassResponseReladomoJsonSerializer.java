@@ -1,4 +1,4 @@
-package cool.klass.serializer.json;
+package cool.klass.serialization.jackson.response.reladomo;
 
 import java.io.IOException;
 import java.security.Principal;

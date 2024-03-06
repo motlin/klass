@@ -1,4 +1,4 @@
-package cool.klass.serialization.jackson.module.meta.model;
+package cool.klass.serialization.jackson.module.meta.model.domain;
 
 import java.io.IOException;
 

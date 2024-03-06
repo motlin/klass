@@ -12,9 +12,9 @@ import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.reladomo.ReladomoFactory;
 import cool.klass.dropwizard.configuration.reladomo.ReladomoFactoryProvider;
 import cool.klass.reladomo.configuration.ReladomoConfig;
+import cool.klass.serialization.jackson.jsonview.reladomo.ReladomoJsonViewSerializer;
 import cool.klass.serialization.jackson.response.KlassResponse;
-import cool.klass.serializer.json.KlassResponseReladomoJsonSerializer;
-import cool.klass.serializer.json.ReladomoJsonSerializer;
+import cool.klass.serialization.jackson.response.reladomo.KlassResponseReladomoJsonSerializer;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.util.Duration;
@@ -45,7 +45,7 @@ public class ReladomoBundle implements PrioritizedBundle<ReladomoFactoryProvider
         DataStore       dataStore       = configuration.getDataStoreFactory().createDataStore();
         ReladomoFactory reladomoFactory = configuration.getReladomoFactory();
 
-        ReladomoJsonSerializer              serializer1 = new ReladomoJsonSerializer(dataStore);
+        ReladomoJsonViewSerializer          serializer1 = new ReladomoJsonViewSerializer(dataStore);
         KlassResponseReladomoJsonSerializer serializer2 = new KlassResponseReladomoJsonSerializer(dataStore);
 
         // TODO: Split the three serializers into two modules

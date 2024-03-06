@@ -1,4 +1,4 @@
-package cool.klass.serializer.json;
+package cool.klass.serialization.jackson.model.data.property;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -18,8 +18,8 @@ public class SerializeValueToJsonFieldPrimitiveTypeVisitor implements PrimitiveT
             Object value)
     {
         this.jsonGenerator = Objects.requireNonNull(jsonGenerator);
-        this.propertyName = Objects.requireNonNull(primitivePropertyName);
-        this.value = Objects.requireNonNull(value);
+        this.propertyName  = Objects.requireNonNull(primitivePropertyName);
+        this.value         = Objects.requireNonNull(value);
     }
 
     @Override

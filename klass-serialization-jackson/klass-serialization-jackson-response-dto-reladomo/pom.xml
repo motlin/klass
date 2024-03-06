@@ -5,32 +5,20 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>cool.klass</groupId>
-        <artifactId>klass-serializers</artifactId>
+        <artifactId>klass-serialization-jackson</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-serializer-json</artifactId>
+    <artifactId>klass-serialization-jackson-response-dto-reladomo</artifactId>
 
-    <name>Klass Serializer: JSON</name>
+    <name>Klass Serialization: Jackson Response DTO Reladomo Serializer</name>
 
     <dependencies>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-meta-interface</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
             <artifactId>klass-data-store</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-serialization-jackson-jsonview</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -42,7 +30,25 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
+            <artifactId>klass-serialization-jackson-jsonview</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-serialization-jackson-model-data-property</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-context-thread-local</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-meta-interface</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -53,12 +59,12 @@
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <artifactId>jackson-core</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
         <dependency>
