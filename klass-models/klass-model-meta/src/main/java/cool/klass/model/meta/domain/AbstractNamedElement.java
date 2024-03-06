@@ -33,6 +33,12 @@ public abstract class AbstractNamedElement
         this.ordinal     = ordinal;
     }
 
+    @Nonnull
+    public ParserRuleContext getNameContext()
+    {
+        return this.nameContext;
+    }
+
     @Override
     @Nonnull
     public Token getNameToken()
@@ -76,6 +82,12 @@ public abstract class AbstractNamedElement
             super(elementContext, macroElement, sourceCode);
             this.nameContext = Objects.requireNonNull(nameContext);
             this.ordinal     = ordinal;
+        }
+
+        @Nonnull
+        public ParserRuleContext getNameContext()
+        {
+            return this.nameContext;
         }
     }
 }

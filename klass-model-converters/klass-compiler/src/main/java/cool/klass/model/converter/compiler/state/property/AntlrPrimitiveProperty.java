@@ -9,10 +9,10 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
-import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.domain.property.PrimitivePropertyImpl.PrimitivePropertyBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -25,7 +25,7 @@ public class AntlrPrimitiveProperty
     public static final AntlrPrimitiveProperty AMBIGUOUS = new AntlrPrimitiveProperty(
             new PrimitivePropertyContext(null, -1),
             Optional.empty(),
-            AbstractElement.NO_CONTEXT,
+            new IdentifierContext(null, -1),
             -1,
             AntlrClassifier.AMBIGUOUS,
             false,
@@ -39,7 +39,7 @@ public class AntlrPrimitiveProperty
     public AntlrPrimitiveProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrClassifier owningClassifierState,
             boolean isOptional,
@@ -87,7 +87,7 @@ public class AntlrPrimitiveProperty
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.antlrPrimitiveType.getPrimitiveType(),
                 this.owningClassifierState.getElementBuilder(),

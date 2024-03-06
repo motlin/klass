@@ -12,9 +12,11 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
+import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.property.AbstractProperty.PropertyBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.bag.MutableBag;
@@ -27,7 +29,7 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public abstract class AntlrProperty
-        extends AntlrNamedElement
+        extends AntlrIdentifierElement
 {
     @Nonnull
     private final MutableList<AntlrModifier>                            modifierStates     = Lists.mutable.empty();
@@ -39,7 +41,7 @@ public abstract class AntlrProperty
     protected AntlrProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal)
     {
         super(elementContext, compilationUnit, nameContext, ordinal);

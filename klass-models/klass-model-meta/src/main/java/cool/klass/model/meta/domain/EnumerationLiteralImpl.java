@@ -11,6 +11,7 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class EnumerationLiteralImpl
@@ -24,7 +25,7 @@ public final class EnumerationLiteralImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull EnumerationImpl enumeration,
             @Nonnull Optional<String> prettyName)
@@ -41,7 +42,7 @@ public final class EnumerationLiteralImpl
     }
 
     public static final class EnumerationLiteralBuilder
-            extends NamedElementBuilder<EnumerationLiteralImpl>
+            extends IdentifierElementBuilder<EnumerationLiteralImpl>
     {
         @Nonnull
         private final Optional<String>   prettyName;
@@ -52,7 +53,7 @@ public final class EnumerationLiteralImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull ParserRuleContext nameContext,
+                @Nonnull IdentifierContext nameContext,
                 int ordinal,
                 @Nonnull Optional<String> prettyName,
                 @Nonnull EnumerationBuilder enumerationBuilder)
@@ -70,7 +71,7 @@ public final class EnumerationLiteralImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.nameContext,
+                    this.getNameContext(),
                     this.ordinal,
                     this.enumerationBuilder.getElement(),
                     this.prettyName);

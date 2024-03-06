@@ -10,10 +10,11 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.source.PackageableElementWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AbstractPackageableElement
-        extends AbstractNamedElement
+        extends AbstractIdentifierElement
         implements PackageableElementWithSourceCode
 {
     @Nonnull
@@ -23,7 +24,7 @@ public abstract class AbstractPackageableElement
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull String packageName)
     {
@@ -46,7 +47,7 @@ public abstract class AbstractPackageableElement
     }
 
     public abstract static class PackageableElementBuilder<BuiltElement extends AbstractPackageableElement>
-            extends NamedElementBuilder<BuiltElement>
+            extends IdentifierElementBuilder<BuiltElement>
     {
         // TODO: package context instead of package name?
         @Nonnull
@@ -56,7 +57,7 @@ public abstract class AbstractPackageableElement
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull ParserRuleContext nameContext,
+                @Nonnull IdentifierContext nameContext,
                 int ordinal,
                 @Nonnull String packageName)
         {

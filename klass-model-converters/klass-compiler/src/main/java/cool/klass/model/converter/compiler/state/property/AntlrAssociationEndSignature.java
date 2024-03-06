@@ -13,7 +13,6 @@ import cool.klass.model.converter.compiler.state.AntlrClassifierReference;
 import cool.klass.model.converter.compiler.state.AntlrClassifierReferenceOwner;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
-import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
@@ -31,7 +30,7 @@ public class AntlrAssociationEndSignature
     public static final AntlrAssociationEndSignature AMBIGUOUS = new AntlrAssociationEndSignature(
             new AssociationEndSignatureContext(null, -1),
             Optional.empty(),
-            AbstractElement.NO_CONTEXT,
+            new IdentifierContext(null, -1),
             -1,
             AntlrClassifier.AMBIGUOUS);
 
@@ -39,7 +38,7 @@ public class AntlrAssociationEndSignature
     public static final AntlrAssociationEndSignature NOT_FOUND = new AntlrAssociationEndSignature(
             new AssociationEndSignatureContext(null, -1),
             Optional.empty(),
-            AbstractElement.NO_CONTEXT,
+            new IdentifierContext(null, -1),
             -1,
             // TODO: Not found here, instead of ambiguous
             AntlrClassifier.NOT_FOUND);
@@ -54,7 +53,7 @@ public class AntlrAssociationEndSignature
     public AntlrAssociationEndSignature(
             @Nonnull AssociationEndSignatureContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrClassifier owningClassifierState)
     {
@@ -83,7 +82,7 @@ public class AntlrAssociationEndSignature
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.getType().getElementBuilder(),
                 this.owningClassifierState.getElementBuilder(),

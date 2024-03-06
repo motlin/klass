@@ -12,7 +12,7 @@ import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.eclipse.collections.api.bag.MutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -28,7 +28,7 @@ public class AntlrEnumeration
     public static final AntlrEnumeration AMBIGUOUS = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrCompilationUnit.AMBIGUOUS);
 
@@ -36,7 +36,7 @@ public class AntlrEnumeration
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrCompilationUnit.NOT_FOUND);
 
@@ -50,7 +50,7 @@ public class AntlrEnumeration
     public AntlrEnumeration(
             @Nonnull EnumerationDeclarationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrCompilationUnit compilationUnitState)
     {

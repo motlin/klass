@@ -20,7 +20,6 @@ import cool.klass.model.converter.compiler.state.property.validation.AntlrMaxLen
 import cool.klass.model.converter.compiler.state.property.validation.AntlrMaxPropertyValidation;
 import cool.klass.model.converter.compiler.state.property.validation.AntlrMinLengthPropertyValidation;
 import cool.klass.model.converter.compiler.state.property.validation.AntlrMinPropertyValidation;
-import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
@@ -30,6 +29,7 @@ import cool.klass.model.meta.domain.property.validation.MaxPropertyValidationImp
 import cool.klass.model.meta.domain.property.validation.MinLengthPropertyValidationImpl.MinLengthPropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MinPropertyValidationImpl.MinPropertyValidationBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
@@ -46,7 +46,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     public static final AntlrDataTypeProperty AMBIGUOUS = new AntlrDataTypeProperty(
             new ParserRuleContext(null, -1),
             Optional.empty(),
-            AbstractElement.NO_CONTEXT,
+            new IdentifierContext(null, -1),
             -1,
             AntlrClassifier.AMBIGUOUS,
             false)
@@ -112,7 +112,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     public static final AntlrDataTypeProperty NOT_FOUND = new AntlrDataTypeProperty(
             new ParserRuleContext(null, -1),
             Optional.empty(),
-            AbstractElement.NO_CONTEXT,
+            new IdentifierContext(null, -1),
             -1,
             AntlrClassifier.NOT_FOUND,
             false)
@@ -195,7 +195,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     protected AntlrDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrClassifier owningClassifierState,
             boolean isOptional)

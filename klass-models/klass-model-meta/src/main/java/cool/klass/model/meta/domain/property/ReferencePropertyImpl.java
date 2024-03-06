@@ -19,6 +19,7 @@ import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -36,7 +37,7 @@ public abstract class ReferencePropertyImpl<T extends Classifier>
             ParserRuleContext elementContext,
             Optional<Element> macroElement,
             SourceCode sourceCode,
-            ParserRuleContext nameContext,
+            IdentifierContext nameContext,
             int ordinal,
             T type,
             AbstractClassifier owningClassifier,
@@ -92,7 +93,7 @@ public abstract class ReferencePropertyImpl<T extends Classifier>
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull ParserRuleContext nameContext,
+                @Nonnull IdentifierContext nameContext,
                 int ordinal,
                 @Nonnull TG type,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder,

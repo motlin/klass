@@ -12,7 +12,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public abstract class AntlrNamedElement extends AntlrElement
+public abstract class AntlrNamedElement
+        extends AntlrElement
 {
     protected static final Pattern PACKAGE_NAME_PATTERN  = Pattern.compile("^[a-z]+(\\.[a-z][a-z0-9]*)*$");
     protected static final Pattern TYPE_NAME_PATTERN     = Pattern.compile("^[A-Z][a-zA-Z0-9]*$");

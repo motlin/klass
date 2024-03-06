@@ -19,6 +19,7 @@ import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -35,7 +36,7 @@ public abstract class AbstractClassifier
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull String packageName)
     {
@@ -112,7 +113,7 @@ public abstract class AbstractClassifier
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull ParserRuleContext nameContext,
+                @Nonnull IdentifierContext nameContext,
                 int ordinal,
                 @Nonnull String packageName)
         {

@@ -9,6 +9,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassReference;
 import cool.klass.model.converter.compiler.state.AntlrClassReferenceOwner;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AntlrClassReferenceProperty
@@ -20,7 +21,7 @@ public abstract class AntlrClassReferenceProperty
     public AntlrClassReferenceProperty(
             ParserRuleContext elementContext,
             Optional<CompilationUnit> compilationUnit,
-            ParserRuleContext nameContext,
+            IdentifierContext nameContext,
             int ordinal)
     {
         super(elementContext, compilationUnit, nameContext, ordinal);

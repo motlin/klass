@@ -12,6 +12,7 @@ import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class PrimitivePropertyImpl
@@ -22,7 +23,7 @@ public final class PrimitivePropertyImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull PrimitiveType primitiveType,
             @Nonnull AbstractClassifier owningClassifier,
@@ -46,7 +47,7 @@ public final class PrimitivePropertyImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull ParserRuleContext nameContext,
+                @Nonnull IdentifierContext nameContext,
                 int ordinal,
                 @Nonnull PrimitiveType primitiveType,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
@@ -71,7 +72,7 @@ public final class PrimitivePropertyImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.nameContext,
+                    this.getNameContext(),
                     this.ordinal,
                     this.typeBuilder,
                     this.owningClassifierBuilder.getElement(),

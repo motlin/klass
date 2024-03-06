@@ -65,7 +65,7 @@ public final class ModifierImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.nameContext,
+                    this.getNameContext(),
                     this.ordinal,
                     (ModifierOwner) this.surroundingElementBuilder.getElement());
         }

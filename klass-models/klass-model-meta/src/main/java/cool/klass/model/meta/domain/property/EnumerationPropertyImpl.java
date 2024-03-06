@@ -13,6 +13,7 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class EnumerationPropertyImpl
@@ -23,7 +24,7 @@ public final class EnumerationPropertyImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull EnumerationImpl enumeration,
             @Nonnull AbstractClassifier owningClassifier,
@@ -47,7 +48,7 @@ public final class EnumerationPropertyImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull ParserRuleContext nameContext,
+                @Nonnull IdentifierContext nameContext,
                 int ordinal,
                 @Nonnull EnumerationBuilder enumerationBuilder,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
@@ -72,7 +73,7 @@ public final class EnumerationPropertyImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.nameContext,
+                    this.getNameContext(),
                     this.ordinal,
                     this.typeBuilder.getElement(),
                     this.owningClassifierBuilder.getElement(),

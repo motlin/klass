@@ -16,6 +16,7 @@ import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBu
 import cool.klass.model.meta.grammar.KlassParser.AssociationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -31,7 +32,7 @@ public class AntlrAssociation
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
             new ParserRuleContext(),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrCompilationUnit.AMBIGUOUS)
     {
@@ -55,7 +56,7 @@ public class AntlrAssociation
     public AntlrAssociation(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrCompilationUnit compilationUnitState)
     {
@@ -150,7 +151,7 @@ public class AntlrAssociation
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.getPackageName(),
                 criteriaBuilder);

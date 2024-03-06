@@ -15,8 +15,6 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public abstract class AbstractElement
         implements ElementWithSourceCode
 {
-    public static final ParserRuleContext NO_CONTEXT = new ParserRuleContext();
-
     @Nonnull
     private final ParserRuleContext elementContext;
     @Nonnull

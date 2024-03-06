@@ -7,11 +7,12 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.MutableList;
 
 public abstract class AntlrPackageableElement
-        extends AntlrNamedElement
+        extends AntlrIdentifierElement
 {
     @Nonnull
     protected final AntlrCompilationUnit compilationUnitState;
@@ -19,7 +20,7 @@ public abstract class AntlrPackageableElement
     protected AntlrPackageableElement(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrCompilationUnit compilationUnitState)
     {

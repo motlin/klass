@@ -16,6 +16,7 @@ import cool.klass.model.meta.domain.api.Type.TypeGetter;
 import cool.klass.model.meta.domain.api.property.Property;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AbstractProperty<T extends Type>
@@ -29,7 +30,7 @@ public abstract class AbstractProperty<T extends Type>
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull T type,
             @Nonnull AbstractClassifier owningClassifier)
@@ -55,7 +56,7 @@ public abstract class AbstractProperty<T extends Type>
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull ParserRuleContext nameContext,
+                @Nonnull IdentifierContext nameContext,
                 int ordinal,
                 @Nonnull TG typeBuilder,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder)

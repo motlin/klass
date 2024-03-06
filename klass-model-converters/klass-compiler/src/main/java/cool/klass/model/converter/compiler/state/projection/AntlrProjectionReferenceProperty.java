@@ -16,6 +16,7 @@ import cool.klass.model.meta.domain.projection.AbstractProjectionElement.Project
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionReferencePropertyImpl.ProjectionReferencePropertyBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferencePropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
@@ -30,7 +31,7 @@ public class AntlrProjectionReferenceProperty
     public static final AntlrProjectionReferenceProperty AMBIGUOUS = new AntlrProjectionReferenceProperty(
             new ProjectionReferencePropertyContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrClassifier.AMBIGUOUS,
             AntlrProjection.AMBIGUOUS,
@@ -40,7 +41,7 @@ public class AntlrProjectionReferenceProperty
     public static final AntlrProjectionReferenceProperty NOT_FOUND = new AntlrProjectionReferenceProperty(
             new ProjectionReferencePropertyContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrClassifier.NOT_FOUND,
             AntlrProjection.NOT_FOUND,
@@ -55,7 +56,7 @@ public class AntlrProjectionReferenceProperty
     public AntlrProjectionReferenceProperty(
             @Nonnull ProjectionReferencePropertyContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrClassifier classifier,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
@@ -79,7 +80,7 @@ public class AntlrProjectionReferenceProperty
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.antlrProjectionParent.getElementBuilder(),
                 this.referenceProperty.getElementBuilder());

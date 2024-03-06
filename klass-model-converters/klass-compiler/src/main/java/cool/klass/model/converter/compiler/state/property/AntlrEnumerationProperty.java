@@ -14,6 +14,7 @@ import cool.klass.model.meta.domain.property.EnumerationPropertyImpl.Enumeration
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
@@ -25,7 +26,7 @@ public class AntlrEnumerationProperty
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
             new ParserRuleContext(),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrClassifier.NOT_FOUND,
             false,
@@ -40,7 +41,7 @@ public class AntlrEnumerationProperty
     public AntlrEnumerationProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrClassifier owningClassifierState,
             boolean isOptional,
@@ -88,7 +89,7 @@ public class AntlrEnumerationProperty
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.enumerationState.getElementBuilder(),
                 this.owningClassifierState.getElementBuilder(),

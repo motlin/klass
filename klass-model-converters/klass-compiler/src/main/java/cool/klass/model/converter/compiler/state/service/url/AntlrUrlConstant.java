@@ -8,19 +8,21 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrNamedElement;
+import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.service.url.UrlConstantImpl.UrlConstantBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrUrlConstant extends AntlrNamedElement
+public class AntlrUrlConstant
+        extends AntlrIdentifierElement
 {
     private UrlConstantBuilder elementBuilder;
 
     public AntlrUrlConstant(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal)
     {
         super(elementContext, compilationUnit, nameContext, ordinal);
@@ -45,7 +47,7 @@ public class AntlrUrlConstant extends AntlrNamedElement
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal);
         return this.elementBuilder;
     }

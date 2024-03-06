@@ -174,7 +174,7 @@ public class AntlrModifier
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.surroundingElement.getElementBuilder());
         return this.elementBuilder;

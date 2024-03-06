@@ -15,6 +15,7 @@ import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -33,7 +34,7 @@ public final class AssociationImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull String packageName,
             @Nonnull AbstractCriteria criteria)
@@ -91,7 +92,7 @@ public final class AssociationImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull ParserRuleContext nameContext,
+                @Nonnull IdentifierContext nameContext,
                 int ordinal,
                 @Nonnull String packageName,
                 @Nonnull AbstractCriteriaBuilder<?> criteriaBuilder)
@@ -113,7 +114,7 @@ public final class AssociationImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.nameContext,
+                    this.getNameContext(),
                     this.ordinal,
                     this.packageName,
                     this.criteriaBuilder.build());

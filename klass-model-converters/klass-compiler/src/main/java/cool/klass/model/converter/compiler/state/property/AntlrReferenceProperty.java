@@ -14,7 +14,6 @@ import cool.klass.model.converter.compiler.state.AntlrMultiplicityOwner;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
-import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.property.ReferencePropertyImpl.ReferencePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -29,7 +28,7 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
     public static final AntlrReferenceProperty AMBIGUOUS = new AntlrReferenceProperty(
             new ParserRuleContext(null, -1),
             Optional.empty(),
-            AbstractElement.NO_CONTEXT,
+            new IdentifierContext(null, -1),
             -1)
     {
         @Nonnull
@@ -90,7 +89,7 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
     public static final AntlrReferenceProperty NOT_FOUND = new AntlrReferenceProperty(
             new ParserRuleContext(null, -1),
             Optional.empty(),
-            AbstractElement.NO_CONTEXT,
+            new IdentifierContext(null, -1),
             -1)
     {
         @Nonnull
@@ -155,7 +154,7 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
     protected AntlrReferenceProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal)
     {
         super(elementContext, compilationUnit, nameContext, ordinal);

@@ -10,17 +10,19 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.tuple.Pair;
 
-public class AntlrEnumerationLiteral extends AntlrNamedElement
+public class AntlrEnumerationLiteral
+        extends AntlrIdentifierElement
 {
     @Nonnull
     public static final AntlrEnumerationLiteral AMBIGUOUS = new AntlrEnumerationLiteral(
             new ParserRuleContext(),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             Optional.empty(),
             AntlrEnumeration.AMBIGUOUS);
@@ -28,7 +30,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
     public static final AntlrEnumerationLiteral NOT_FOUND = new AntlrEnumerationLiteral(
             new ParserRuleContext(),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             Optional.empty(),
             AntlrEnumeration.NOT_FOUND);
@@ -43,7 +45,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
     public AntlrEnumerationLiteral(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull Optional<String> prettyName,
             @Nonnull AntlrEnumeration owningEnumeration)
@@ -97,7 +99,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
                 this.getElementContext(),
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.prettyName,
                 this.owningEnumeration.getElementBuilder());

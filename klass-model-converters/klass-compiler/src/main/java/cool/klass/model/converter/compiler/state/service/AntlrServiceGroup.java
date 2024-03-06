@@ -16,6 +16,7 @@ import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -28,13 +29,15 @@ import org.eclipse.collections.impl.block.factory.HashingStrategies;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrTopLevelElement
+public class AntlrServiceGroup
+        extends AntlrPackageableElement
+        implements AntlrTopLevelElement
 {
     @Nonnull
     public static final AntlrServiceGroup AMBIGUOUS = new AntlrServiceGroup(
             new ParserRuleContext(),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrCompilationUnit.AMBIGUOUS,
             AntlrClass.AMBIGUOUS);
@@ -51,7 +54,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
     public AntlrServiceGroup(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrCompilationUnit compilationUnitState,
             @Nonnull AntlrClass klass)
@@ -171,7 +174,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.getPackageName(),
                 this.klass.getElementBuilder());

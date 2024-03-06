@@ -12,6 +12,7 @@ import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 // TODO: Super class for reference-type-property?
@@ -23,7 +24,7 @@ public final class AssociationEndSignatureImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AbstractClassifier type,
             @Nonnull AbstractClassifier owningClassifier,
@@ -58,7 +59,7 @@ public final class AssociationEndSignatureImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull ParserRuleContext nameContext,
+                @Nonnull IdentifierContext nameContext,
                 int ordinal,
                 @Nonnull ClassifierBuilder<?> type,
                 @Nonnull ClassifierBuilder<?> owningKlassBuilder,
@@ -83,7 +84,7 @@ public final class AssociationEndSignatureImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.nameContext,
+                    this.getNameContext(),
                     this.ordinal,
                     this.typeBuilder.getElement(),
                     this.owningClassifierBuilder.getElement(),

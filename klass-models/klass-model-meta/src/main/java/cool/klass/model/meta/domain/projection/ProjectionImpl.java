@@ -14,6 +14,7 @@ import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class ProjectionImpl
@@ -29,7 +30,7 @@ public final class ProjectionImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull String packageName,
             @Nonnull AbstractClassifier classifier)
@@ -72,7 +73,7 @@ public final class ProjectionImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull ParserRuleContext nameContext,
+                @Nonnull IdentifierContext nameContext,
                 int ordinal,
                 @Nonnull String packageName,
                 @Nonnull ClassifierBuilder<?> classifierBuilder)
@@ -90,7 +91,7 @@ public final class ProjectionImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.nameContext,
+                    this.getNameContext(),
                     this.ordinal,
                     this.packageName,
                     this.classifierBuilder.getElement());

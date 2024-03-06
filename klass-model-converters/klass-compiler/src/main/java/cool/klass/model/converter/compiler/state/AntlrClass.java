@@ -26,6 +26,7 @@ import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.Associa
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -48,7 +49,7 @@ public class AntlrClass
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrCompilationUnit.AMBIGUOUS,
             false)
@@ -79,7 +80,7 @@ public class AntlrClass
     public static final AntlrClass NOT_FOUND = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrCompilationUnit.NOT_FOUND,
             false)
@@ -128,7 +129,7 @@ public class AntlrClass
     public AntlrClass(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrCompilationUnit compilationUnitState,
             boolean isUser)
@@ -327,7 +328,7 @@ public class AntlrClass
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.getPackageName(),
                 this.inheritanceType,

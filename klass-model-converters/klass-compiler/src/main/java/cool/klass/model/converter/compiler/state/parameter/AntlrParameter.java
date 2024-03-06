@@ -10,9 +10,9 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
+import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicityOwner;
-import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
@@ -21,6 +21,7 @@ import cool.klass.model.meta.domain.api.DataType.DataTypeGetter;
 import cool.klass.model.meta.domain.parameter.ParameterImpl.ParameterBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.MutableList;
@@ -28,14 +29,14 @@ import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
 
 public final class AntlrParameter
-        extends AntlrNamedElement
+        extends AntlrIdentifierElement
         implements AntlrMultiplicityOwner
 {
     @Nonnull
     public static final AntlrParameter AMBIGUOUS = new AntlrParameter(
             new ParserRuleContext(),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrEnumeration.AMBIGUOUS,
             AntlrParameterizedProperty.AMBIGUOUS);
@@ -44,7 +45,7 @@ public final class AntlrParameter
     public static final AntlrParameter NOT_FOUND = new AntlrParameter(
             new ParserRuleContext(),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrEnumeration.NOT_FOUND,
             AntlrParameterizedProperty.AMBIGUOUS);
@@ -66,7 +67,7 @@ public final class AntlrParameter
     public AntlrParameter(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrType typeState,
             @Nonnull IAntlrElement parameterOwner)
@@ -159,7 +160,7 @@ public final class AntlrParameter
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 // TODO: Fuller interface hierarchy with AntlrType, AntlrDataType, etc.
                 (DataTypeGetter) this.typeState.getElementBuilder(),

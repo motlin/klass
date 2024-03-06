@@ -17,6 +17,7 @@ import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePr
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
@@ -34,7 +35,7 @@ public class AntlrInterface extends AntlrClassifier
     public static final AntlrInterface AMBIGUOUS = new AntlrInterface(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrCompilationUnit.AMBIGUOUS,
             new ParserRuleContext(),
@@ -52,7 +53,7 @@ public class AntlrInterface extends AntlrClassifier
     public static final AntlrInterface NOT_FOUND = new AntlrInterface(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrCompilationUnit.NOT_FOUND,
             new ParserRuleContext(),
@@ -85,7 +86,7 @@ public class AntlrInterface extends AntlrClassifier
     public AntlrInterface(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrCompilationUnit compilationUnitState,
             @Nonnull ParserRuleContext packageContext,
@@ -112,7 +113,7 @@ public class AntlrInterface extends AntlrClassifier
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.getPackageName());
 

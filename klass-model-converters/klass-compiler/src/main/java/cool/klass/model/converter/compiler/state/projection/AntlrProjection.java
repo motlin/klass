@@ -15,6 +15,7 @@ import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -32,7 +33,7 @@ public class AntlrProjection
     public static final AntlrProjection AMBIGUOUS = new AntlrProjection(
             new ProjectionDeclarationContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrCompilationUnit.AMBIGUOUS,
             AntlrClassifier.AMBIGUOUS,
@@ -42,7 +43,7 @@ public class AntlrProjection
     public static final AntlrProjection NOT_FOUND = new AntlrProjection(
             new ProjectionDeclarationContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrCompilationUnit.NOT_FOUND,
             AntlrClassifier.NOT_FOUND,
@@ -57,7 +58,7 @@ public class AntlrProjection
     public AntlrProjection(
             @Nonnull ProjectionDeclarationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrCompilationUnit compilationUnitState,
             @Nonnull AntlrClassifier classifier,
@@ -92,7 +93,7 @@ public class AntlrProjection
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.packageName,
                 this.classifier.getElementBuilder());

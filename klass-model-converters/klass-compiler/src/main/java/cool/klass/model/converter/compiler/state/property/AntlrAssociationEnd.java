@@ -14,7 +14,6 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
-import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
@@ -34,7 +33,7 @@ public class AntlrAssociationEnd
     public static final AntlrAssociationEnd AMBIGUOUS = new AntlrAssociationEnd(
             new AssociationEndContext(null, -1),
             Optional.empty(),
-            AbstractElement.NO_CONTEXT,
+            new IdentifierContext(null, -1),
             -1,
             AntlrAssociation.AMBIGUOUS);
 
@@ -42,7 +41,7 @@ public class AntlrAssociationEnd
     public static final AntlrAssociationEnd NOT_FOUND = new AntlrAssociationEnd(
             new AssociationEndContext(null, -1),
             Optional.empty(),
-            AbstractElement.NO_CONTEXT,
+            new IdentifierContext(null, -1),
             -1,
             // TODO: Not found here, instead of ambiguous
             AntlrAssociation.AMBIGUOUS);
@@ -61,7 +60,7 @@ public class AntlrAssociationEnd
     public AntlrAssociationEnd(
             @Nonnull AssociationEndContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrAssociation owningAssociationState)
     {
@@ -90,7 +89,7 @@ public class AntlrAssociationEnd
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.getType().getElementBuilder(),
                 this.owningClassState.getElementBuilder(),

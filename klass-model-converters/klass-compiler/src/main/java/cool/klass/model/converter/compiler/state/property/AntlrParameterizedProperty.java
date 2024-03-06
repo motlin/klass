@@ -14,7 +14,6 @@ import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
-import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.ParameterizedPropertyImpl.ParameterizedPropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -31,14 +30,14 @@ public class AntlrParameterizedProperty
     public static final AntlrParameterizedProperty AMBIGUOUS = new AntlrParameterizedProperty(
             new ParameterizedPropertyContext(null, -1),
             Optional.empty(),
-            AbstractElement.NO_CONTEXT,
+            new IdentifierContext(null, -1),
             -1,
             AntlrClass.AMBIGUOUS);
     @Nullable
     public static final AntlrParameterizedProperty NOT_FOUND = new AntlrParameterizedProperty(
             new ParameterizedPropertyContext(null, -1),
             Optional.empty(),
-            AbstractElement.NO_CONTEXT,
+            new IdentifierContext(null, -1),
             -1,
             AntlrClass.AMBIGUOUS);
 
@@ -56,7 +55,7 @@ public class AntlrParameterizedProperty
     public AntlrParameterizedProperty(
             @Nonnull ParameterizedPropertyContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrClass owningClassState)
     {
@@ -136,7 +135,7 @@ public class AntlrParameterizedProperty
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.getType().getElementBuilder(),
                 this.owningClassState.getElementBuilder(),

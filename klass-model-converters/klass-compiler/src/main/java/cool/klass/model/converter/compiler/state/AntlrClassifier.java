@@ -20,6 +20,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
@@ -40,7 +41,7 @@ public abstract class AntlrClassifier
     public static final AntlrClassifier AMBIGUOUS = new AntlrClassifier(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrCompilationUnit.AMBIGUOUS)
     {
@@ -61,7 +62,7 @@ public abstract class AntlrClassifier
     public static final AntlrClassifier NOT_FOUND = new AntlrClassifier(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrCompilationUnit.AMBIGUOUS)
     {
@@ -109,7 +110,7 @@ public abstract class AntlrClassifier
     protected AntlrClassifier(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrCompilationUnit compilationUnitState)
     {

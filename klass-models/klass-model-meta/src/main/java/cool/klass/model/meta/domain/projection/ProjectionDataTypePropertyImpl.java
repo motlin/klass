@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cool.klass.model.meta.domain.AbstractNamedElement;
+import cool.klass.model.meta.domain.AbstractIdentifierElement;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
@@ -15,10 +15,11 @@ import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class ProjectionDataTypePropertyImpl
-        extends AbstractNamedElement
+        extends AbstractIdentifierElement
         implements AbstractProjectionElement, ProjectionDataTypeProperty
 {
     @Nonnull
@@ -34,7 +35,7 @@ public final class ProjectionDataTypePropertyImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull ParserRuleContext headerContext,
             @Nonnull String headerText,
@@ -70,7 +71,7 @@ public final class ProjectionDataTypePropertyImpl
     }
 
     public static final class ProjectionDataTypePropertyBuilder
-            extends NamedElementBuilder<ProjectionDataTypePropertyImpl>
+            extends IdentifierElementBuilder<ProjectionDataTypePropertyImpl>
             implements ProjectionChildBuilder
     {
         @Nonnull
@@ -86,7 +87,7 @@ public final class ProjectionDataTypePropertyImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull ParserRuleContext nameContext,
+                @Nonnull IdentifierContext nameContext,
                 int ordinal,
                 @Nonnull ParserRuleContext headerContext,
                 @Nonnull String headerText,
@@ -108,7 +109,7 @@ public final class ProjectionDataTypePropertyImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.nameContext,
+                    this.getNameContext(),
                     this.ordinal,
                     this.headerContext,
                     this.headerText,

@@ -10,24 +10,25 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
-import cool.klass.model.converter.compiler.state.AntlrNamedElement;
+import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionProjectionReferenceImpl.ProjectionProjectionReferenceBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionProjectionReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.MutableList;
 
 public class AntlrProjectionProjectionReference
-        extends AntlrNamedElement
+        extends AntlrIdentifierElement
         implements AntlrProjectionChild
 {
     @Nonnull
     public static final AntlrProjectionProjectionReference AMBIGUOUS = new AntlrProjectionProjectionReference(
             new ProjectionProjectionReferenceContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrClass.AMBIGUOUS,
             AntlrProjection.AMBIGUOUS,
@@ -38,7 +39,7 @@ public class AntlrProjectionProjectionReference
     public static final AntlrProjectionProjectionReference NOT_FOUND = new AntlrProjectionProjectionReference(
             new ProjectionProjectionReferenceContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             AntlrClass.NOT_FOUND,
             AntlrProjection.NOT_FOUND,
@@ -59,7 +60,7 @@ public class AntlrProjectionProjectionReference
     public AntlrProjectionProjectionReference(
             @Nonnull ProjectionProjectionReferenceContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrClassifier classifier,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
@@ -86,7 +87,7 @@ public class AntlrProjectionProjectionReference
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.antlrProjectionParent.getElementBuilder(),
                 this.referenceProperty.getElementBuilder());

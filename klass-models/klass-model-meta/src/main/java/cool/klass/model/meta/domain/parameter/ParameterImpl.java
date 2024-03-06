@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cool.klass.model.meta.domain.AbstractNamedElement;
+import cool.klass.model.meta.domain.AbstractIdentifierElement;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DataType.DataTypeGetter;
 import cool.klass.model.meta.domain.api.Element;
@@ -14,10 +14,11 @@ import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.parameter.Parameter;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class ParameterImpl
-        extends AbstractNamedElement
+        extends AbstractIdentifierElement
         implements Parameter
 {
     @Nonnull
@@ -29,7 +30,7 @@ public final class ParameterImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull Multiplicity multiplicity,
             @Nonnull DataType dataType)
@@ -60,7 +61,7 @@ public final class ParameterImpl
     }
 
     public static final class ParameterBuilder
-            extends NamedElementBuilder<ParameterImpl>
+            extends IdentifierElementBuilder<ParameterImpl>
     {
         @Nonnull
         private final DataTypeGetter dataTypeGetter;
@@ -72,7 +73,7 @@ public final class ParameterImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull ParserRuleContext nameContext,
+                @Nonnull IdentifierContext nameContext,
                 int ordinal,
                 @Nonnull DataTypeGetter dataType,
                 @Nonnull Multiplicity multiplicity)
@@ -90,7 +91,7 @@ public final class ParameterImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.nameContext,
+                    this.getNameContext(),
                     this.ordinal,
                     this.multiplicity,
                     this.dataTypeGetter.getType());

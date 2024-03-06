@@ -9,10 +9,11 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.converter.compiler.state.AntlrInterface;
-import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.MutableList;
@@ -21,7 +22,7 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public abstract class AntlrProjectionParent
-        extends AntlrNamedElement
+        extends AntlrIdentifierElement
 {
     @Nonnull
     protected final AntlrClassifier classifier;
@@ -34,7 +35,7 @@ public abstract class AntlrProjectionParent
     protected AntlrProjectionParent(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull AntlrClassifier classifier)
     {

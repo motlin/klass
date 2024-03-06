@@ -9,25 +9,26 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
-import cool.klass.model.converter.compiler.state.AntlrNamedElement;
+import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.meta.domain.projection.ProjectionDataTypePropertyImpl.ProjectionDataTypePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.tuple.Pair;
 
 public class AntlrProjectionDataTypeProperty
-        extends AntlrNamedElement
+        extends AntlrIdentifierElement
         implements AntlrProjectionChild
 {
     @Nonnull
     public static final AntlrProjectionDataTypeProperty AMBIGUOUS = new AntlrProjectionDataTypeProperty(
             new ParserRuleContext(),
             Optional.empty(),
-            new ParserRuleContext(),
+            new IdentifierContext(null, -1),
             -1,
             new HeaderContext(null, -1),
             "ambiguous header",
@@ -48,7 +49,7 @@ public class AntlrProjectionDataTypeProperty
     public AntlrProjectionDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
+            @Nonnull IdentifierContext nameContext,
             int ordinal,
             @Nonnull HeaderContext headerContext,
             @Nonnull String headerText,
@@ -80,7 +81,7 @@ public class AntlrProjectionDataTypeProperty
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.nameContext,
+                this.getNameContext(),
                 this.ordinal,
                 this.headerContext,
                 this.headerText,
