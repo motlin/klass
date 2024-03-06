@@ -690,11 +690,11 @@ service ProjectionDataTypeProperty
 
 service ServiceGroup
 {
-    /serviceGroup/{className: String[1..1]}/{name: String[1..1]}
+    /serviceGroup/{name: String[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.className == className && this.name == name;
+            criteria    : this.name == name;
             projection  : ServiceGroupProjection;
         }
     /serviceGroup

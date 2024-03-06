@@ -1,2 +1,2 @@
-alter table SERVICE_GROUP add constraint SERVICE_GROUP_PK primary key (class_name, name);
+alter table SERVICE_GROUP add constraint SERVICE_GROUP_PK primary key (name);
 

@@ -740,7 +740,6 @@ association ProjectionProjectionReferenceHasProjection
 class ServiceGroup
     implements PackageableElement
 {
-    className                     : String key maximumLength(256);
 }
 
 association ServiceGroupHasClass
@@ -748,7 +747,7 @@ association ServiceGroupHasClass
     serviceGroup                  : ServiceGroup[0..1];
     owningClass                   : Klass[1..1];
 
-    relationship this.className == Klass.name
+    relationship this.name == Klass.name
 }
 
 class Url
@@ -795,7 +794,7 @@ association ServiceGroupHasUrls
     serviceGroup                  : ServiceGroup[1..1];
     urls                          : Url[1..*] owned;
 
-    relationship this.className == Url.className
+    relationship this.name == Url.className
 }
 
 enumeration ServiceMultiplicity

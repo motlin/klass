@@ -870,10 +870,6 @@
 
     <changeSet author="Klass" id="initial-table-48-SERVICE_GROUP">
         <createTable tableName="SERVICE_GROUP">
-            <column name="CLASS_NAME" type="varchar(256)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="SERVICE_GROUP_PK" />
-            </column>
-
             <column name="NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="SERVICE_GROUP_PK" />
             </column>
@@ -1314,23 +1310,13 @@
         />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-48-SERVICE_GROUP_FK_OWNING_CLASS">
-        <addForeignKeyConstraint
-                constraintName="SERVICE_GROUP_FK_OWNING_CLASS"
-                baseTableName="SERVICE_GROUP"
-                baseColumnNames="CLASS_NAME"
-                referencedTableName="KLASS"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-foreign-key-49-URL_FK_SERVICE_GROUP">
         <addForeignKeyConstraint
                 constraintName="URL_FK_SERVICE_GROUP"
                 baseTableName="URL"
                 baseColumnNames="CLASS_NAME"
                 referencedTableName="SERVICE_GROUP"
-                referencedColumnNames="CLASS_NAME"
+                referencedColumnNames="NAME"
         />
     </changeSet>
 
