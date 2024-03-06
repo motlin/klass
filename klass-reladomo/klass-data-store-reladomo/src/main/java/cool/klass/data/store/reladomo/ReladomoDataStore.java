@@ -22,6 +22,7 @@ import com.gs.fw.common.mithra.MithraDatedTransactionalObject;
 import com.gs.fw.common.mithra.MithraManagerProvider;
 import com.gs.fw.common.mithra.MithraObject;
 import com.gs.fw.common.mithra.MithraTransactionalObject;
+import com.gs.fw.common.mithra.attribute.AsOfAttribute;
 import com.gs.fw.common.mithra.attribute.Attribute;
 import com.gs.fw.common.mithra.attribute.TimestampAttribute;
 import com.gs.fw.common.mithra.finder.AbstractRelatedFinder;
@@ -282,8 +283,19 @@ public class ReladomoDataStore implements DataStore
             return ((Timestamp) result).toInstant();
         }
 
-        boolean isTemporal = dataTypeProperty.isTemporal();
-        if (isTemporal)
+        if (dataTypeProperty.isTemporalRange())
+        {
+            Timestamp infinity = ((AsOfAttribute<?>) attribute).getInfinityDate();
+            if (infinity.equals(result))
+            {
+                return null;
+            }
+            // TODO: Consider handling here the case where validTo == systemTo + 1 day, but really means infinity
+            // TODO: Alternately, just enable future dated rows to turn off this optimization
+            return ((Timestamp) result).toInstant();
+        }
+
+        if (dataTypeProperty.isTemporalInstant())
         {
             Timestamp infinity = ((TimestampAttribute<?>) attribute).getAsOfAttributeInfinity();
             if (infinity.equals(result))
