@@ -27,9 +27,7 @@ projection PackageableElementProjection on PackageableElement
     },
     Klass.parameterizedProperties: ParameterizedPropertyProjection,
     Association.associationEnds: AssociationEndProjection,
-    Association.criteria: {
-        Criteria.id: "Criteria id",
-    },
+    Association.criteria: CriteriaProjection,
     NamedProjection.rootProjection: {
         ProjectionElement.id: "ProjectionElement id",
     },
@@ -332,9 +330,7 @@ projection AssociationProjection on Association
     name: "NamedElement name",
     packageName: "PackageableElement packageName",
     associationEnds: AssociationEndProjection,
-    criteria: {
-        id: "Criteria id",
-    },
+    criteria: CriteriaProjection,
 }
 
 projection AssociationEndProjection on AssociationEnd

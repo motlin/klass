@@ -441,7 +441,7 @@ association AssociationEndHasModifiers
 association AssociationHasCriteria
 {
     association: Association[0..1];
-    criteria: Criteria[1..1];
+    criteria: Criteria[1..1] owned;
 }
 
 association OperatorCriteriaHasSourceExpressionValue

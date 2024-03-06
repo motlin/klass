@@ -621,7 +621,11 @@
             "resultType": {
               "name": "Criteria"
             },
-            "associationEndModifiers": [],
+            "associationEndModifiers": [
+              {
+                "keyword": "owned"
+              }
+            ],
             "orderBys": []
           }
         ],
