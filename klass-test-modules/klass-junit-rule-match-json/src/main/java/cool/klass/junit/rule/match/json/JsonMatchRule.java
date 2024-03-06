@@ -8,7 +8,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.Scanner;
 
 import javax.annotation.Nonnull;
@@ -26,21 +25,6 @@ import static org.junit.Assert.fail;
 
 public class JsonMatchRule extends ErrorCollector
 {
-    public static String slurp(@Nonnull String resourceClassPathLocation, @Nonnull Class<?> callingClass)
-    {
-        InputStream inputStream = callingClass.getResourceAsStream(resourceClassPathLocation);
-        Objects.requireNonNull(inputStream, resourceClassPathLocation);
-        return JsonMatchRule.slurp(inputStream);
-    }
-
-    public static String slurp(@Nonnull InputStream inputStream)
-    {
-        try (Scanner scanner = new Scanner(inputStream))
-        {
-            return scanner.useDelimiter("\\A").next();
-        }
-    }
-
     public void assertFileContents(
             @Nonnull String resourceClassPathLocation,
             @Nonnull String actualString,
@@ -48,7 +32,7 @@ public class JsonMatchRule extends ErrorCollector
     {
         try
         {
-            this.assertFileContentsOrThrow(resourceClassPathLocation, actualString, callingClass);
+            JsonMatchRule.assertFileContentsOrThrow(resourceClassPathLocation, actualString, callingClass);
         }
         catch (@Nonnull URISyntaxException | FileNotFoundException | JSONException e)
         {
@@ -56,7 +40,7 @@ public class JsonMatchRule extends ErrorCollector
         }
     }
 
-    private void assertFileContentsOrThrow(
+    private static void assertFileContentsOrThrow(
             @Nonnull String resourceClassPathLocation,
             @Nonnull String actualString,
             @Nonnull Class<?> callingClass)
@@ -72,7 +56,7 @@ public class JsonMatchRule extends ErrorCollector
             File                 resourceFile     = packagePath.resolve(resourceClassPathLocation).toFile();
 
             assertThat(resourceFile.exists(), is(false));
-            this.writeStringToFile(actualString, resourceFile);
+            JsonMatchRule.writeStringToFile(actualString, resourceFile);
             fail(resourceClassPathLocation);
         }
 
@@ -81,12 +65,20 @@ public class JsonMatchRule extends ErrorCollector
         if (!actualString.equals(expectedStringFromFile))
         {
             File file = new File(uri);
-            this.writeStringToFile(actualString, file);
+            JsonMatchRule.writeStringToFile(actualString, file);
         }
         JSONAssert.assertEquals(actualString, expectedStringFromFile, actualString, JSONCompareMode.STRICT);
     }
 
-    private void writeStringToFile(@Nonnull String string, @Nonnull File file) throws FileNotFoundException
+    private static String slurp(@Nonnull InputStream inputStream)
+    {
+        try (Scanner scanner = new Scanner(inputStream))
+        {
+            return scanner.useDelimiter("\\A").next();
+        }
+    }
+
+    private static void writeStringToFile(@Nonnull String string, @Nonnull File file) throws FileNotFoundException
     {
         try (PrintWriter printWriter = new PrintWriter(file))
         {
