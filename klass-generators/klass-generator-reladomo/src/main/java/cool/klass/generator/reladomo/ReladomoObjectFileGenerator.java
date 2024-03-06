@@ -161,7 +161,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         klass.getSuperClass().ifPresent(superClass ->
         {
             SuperClassAttributeType superClassAttributeType = new SuperClassAttributeType();
-            superClassAttributeType.setName(superClass.getName());
+            superClassAttributeType.setName(superClass.getFullyQualifiedName());
             mithraCommonObject.setSuperClass(superClassAttributeType);
         });
     }
