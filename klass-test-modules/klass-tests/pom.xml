@@ -83,7 +83,7 @@
         <dependency>
             <groupId>com.stackoverflow</groupId>
             <artifactId>stackoverflow-meta-model-constants</artifactId>
-            <version>${project.version}</version>
+            <version>0.1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
 
