@@ -371,6 +371,20 @@ association AssociationHasCriteria
     relationship this.criteriaId == Criteria.id
 }
 
+enumeration Operator
+{
+    EQUALS("=="),
+    NOT_EQUALS("!="),
+    LESS_THAN("<"),
+    GREATER_THAN(">"),
+    LESS_THAN_EQUAL("<="),
+    GREATER_THAN_EQUAL(">="),
+    IN("in"),
+    CONTAINS("contains"),
+    STARTS_WITH("startsWith"),
+    ENDS_WITH("endsWith"),
+}
+
 class Criteria
     abstract(table-per-class)
     implements Element
@@ -404,13 +418,91 @@ class OrCritiera
 class OperatorCriteria
     extends Criteria
 {
-    // TODO
+    operator: Operator;
+
+    // source ExpressionValue id
+    // target ExpressionValue id
 }
 
 class EdgePointCriteria
     extends Criteria
 {
-    // TODO
+    memberReferencePathId: Long private;
+}
+
+association MemberReferencePathHasEdgePointCriteria
+{
+    memberReferencePath: MemberReferencePath[1..1] ;
+    edgePointCriteria: EdgePointCriteria[1..1] owned;
+
+    relationship this.id == EdgePointCriteria.memberReferencePathId
+ }
+
+class ExpressionValue
+    abstract(table-per-class)
+{
+    id      : Long key id;
+}
+
+class MemberReferencePath
+    abstract(table-per-class)
+    extends ExpressionValue
+{
+    className: String private;
+    propertyClassName: String private;
+    propertyName: String private;
+}
+
+association MemberReferencePathHasClass
+{
+    memberReferencePaths: MemberReferencePath[0..*];
+    klass: Klass[1..1];
+
+    relationship this.className == Klass.name
+}
+
+class MemberReferencePathAssociationEndMapping
+{
+    memberReferencePathId: Long key private;
+    associationOwningClassName: String key private;
+    associationEndName: String key private;
+}
+
+association MemberReferencePathHasMemberReferencePathAssociationEndMapping
+{
+    memberReferencePath: MemberReferencePath[1..1];
+    associationEnds: MemberReferencePathAssociationEndMapping[0..*];
+
+    relationship this.id == MemberReferencePathAssociationEndMapping.memberReferencePathId
+}
+
+association MemberReferencePathAssociationEndMappingHasAssociationEnd
+{
+    memberReferencePaths: MemberReferencePathAssociationEndMapping[0..*];
+    associationEnd: AssociationEnd[1..1];
+
+    relationship this.associationOwningClassName == AssociationEnd.owningClassName
+            && this.associationEndName == AssociationEnd.name
+}
+
+association DataTypePropertyHasMemberReferencePaths
+{
+    dataTypeProperty: DataTypeProperty[1..1];
+    memberReferencePaths: MemberReferencePath[0..*];
+
+    relationship this.classifierName == MemberReferencePath.propertyClassName
+            && this.name == MemberReferencePath.propertyName
+}
+
+class ThisMemberReferencePath
+    extends MemberReferencePath
+{
+
+}
+
+class TypeMemberReferencePath
+    extends MemberReferencePath
+{
 }
 
 association BinaryCriteraHasLeft
@@ -1079,16 +1171,37 @@ projection AssociationReadProjection on Association
             ordinal : "Association end modifier ordinal",
         },
     },
-    criteria               :
+    criteria               : CriteriaProjection,
+}
+
+projection CriteriaProjection on Criteria
+{
+    id                  : "Criteria id",
+    BinaryCriteria.left :
     {
-        id                  : "Criteria id",
-        BinaryCriteria.left :
+        id: "Criteria left id",
+    },
+    BinaryCriteria.right:
+    {
+        id: "Criteria right id",
+    },
+    OperatorCriteria.operator: "Criteria operator",
+    EdgePointCriteria.memberReferencePath:
+    {
+        klass           :
         {
-            id: "Criteria left id",
+            name: "EdgePointCriteria MemberReferencePath Class name",
         },
-        BinaryCriteria.right:
+        associationEnds :
         {
-            id: "Criteria right id",
+            associationEnd:
+            {
+                name: "EdgePointCriteria MemberReferencePath AssociationEnd name",
+            },
+        },
+        dataTypeProperty:
+        {
+            name: "EdgePointCriteria MemberReferencePath DataTypeProperty name",
         },
     },
 }

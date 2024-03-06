@@ -10,6 +10,7 @@ import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrInterface;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
+import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
@@ -23,6 +24,7 @@ import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
@@ -52,6 +54,8 @@ public class CompilerWalkState
     private AntlrAssociationEnd        associationEndState;
     @Nullable
     private AntlrParameterizedProperty parameterizedPropertyState;
+    @Nullable
+    private AntlrProjection            projectionState;
     @Nullable
     private AntlrServiceGroup          serviceGroupState;
     @Nullable
@@ -103,6 +107,12 @@ public class CompilerWalkState
     public AntlrUrl getUrlState()
     {
         return this.urlState;
+    }
+
+    @Nullable
+    public AntlrProjection getProjectionState()
+    {
+        return this.projectionState;
     }
 
     @Nullable
@@ -271,6 +281,19 @@ public class CompilerWalkState
         this.thisReference = null;
     }
 
+    public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
+    {
+        assertNull(this.projectionState);
+
+        AntlrProjection projectionState = this.domainModelState.getProjectionByContext(ctx);
+        this.projectionState = projectionState;
+    }
+
+    public void exitProjectionDeclaration()
+    {
+        this.projectionState = null;
+    }
+
     public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
     {
         CompilerWalkState.assertNull(this.parameterizedPropertyState);
@@ -382,6 +405,7 @@ public class CompilerWalkState
         compilerWalkState.associationState = this.associationState;
         compilerWalkState.associationEndState = this.associationEndState;
         compilerWalkState.parameterizedPropertyState = this.parameterizedPropertyState;
+        compilerWalkState.projectionState = this.projectionState;
         compilerWalkState.serviceGroupState = this.serviceGroupState;
         compilerWalkState.urlState = this.urlState;
         compilerWalkState.serviceState = this.serviceState;
@@ -421,6 +445,10 @@ public class CompilerWalkState
             throw new AssertionError();
         }
         if (this.parameterizedPropertyState != null)
+        {
+            throw new AssertionError();
+        }
+        if (this.projectionState != null)
         {
             throw new AssertionError();
         }

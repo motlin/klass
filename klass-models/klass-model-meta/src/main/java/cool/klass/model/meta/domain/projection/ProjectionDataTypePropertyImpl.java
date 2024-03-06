@@ -108,5 +108,11 @@ public final class ProjectionDataTypePropertyImpl
                     this.parentBuilder.getElement(),
                     this.propertyBuilder.getElement());
         }
+
+        @Override
+        public void build2()
+        {
+            // Deliberately empty
+        }
     }
 }

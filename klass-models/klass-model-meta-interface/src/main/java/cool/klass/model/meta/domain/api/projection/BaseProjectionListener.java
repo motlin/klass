@@ -23,6 +23,16 @@ public class BaseProjectionListener implements ProjectionListener
     }
 
     @Override
+    public void enterProjectionProjectionReference(ProjectionProjectionReference projectionProjectionReference)
+    {
+    }
+
+    @Override
+    public void exitProjectionProjectionReference(ProjectionProjectionReference projectionProjectionReference)
+    {
+    }
+
+    @Override
     public void enterProjectionDataTypeProperty(ProjectionDataTypeProperty projectionDataTypeProperty)
     {
     }

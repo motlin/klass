@@ -11,11 +11,11 @@ server:
       - type: console
 
 logging:
-  level: DEBUG
+  level: INFO
   loggers:
     klass.model.meta.domain: DEBUG
-    com.gs.fw.common.mithra.sqllogs: DEBUG
-    com.gs.fw.common.mithra.batch.sqllogs: DEBUG
+#    com.gs.fw.common.mithra.sqllogs: DEBUG
+#    com.gs.fw.common.mithra.batch.sqllogs: DEBUG
     com.gs.fw.common.mithra.connectionmanager: INFO
     org.eclipse.jetty: INFO
     org.apache.http: INFO

@@ -250,11 +250,13 @@ public class CompilerState
     public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
         this.antlrWalkState.enterProjectionDeclaration(ctx);
+        this.compilerWalkState.enterProjectionDeclaration(ctx);
     }
 
     public void exitProjectionDeclaration()
     {
         this.antlrWalkState.exitProjectionDeclaration();
+        this.compilerWalkState.exitProjectionDeclaration();
     }
 
     public void enterServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)

@@ -99,6 +99,7 @@ public class AntlrWalkState
 
     public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
+        assertNull(this.projectionDeclarationContext);
         this.projectionDeclarationContext = ctx;
     }
 

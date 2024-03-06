@@ -8,22 +8,19 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
-import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
-import cool.klass.model.meta.domain.projection.AbstractProjectionParent;
-import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
-import cool.klass.model.meta.domain.projection.ProjectionAssociationEndImpl.ProjectionAssociationEndBuilder;
-import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
+import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
+import cool.klass.model.meta.domain.projection.ProjectionProjectionReferenceImpl.ProjectionProjectionReferenceBuilder;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionProjectionReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.bag.ImmutableBag;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 
-public class AntlrProjectionAssociationEnd extends AntlrProjectionParent implements AntlrProjectionChild
+public class AntlrProjectionProjectionReference extends AntlrNamedElement implements AntlrProjectionChild
 {
     @Nonnull
-    public static final AntlrProjectionAssociationEnd AMBIGUOUS = new AntlrProjectionAssociationEnd(
-            new ProjectionAssociationEndContext(null, -1),
+    public static final AntlrProjectionProjectionReference AMBIGUOUS = new AntlrProjectionProjectionReference(
+            new ProjectionProjectionReferenceContext(null, -1),
             null,
             true,
             new ParserRuleContext(),
@@ -31,11 +28,12 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
             -1,
             AntlrClass.AMBIGUOUS,
             AntlrProjection.AMBIGUOUS,
-            AntlrAssociationEnd.AMBIGUOUS);
+            AntlrAssociationEnd.AMBIGUOUS,
+            AntlrProjection.AMBIGUOUS);
 
     @Nonnull
-    public static final AntlrProjectionAssociationEnd NOT_FOUND = new AntlrProjectionAssociationEnd(
-            new ProjectionAssociationEndContext(null, -1),
+    public static final AntlrProjectionProjectionReference NOT_FOUND = new AntlrProjectionProjectionReference(
+            new ProjectionProjectionReferenceContext(null, -1),
             null,
             true,
             new ParserRuleContext(),
@@ -43,18 +41,22 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
             -1,
             AntlrClass.NOT_FOUND,
             AntlrProjection.NOT_FOUND,
-            AntlrAssociationEnd.NOT_FOUND);
+            AntlrAssociationEnd.NOT_FOUND,
+            AntlrProjection.AMBIGUOUS);
 
+    @Nonnull
+    private final AntlrClass            klass;
     @Nonnull
     private final AntlrProjectionParent antlrProjectionParent;
-
     @Nonnull
-    private final AntlrAssociationEnd associationEnd;
+    private final AntlrAssociationEnd   associationEnd;
+    @Nonnull
+    private final AntlrProjection       referencedProjectionState;
 
-    private ProjectionAssociationEndBuilder projectionAssociationEndBuilder;
+    private ProjectionProjectionReferenceBuilder projectionProjectionReferenceBuilder;
 
-    public AntlrProjectionAssociationEnd(
-            @Nonnull ProjectionAssociationEndContext elementContext,
+    public AntlrProjectionProjectionReference(
+            @Nonnull ProjectionProjectionReferenceContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
@@ -62,23 +64,26 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
             int ordinal,
             @Nonnull AntlrClass klass,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
-            @Nonnull AntlrAssociationEnd associationEnd)
+            @Nonnull AntlrAssociationEnd associationEnd,
+            @Nonnull AntlrProjection referencedProjectionState)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, klass);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
+        this.klass = Objects.requireNonNull(klass);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.associationEnd = Objects.requireNonNull(associationEnd);
+        this.referencedProjectionState = Objects.requireNonNull(referencedProjectionState);
     }
 
     @Nonnull
     @Override
-    public ProjectionAssociationEndBuilder build()
+    public ProjectionProjectionReferenceBuilder build()
     {
-        if (this.projectionAssociationEndBuilder != null)
+        if (this.projectionProjectionReferenceBuilder != null)
         {
             throw new IllegalStateException();
         }
 
-        this.projectionAssociationEndBuilder = new ProjectionAssociationEndBuilder(
+        this.projectionProjectionReferenceBuilder = new ProjectionProjectionReferenceBuilder(
                 this.elementContext,
                 this.inferred,
                 this.nameContext,
@@ -87,25 +92,14 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
                 this.antlrProjectionParent.getElementBuilder(),
                 this.associationEnd.getElementBuilder());
 
-        ImmutableList<ProjectionChildBuilder> projectionMemberBuilders = this.children
-                .collect(AntlrProjectionChild::build)
-                .toImmutable();
-
-        this.projectionAssociationEndBuilder.setChildBuilders(projectionMemberBuilders);
-        return this.projectionAssociationEndBuilder;
+        return this.projectionProjectionReferenceBuilder;
     }
 
     @Override
     public void build2()
     {
-        this.children.forEach(AntlrProjectionElement::build2);
-    }
-
-    @Nonnull
-    @Override
-    public AbstractProjectionParentBuilder<? extends AbstractProjectionParent> getElementBuilder()
-    {
-        return Objects.requireNonNull(this.projectionAssociationEndBuilder);
+        ProjectionBuilder referencedProjectionBuilder = this.referencedProjectionState.getElementBuilder();
+        this.projectionProjectionReferenceBuilder.setReferencedProjectionBuilder(referencedProjectionBuilder);
     }
 
     @Nonnull
@@ -136,25 +130,16 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
             compilerErrorHolder.add(message, this);
         }
 
-        ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
-
-        for (AntlrProjectionElement projectionMember : this.children)
+        if (this.klass != this.referencedProjectionState.getKlass())
         {
-            if (duplicateMemberNames.contains(projectionMember.getName()))
-            {
-                projectionMember.reportDuplicateMemberName(compilerErrorHolder);
-            }
-            projectionMember.reportErrors(compilerErrorHolder);
+            String message = String.format(
+                    "ERR_PRR_KLS: Type mismatch: '%s' has type '%s' but '%s' has type '%s'.",
+                    this.name,
+                    this.klass.getName(),
+                    this.referencedProjectionState.getName(),
+                    this.referencedProjectionState.getKlass().getName());
+            compilerErrorHolder.add(message, this);
         }
-    }
-
-    public ImmutableBag<String> getDuplicateMemberNames()
-    {
-        return this.children
-                .collect(AntlrProjectionElement::getName)
-                .toBag()
-                .selectByOccurrences(occurrences -> occurrences > 1)
-                .toImmutable();
     }
 
     @Override

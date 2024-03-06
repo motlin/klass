@@ -19,10 +19,10 @@ import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.PrimitiveType;
-import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
 import cool.klass.model.meta.domain.api.projection.ProjectionChild;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionElement;
+import cool.klass.model.meta.domain.api.projection.ProjectionWithAssociationEnd;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
@@ -68,12 +68,12 @@ public class ReladomoJsonTree implements JsonSerializable
                             mithraObject,
                             (ProjectionDataTypeProperty) projectionElement);
                 }
-                else if (projectionElement instanceof ProjectionAssociationEnd)
+                else if (projectionElement instanceof ProjectionWithAssociationEnd)
                 {
-                    this.handleProjectionAssociationEnd(
+                    this.handleProjectionWithAssociationEnd(
                             jsonGenerator,
                             mithraObject,
-                            (ProjectionAssociationEnd) projectionElement);
+                            (ProjectionWithAssociationEnd) projectionElement);
                 }
                 else
                 {
@@ -124,25 +124,25 @@ public class ReladomoJsonTree implements JsonSerializable
         }
     }
 
-    public void handleProjectionAssociationEnd(
+    public void handleProjectionWithAssociationEnd(
             @Nonnull JsonGenerator jsonGenerator,
             MithraObject mithraObject,
-            ProjectionAssociationEnd projectionAssociationEnd) throws IOException
+            ProjectionWithAssociationEnd projectionWithAssociationEnd) throws IOException
     {
-        if (projectionAssociationEnd.isPolymorphic())
+        if (projectionWithAssociationEnd.isPolymorphic())
         {
-            Klass klass = projectionAssociationEnd.getProperty().getOwningClassifier();
+            Klass klass = projectionWithAssociationEnd.getProperty().getOwningClassifier();
             if (!this.dataStore.isInstanceOf(mithraObject, klass))
             {
                 return;
             }
         }
 
-        AssociationEnd associationEnd     = projectionAssociationEnd.getProperty();
+        AssociationEnd associationEnd     = projectionWithAssociationEnd.getProperty();
         Multiplicity   multiplicity       = associationEnd.getMultiplicity();
         String         associationEndName = associationEnd.getName();
 
-        ImmutableList<? extends ProjectionChild> children = projectionAssociationEnd.getChildren();
+        ImmutableList<? extends ProjectionChild> children = projectionWithAssociationEnd.getChildren();
         if (multiplicity.isToMany())
         {
             Object                   value      = this.dataStore.getToMany(mithraObject, associationEnd);

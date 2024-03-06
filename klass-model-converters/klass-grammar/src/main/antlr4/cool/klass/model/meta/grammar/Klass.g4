@@ -55,6 +55,7 @@ relationship: 'relationship' criteriaExpression;
 projectionDeclaration: 'projection' identifier (parameterDeclarationList)? 'on' classReference projectionBody;
 projectionBody: '{' (projectionMember ',')* '}';
 projectionMember: projectionPrimitiveMember | projectionAssociationEnd | projectionParameterizedProperty | projectionProjectionReference;
+// TODO: Rename projectionPrimitiveMember --> projectionDataTypeMember
 projectionPrimitiveMember: (classifierReference '.')? identifier ':' header;
 projectionAssociationEnd: (classifierReference '.')? identifier ':' projectionBody;
 projectionProjectionReference: (classifierReference '.')? identifier ':' projectionReference;

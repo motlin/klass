@@ -29,6 +29,7 @@ import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
+import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.AssociationEndModifier;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
@@ -320,6 +321,11 @@ public class JavaConstantsMetaModelGenerator
         if (element instanceof ProjectionAssociationEnd)
         {
             return ProjectionAssociationEnd.class.getSimpleName();
+        }
+
+        if (element instanceof ProjectionProjectionReference)
+        {
+            return ProjectionProjectionReference.class.getSimpleName();
         }
 
         if (element instanceof EnumerationLiteral)
@@ -1664,7 +1670,12 @@ public class JavaConstantsMetaModelGenerator
             ProjectionAssociationEnd projectionAssociationEnd = (ProjectionAssociationEnd) projectionElement;
             return this.getProjectionAssociationEndSourceCode(projectionAssociationEnd, projectionParentName);
         }
-        throw new AssertionError();
+        if (projectionElement instanceof ProjectionProjectionReference)
+        {
+            ProjectionProjectionReference projectionProjectionReference = (ProjectionProjectionReference) projectionElement;
+            return this.getProjectionProjectionReferenceSourceCode(projectionProjectionReference, projectionParentName);
+        }
+        throw new AssertionError(projectionElement.getClass().getSimpleName());
     }
 
     private String getProjectionDataTypePropertySourceCode(
@@ -1809,6 +1820,80 @@ public class JavaConstantsMetaModelGenerator
                 + "    }\n"
                 + "\n"
                 + this.getProjectionChildrenSourceCode(projectionAssociationEnd, uppercaseName + "_ProjectionAssociationEnd")
+                + "}\n";
+        // @formatter:on
+    }
+
+    private String getProjectionProjectionReferenceSourceCode(
+            ProjectionProjectionReference projectionProjectionReference,
+            String projectionParentName)
+    {
+        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionProjectionReference.getName()) + projectionProjectionReference.getDepth();
+
+        AssociationEnd      associationEnd            = projectionProjectionReference.getProperty();
+
+        // @formatter:off
+        //language=JAVA
+        return ""
+                + "public static enum " + uppercaseName + "_ProjectionProjectionReference implements ProjectionProjectionReference\n"
+                + "{\n"
+                + "    INSTANCE;\n"
+                + "\n"
+                + this.getProjectionChildrenConstantsSourceCode(projectionProjectionReference)
+                + "\n"
+                + "    @Nonnull\n"
+                + "    @Override\n"
+                + "    public String getName()\n"
+                + "    {\n"
+                + "        return \""
+                + StringEscapeUtils.escapeJava(projectionProjectionReference.getName()) + "\";\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public int getOrdinal()\n"
+                + "    {\n"
+                + "        return " + projectionProjectionReference.getOrdinal() + ";\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public boolean isInferred()\n"
+                + "    {\n"
+                + "        return " + projectionProjectionReference.isInferred() + ";\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public Optional<ProjectionParent> getParent()\n"
+                + "    {\n"
+                + "        return Optional.of(" + projectionParentName + ".INSTANCE);\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public ImmutableList<? extends ProjectionChild> getChildren()\n"
+                + "    {\n"
+                + "        return Lists.immutable.with(" + projectionProjectionReference.getChildren().collect(ProjectionElement::getName).makeString() + ");\n"
+                + "    }\n"
+                + "\n"
+                + "    @Nonnull\n"
+                + "    @Override\n"
+                + "    public AssociationEnd getProperty()\n"
+                + "    {\n"
+                + "        return " + this.applicationName + "DomainModel." + associationEnd.getOwningClassifier().getName() + "." + associationEnd.getName() + ";\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public String toString()\n"
+                + "    {\n"
+                + "        return this.getName();\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public String getSourceCode()\n"
+                + "    {\n"
+                + "        return \"\"\n"
+                + "                + \"" + this.wrapSourceCode(projectionProjectionReference.getSourceCode()) + "\";\n"
+                + "    }\n"
+                + "\n"
+                + this.getProjectionChildrenSourceCode(projectionProjectionReference, uppercaseName + "_ProjectionProjectionReference")
                 + "}\n";
         // @formatter:on
     }

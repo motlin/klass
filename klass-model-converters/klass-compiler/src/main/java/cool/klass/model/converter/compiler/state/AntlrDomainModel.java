@@ -20,6 +20,7 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
@@ -49,6 +50,8 @@ public class AntlrDomainModel
     private final MutableOrderedMap<ClassDeclarationContext, AntlrClass>               classesByContext       =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<AssociationDeclarationContext, AntlrAssociation>   associationsByContext  =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<ProjectionDeclarationContext, AntlrProjection>     projectionsByContext   =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<ServiceGroupDeclarationContext, AntlrServiceGroup> serviceGroupsByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -178,6 +181,14 @@ public class AntlrDomainModel
                 (name, builder) -> builder == null
                         ? projectionState
                         : AntlrProjection.AMBIGUOUS);
+
+        AntlrProjection duplicate = this.projectionsByContext.put(
+                projectionState.getElementContext(),
+                projectionState);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
     }
 
     public void exitServiceGroupDeclaration(@Nonnull AntlrServiceGroup serviceGroupState)
@@ -219,6 +230,11 @@ public class AntlrDomainModel
         return this.classesByName.getIfAbsentValue(className, AntlrClass.NOT_FOUND);
     }
 
+    public AntlrProjection getProjectionByName(String projectionName)
+    {
+        return this.projectionsByName.getIfAbsentValue(projectionName, AntlrProjection.NOT_FOUND);
+    }
+
     public AntlrEnumeration getEnumerationByContext(EnumerationDeclarationContext context)
     {
         return this.enumerationsByContext.get(context);
@@ -244,9 +260,9 @@ public class AntlrDomainModel
         return this.associationsByContext.get(context);
     }
 
-    public AntlrProjection getProjectionByName(String projectionName)
+    public AntlrProjection getProjectionByContext(ProjectionDeclarationContext context)
     {
-        return this.projectionsByName.getIfAbsentValue(projectionName, AntlrProjection.NOT_FOUND);
+        return this.projectionsByContext.get(context);
     }
 
     public AntlrServiceGroup getServiceGroupByContext(ServiceGroupDeclarationContext context)
@@ -340,7 +356,8 @@ public class AntlrDomainModel
         this.interfaceStates.each(AntlrInterface::build2);
         this.classStates.each(AntlrClass::build2);
 
-        ImmutableList<ProjectionBuilder>   projectionBuilders   = this.projectionStates.collect(AntlrProjection::build).toImmutable();
+        ImmutableList<ProjectionBuilder> projectionBuilders = this.projectionStates.collect(AntlrProjection::build).toImmutable();
+        this.projectionStates.each(AntlrProjection::build2);
         ImmutableList<ServiceGroupBuilder> serviceGroupBuilders = this.serviceGroupStates.collect(AntlrServiceGroup::build).toImmutable();
 
         ImmutableList<TopLevelElementBuilder> topLevelElementBuilders = this.topLevelElementStates.collect(

@@ -88,6 +88,11 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
         return this.projectionBuilder;
     }
 
+    public void build2()
+    {
+        this.children.each(AntlrProjectionElement::build2);
+    }
+
     @Nonnull
     @Override
     public ProjectionBuilder getElementBuilder()

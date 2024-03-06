@@ -11,10 +11,13 @@ public interface AbstractProjectionElement extends ProjectionElement
     {
         @Nonnull
         ProjectionElement build();
+
+        void build2();
     }
 
     interface ProjectionChildBuilder extends ProjectionElementBuilder
     {
+        @Override
         @Nonnull
         ProjectionChild build();
     }

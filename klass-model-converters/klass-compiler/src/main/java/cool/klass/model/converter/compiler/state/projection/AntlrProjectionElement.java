@@ -13,6 +13,8 @@ public interface AntlrProjectionElement extends IAntlrElement
     @Nonnull
     ProjectionElementBuilder build();
 
+    void build2();
+
     @Nonnull
     AntlrProjectionParent getParent();
 

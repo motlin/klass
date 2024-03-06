@@ -184,12 +184,11 @@ public class MetaResourceManualTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = ""
-                + "{\n"
+        String expected = "{\n"
                 + "  \"name\": \"PackageableElement\",\n"
                 + "  \"inferred\": false,\n"
                 + "  \"packageName\": \"klass.model.meta.domain\",\n"
-                + "  \"ordinal\": 9,\n"
+                + "  \"ordinal\": 10,\n"
                 + "  \"sourceCode\": \"interface PackageableElement implements NamedElement\\n{\\n    packageName: String;\\n\\n    // fullyQualifiedName: String = packageName + \\\".\\\" + name;\\n}\",\n"
                 + "  \"sourceCodeWithInference\": \"interface PackageableElement\\n    implements NamedElement\\n{\\n    packageName: String;\\n    name: String key;\\n    ordinal: Integer;\\n    inferred: Boolean;\\n    sourceCode: String maximumLength(100000);\\n    sourceCodeWithInference: String maximumLength(100000);\\n}\\n\",\n"
                 + "  \"superInterfaces\": [\n"
@@ -308,7 +307,7 @@ public class MetaResourceManualTest
                 + "  \"name\": \"Classifier\",\n"
                 + "  \"inferred\": false,\n"
                 + "  \"packageName\": \"klass.model.meta.domain\",\n"
-                + "  \"ordinal\": 12,\n"
+                + "  \"ordinal\": 13,\n"
                 + "  \"sourceCode\": \"class Classifier\\n    abstract(table-per-class)\\n    implements PackageableElement\\n{\\n}\",\n"
                 + "  \"sourceCodeWithInference\": \"class Classifier\\n    abstract(table-per-class)\\n    implements PackageableElement\\n{\\n    packageName: String;\\n    name: String key;\\n    ordinal: Integer;\\n    inferred: Boolean;\\n    sourceCode: String maximumLength(100000);\\n    sourceCodeWithInference: String maximumLength(100000);\\n    superInterfaces               : ClassifierInterfaceMapping[0..*] owned;\\n    primitiveProperties: PrimitiveProperty[0..*]\\n        orderBy: this.ordinal;\\n    enumerationProperties: EnumerationProperty[0..*]\\n        orderBy: this.ordinal;\\n    classifierModifiers: ClassifierModifier[0..*]\\n        orderBy: this.ordinal;\\n}\\n\",\n"
                 + "  \"superInterfaces\": [\n"
@@ -516,12 +515,11 @@ public class MetaResourceManualTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = ""
-                + "{\n"
+        String expected = "{\n"
                 + "  \"name\": \"ClassifierHasClassifierInterfaceMapping\",\n"
                 + "  \"inferred\": false,\n"
                 + "  \"packageName\": \"klass.model.meta.domain\",\n"
-                + "  \"ordinal\": 45,\n"
+                + "  \"ordinal\": 51,\n"
                 + "  \"sourceCode\": \"association ClassifierHasClassifierInterfaceMapping\\n{\\n    subClassifier: Classifier[1..1];\\n    superInterfaces               : ClassifierInterfaceMapping[0..*] owned;\\n\\n    relationship this.name == ClassifierInterfaceMapping.classifierName\\n}\",\n"
                 + "  \"sourceCodeWithInference\": \"association ClassifierHasClassifierInterfaceMapping\\n{\\n    subClassifier: Classifier[1..1];\\n    superInterfaces               : ClassifierInterfaceMapping[0..*] owned;\\n\\n    relationship this.name == ClassifierInterfaceMapping.classifierName\\n}\",\n"
                 + "  \"associationEnds\": [\n"

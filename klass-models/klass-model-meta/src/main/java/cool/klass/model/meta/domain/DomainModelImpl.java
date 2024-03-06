@@ -20,6 +20,7 @@ import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
+import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -220,6 +221,7 @@ public final class DomainModelImpl implements DomainModel
             this.classBuilders.each(KlassBuilder::build2);
 
             ImmutableList<Projection> projections = this.projectionBuilders.<Projection>collect(ProjectionBuilder::build).toImmutable();
+            this.projectionBuilders.each(AbstractProjectionParentBuilder::build2);
             ImmutableList<ServiceGroup> serviceGroups =
                     this.serviceGroupBuilders.<ServiceGroup>collect(ServiceGroupBuilder::build).toImmutable();
             ImmutableList<PackageableElement> topLevelElements =
