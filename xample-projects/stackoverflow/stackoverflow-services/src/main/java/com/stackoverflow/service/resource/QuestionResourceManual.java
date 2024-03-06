@@ -48,6 +48,7 @@ import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.projection.Projection;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.reladomo.persistent.writer.IncomingCreateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.IncomingUpdateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.MutationContext;
@@ -63,6 +64,7 @@ import io.dropwizard.auth.Auth;
 import org.eclipse.collections.api.factory.Maps;
 import org.eclipse.collections.api.factory.Sets;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.primitive.LongSets;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
@@ -197,10 +199,14 @@ public class QuestionResourceManual
         }
         Object persistentInstance = result.get(0);
 
-        String             userPrincipalName  = principal.getName();
-        Optional<String>   userId             = Optional.of(userPrincipalName);
-        Instant            transactionInstant = Instant.now(this.clock);
-        MutationContext    mutationContext    = new MutationContext(userId, transactionInstant, Maps.immutable.empty());
+        String           userPrincipalName  = principal.getName();
+        Optional<String> userId             = Optional.of(userPrincipalName);
+        Instant          transactionInstant = Instant.now(this.clock);
+
+        DataTypeProperty idProperty = (DataTypeProperty) klass.getPropertyByName("id").get();
+        ImmutableMap<DataTypeProperty, Object> propertyDataFromUrl = Maps.immutable.with(idProperty, id);
+
+        MutationContext mutationContext = new MutationContext(userId, transactionInstant, propertyDataFromUrl);
 
         Klass userKlass = this.domainModel.getUserClass().get();
         IncomingUpdateDataModelValidator.validate(
