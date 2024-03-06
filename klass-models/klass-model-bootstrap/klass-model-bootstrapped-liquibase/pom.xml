@@ -12,7 +12,7 @@
 
     <artifactId>klass-model-bootstrapped-liquibase</artifactId>
 
-    <name>${app.name} Reladomo Database DDLs</name>
+    <name>${app.name} Liquibase Schema</name>
 
     <dependencies>
 
