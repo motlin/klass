@@ -24,6 +24,7 @@ public final class GraphQLFragmentSourceCodeGenerator
         String sourceCode = domainModel
                 .getClassifiers()
                 .select(c -> c.getPackageName().equals(fullyQualifiedPackage))
+                .reject(Classifier::isUniquelyOwned)
                 .collect(GraphQLFragmentSourceCodeGenerator::getClassifierSourceCode)
                 .makeString("\n");
 

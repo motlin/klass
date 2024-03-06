@@ -70,6 +70,8 @@ public interface Classifier
 
     ImmutableList<ReferenceProperty> getReferenceProperties();
 
+    boolean isUniquelyOwned();
+
     default boolean isTemporal()
     {
         return this.isSystemTemporal() || this.isValidTemporal();

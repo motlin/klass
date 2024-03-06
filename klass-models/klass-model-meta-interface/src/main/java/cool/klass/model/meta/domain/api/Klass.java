@@ -8,6 +8,7 @@ import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.Property;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
@@ -57,6 +58,17 @@ public interface Klass
         return Lists.immutable.<Property>empty()
                 .newWithAll(this.getDeclaredDataTypeProperties())
                 .newWithAll(this.getDeclaredAssociationEnds());
+    }
+
+    @Override
+    default boolean isUniquelyOwned()
+    {
+        return this
+                .getAssociationEnds()
+                .asLazy()
+                .reject(ReferenceProperty::isToSelf)
+                .collect(AssociationEnd::getOpposite)
+                .count(ReferenceProperty::isOwned) == 1;
     }
 
     @Nonnull

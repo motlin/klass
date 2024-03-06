@@ -36,4 +36,10 @@ public interface Interface
         return Lists.immutable.<Property>empty()
                 .newWithAll(this.getDeclaredDataTypeProperties());
     }
+
+    @Override
+    default boolean isUniquelyOwned()
+    {
+        return false;
+    }
 }

@@ -86,14 +86,6 @@ projection EveryTypeKeyPropertyProjection on EveryTypeKeyProperty
     },
 }
 
-projection EveryTypeForeignKeyPropertyProjection on EveryTypeForeignKeyProperty
-{
-    id: "EveryTypeForeignKeyProperty id",
-    systemFrom: "EveryTypeForeignKeyProperty systemFrom",
-    systemTo: "EveryTypeForeignKeyProperty systemTo",
-    data: "EveryTypeForeignKeyProperty data",
-}
-
 projection FinalPropertiesProjection on FinalProperties
 {
     id: "FinalProperties id",
@@ -107,23 +99,11 @@ projection OwnedNaturalOneToManySourceProjection on OwnedNaturalOneToManySource
     targets: OwnedNaturalOneToManyTargetProjection,
 }
 
-projection OwnedNaturalOneToManyTargetProjection on OwnedNaturalOneToManyTarget
-{
-    key: "OwnedNaturalOneToManyTarget key",
-    value: "OwnedNaturalOneToManyTarget value",
-}
-
 projection OwnedNaturalOneToOneSourceProjection on OwnedNaturalOneToOneSource
 {
     key: "OwnedNaturalOneToOneSource key",
     value: "OwnedNaturalOneToOneSource value",
     target: OwnedNaturalOneToOneTargetProjection,
-}
-
-projection OwnedNaturalOneToOneTargetProjection on OwnedNaturalOneToOneTarget
-{
-    key: "OwnedNaturalOneToOneTarget key",
-    value: "OwnedNaturalOneToOneTarget value",
 }
 
 projection OwnedNaturalOneToManySelfProjection on OwnedNaturalOneToManySelf
@@ -143,23 +123,11 @@ projection OwnedSyntheticOneToManySourceProjection on OwnedSyntheticOneToManySou
     targets: OwnedSyntheticOneToManyTargetProjection,
 }
 
-projection OwnedSyntheticOneToManyTargetProjection on OwnedSyntheticOneToManyTarget
-{
-    id: "OwnedSyntheticOneToManyTarget id",
-    value: "OwnedSyntheticOneToManyTarget value",
-}
-
 projection OwnedSyntheticOneToOneSourceProjection on OwnedSyntheticOneToOneSource
 {
     id: "OwnedSyntheticOneToOneSource id",
     value: "OwnedSyntheticOneToOneSource value",
     target: OwnedSyntheticOneToOneTargetProjection,
-}
-
-projection OwnedSyntheticOneToOneTargetProjection on OwnedSyntheticOneToOneTarget
-{
-    id: "OwnedSyntheticOneToOneTarget id",
-    value: "OwnedSyntheticOneToOneTarget value",
 }
 
 projection OwnedSyntheticOneToManySelfProjection on OwnedSyntheticOneToManySelf
@@ -271,74 +239,4 @@ projection ClassOwningClassWithDerivedPropertyProjection on ClassOwningClassWith
 {
     key: "ClassOwningClassWithDerivedProperty key",
     classWithDerivedProperties: ClassWithDerivedPropertyProjection,
-}
-
-projection ClassWithDerivedPropertyProjection on ClassWithDerivedProperty
-{
-    key: "ClassWithDerivedProperty key",
-    derivedRequiredString: "ClassWithDerivedProperty derivedRequiredString",
-    derivedRequiredInteger: "ClassWithDerivedProperty derivedRequiredInteger",
-    derivedRequiredLong: "ClassWithDerivedProperty derivedRequiredLong",
-    derivedRequiredDouble: "ClassWithDerivedProperty derivedRequiredDouble",
-    derivedRequiredFloat: "ClassWithDerivedProperty derivedRequiredFloat",
-    derivedRequiredBoolean: "ClassWithDerivedProperty derivedRequiredBoolean",
-    derivedRequiredInstant: "ClassWithDerivedProperty derivedRequiredInstant",
-    derivedRequiredLocalDate: "ClassWithDerivedProperty derivedRequiredLocalDate",
-    derivedOptionalString: "ClassWithDerivedProperty derivedOptionalString",
-    derivedOptionalInteger: "ClassWithDerivedProperty derivedOptionalInteger",
-    derivedOptionalLong: "ClassWithDerivedProperty derivedOptionalLong",
-    derivedOptionalDouble: "ClassWithDerivedProperty derivedOptionalDouble",
-    derivedOptionalFloat: "ClassWithDerivedProperty derivedOptionalFloat",
-    derivedOptionalBoolean: "ClassWithDerivedProperty derivedOptionalBoolean",
-    derivedOptionalInstant: "ClassWithDerivedProperty derivedOptionalInstant",
-    derivedOptionalLocalDate: "ClassWithDerivedProperty derivedOptionalLocalDate",
-}
-
-projection UserVersionProjection on UserVersion
-{
-    systemFrom: "UserVersion systemFrom",
-    systemTo: "UserVersion systemTo",
-    number: "UserVersion number",
-}
-
-projection PropertiesRequiredVersionProjection on PropertiesRequiredVersion
-{
-    systemFrom: "PropertiesRequiredVersion systemFrom",
-    systemTo: "PropertiesRequiredVersion systemTo",
-    createdOn: "PropertiesRequiredVersion createdOn",
-    number: "PropertiesRequiredVersion number",
-    createdBy: {
-        userId: "User userId",
-    },
-    lastUpdatedBy: {
-        userId: "User userId",
-    },
-}
-
-projection PropertiesOptionalVersionProjection on PropertiesOptionalVersion
-{
-    systemFrom: "PropertiesOptionalVersion systemFrom",
-    systemTo: "PropertiesOptionalVersion systemTo",
-    createdOn: "PropertiesOptionalVersion createdOn",
-    number: "PropertiesOptionalVersion number",
-    createdBy: {
-        userId: "User userId",
-    },
-    lastUpdatedBy: {
-        userId: "User userId",
-    },
-}
-
-projection EveryTypeKeyPropertyVersionProjection on EveryTypeKeyPropertyVersion
-{
-    systemFrom: "EveryTypeKeyPropertyVersion systemFrom",
-    systemTo: "EveryTypeKeyPropertyVersion systemTo",
-    createdOn: "EveryTypeKeyPropertyVersion createdOn",
-    number: "EveryTypeKeyPropertyVersion number",
-    createdBy: {
-        userId: "User userId",
-    },
-    lastUpdatedBy: {
-        userId: "User userId",
-    },
 }

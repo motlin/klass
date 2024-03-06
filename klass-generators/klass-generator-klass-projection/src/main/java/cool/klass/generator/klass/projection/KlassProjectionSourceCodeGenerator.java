@@ -24,6 +24,7 @@ public final class KlassProjectionSourceCodeGenerator
         String sourceCode = domainModel
                 .getClassifiers()
                 .select(c -> c.getPackageName().equals(fullyQualifiedPackage))
+                .reject(Classifier::isUniquelyOwned)
                 .collect(KlassProjectionSourceCodeGenerator::getClassifierSourceCode)
                 .makeString("\n");
 
