@@ -31,7 +31,7 @@ public class AbstractResourceTestCase
             ResourceHelpers.resourceFilePath("config-test.json5"));
 
     @Rule
-    public final JsonMatchRule jsonMatchRule = new JsonMatchRule();
+    public final JsonMatchRule jsonMatchRule = new JsonMatchRule(this.getClass());
 
     protected Client getClient(@Nonnull String clientName)
     {
@@ -55,7 +55,7 @@ public class AbstractResourceTestCase
         String jsonResponse = response.readEntity(String.class);
 
         String resourceClassPathLocation = klass.getSimpleName() + '.' + testName + ".json";
-        this.jsonMatchRule.assertFileContents(resourceClassPathLocation, jsonResponse, klass);
+        this.jsonMatchRule.assertFileContents(resourceClassPathLocation, jsonResponse);
     }
 
     private void assertResponseStatus(@Nonnull Response response, @Nonnull Status status)

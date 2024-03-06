@@ -9,12 +9,8 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Classifier;
-import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.TopLevelElement;
-import cool.klass.model.meta.domain.api.property.DataTypeProperty;
-import org.eclipse.collections.api.list.ImmutableList;
 
 public class GraphQLSchemaGenerator
 {
@@ -42,8 +38,6 @@ public class GraphQLSchemaGenerator
                 .collect(this::getOrderBySourceCode)
                 .makeString("");
 
-        String scalarsSourceCode = this.getScalarsSourceCode();
-
         String topLevelElementsCode = this.domainModel
                 .getTopLevelElements()
                 .collect(this::getSourceCode)
@@ -55,9 +49,6 @@ public class GraphQLSchemaGenerator
                 + "\n"
                 + "# Order Bys\n"
                 + orderBySourceCode
-                + "\n"
-                + "# Scalars\n"
-                + scalarsSourceCode
                 + "\n"
                 + "# Top Level Elements\n"
                 + topLevelElementsCode;
@@ -79,52 +70,12 @@ public class GraphQLSchemaGenerator
         return outputDirectory.resolve(fileName);
     }
 
-    private String getScalarsSourceCode()
-    {
-        return this.getTemporalScalarsSourceCode() + this.getPrimitiveScalarsSourceCode();
-    }
-
-    private String getTemporalScalarsSourceCode()
-    {
-        boolean isTemporal = this.domainModel
-                .getClassifiers()
-                .anySatisfy(Classifier::isTemporal);
-
-        if (isTemporal)
-        {
-            return """
-                    scalar Instant
-                    scalar TemporalInstant
-                    scalar TemporalRange
-                    """;
-        }
-
-        return "";
-    }
-
-    private String getPrimitiveScalarsSourceCode()
-    {
-        ImmutableList<DataType> dataTypes = this.domainModel
-                .getClassifiers()
-                .asLazy()
-                .flatCollect(Classifier::getDeclaredDataTypeProperties)
-                .collect(DataTypeProperty::getType)
-                .toList()
-                .toImmutable();
-        boolean containsLong      = dataTypes.contains(PrimitiveType.LONG);
-        boolean containsLocalDate = dataTypes.contains(PrimitiveType.LOCAL_DATE);
-
-        String longSourceCode      = containsLong ? "scalar Long\n" : "";
-        String localDateSourceCode = containsLocalDate ? "scalar LocalDate\n" : "";
-        return longSourceCode + localDateSourceCode;
-    }
-
     private String getOrderBySourceCode(Classifier classifier)
     {
         //language=GraphQL
         return "input _" + classifier.getName() + "OrderBy {\n"
                 + "    attribute: _" + classifier.getName() + "Finder\n"
-                + "    direction: OrderByDirection\n"
+                + "    direction: _OrderByDirection\n"
                 + "}\n\n";
     }
 

@@ -33,7 +33,7 @@ public abstract class AbstractValidatorTest
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();
 
     @Rule
-    public final JsonMatchRule jsonMatchRule = new JsonMatchRule();
+    public final JsonMatchRule jsonMatchRule = new JsonMatchRule(this.getClass());
 
     @Rule
     public final LiquibaseTestRule liquibaseTestRule = new LiquibaseTestRule(
@@ -62,13 +62,11 @@ public abstract class AbstractValidatorTest
 
         this.jsonMatchRule.assertFileContents(
                 this.getClass().getSimpleName() + '.' + testName + ".errors.json",
-                this.objectMapper.writeValueAsString(this.actualErrors),
-                this.getClass());
+                this.objectMapper.writeValueAsString(this.actualErrors));
 
         this.jsonMatchRule.assertFileContents(
                 this.getClass().getSimpleName() + '.' + testName + ".warnings.json",
-                this.objectMapper.writeValueAsString(this.actualWarnings),
-                this.getClass());
+                this.objectMapper.writeValueAsString(this.actualWarnings));
     }
 
     protected abstract void validate(@Nonnull ObjectNode incomingInstance, Object persistentInstance);

@@ -74,7 +74,7 @@ public class GraphQLReladomoFinderGenerator
                 + "input _" + classifierName + "Finder {\n"
                 + "    AND: [_" + classifierName + "Finder!]\n"
                 + "    OR:  [_" + classifierName + "Finder!]\n"
-                + "    exists            : Empty\n"
+                + "    exists            : _Empty\n"
                 + "    notExists         : _" + classifierName + "Finder\n"
                 + "    recursiveNotExists: _" + classifierName + "Finder\n"
                 + classifier.getProperties().collect(this::getSourceCode).makeString("")
@@ -116,7 +116,7 @@ public class GraphQLReladomoFinderGenerator
             var visitor = new PrimitiveTypeSourceCodeVisitor();
             primitiveProperty.getType().visit(visitor);
             this.sourceCode = String.format(
-                    "    %s: %sAttribute\n",
+                    "    %s: _%sAttribute\n",
                     primitiveProperty.getName(),
                     visitor.getSourceCode());
         }
@@ -125,7 +125,7 @@ public class GraphQLReladomoFinderGenerator
         public void visitEnumerationProperty(EnumerationProperty enumerationProperty)
         {
             this.sourceCode = String.format(
-                    "    %s: StringAttribute\n",
+                    "    %s: _StringAttribute\n",
                     enumerationProperty.getName());
         }
 
