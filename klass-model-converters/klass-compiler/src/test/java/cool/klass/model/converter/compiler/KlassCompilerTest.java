@@ -8,14 +8,20 @@ import cool.klass.model.converter.compiler.annotation.AbstractCompilerAnnotation
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.test.constants.KlassTestConstants;
+import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class KlassCompilerTest
 {
+    @Rule
+    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+
     @Test
     public void stackOverflow()
     {

@@ -6,10 +6,12 @@ import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
+import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -18,6 +20,9 @@ public abstract class AbstractKlassCompilerErrorTestCase
 {
     @Rule
     public final FileMatchRule rule = new FileMatchRule();
+
+    @Rule
+    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
 
     @Test
     public void smokeTest()
