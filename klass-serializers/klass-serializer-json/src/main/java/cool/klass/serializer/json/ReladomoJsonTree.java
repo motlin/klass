@@ -16,6 +16,7 @@ import com.gs.fw.common.mithra.finder.RelatedFinder;
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.Enumeration;
+import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
@@ -103,7 +104,8 @@ public class ReladomoJsonTree implements JsonSerializable
         }
         else if (dataType instanceof Enumeration)
         {
-            jsonGenerator.writeStringField(propertyName, (String) dataTypeValue);
+            EnumerationLiteral enumerationLiteral = (EnumerationLiteral) dataTypeValue;
+            jsonGenerator.writeStringField(propertyName, enumerationLiteral.getPrettyName());
         }
         else
         {

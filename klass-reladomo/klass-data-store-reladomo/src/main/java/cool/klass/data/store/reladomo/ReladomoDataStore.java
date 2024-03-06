@@ -2,6 +2,9 @@ package cool.klass.data.store.reladomo;
 
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
@@ -72,6 +75,8 @@ public class ReladomoDataStore implements DataStore
     @Override
     public Object instantiate(Klass klass, ImmutableList<Object> keys)
     {
+        keys.each(Objects::requireNonNull);
+
         Object newInstance = this.instantiateNewInstance(klass);
         this.setKeys(klass, newInstance, keys);
         return newInstance;
@@ -197,9 +202,18 @@ public class ReladomoDataStore implements DataStore
         {
             attribute.setValue(persistentInstance, ((EnumerationLiteral) newValue).getPrettyName());
         }
+        else if (dataTypeProperty.getType() == PrimitiveType.LOCAL_DATE)
+        {
+            Timestamp timestamp = Timestamp.valueOf(((LocalDate) newValue).atStartOfDay());
+            attribute.setValue(persistentInstance, timestamp);
+        }
+        else if (dataTypeProperty.getType() == PrimitiveType.INSTANT)
+        {
+            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.ofInstant((Instant) newValue, ZoneOffset.UTC));
+            attribute.setValue(persistentInstance, timestamp);
+        }
         else
         {
-            // TODO: 🐜 Accept Instant. Write a test that mutates a date field
             attribute.setValue(persistentInstance, newValue);
         }
     }
