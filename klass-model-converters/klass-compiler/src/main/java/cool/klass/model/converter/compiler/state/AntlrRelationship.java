@@ -100,6 +100,20 @@ public class AntlrRelationship
                     targetEnd,
                     AntlrRelationship::getTargetInferredRelationshipText);
         }
+        else if (sourceEnd.isToOne() && targetEnd.isToOneRequired())
+        {
+            this.reportInferredEnd(
+                    compilerAnnotationHolder,
+                    sourceEnd,
+                    AntlrRelationship::getSourceInferredRelationshipText);
+        }
+        else if (targetEnd.isToOne() && sourceEnd.isToOneRequired())
+        {
+            this.reportInferredEnd(
+                    compilerAnnotationHolder,
+                    targetEnd,
+                    AntlrRelationship::getTargetInferredRelationshipText);
+        }
 
         this.criteria.reportErrors(compilerAnnotationHolder);
     }
