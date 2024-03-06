@@ -94,7 +94,7 @@ public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
     private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
         AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
-        ParseTreeListener  compilerPhase      = new ClassifierPhase(this.compilerState);
+        ParseTreeListener  compilerPhase      = new PropertyPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
                 classModifierState,

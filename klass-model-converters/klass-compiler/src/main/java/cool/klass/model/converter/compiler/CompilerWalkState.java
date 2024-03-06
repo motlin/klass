@@ -203,20 +203,6 @@ public class CompilerWalkState
         this.packageNameContext     = null;
     }
 
-    public void defineInterface(AntlrInterface interfaceState)
-    {
-        this.classifierState = interfaceState;
-        this.interfaceState  = interfaceState;
-        this.domainModelState.defineInterface(this.interfaceState);
-    }
-
-    public void defineClass(AntlrClass classState)
-    {
-        this.classifierState = classState;
-        this.classState      = classState;
-        this.domainModelState.defineClass(this.classState);
-    }
-
     private static void assertNull(@Nullable Object object)
     {
         if (object != null)

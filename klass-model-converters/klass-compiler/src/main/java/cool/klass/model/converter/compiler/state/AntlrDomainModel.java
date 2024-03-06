@@ -126,7 +126,7 @@ public class AntlrDomainModel
         }
     }
 
-    public void defineInterface(@Nonnull AntlrInterface interfaceState)
+    public void exitInterfaceDeclaration(@Nonnull AntlrInterface interfaceState)
     {
         this.classifierStates.add(interfaceState);
         this.interfaceStates.add(interfaceState);
@@ -170,7 +170,7 @@ public class AntlrDomainModel
         }
     }
 
-    public void defineClass(@Nonnull AntlrClass classState)
+    public void exitClassDeclaration(@Nonnull AntlrClass classState)
     {
         this.classifierStates.add(classState);
         this.classStates.add(classState);

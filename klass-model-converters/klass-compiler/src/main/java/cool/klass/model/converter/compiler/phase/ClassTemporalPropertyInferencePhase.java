@@ -64,11 +64,10 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
         this.runCompilerMacro(prefix + "To  : TemporalInstant " + prefix + " to;");
     }
 
-    private void runCompilerMacro(
-            @Nonnull String sourceCodeText)
+    private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
         AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
-        ParseTreeListener  compilerPhase      = new ClassifierPhase(this.compilerState);
+        ParseTreeListener  compilerPhase      = new PropertyPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
                 classModifierState,

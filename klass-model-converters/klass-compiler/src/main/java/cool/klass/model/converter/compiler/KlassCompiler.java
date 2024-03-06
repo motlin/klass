@@ -14,6 +14,7 @@ import cool.klass.model.converter.compiler.phase.OrderByPhase;
 import cool.klass.model.converter.compiler.phase.ParameterizedPropertyPhase;
 import cool.klass.model.converter.compiler.phase.ProjectionDeclarationPhase;
 import cool.klass.model.converter.compiler.phase.ProjectionPhase;
+import cool.klass.model.converter.compiler.phase.PropertyPhase;
 import cool.klass.model.converter.compiler.phase.RelationshipPhase;
 import cool.klass.model.converter.compiler.phase.ServiceCriteriaPhase;
 import cool.klass.model.converter.compiler.phase.ServicePhase;
@@ -34,6 +35,7 @@ public class KlassCompiler
             TopLevelElementsPhase::new,
             EnumerationsPhase::new,
             ClassifierPhase::new,
+            PropertyPhase::new,
             InheritancePhase::new,
             ClassTemporalPropertyInferencePhase::new,
             VersionClassInferencePhase::new,
