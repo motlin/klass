@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import com.google.auto.service.AutoService;
 import com.gs.fw.common.mithra.connectionmanager.SourcelessConnectionManager;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import cool.klass.reladomo.ddl.executor.DatabaseDdlExecutor;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -33,7 +34,7 @@ public class DdlExecutorBundle implements PrioritizedBundle
     }
 
     @Override
-    public void run(@Nonnull Environment environment)
+    public void run(AbstractKlassConfiguration configuration, Environment environment)
     {
         Config config           = ConfigFactory.load();
         Config dropTablesConfig = config.getConfig("klass.data.dropTables");

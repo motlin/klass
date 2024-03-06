@@ -20,7 +20,7 @@ public class FixedClockFactory implements ClockFactory
     private @Valid @NotNull Instant instant;
 
     @Override
-    public Clock createClock()
+    public Clock getClock()
     {
         return Clock.fixed(this.instant, ZoneOffset.UTC.normalized());
     }

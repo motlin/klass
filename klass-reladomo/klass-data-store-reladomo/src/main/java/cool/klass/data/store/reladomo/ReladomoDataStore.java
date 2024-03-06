@@ -10,6 +10,8 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,6 +39,7 @@ import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
+import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.Property;
 import cool.klass.model.meta.domain.api.visitor.AssertObjectMatchesDataTypePropertyVisitor;
 import com.typesafe.config.Config;
@@ -55,10 +58,15 @@ public class ReladomoDataStore implements DataStore
     private static final Logger                    LOGGER      = LoggerFactory.getLogger(ReladomoDataStore.class);
     private static final Converter<String, String> UPPER_CAMEL = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
 
+    private final Supplier<UUID> uuidSupplier;
+
+    // TODO: Move to Dropwizard configuration
     private final int retryCount;
 
-    public ReladomoDataStore()
+    public ReladomoDataStore(@Nonnull Supplier<UUID> uuidSupplier)
     {
+        this.uuidSupplier = Objects.requireNonNull(uuidSupplier);
+
         Config config         = ConfigFactory.load();
         Config reladomoConfig = config.getConfig("klass.data.reladomo");
 
@@ -207,17 +215,31 @@ public class ReladomoDataStore implements DataStore
             return;
         }
 
-        DataTypeProperty idProperty = idProperties.getOnly();
+        PrimitiveProperty idProperty = (PrimitiveProperty) idProperties.getOnly();
 
-        try
+        if (idProperty.getType().isNumeric())
         {
-            String methodName             = "generateAndSet" + LOWER_TO_UPPER.convert(idProperty.getName());
-            Method generateAndSetIdMethod = persistentInstance.getClass().getMethod(methodName);
-            generateAndSetIdMethod.invoke(persistentInstance);
+            try
+            {
+                String methodName             = "generateAndSet" + LOWER_TO_UPPER.convert(idProperty.getName());
+                Method generateAndSetIdMethod = persistentInstance.getClass().getMethod(methodName);
+                generateAndSetIdMethod.invoke(persistentInstance);
+            }
+            catch (ReflectiveOperationException e)
+            {
+                throw new RuntimeException(e);
+            }
         }
-        catch (ReflectiveOperationException e)
+        else if (idProperty.getType() == PrimitiveType.STRING)
         {
-            throw new RuntimeException(e);
+            Objects.requireNonNull(this.uuidSupplier);
+            UUID   uuid       = this.uuidSupplier.get();
+            String uuidString = uuid.toString();
+            this.setDataTypeProperty(persistentInstance, idProperty, uuidString);
+        }
+        else
+        {
+            throw new AssertionError(idProperty);
         }
     }
 

@@ -23,8 +23,8 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-uuid</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>klass-dropwizard-configuration-data-store</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -42,7 +42,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
-
 
     </dependencies>
 

@@ -6,6 +6,7 @@ import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.bundle.api.DataBundle;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
 import cool.klass.model.meta.domain.api.DomainModel;
 import com.typesafe.config.Config;
@@ -17,12 +18,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @AutoService(PrioritizedBundle.class)
-public class BootstrapWriterBundle implements DataBundle
+public class BootstrapWriterBundle
+        implements DataBundle
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(BootstrapWriterBundle.class);
 
     private DomainModel domainModel;
-    private DataStore   dataStore;
 
     @Override
     public int getPriority()
@@ -31,10 +32,9 @@ public class BootstrapWriterBundle implements DataBundle
     }
 
     @Override
-    public void initialize(DomainModel domainModel, DataStore dataStore)
+    public void initialize(DomainModel domainModel)
     {
         this.domainModel = Objects.requireNonNull(domainModel);
-        this.dataStore = Objects.requireNonNull(dataStore);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class BootstrapWriterBundle implements DataBundle
     }
 
     @Override
-    public void run(Environment environment)
+    public void run(AbstractKlassConfiguration configuration, Environment environment)
     {
         Config config          = ConfigFactory.load();
         Config bootstrapConfig = config.getConfig("klass.data.reladomo.bootstrap");
@@ -63,7 +63,12 @@ public class BootstrapWriterBundle implements DataBundle
             return;
         }
 
-        KlassBootstrapWriter klassBootstrapWriter = new KlassBootstrapWriter(this.domainModel, this.dataStore);
+        DataStore dataStore = configuration
+                .getKlassFactory()
+                .getDataStoreFactory()
+                .getDataStore();
+
+        KlassBootstrapWriter klassBootstrapWriter = new KlassBootstrapWriter(this.domainModel, dataStore);
         klassBootstrapWriter.bootstrapMetaModel();
     }
 }

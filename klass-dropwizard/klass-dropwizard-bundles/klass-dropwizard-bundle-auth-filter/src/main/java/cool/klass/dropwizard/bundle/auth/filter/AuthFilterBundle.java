@@ -6,6 +6,7 @@ import java.util.ServiceLoader;
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.auth.filter.provider.AuthFilterProvider;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthFilter;
 import io.dropwizard.auth.AuthValueFactoryProvider.Binder;
@@ -17,7 +18,8 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 @AutoService(PrioritizedBundle.class)
-public class AuthFilterBundle implements PrioritizedBundle
+public class AuthFilterBundle
+        implements PrioritizedBundle
 {
     @Override
     public void initialize(Bootstrap<?> bootstrap)
@@ -25,7 +27,7 @@ public class AuthFilterBundle implements PrioritizedBundle
     }
 
     @Override
-    public void run(Environment environment)
+    public void run(AbstractKlassConfiguration configuration, Environment environment)
     {
         ServiceLoader<AuthFilterProvider> serviceLoader      = ServiceLoader.load(AuthFilterProvider.class);
         ImmutableList<AuthFilterProvider> prioritizedBundles = Lists.immutable.withAll(serviceLoader);

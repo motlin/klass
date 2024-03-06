@@ -7,6 +7,7 @@ import com.gs.fw.common.mithra.MithraManagerProvider;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.bundle.api.DataBundle;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.reladomo.configuration.ReladomoConfig;
 import cool.klass.serializer.json.ReladomoJsonSerializer;
@@ -17,7 +18,6 @@ import io.dropwizard.setup.Environment;
 public class ReladomoBundle implements DataBundle
 {
     private DomainModel domainModel;
-    private DataStore   dataStore;
 
     @Override
     public int getPriority()
@@ -26,10 +26,9 @@ public class ReladomoBundle implements DataBundle
     }
 
     @Override
-    public void initialize(DomainModel domainModel, DataStore dataStore)
+    public void initialize(DomainModel domainModel)
     {
         this.domainModel = Objects.requireNonNull(domainModel);
-        this.dataStore = Objects.requireNonNull(dataStore);
     }
 
     @Override
@@ -38,11 +37,16 @@ public class ReladomoBundle implements DataBundle
     }
 
     @Override
-    public void run(Environment environment)
+    public void run(AbstractKlassConfiguration configuration, Environment environment)
     {
+        DataStore dataStore = configuration
+                .getKlassFactory()
+                .getDataStoreFactory()
+                .getDataStore();
+
         ReladomoConfig.configure(
                 environment.getObjectMapper(),
-                new ReladomoJsonSerializer(this.domainModel, this.dataStore));
+                new ReladomoJsonSerializer(this.domainModel, dataStore));
 
         environment.metrics().gauge(
                 "Reladomo database retrieve count",

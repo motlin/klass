@@ -11,7 +11,7 @@ import cool.klass.dropwizard.configuration.clock.ClockFactory;
 public class SystemClockFactory implements ClockFactory
 {
     @Override
-    public Clock createClock()
+    public Clock getClock()
     {
         return Clock.systemUTC();
     }

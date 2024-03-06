@@ -5,12 +5,12 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cool.klass.dropwizard.configuration.clock.ClockFactory;
-import cool.klass.dropwizard.configuration.uuid.UUIDSupplierFactory;
+import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
 
 public class KlassFactory
 {
-    private @NotNull @Valid ClockFactory        clockFactory;
-    private @NotNull @Valid UUIDSupplierFactory uuidFactory;
+    private @NotNull @Valid ClockFactory     clockFactory;
+    private @NotNull @Valid DataStoreFactory dataStoreFactory;
 
     public ClockFactory getClockFactory()
     {
@@ -23,14 +23,14 @@ public class KlassFactory
         this.clockFactory = clockFactory;
     }
 
-    public UUIDSupplierFactory getUuidFactory()
+    public DataStoreFactory getDataStoreFactory()
     {
-        return this.uuidFactory;
+        return this.dataStoreFactory;
     }
 
-    @JsonProperty("uuid")
-    public void setUuidFactory(UUIDSupplierFactory uuidFactory)
+    @JsonProperty("dataStore")
+    public void setDataStoreFactory(DataStoreFactory dataStoreFactory)
     {
-        this.uuidFactory = uuidFactory;
+        this.dataStoreFactory = dataStoreFactory;
     }
 }

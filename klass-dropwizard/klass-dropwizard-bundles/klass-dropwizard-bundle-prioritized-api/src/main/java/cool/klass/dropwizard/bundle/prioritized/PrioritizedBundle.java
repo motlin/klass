@@ -1,8 +1,10 @@
 package cool.klass.dropwizard.bundle.prioritized;
 
-import io.dropwizard.Bundle;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
+import io.dropwizard.ConfiguredBundle;
 
-public interface PrioritizedBundle extends Bundle
+public interface PrioritizedBundle
+        extends ConfiguredBundle<AbstractKlassConfiguration>
 {
     default int getPriority()
     {

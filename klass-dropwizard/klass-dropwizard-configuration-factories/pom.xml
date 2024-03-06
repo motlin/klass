@@ -13,6 +13,7 @@
     <modules>
         <module>klass-dropwizard-configuration-clocks</module>
         <module>klass-dropwizard-configuration-uuids</module>
+        <module>klass-dropwizard-configuration-data-stores</module>
     </modules>
 
     <artifactId>klass-dropwizard-configuration-factories</artifactId>

@@ -24,6 +24,12 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-jackson</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -36,11 +42,6 @@
         <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
         </dependency>
 
     </dependencies>

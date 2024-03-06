@@ -7,6 +7,7 @@ import javax.servlet.ServletRegistration.Dynamic;
 
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
@@ -37,10 +38,10 @@ public class H2Bundle implements PrioritizedBundle
     }
 
     @Override
-    public void run(@Nonnull Environment environment)
+    public void run(AbstractKlassConfiguration configuration, Environment environment)
     {
-        Config  config         = ConfigFactory.load();
-        Config  h2BundleConfig = config.getConfig("klass.data.h2");
+        Config config         = ConfigFactory.load();
+        Config h2BundleConfig = config.getConfig("klass.data.h2");
 
         if (LOGGER.isDebugEnabled())
         {
@@ -51,7 +52,7 @@ public class H2Bundle implements PrioritizedBundle
             LOGGER.debug("H2 Bundle configuration:\n{}", render);
         }
 
-        boolean runEmbedded    = h2BundleConfig.getBoolean("runEmbedded");
+        boolean runEmbedded = h2BundleConfig.getBoolean("runEmbedded");
         if (runEmbedded)
         {
             Server tcpServer = this.createTcpServer();

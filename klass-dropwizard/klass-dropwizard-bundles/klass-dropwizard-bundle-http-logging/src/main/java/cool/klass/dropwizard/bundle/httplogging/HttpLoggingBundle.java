@@ -3,10 +3,9 @@ package cool.klass.dropwizard.bundle.httplogging;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.annotation.Nonnull;
-
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
@@ -17,7 +16,8 @@ import org.glassfish.jersey.logging.LoggingFeature.Verbosity;
 import org.slf4j.LoggerFactory;
 
 @AutoService(PrioritizedBundle.class)
-public class HttpLoggingBundle implements PrioritizedBundle
+public class HttpLoggingBundle
+        implements PrioritizedBundle
 {
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HttpLoggingBundle.class);
 
@@ -27,7 +27,7 @@ public class HttpLoggingBundle implements PrioritizedBundle
     }
 
     @Override
-    public void run(@Nonnull Environment environment)
+    public void run(AbstractKlassConfiguration configuration, Environment environment)
     {
         Config config              = ConfigFactory.load();
         Config jerseyLoggingConfig = config.getConfig("klass.jersey.logging");

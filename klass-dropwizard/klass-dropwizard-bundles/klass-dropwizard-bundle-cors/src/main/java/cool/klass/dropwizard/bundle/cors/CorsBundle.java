@@ -7,6 +7,7 @@ import javax.servlet.FilterRegistration.Dynamic;
 
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
@@ -20,7 +21,7 @@ public class CorsBundle implements PrioritizedBundle
     }
 
     @Override
-    public void run(Environment environment)
+    public void run(AbstractKlassConfiguration configuration, Environment environment)
     {
         // https://stackoverflow.com/a/25801822/23572
 

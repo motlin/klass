@@ -53,8 +53,11 @@ public class AbstractApplicationGenerator
         String sourceCode = ""
                 + "package " + this.packageName + ";\n"
                 + "\n"
+                + "import java.time.Clock;\n"
+                + "\n"
                 + "import javax.annotation.Generated;\n"
                 + "\n"
+                + "import cool.klass.data.store.DataStore;\n"
                 + "import cool.klass.dropwizard.application.AbstractKlassApplication;\n"
                 + "import " + this.rootPackageName + ".service.resource.*;\n"
                 + "import io.dropwizard.setup.Environment;\n"
@@ -83,7 +86,9 @@ public class AbstractApplicationGenerator
                 + "            Environment environment) throws Exception\n"
                 + "    {\n"
                 + "        super.run(configuration, environment);\n"
-                + "        \n"
+                + "\n"
+                + "        DataStore dataStore = configuration.getKlassFactory().getDataStoreFactory().getDataStore();\n"
+                + "        Clock     clock     = configuration.getKlassFactory().getClockFactory().getClock();\n"
                 + "\n"
                 + this.getRegisterResourcesSourceCode()
                 + "    }\n"
@@ -104,7 +109,7 @@ public class AbstractApplicationGenerator
     private String getRegisterResourceSourceCode(@Nonnull ServiceGroup serviceGroup)
     {
         return String.format(
-                "        environment.jersey().register(new %sResource(this.dataStore, this.clock));\n",
+                "        environment.jersey().register(new %sResource(dataStore, clock));\n",
                 serviceGroup.getKlass().getName());
     }
 

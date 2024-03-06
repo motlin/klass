@@ -45,7 +45,7 @@ public class FixedClockFactoryTest
         File         yml          = new File(resource.toURI());
         ClockFactory clockFactory = this.factory.build(yml);
         assertThat(clockFactory, instanceOf(FixedClockFactory.class));
-        Clock   clock           = clockFactory.createClock();
+        Clock   clock           = clockFactory.getClock();
         Instant actualInstant   = clock.instant();
         Instant expectedInstant = Instant.parse("2000-12-31T23:59:59Z");
         assertThat(actualInstant, is(expectedInstant));

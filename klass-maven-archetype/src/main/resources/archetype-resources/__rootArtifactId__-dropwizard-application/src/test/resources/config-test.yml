@@ -28,5 +28,7 @@ logging:
 klass:
   clock:
     type: system
-  uuid:
-    type: system
+  dataStore:
+    type: reladomo
+    uuid:
+      type: system

@@ -4,27 +4,22 @@ import java.time.Clock;
 import java.util.List;
 import java.util.Objects;
 import java.util.ServiceLoader;
-import java.util.UUID;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
 import ch.qos.logback.classic.Level;
-import cool.klass.data.store.DataStore;
-import cool.klass.data.store.reladomo.ReladomoDataStore;
 import cool.klass.dropwizard.bundle.api.DataBundle;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.dropwizard.configuration.clock.ClockFactory;
-import cool.klass.dropwizard.configuration.uuid.UUIDSupplierFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.loader.DomainModelLoader;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
 import io.dropwizard.Application;
-import io.dropwizard.Bundle;
+import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -38,10 +33,8 @@ public abstract class AbstractKlassApplication<T extends AbstractKlassConfigurat
 
     protected final String name;
 
-    protected DomainModel    domainModel;
-    protected DataStore      dataStore;
-    protected Clock          clock;
-    protected Supplier<UUID> uuidSupplier;
+    protected DomainModel domainModel;
+    protected Clock       clock;
 
     protected AbstractKlassApplication(String name)
     {
@@ -66,11 +59,6 @@ public abstract class AbstractKlassApplication<T extends AbstractKlassConfigurat
         return Objects.requireNonNull(this.domainModel);
     }
 
-    public final DataStore getDataStore()
-    {
-        return Objects.requireNonNull(this.dataStore);
-    }
-
     @Override
     public void initialize(@Nonnull Bootstrap<T> bootstrap)
     {
@@ -81,9 +69,6 @@ public abstract class AbstractKlassApplication<T extends AbstractKlassConfigurat
         this.logConfig(config.root().withOnlyKey("klass").toConfig());
 
         this.domainModel = this.loadDomainModel(config);
-
-        // TODO: Choose data store from configuration
-        this.dataStore = new ReladomoDataStore();
 
         this.initializeDynamicBundles(bootstrap);
     }
@@ -126,12 +111,12 @@ public abstract class AbstractKlassApplication<T extends AbstractKlassConfigurat
                             .makeString("\n"));
         }
 
-        for (Bundle bundle : prioritizedBundles)
+        for (ConfiguredBundle bundle : prioritizedBundles)
         {
             if (bundle instanceof DataBundle)
             {
                 DataBundle dataBundle = (DataBundle) bundle;
-                dataBundle.initialize(this.domainModel, this.dataStore);
+                dataBundle.initialize(this.domainModel);
             }
 
             bootstrap.addBundle(bundle);
@@ -149,20 +134,12 @@ public abstract class AbstractKlassApplication<T extends AbstractKlassConfigurat
     public void run(T configuration, Environment environment) throws Exception
     {
         this.initializeClock(configuration);
-        this.initializeUUIDSupplier(configuration);
     }
 
     protected void initializeClock(T configuration)
     {
         KlassFactory klassFactory = configuration.getKlassFactory();
         ClockFactory clockFactory = klassFactory.getClockFactory();
-        this.clock = clockFactory.createClock();
-    }
-
-    protected void initializeUUIDSupplier(T configuration)
-    {
-        KlassFactory        klassFactory = configuration.getKlassFactory();
-        UUIDSupplierFactory uuidFactory  = klassFactory.getUuidFactory();
-        this.uuidSupplier = uuidFactory.createUUIDSupplier();
+        this.clock = clockFactory.getClock();
     }
 }
