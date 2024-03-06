@@ -42,13 +42,15 @@ public class DdlExecutorBundle implements Bundle
         }
 
         boolean enabled = dropTablesConfig.getBoolean("enabled");
-        if (enabled)
+        if (!enabled)
         {
-            String connectionManagerFullyQualifiedName = dropTablesConfig.getString("connectionManager");
-            SourcelessConnectionManager connectionManager =
-                    this.getConnectionManager(connectionManagerFullyQualifiedName);
-            DatabaseDdlExecutor.executeSql(connectionManager.getConnection());
+            return;
         }
+
+        String connectionManagerFullyQualifiedName = dropTablesConfig.getString("connectionManager");
+        SourcelessConnectionManager connectionManager =
+                this.getConnectionManager(connectionManagerFullyQualifiedName);
+        DatabaseDdlExecutor.executeSql(connectionManager.getConnection());
     }
 
     protected SourcelessConnectionManager getConnectionManager(String connectionManagerFullyQualifiedName)

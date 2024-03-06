@@ -48,16 +48,18 @@ public class TestDataGeneratorBundle implements Bundle
             LOGGER.info("Test Data Generator Bundle configuration:\n{}", render);
         }
 
-        boolean enabled          = testDataGeneratorConfig.getBoolean("enabled");
+        boolean enabled = testDataGeneratorConfig.getBoolean("enabled");
+        if (!enabled)
+        {
+            return;
+        }
+
         String  systemTimeString = testDataGeneratorConfig.getString("dataSystemTime");
         Instant systemTime       = Instant.parse(systemTimeString);
-        if (enabled)
-        {
-            ReladomoTestDataGenerator reladomoTestDataGenerator = new ReladomoTestDataGenerator(
-                    this.domainModel,
-                    this.dataStore,
-                    systemTime);
-            reladomoTestDataGenerator.generate();
-        }
+        ReladomoTestDataGenerator reladomoTestDataGenerator = new ReladomoTestDataGenerator(
+                this.domainModel,
+                this.dataStore,
+                systemTime);
+        reladomoTestDataGenerator.generate();
     }
 }
