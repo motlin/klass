@@ -624,8 +624,7 @@ public class MetaResourceManualTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = ""
-                + "{\n"
+        String expected = "{\n"
                 + "  \"name\": \"DataTypePropertyHasModifiers\",\n"
                 + "  \"packageName\": \"klass.model.meta.domain\",\n"
                 + "  \"associationEnds\": [\n"
@@ -655,7 +654,6 @@ public class MetaResourceManualTest
                 + "          \"name\": \"DataTypeProperty\"\n"
                 + "        },\n"
                 + "        \"dataTypeProperty\": {\n"
-                + "          \"_type\": \"PrimitiveProperty\",\n"
                 + "          \"name\": \"classifierName\"\n"
                 + "        }\n"
                 + "      },\n"
