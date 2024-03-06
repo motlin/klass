@@ -24,7 +24,9 @@
                     <basedir>${project.basedir}</basedir>
                     <workingDirectory>${project.basedir}</workingDirectory>
                     <executable>java</executable>
-                    <commandlineArgs>-Dconfig.resource=demo.conf -jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server config.yml</commandlineArgs>
+                    <commandlineArgs>
+                        -Dconfig.resource=demo.conf -jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server config.yml
+                    </commandlineArgs>
                 </configuration>
             </plugin>
 
@@ -246,7 +248,18 @@
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard</artifactId>
             <version>${klass.version}</version>
-            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-data-store</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-data-store-reladomo</artifactId>
+            <version>${klass.version}</version>
         </dependency>
 
         <dependency>
