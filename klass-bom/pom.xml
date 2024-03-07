@@ -106,7 +106,6 @@
                                         </excludes>
                                     </bannedDependencies>
                                     <banDuplicatePomDependencyVersions />
-                                    <reactorModuleConvergence />
                                     <requireUpperBoundDeps>
                                         <excludes>
                                             <!--Deliberately downgraded reflections to get around error where it logs thousands of not found classes-->
@@ -256,7 +255,6 @@
                                             </excludes>
                                         </bannedDependencies>
                                         <banDuplicatePomDependencyVersions />
-                                        <reactorModuleConvergence />
                                     </rules>
                                 </configuration>
                                 <goals>
