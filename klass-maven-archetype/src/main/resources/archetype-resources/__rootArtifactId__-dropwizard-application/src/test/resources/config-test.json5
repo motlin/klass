@@ -89,8 +89,8 @@
   ],
   "h2": {
     "enabled": true,
-    "webPort": 8082,
-    "tcpPort": 9092,
+    "webPort": 8080,
+    "tcpPort": 9090,
   },
   "cors": {
     "enabled": false
@@ -115,7 +115,7 @@
       "readOnlyByDefault": false,
       "user": "sa",
       "password": "",
-      "url": "jdbc:p6spy:h2:tcp://localhost:9092/\${rootArtifactId}-h2",
+      "url": "jdbc:p6spy:h2:tcp://localhost:9090/\${rootArtifactId}-h2",
       "properties": {
         "charSet": "UTF-8"
       },
