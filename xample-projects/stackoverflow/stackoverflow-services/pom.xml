@@ -16,8 +16,6 @@
 
     <dependencies>
 
-        <!--TODO: None of these dependencies are used when there are no services declared in the model-->
-
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-reladomo-pojos</artifactId>

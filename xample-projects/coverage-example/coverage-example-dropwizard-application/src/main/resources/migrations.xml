@@ -6,7 +6,5 @@
     <include file="migrations-01-object-sequence.xml" />
     <include file="cool/klass/xample/coverage/liquibase/schema/migrations-initial-schema.xml" />
     <include file="klass/model/meta/domain/liquibase/schema/migrations-initial-schema.xml" />
-    <!--<include file="migrations-03-initial-data.xml" />-->
-    <!--<include file="migrations-04-initial-indices.xml" />-->
 
 </databaseChangeLog>

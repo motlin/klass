@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.dropwizard.bundle.graphql.KlassGraphQLBundle;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
-import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -56,8 +55,6 @@ public class CoverageExampleApplication
         bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
 
         bootstrap.addBundle(new KlassGraphQLBundle<>());
-
-        bootstrap.addBundle(new AssetsBundle("/ui/static", "/static"));
 
         bootstrap.addBundle(new MigrationsBundle<>()
         {

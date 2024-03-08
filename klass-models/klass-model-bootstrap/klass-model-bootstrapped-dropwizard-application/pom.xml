@@ -191,6 +191,7 @@
         <!--endregion-->
 
         <!--region Liftwizard compile dependencies -->
+        <!--region Liftwizard config-->
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-clock</artifactId>
@@ -203,22 +204,30 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-spa-redirect-filter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-application</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-graphql</artifactId>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-spa-redirect-filter</artifactId>
+        </dependency>
+        <!--endregion-->
+
+        <!--region Liftwizard bundles-->
+        <dependency>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-logging-http</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-spa-redirect-filter</artifactId>
+        </dependency>
+        <!--endregion-->
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-application</artifactId>
         </dependency>
 
         <dependency>
@@ -228,12 +237,12 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-named-data-source-factory</artifactId>
+            <artifactId>liftwizard-servlet-logging-logstash-encoder</artifactId>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-spa-redirect-filter</artifactId>
+            <artifactId>liftwizard-named-data-source-factory</artifactId>
         </dependency>
         <!--endregion-->
 
@@ -307,6 +316,24 @@
         <!--endregion-->
 
         <!--region Liftwizard config-->
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-logstash-console</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-filter-requesturl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-filter-janino</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-logging-logstash-file</artifactId>

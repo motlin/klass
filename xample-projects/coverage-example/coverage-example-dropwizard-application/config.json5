@@ -28,27 +28,28 @@
   "logging": {
     "level": "DEBUG",
     "loggers": {
-      "com.gs.fw.common.mithra.batch.sqllogs":     "INFO",
-      "com.gs.fw.common.mithra.connectionmanager": "INFO",
-      "com.gs.fw.common.mithra.sqllogs":           "INFO",
-      "cool.klass.xample.coverage":                 "DEBUG",
-      "com.smoketurner.dropwizard.graphql":        "INFO",
-      "graphql.execution":                         "INFO",
-      "io.liftwizard":                             "DEBUG",
-      "io.liftwizard.logging.p6spy":               "INFO",
-      "klass.model.meta.domain":                   "DEBUG",
-      "liquibase.changelog":                       "WARN",
-      "liquibase.database":                        "INFO",
-      "liquibase.executor":                        "INFO",
-      "liquibase.resource":                        "INFO",
-      "liquibase.servicelocator":                  "INFO",
-      "liquibase.util":                            "INFO",
-      "notprivacysafe.graphql":                    "INFO",
+      "com.gs.fw.common.mithra.batch.sqllogs"             : "INFO",
+      "com.gs.fw.common.mithra.connectionmanager"         : "INFO",
+      "com.gs.fw.common.mithra.sqllogs"                   : "INFO",
+      "cool.klass.xample.coverage"                         : "DEBUG",
+      "com.smoketurner.dropwizard.graphql"                : "INFO",
+      "graphql.execution"                                 : "INFO",
+      "io.liftwizard"                                     : "DEBUG",
+      "io.liftwizard.logging.p6spy"                       : "INFO",
+      "klass.model.meta.domain"                           : "DEBUG",
+      "liquibase.changelog"                               : "WARN",
+      "liquibase.database"                                : "INFO",
+      "liquibase.executor"                                : "INFO",
+      "liquibase.resource"                                : "INFO",
+      "liquibase.servicelocator"                          : "INFO",
+      "liquibase.util"                                    : "INFO",
+      "notprivacysafe.graphql"                            : "INFO",
       "notprivacysafe.graphql.execution.ExecutionStrategy": "DEBUG",
-      "org.apache.http":                           "INFO",
-      "org.eclipse.jetty":                         "INFO",
-      "org.hibernate.validator.internal":          "INFO",
-      "org.reflections":                           "INFO",
+      "org.apache.http"                                   : "INFO",
+      "org.eclipse.jetty"                                 : "INFO",
+      "org.hibernate.validator.internal"                  : "INFO",
+      "org.reflections"                                   : "INFO",
+
     },
     "appenders": [
       {
@@ -130,7 +131,7 @@
       "schemaName": "coverage-example-h2"
     },
   ],
-  "jerseyHttpLogging" : {
+  "jerseyHttpLogging": {
     "enabled": true
   },
   "sampleData": {
