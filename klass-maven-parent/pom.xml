@@ -17,7 +17,7 @@
     <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Klass Parent Build</name>
+    <name>Klass Maven Parent</name>
 
     <properties>
         <app.artifactId>application-name</app.artifactId>
