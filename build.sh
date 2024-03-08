@@ -122,10 +122,10 @@ if [[ $COMMIT_MESSAGE == *\[no-daemon\]* ]]; then
     MAVEN='./mvnw'
 fi
 
+PROFILES="dev"
 if [ "$RECORD" = true ] || [[ $COMMIT_MESSAGE == *\[record\]* ]]; then
-    LIFTWIZARD_RERECORD=true
+  PROFILES="$PROFILES,rerecord"
 fi
-export LIFTWIZARD_FILE_MATCH_RULE_RERECORD=${LIFTWIZARD_RERECORD}
 
 if [[ $COMMIT_MESSAGE == *\[serial\]* ]]; then
     SERIAL=true
@@ -146,7 +146,7 @@ if [ "$INCREMENTAL" != true ]; then
     $MAVEN clean $PARALLELISM --quiet
 fi
 
-$MAVEN verify $PARALLELISM -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip="$ANALYZE_SKIP" --activate-profiles 'dev'
+$MAVEN verify $PARALLELISM -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip="$ANALYZE_SKIP" --activate-profiles $PROFILES
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -ne 0 ]; then
