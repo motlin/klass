@@ -89,6 +89,8 @@ public final class LexerBasedTokenCategorizer
             case KlassLexer.OPERATOR_GT          -> TokenCategory.OPERATOR_GT;
             case KlassLexer.OPERATOR_LE          -> TokenCategory.OPERATOR_LE;
             case KlassLexer.OPERATOR_GE          -> TokenCategory.OPERATOR_GE;
+            case KlassLexer.OPERATOR_AND         -> TokenCategory.OPERATOR_AND;
+            case KlassLexer.OPERATOR_OR          -> TokenCategory.OPERATOR_OR;
             default                              -> null;
         };
     }

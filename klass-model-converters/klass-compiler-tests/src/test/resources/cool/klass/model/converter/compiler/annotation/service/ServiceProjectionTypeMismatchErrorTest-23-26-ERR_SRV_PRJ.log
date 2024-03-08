@@ -4,7 +4,7 @@
 At (ServiceProjectionTypeMismatchErrorTest.klass:23)
 
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
-[39m17║ [35mservice Class2Resource on [39mClass2
+[39m17║ [35mservice [39mClass2Resource [35mon [39mClass2
 [39m18║ [36m{
 [39m19║     [36m/[39mexample
 [39m20║         [32mGET

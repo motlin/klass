@@ -112,6 +112,11 @@ public interface AnsiColorScheme
         this.topLevelElementName(ansi);
     }
 
+    default void serviceName(Ansi ansi)
+    {
+        this.topLevelElementName(ansi);
+    }
+
     default void enumerationLiteralName(Ansi ansi)
     {
         this.identifier(ansi);

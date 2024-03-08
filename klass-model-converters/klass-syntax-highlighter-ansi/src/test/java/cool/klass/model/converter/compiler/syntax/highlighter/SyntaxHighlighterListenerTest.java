@@ -54,10 +54,6 @@ public class SyntaxHighlighterListenerTest
         CodePointCharStream charStream     = CharStreams.fromString(sourceCodeText, sourceName);
         KlassLexer          lexer          = new KlassLexer(charStream);
         CommonTokenStream   tokenStream    = new CommonTokenStream(lexer);
-
-        MapIterable<Token, TokenCategory> tokenCategoriesFromLexer =
-                LexerBasedTokenCategorizer.findTokenCategoriesFromLexer(tokenStream);
-
         lexerStopwatch.stop();
         Duration elapsedLexer = lexerStopwatch.elapsed();
         LOGGER.info("elapsedLexer = {}", elapsedLexer);
@@ -65,11 +61,18 @@ public class SyntaxHighlighterListenerTest
         Stopwatch   parserStopwatch = Stopwatch.createStarted();
         KlassParser parser          = new KlassParser(tokenStream);
         ParseTree   parseTree       = parser.compilationUnit();
-        MapIterable<Token, TokenCategory> tokenCategoriesFromParser =
-                ParserBasedTokenCategorizer.findTokenCategoriesFromParser(parseTree);
         parserStopwatch.stop();
         Duration elapsedParser = parserStopwatch.elapsed();
         LOGGER.info("elapsedParser = {}", elapsedParser);
+
+        Stopwatch tokenCategorizerStopwatch = Stopwatch.createStarted();
+        MapIterable<Token, TokenCategory> tokenCategoriesFromLexer =
+                LexerBasedTokenCategorizer.findTokenCategoriesFromLexer(tokenStream);
+        MapIterable<Token, TokenCategory> tokenCategoriesFromParser =
+                ParserBasedTokenCategorizer.findTokenCategoriesFromParser(parseTree);
+        tokenCategorizerStopwatch.stop();
+        Duration elapsedTokenCategorizer = tokenCategorizerStopwatch.elapsed();
+        LOGGER.info("elapsedTokenCategorizer = {}", elapsedTokenCategorizer);
 
         Stopwatch rewriteStopwatch = Stopwatch.createStarted();
         AnsiTokenColorizer ansiTokenColorizer = new AnsiTokenColorizer(

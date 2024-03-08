@@ -161,6 +161,11 @@ public final class TokenCategoryToAnsiColor
                 colorScheme.projectionName(ansi);
                 return;
             }
+            case SERVICE_NAME:
+            {
+                colorScheme.serviceName(ansi);
+                return;
+            }
             case ENUMERATION_LITERAL_NAME:
             {
                 colorScheme.enumerationLiteralName(ansi);
@@ -342,6 +347,8 @@ public final class TokenCategoryToAnsiColor
             case OPERATOR_GT:
             case OPERATOR_LE:
             case OPERATOR_GE:
+            case OPERATOR_AND:
+            case OPERATOR_OR:
             {
                 colorScheme.operator(ansi);
                 return;

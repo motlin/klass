@@ -406,11 +406,11 @@ public class ParserBasedTokenCategorizer
                 ctx.KEYWORD_PROJECTION().getSymbol(),
                 TokenCategory.KEYWORD_PROJECTION);
         this.put(
-                ctx.KEYWORD_ON().getSymbol(),
-                TokenCategory.KEYWORD_ON);
-        this.put(
                 ctx.identifier().getStart(),
                 TokenCategory.PROJECTION_NAME);
+        this.put(
+                ctx.KEYWORD_ON().getSymbol(),
+                TokenCategory.KEYWORD_ON);
     }
 
     // TODO: Rename Primitive to Data
@@ -544,6 +544,12 @@ public class ParserBasedTokenCategorizer
         this.put(
                 ctx.KEYWORD_SERVICE().getSymbol(),
                 TokenCategory.KEYWORD_SERVICE);
+        this.put(
+                ctx.identifier().getStart(),
+                TokenCategory.SERVICE_NAME);
+        this.put(
+                ctx.KEYWORD_ON().getSymbol(),
+                TokenCategory.KEYWORD_ON);
     }
 
     @Override

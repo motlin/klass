@@ -114,6 +114,8 @@ OPERATOR_IN          : 'in';
 OPERATOR_CONTAINS    : 'contains';
 OPERATOR_STARTS_WITH : 'startsWith';
 OPERATOR_ENDS_WITH   : 'endsWith';
+OPERATOR_AND         : '&&';
+OPERATOR_OR          : '||';
 
 // Channels
 WHITESPACE  : [ \t\u000C]+  -> channel(1000);
