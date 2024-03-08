@@ -246,6 +246,25 @@
             </build>
         </profile>
 
+        <profile>
+            <id>rerecord</id>
+
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <artifactId>maven-surefire-plugin</artifactId>
+                            <configuration>
+                                <environmentVariables>
+                                    <LIFTWIZARD_FILE_MATCH_RULE_RERECORD>true</LIFTWIZARD_FILE_MATCH_RULE_RERECORD>
+                                </environmentVariables>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+
     </profiles>
 
 </project>
