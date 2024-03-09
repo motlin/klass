@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.syntax.highlighter.ansi.scheme.AnsiColorScheme;
 import cool.klass.model.converter.compiler.token.categories.TokenCategory;
+import cool.klass.model.meta.grammar.KlassLexer;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.map.MapIterable;
 import org.fusesource.jansi.Ansi;
@@ -50,6 +51,16 @@ public final class AnsiTokenColorizer
         {
             return Optional.of(lexerCategory);
         }
-        return Optional.ofNullable(parserCategory);
+        if (parserCategory != null)
+        {
+            return Optional.of(parserCategory);
+        }
+        return switch (token.getType())
+        {
+            case KlassLexer.WHITESPACE ->  Optional.empty();
+            case KlassLexer.NEWLINE ->  Optional.empty();
+            case KlassLexer.EOF ->  Optional.empty();
+            default -> throw new AssertionError(token);
+        };
     }
 }
