@@ -436,8 +436,6 @@ public class ReladomoObjectFileGenerator
         if (dataTypeProperty.isKey() || dataTypeProperty.isFinal())
         {
             attributeType.setFinalGetter(true);
-            // TODO: Final should only mean that the synchronizers can't change it
-            attributeType.setReadonly(true);
         }
 
         this.handleType(owningClass, dataTypeProperty, attributeType);
