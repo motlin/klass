@@ -32,10 +32,9 @@ public class EnumerationsPhase extends AbstractCompilerPhase
         IdentifierContext identifier = ctx.identifier();
         this.enumeration = new AntlrEnumeration(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.compilerState.getCompilerWalk().getCompilationUnit(),
                 this.compilerState.getOrdinal(ctx),
-                identifier,
-                this.compilerState.getCompilerWalk().getCompilationUnit());
+                identifier);
     }
 
     @Override

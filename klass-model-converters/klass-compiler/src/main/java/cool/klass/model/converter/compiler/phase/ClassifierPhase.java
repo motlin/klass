@@ -39,10 +39,9 @@ public class ClassifierPhase
         IdentifierContext identifier = ctx.interfaceHeader().identifier();
         this.iface      = new AntlrInterface(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.compilerState.getCompilerWalk().getCompilationUnit(),
                 this.compilerState.getOrdinal(ctx),
-                identifier,
-                this.compilerState.getCompilerWalk().getCompilationUnit());
+                identifier);
         this.classifier = this.iface;
     }
 
@@ -64,10 +63,9 @@ public class ClassifierPhase
 
         this.klass      = new AntlrClass(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.compilerState.getCompilerWalk().getCompilationUnit(),
                 this.compilerState.getOrdinal(ctx),
                 ctx.classHeader().identifier(),
-                this.compilerState.getCompilerWalk().getCompilationUnit(),
                 classOrUserKeyword.equals("user"));
         this.classifier = this.klass;
     }

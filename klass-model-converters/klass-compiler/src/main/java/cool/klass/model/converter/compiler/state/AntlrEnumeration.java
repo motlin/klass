@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
@@ -27,10 +26,9 @@ public class AntlrEnumeration
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrEnumeration AMBIGUOUS = new AntlrEnumeration(
             new EnumerationDeclarationContext(AMBIGUOUS_PARENT, -1),
-            Optional.empty(),
+            AntlrCompilationUnit.AMBIGUOUS,
             -1,
-            new IdentifierContext(AMBIGUOUS_PARENT, -1),
-            AntlrCompilationUnit.AMBIGUOUS)
+            new IdentifierContext(AMBIGUOUS_PARENT, -1))
     {
         @Override
         public String toString()
@@ -43,10 +41,9 @@ public class AntlrEnumeration
     //<editor-fold desc="NOT_FOUND">
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
             new EnumerationDeclarationContext(NOT_FOUND_PARENT, -1),
-            Optional.empty(),
+            AntlrCompilationUnit.NOT_FOUND,
             -1,
-            NOT_FOUND_IDENTIFIER_CONTEXT,
-            AntlrCompilationUnit.NOT_FOUND)
+            NOT_FOUND_IDENTIFIER_CONTEXT)
     {
         @Override
         public String toString()
@@ -65,12 +62,11 @@ public class AntlrEnumeration
 
     public AntlrEnumeration(
             @Nonnull EnumerationDeclarationContext elementContext,
-            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull AntlrCompilationUnit compilationUnitState,
             int ordinal,
-            @Nonnull IdentifierContext nameContext,
-            @Nonnull AntlrCompilationUnit compilationUnitState)
+            @Nonnull IdentifierContext nameContext)
     {
-        super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
+        super(elementContext, compilationUnitState, ordinal, nameContext);
     }
 
     public int getNumLiterals()

@@ -48,10 +48,9 @@ public class ServicePhase
 
         this.serviceGroup = new AntlrServiceGroup(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.compilerState.getCompilerWalk().getCompilationUnit(),
                 this.compilerState.getOrdinal(ctx),
                 nameContext,
-                this.compilerState.getCompilerWalk().getCompilationUnit(),
                 klass);
     }
 

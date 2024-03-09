@@ -7,7 +7,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
@@ -38,10 +37,9 @@ public abstract class AntlrClassifier
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrClassifier AMBIGUOUS = new AntlrClassifier(
             new ClassDeclarationContext(AMBIGUOUS_PARENT, -1),
-            Optional.empty(),
+            AntlrCompilationUnit.AMBIGUOUS,
             -1,
-            AMBIGUOUS_IDENTIFIER_CONTEXT,
-            AntlrCompilationUnit.AMBIGUOUS)
+            AMBIGUOUS_IDENTIFIER_CONTEXT)
     {
         @Override
         public AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name)
@@ -66,10 +64,9 @@ public abstract class AntlrClassifier
     //<editor-fold desc="NOT_FOUND">
     public static final AntlrClassifier NOT_FOUND = new AntlrClassifier(
             new ClassDeclarationContext(NOT_FOUND_PARENT, -1),
-            Optional.empty(),
+            AntlrCompilationUnit.AMBIGUOUS,
             -1,
-            NOT_FOUND_IDENTIFIER_CONTEXT,
-            AntlrCompilationUnit.AMBIGUOUS)
+            NOT_FOUND_IDENTIFIER_CONTEXT)
     {
         @Override
         public AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name)
@@ -118,12 +115,11 @@ public abstract class AntlrClassifier
 
     protected AntlrClassifier(
             @Nonnull ParserRuleContext elementContext,
-            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull AntlrCompilationUnit compilationUnitState,
             int ordinal,
-            @Nonnull IdentifierContext nameContext,
-            @Nonnull AntlrCompilationUnit compilationUnitState)
+            @Nonnull IdentifierContext nameContext)
     {
-        super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
+        super(elementContext, compilationUnitState, ordinal, nameContext);
     }
 
     public abstract AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name);

@@ -2,11 +2,9 @@ package cool.klass.model.converter.compiler.state.service;
 
 import java.util.LinkedHashMap;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrCompilationUnit;
@@ -36,10 +34,9 @@ public class AntlrServiceGroup
 {
     public static final AntlrServiceGroup AMBIGUOUS = new AntlrServiceGroup(
             new ServiceGroupDeclarationContext(AMBIGUOUS_PARENT, -1),
-            Optional.empty(),
+            AntlrCompilationUnit.AMBIGUOUS,
             -1,
             AMBIGUOUS_IDENTIFIER_CONTEXT,
-            AntlrCompilationUnit.AMBIGUOUS,
             AntlrClass.AMBIGUOUS);
 
     @Nonnull
@@ -53,13 +50,12 @@ public class AntlrServiceGroup
 
     public AntlrServiceGroup(
             @Nonnull ServiceGroupDeclarationContext elementContext,
-            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull AntlrCompilationUnit compilationUnitState,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
-            @Nonnull AntlrCompilationUnit compilationUnitState,
             @Nonnull AntlrClass klass)
     {
-        super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
+        super(elementContext, compilationUnitState, ordinal, nameContext);
         this.klass = Objects.requireNonNull(klass);
     }
 

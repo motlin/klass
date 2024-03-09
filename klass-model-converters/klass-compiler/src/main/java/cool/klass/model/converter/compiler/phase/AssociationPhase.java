@@ -41,10 +41,9 @@ public class AssociationPhase
         IdentifierContext identifier = ctx.identifier();
         this.association = new AntlrAssociation(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
+                this.compilerState.getCompilerWalk().getCompilationUnit(),
                 this.compilerState.getOrdinal(ctx),
-                identifier,
-                this.compilerState.getCompilerWalk().getCompilationUnit());
+                identifier);
     }
 
     @Override

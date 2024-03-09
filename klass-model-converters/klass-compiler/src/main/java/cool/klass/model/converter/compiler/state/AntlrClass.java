@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.AnnotationSeverity;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
@@ -47,10 +46,9 @@ public class AntlrClass
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
             new ClassDeclarationContext(AMBIGUOUS_PARENT, -1),
-            Optional.empty(),
+            AntlrCompilationUnit.AMBIGUOUS,
             -1,
             AMBIGUOUS_IDENTIFIER_CONTEXT,
-            AntlrCompilationUnit.AMBIGUOUS,
             false)
     {
         @Override
@@ -85,10 +83,9 @@ public class AntlrClass
     //<editor-fold desc="NOT_FOUND">
     public static final AntlrClass NOT_FOUND = new AntlrClass(
             new ClassDeclarationContext(NOT_FOUND_PARENT, -1),
-            Optional.empty(),
+            AntlrCompilationUnit.NOT_FOUND,
             -1,
             NOT_FOUND_IDENTIFIER_CONTEXT,
-            AntlrCompilationUnit.NOT_FOUND,
             false)
     {
         @Override
@@ -144,13 +141,12 @@ public class AntlrClass
 
     public AntlrClass(
             @Nonnull ClassDeclarationContext elementContext,
-            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull AntlrCompilationUnit compilationUnitState,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
-            @Nonnull AntlrCompilationUnit compilationUnitState,
             boolean isUser)
     {
-        super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
+        super(elementContext, compilationUnitState, ordinal, nameContext);
         this.isUser = isUser;
     }
 

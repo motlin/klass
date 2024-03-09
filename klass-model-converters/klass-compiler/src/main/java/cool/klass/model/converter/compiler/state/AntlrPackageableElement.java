@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.meta.domain.AbstractPackageableElement.PackageableElementBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -20,18 +19,12 @@ public abstract class AntlrPackageableElement
 
     protected AntlrPackageableElement(
             @Nonnull ParserRuleContext elementContext,
-            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull AntlrCompilationUnit compilationUnitState,
             int ordinal,
-            @Nonnull IdentifierContext nameContext,
-            @Nonnull AntlrCompilationUnit compilationUnitState)
+            @Nonnull IdentifierContext nameContext)
     {
-        super(elementContext, compilationUnit, ordinal, nameContext);
+        super(elementContext, compilationUnitState.getCompilationUnit(), ordinal, nameContext);
         this.compilationUnitState = Objects.requireNonNull(compilationUnitState);
-
-        if (!compilationUnit.equals(this.compilationUnitState.getCompilationUnit()))
-        {
-            throw new AssertionError("Compilation unit: " + compilationUnit + " does not match: " + this.compilationUnitState);
-        }
     }
 
     @Nonnull

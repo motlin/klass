@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
@@ -35,10 +34,9 @@ public class AntlrInterface
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrInterface AMBIGUOUS = new AntlrInterface(
             new InterfaceDeclarationContext(AMBIGUOUS_PARENT, -1),
-            Optional.empty(),
+            AntlrCompilationUnit.AMBIGUOUS,
             -1,
-            AMBIGUOUS_IDENTIFIER_CONTEXT,
-            AntlrCompilationUnit.AMBIGUOUS)
+            AMBIGUOUS_IDENTIFIER_CONTEXT)
     {
         @Override
         public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
@@ -52,10 +50,9 @@ public class AntlrInterface
     //<editor-fold desc="NOT_FOUND">
     public static final AntlrInterface NOT_FOUND = new AntlrInterface(
             new InterfaceDeclarationContext(NOT_FOUND_PARENT, -1),
-            Optional.empty(),
+            AntlrCompilationUnit.NOT_FOUND,
             -1,
-            NOT_FOUND_IDENTIFIER_CONTEXT,
-            AntlrCompilationUnit.NOT_FOUND)
+            NOT_FOUND_IDENTIFIER_CONTEXT)
     {
         @Override
         public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
@@ -84,12 +81,11 @@ public class AntlrInterface
 
     public AntlrInterface(
             @Nonnull InterfaceDeclarationContext elementContext,
-            @Nonnull Optional<CompilationUnit> compilationUnit,
+            @Nonnull AntlrCompilationUnit compilationUnitState,
             int ordinal,
-            @Nonnull IdentifierContext nameContext,
-            @Nonnull AntlrCompilationUnit compilationUnitState)
+            @Nonnull IdentifierContext nameContext)
     {
-        super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
+        super(elementContext, compilationUnitState, ordinal, nameContext);
     }
 
     public InterfaceBuilder build1()
