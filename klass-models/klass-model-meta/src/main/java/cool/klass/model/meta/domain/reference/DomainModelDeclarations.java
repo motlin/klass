@@ -18,6 +18,7 @@ import cool.klass.model.meta.domain.api.source.property.AssociationEndWithSource
 import cool.klass.model.meta.domain.api.source.property.EnumerationPropertyWithSourceCode;
 import cool.klass.model.meta.domain.api.source.property.ParameterizedPropertyWithSourceCode;
 import cool.klass.model.meta.domain.api.source.property.PrimitivePropertyWithSourceCode;
+import cool.klass.model.meta.domain.api.source.service.ServiceGroupWithSourceCode;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
@@ -29,6 +30,7 @@ import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.map.MutableMapIterable;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
@@ -136,6 +138,15 @@ public class DomainModelDeclarations
     public void addParameterizedPropertyDeclaration(
             @Nonnull ParameterizedPropertyContext declaration,
             @Nonnull ParameterizedPropertyWithSourceCode element)
+    {
+        Objects.requireNonNull(element);
+        Token token = declaration.identifier().getStart();
+        this.elementsByDeclaration.put(token, element);
+    }
+
+    public void addServiceGroupDeclaration(
+            @Nonnull ServiceGroupDeclarationContext declaration,
+            @Nonnull ServiceGroupWithSourceCode element)
     {
         Objects.requireNonNull(element);
         Token token = declaration.identifier().getStart();

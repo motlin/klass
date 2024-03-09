@@ -20,12 +20,14 @@ import cool.klass.model.meta.domain.api.source.EnumerationWithSourceCode;
 import cool.klass.model.meta.domain.api.source.InterfaceWithSourceCode;
 import cool.klass.model.meta.domain.api.source.KlassWithSourceCode;
 import cool.klass.model.meta.domain.api.source.projection.ProjectionWithSourceCode;
+import cool.klass.model.meta.domain.api.source.service.ServiceGroupWithSourceCode;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class DomainModelDeclarationsTopLevelElementVisitor
@@ -109,8 +111,8 @@ public class DomainModelDeclarationsTopLevelElementVisitor
     @Override
     public void visitServiceGroup(ServiceGroup serviceGroup)
     {
-        Klass klass = serviceGroup.getKlass();
-
-        // TODO: Implement more references
+        ServiceGroupWithSourceCode     element     = (ServiceGroupWithSourceCode) serviceGroup;
+        ServiceGroupDeclarationContext declaration = element.getElementContext();
+        this.domainModelDeclarations.addServiceGroupDeclaration(declaration, element);
     }
 }

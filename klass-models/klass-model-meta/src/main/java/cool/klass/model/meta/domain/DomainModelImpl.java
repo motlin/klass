@@ -119,7 +119,6 @@ public final class DomainModelImpl
         this.userClass = this.classes.detectOptional(Klass::isUser);
 
         this.topLevelElementsByName = this.topLevelElements
-                .reject(ServiceGroup.class::isInstance)
                 .groupByUniqueKey(NamedElement::getName).toImmutable();
         this.enumerationsByName     = this.enumerations.groupByUniqueKey(NamedElement::getName).toImmutable();
         this.classifiersByName      = this.classifiers.groupByUniqueKey(NamedElement::getName).toImmutable();
