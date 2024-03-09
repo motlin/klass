@@ -221,6 +221,10 @@ a {
     color: var(--klass-color-projection-name, var(--klass-color-top-level-element-name, var(--klass-color-identifier, --color-foreground)));
 }
 
+.klass-service-name {
+    color: var(--klass-color-service-name, var(--klass-color-top-level-element-name, var(--klass-color-identifier, --color-foreground)));
+}
+
 .klass-enumeration-literal-name {
     color: var(--klass-color-enumeration-literal-name, var(--klass-color-identifier, --color-foreground));
 }
@@ -379,6 +383,14 @@ a {
 
 .klass-operator-ge {
     color: var(--klass-color-operator-ge, var(--klass-color-operator, var(--klass-color-punctuation, --color-foreground)));
+}
+
+.klass-operator-and {
+    color: var(--klass-color-operator-and, var(--klass-color-operator, var(--klass-color-punctuation, --color-foreground)));
+}
+
+.klass-operator-or {
+    color: var(--klass-color-operator-or, var(--klass-color-operator, var(--klass-color-punctuation, --color-foreground)));
 }
 
 .klass-word-operator {
