@@ -6,9 +6,9 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>io.liftwizard</groupId>
-        <artifactId>liftwizard-parent-build</artifactId>
-        <version>2.1.6</version>
+        <groupId>cool.klass</groupId>
+        <artifactId>klass-maven-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -19,22 +19,6 @@
         <app.artifactId>\${artifactId}</app.artifactId>
         <app.rootPackageName>\${package}</app.rootPackageName>
         <app.name>\${name}</app.name>
-
-        <mainClass>${app.rootPackageName}.dropwizard.application.${app.name}Application</mainClass>
-
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <maven.compiler.release>21</maven.compiler.release>
-        <maven.compiler.parameters>true</maven.compiler.parameters>
-
-        <checkstyle.configuration>\${maven.multiModuleProjectDirectory}/checkstyle-configuration.xml</checkstyle.configuration>
-        <checkstyle.suppressions>\${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</checkstyle.suppressions>
-        <checkstyle.cache>\${project.build.directory}/checkstyle-cache</checkstyle.cache>
-
-        <liftwizard.version>2.1.6</liftwizard.version>
     </properties>
 
     <groupId>\${groupId}</groupId>
@@ -43,62 +27,4 @@
     <packaging>pom</packaging>
 
     <name>${app.name} (Module Group)</name>
-
-    <dependencyManagement>
-        <dependencies>
-
-            <dependency>
-                <groupId>io.liftwizard</groupId>
-                <artifactId>liftwizard-dependencies</artifactId>
-                <version>\${liftwizard.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>io.liftwizard</groupId>
-                <artifactId>liftwizard-bom</artifactId>
-                <version>\${liftwizard.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>cool.klass</groupId>
-                <artifactId>klass-bom</artifactId>
-                <version>\${klass.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-        </dependencies>
-    </dependencyManagement>
-
-    <build>
-        <defaultGoal>clean verify</defaultGoal>
-
-        <plugins>
-
-            <plugin>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-enforcer-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-            </plugin>
-
-        </plugins>
-
-    </build>
-
 </project>

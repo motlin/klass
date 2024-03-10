@@ -4,16 +4,15 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
+import cool.klass.dropwizard.bundle.graphql.KlassGraphQLBundle;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
-import cool.klass.service.klass.html.KlassHtmlResource;
-import ${package}.graphql.runtime.wiring.RuntimeWiringBuilder;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.liftwizard.dropwizard.bundle.graphql.LiftwizardGraphQLBundle;
 import io.liftwizard.dropwizard.bundle.httplogging.JerseyHttpLoggingBundle;
+import io.liftwizard.servlet.bundle.spa.SPARedirectFilterBundle;
+import io.liftwizard.servlet.config.spa.SPARedirectFilterFactory;
 import io.liftwizard.servlet.logging.logstash.encoder.StructuredArgumentsLogstashEncoderLogger;
 import io.liftwizard.servlet.logging.mdc.StructuredArgumentsMDCLogger;
 import io.liftwizard.servlet.logging.typesafe.StructuredArguments;
@@ -21,7 +20,8 @@ import io.liftwizard.servlet.logging.typesafe.StructuredArguments;
 public class ${name}Application
         extends Abstract${name}Application
 {
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
+            throws Exception
     {
         new ${name}Application().run(args);
     }
@@ -30,8 +30,6 @@ public class ${name}Application
     public void initialize(@Nonnull Bootstrap<${name}Configuration> bootstrap)
     {
         super.initialize(bootstrap);
-
-        // TODO: application initialization
     }
 
     @Override
@@ -56,9 +54,8 @@ public class ${name}Application
 
         bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
 
-        bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new RuntimeWiringBuilder()));
+        bootstrap.addBundle(new KlassGraphQLBundle<>());
 
-        /*
         bootstrap.addBundle(new MigrationsBundle<>()
         {
             @Override
@@ -67,7 +64,15 @@ public class ${name}Application
                 return configuration.getNamedDataSourcesFactory().getNamedDataSourceFactoryByName("h2-tcp");
             }
         });
-        */
+
+        bootstrap.addBundle(new SPARedirectFilterBundle<>()
+        {
+            @Override
+            public SPARedirectFilterFactory getSPARedirectFilterFactory(${name}Configuration configuration)
+            {
+                return configuration.getSPARedirectFilterFactory();
+            }
+        });
     }
 
     @Override
@@ -76,24 +81,5 @@ public class ${name}Application
         super.registerJacksonModules(environment);
 
         environment.getObjectMapper().registerModule(new KlassMetaModelJacksonModule());
-    }
-
-    @Override
-    public void run(
-            @Nonnull ${name}Configuration configuration,
-            @Nonnull Environment environment) throws Exception
-    {
-        ObjectMapper objectMapper = environment.getObjectMapper();
-        DomainModel domainModel = configuration
-                .getKlassFactory()
-                .getDomainModelFactory()
-                .createDomainModel(objectMapper);
-
-        if (domainModel instanceof DomainModelWithSourceCode)
-        {
-            environment.jersey().register(new KlassHtmlResource((DomainModelWithSourceCode) domainModel));
-        }
-
-        super.run(configuration, environment);
     }
 }

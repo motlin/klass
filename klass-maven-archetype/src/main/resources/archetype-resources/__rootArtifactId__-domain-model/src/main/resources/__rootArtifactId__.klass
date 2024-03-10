@@ -12,12 +12,14 @@ user User
     email    : String?;
 }
 
-projection UserReadProjection on User
+projection UserProjection on User
 {
-    userId   : "User id",
-    firstName: "User first name",
-    lastName : "User last name",
-    email    : "User email",
+    userId    : "User userId",
+    systemFrom: "User systemFrom",
+    systemTo  : "User systemTo",
+    firstName : "User firstName",
+    lastName  : "User lastName",
+    email     : "User email",
 }
 
 service UserResource on User
@@ -27,14 +29,18 @@ service UserResource on User
         {
             multiplicity: one;
             criteria    : this.userId == userId;
-            projection  : UserReadProjection;
+            projection  : UserProjection;
+        }
+        PUT
+        {
+            criteria    : this.userId == userId;
         }
     /user
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : UserReadProjection;
+            projection  : UserProjection;
         }
 }
 
@@ -61,14 +67,42 @@ association DeleteMeExampleToOwned
     deleteMeExampleOwnedTypes: DeleteMeExampleOwnedType[0..*] owned;
 }
 
+projection DeleteMeExampleOwnedTypeProjection on DeleteMeExampleOwnedType
+{
+    id: "DeleteMeExampleOwnedType id",
+    systemFrom: "DeleteMeExampleOwnedType systemFrom",
+    systemTo: "DeleteMeExampleOwnedType systemTo",
+    name: "DeleteMeExampleOwnedType name",
+}
+
+projection DeleteMeExampleTypeVersionProjection on DeleteMeExampleTypeVersion
+{
+    systemFrom: "DeleteMeExampleTypeVersion systemFrom",
+    systemTo: "DeleteMeExampleTypeVersion systemTo",
+    createdOn: "DeleteMeExampleTypeVersion createdOn",
+    number: "DeleteMeExampleTypeVersion number",
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
+}
+
 projection DeleteMeExampleTypeProjection on DeleteMeExampleType
 {
-    id                      : "Id",
-    name                    : "Name",
-    deleteMeExampleOwnedTypes:
-    {
-        id  : "Id",
-        name: "Name",
+    id: "DeleteMeExampleType id",
+    systemFrom: "DeleteMeExampleType systemFrom",
+    systemTo: "DeleteMeExampleType systemTo",
+    createdOn: "DeleteMeExampleType createdOn",
+    name: "DeleteMeExampleType name",
+    deleteMeExampleOwnedTypes: DeleteMeExampleOwnedTypeProjection,
+    version: DeleteMeExampleTypeVersionProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
     },
 }
 
@@ -81,7 +115,11 @@ service DeleteMeExampleTypeResource on DeleteMeExampleType
             criteria    : this.id == id;
             projection  : DeleteMeExampleTypeProjection;
         }
-    /deleteMeExampleType
+        PUT
+        {
+            criteria    : this.id == id;
+        }
+    /deleteMeExampleTypes
         GET
         {
             multiplicity: many;
