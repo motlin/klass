@@ -2422,7 +2422,7 @@
     "dataTypeProperties": [
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
-        "name": "className",
+        "name": "serviceGroupName",
         "optional": false,
         "minLengthValidation": null,
         "maxLengthValidation": {
@@ -2500,7 +2500,7 @@
     "dataTypeProperties": [
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
-        "name": "urlClassName",
+        "name": "serviceGroupName",
         "optional": false,
         "minLengthValidation": null,
         "maxLengthValidation": {
@@ -2610,7 +2610,7 @@
     "dataTypeProperties": [
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
-        "name": "className",
+        "name": "serviceGroupName",
         "optional": false,
         "minLengthValidation": null,
         "maxLengthValidation": {
@@ -2801,7 +2801,7 @@
     "dataTypeProperties": [
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
-        "name": "serviceClassName",
+        "name": "serviceGroupName",
         "optional": false,
         "minLengthValidation": null,
         "maxLengthValidation": {

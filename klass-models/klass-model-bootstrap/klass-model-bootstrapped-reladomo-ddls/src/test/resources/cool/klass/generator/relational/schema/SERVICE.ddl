@@ -2,7 +2,7 @@ drop table if exists SERVICE;
 
 create table SERVICE
 (
-    class_name varchar(256) not null,
+    service_group_name varchar(256) not null,
     url_string varchar(8192) not null,
     verb varchar(256) not null,
     projection_name varchar(256),

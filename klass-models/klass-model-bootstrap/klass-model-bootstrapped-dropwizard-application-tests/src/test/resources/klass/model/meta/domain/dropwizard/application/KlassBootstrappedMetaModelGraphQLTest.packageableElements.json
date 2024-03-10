@@ -2269,7 +2269,7 @@
         "dataTypeProperties": [
           {
             "__typename": "PrimitiveProperty",
-            "name": "className",
+            "name": "serviceGroupName",
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": {
@@ -2336,7 +2336,7 @@
         "dataTypeProperties": [
           {
             "__typename": "PrimitiveProperty",
-            "name": "urlClassName",
+            "name": "serviceGroupName",
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": {
@@ -2438,7 +2438,7 @@
         "dataTypeProperties": [
           {
             "__typename": "PrimitiveProperty",
-            "name": "className",
+            "name": "serviceGroupName",
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": {
@@ -2606,7 +2606,7 @@
         "dataTypeProperties": [
           {
             "__typename": "PrimitiveProperty",
-            "name": "serviceClassName",
+            "name": "serviceGroupName",
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": {

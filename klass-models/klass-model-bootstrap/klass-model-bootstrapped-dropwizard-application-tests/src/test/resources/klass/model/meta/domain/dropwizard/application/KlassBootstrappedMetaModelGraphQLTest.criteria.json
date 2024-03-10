@@ -1748,7 +1748,7 @@
           "associationEnds": [],
           "dataTypeProperty": {
             "__typename": "PrimitiveProperty",
-            "name": "className"
+            "name": "serviceGroupName"
           }
         },
         "targetExpressionValue": {
@@ -1760,7 +1760,7 @@
           "associationEnds": [],
           "dataTypeProperty": {
             "__typename": "PrimitiveProperty",
-            "name": "urlClassName"
+            "name": "serviceGroupName"
           }
         }
       },
@@ -1835,7 +1835,7 @@
           "associationEnds": [],
           "dataTypeProperty": {
             "__typename": "PrimitiveProperty",
-            "name": "className"
+            "name": "name"
           }
         },
         "targetExpressionValue": {
@@ -1847,7 +1847,7 @@
           "associationEnds": [],
           "dataTypeProperty": {
             "__typename": "PrimitiveProperty",
-            "name": "className"
+            "name": "serviceGroupName"
           }
         }
       },
@@ -1876,7 +1876,7 @@
           "associationEnds": [],
           "dataTypeProperty": {
             "__typename": "PrimitiveProperty",
-            "name": "className"
+            "name": "serviceGroupName"
           }
         },
         "targetExpressionValue": {
@@ -1888,7 +1888,7 @@
           "associationEnds": [],
           "dataTypeProperty": {
             "__typename": "PrimitiveProperty",
-            "name": "className"
+            "name": "serviceGroupName"
           }
         }
       },
@@ -2103,7 +2103,7 @@
           "associationEnds": [],
           "dataTypeProperty": {
             "__typename": "PrimitiveProperty",
-            "name": "className"
+            "name": "serviceGroupName"
           }
         },
         "targetExpressionValue": {
@@ -2115,7 +2115,7 @@
           "associationEnds": [],
           "dataTypeProperty": {
             "__typename": "PrimitiveProperty",
-            "name": "serviceClassName"
+            "name": "serviceGroupName"
           }
         }
       },

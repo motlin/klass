@@ -716,7 +716,7 @@
 
     <changeSet author="Klass" id="initial-table-50-URL">
         <createTable tableName="URL">
-            <column name="CLASS_NAME" type="varchar(256)">
+            <column name="SERVICE_GROUP_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="URL_PK" />
             </column>
 
@@ -732,7 +732,7 @@
 
     <changeSet author="Klass" id="initial-table-51-URL_PARAMETER">
         <createTable tableName="URL_PARAMETER">
-            <column name="URL_CLASS_NAME" type="varchar(256)">
+            <column name="SERVICE_GROUP_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="URL_PARAMETER_PK" />
             </column>
 
@@ -756,7 +756,7 @@
 
     <changeSet author="Klass" id="initial-table-52-SERVICE">
         <createTable tableName="SERVICE">
-            <column name="CLASS_NAME" type="varchar(256)">
+            <column name="SERVICE_GROUP_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="SERVICE_PK" />
             </column>
 
@@ -790,7 +790,7 @@
 
     <changeSet author="Klass" id="initial-table-53-SERVICE_ORDER_BY">
         <createTable tableName="SERVICE_ORDER_BY">
-            <column name="SERVICE_CLASS_NAME" type="varchar(256)">
+            <column name="SERVICE_GROUP_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="SERVICE_ORDER_BY_PK" />
             </column>
 
@@ -1170,9 +1170,9 @@
         <addForeignKeyConstraint
                 constraintName="URL_FK_SERVICE_GROUP"
                 baseTableName="URL"
-                baseColumnNames="CLASS_NAME"
+                baseColumnNames="SERVICE_GROUP_NAME"
                 referencedTableName="SERVICE_GROUP"
-                referencedColumnNames="CLASS_NAME"
+                referencedColumnNames="NAME"
         />
     </changeSet>
 
@@ -1180,9 +1180,9 @@
         <addForeignKeyConstraint
                 constraintName="URL_PARAMETER_FK_URL"
                 baseTableName="URL_PARAMETER"
-                baseColumnNames="URL_CLASS_NAME, URL_STRING"
+                baseColumnNames="SERVICE_GROUP_NAME, URL_STRING"
                 referencedTableName="URL"
-                referencedColumnNames="CLASS_NAME, URL"
+                referencedColumnNames="SERVICE_GROUP_NAME, URL"
         />
     </changeSet>
 
@@ -1200,9 +1200,9 @@
         <addForeignKeyConstraint
                 constraintName="SERVICE_FK_URL"
                 baseTableName="SERVICE"
-                baseColumnNames="CLASS_NAME, URL_STRING"
+                baseColumnNames="SERVICE_GROUP_NAME, URL_STRING"
                 referencedTableName="URL"
-                referencedColumnNames="CLASS_NAME, URL"
+                referencedColumnNames="SERVICE_GROUP_NAME, URL"
         />
     </changeSet>
 
@@ -1260,9 +1260,9 @@
         <addForeignKeyConstraint
                 constraintName="SERVICE_ORDER_BY_FK_SERVICE"
                 baseTableName="SERVICE_ORDER_BY"
-                baseColumnNames="SERVICE_CLASS_NAME, SERVICE_URL_STRING, SERVICE_VERB"
+                baseColumnNames="SERVICE_GROUP_NAME, SERVICE_URL_STRING, SERVICE_VERB"
                 referencedTableName="SERVICE"
-                referencedColumnNames="CLASS_NAME, URL_STRING, VERB"
+                referencedColumnNames="SERVICE_GROUP_NAME, URL_STRING, VERB"
         />
     </changeSet>
 

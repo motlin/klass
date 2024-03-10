@@ -1,7 +1,7 @@
 alter table URL add constraint URL_FK_SERVICE_GROUP foreign key (
-    class_name
+    service_group_name
 )
 references SERVICE_GROUP(
-    class_name
+    name
 );
 

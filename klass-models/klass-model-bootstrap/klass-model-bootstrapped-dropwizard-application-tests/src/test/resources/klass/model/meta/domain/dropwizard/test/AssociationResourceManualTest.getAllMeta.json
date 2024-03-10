@@ -3043,7 +3043,7 @@
             "owningClassifier": {
               "name": "Url"
             },
-            "name": "className"
+            "name": "serviceGroupName"
           }
         },
         "targetExpressionValue": {
@@ -3057,7 +3057,7 @@
             "owningClassifier": {
               "name": "UrlParameter"
             },
-            "name": "urlClassName"
+            "name": "serviceGroupName"
           }
         }
       },
@@ -3201,9 +3201,9 @@
         "associationEnds": [],
         "dataTypeProperty": {
           "owningClassifier": {
-            "name": "ServiceGroup"
+            "name": "NamedElement"
           },
-          "name": "className"
+          "name": "name"
         }
       },
       "targetExpressionValue": {
@@ -3217,7 +3217,7 @@
           "owningClassifier": {
             "name": "Url"
           },
-          "name": "className"
+          "name": "serviceGroupName"
         }
       }
     }
@@ -3274,7 +3274,7 @@
             "owningClassifier": {
               "name": "Url"
             },
-            "name": "className"
+            "name": "serviceGroupName"
           }
         },
         "targetExpressionValue": {
@@ -3288,7 +3288,7 @@
             "owningClassifier": {
               "name": "Service"
             },
-            "name": "className"
+            "name": "serviceGroupName"
           }
         }
       },
@@ -3686,7 +3686,7 @@
               "owningClassifier": {
                 "name": "Service"
               },
-              "name": "className"
+              "name": "serviceGroupName"
             }
           },
           "targetExpressionValue": {
@@ -3700,7 +3700,7 @@
               "owningClassifier": {
                 "name": "ServiceOrderBy"
               },
-              "name": "serviceClassName"
+              "name": "serviceGroupName"
             }
           }
         },

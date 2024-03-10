@@ -1,8 +1,8 @@
 alter table SERVICE add constraint SERVICE_FK_URL foreign key (
-    class_name, url_string
+    service_group_name, url_string
 )
 references URL(
-    class_name, url
+    service_group_name, url
 );
 
 alter table SERVICE add constraint SERVICE_FK_PROJECTION foreign key (

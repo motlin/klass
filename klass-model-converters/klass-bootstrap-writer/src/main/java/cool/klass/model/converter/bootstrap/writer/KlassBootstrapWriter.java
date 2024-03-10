@@ -858,7 +858,7 @@ public class KlassBootstrapWriter
         ServiceGroup serviceGroup = url.getServiceGroup();
 
         var bootstrappedUrl = new klass.model.meta.domain.Url();
-        bootstrappedUrl.setClassName(serviceGroup.getKlass().getName());
+        bootstrappedUrl.setServiceGroupName(serviceGroup.getName());
         bootstrappedUrl.setUrl(url.getUrlString());
         return bootstrappedUrl;
     }
@@ -894,7 +894,7 @@ public class KlassBootstrapWriter
 
         UrlParameter bootstrappedUrlParameter = new UrlParameter();
         bootstrappedUrlParameter.setParameter(bootstrappedParameter);
-        bootstrappedUrlParameter.setUrlClassName(url.getServiceGroup().getKlass().getName());
+        bootstrappedUrlParameter.setServiceGroupName(url.getServiceGroup().getName());
         bootstrappedUrlParameter.setUrlString(url.getUrlString());
         bootstrappedUrlParameter.setType(urlParameterType);
 
@@ -939,7 +939,7 @@ public class KlassBootstrapWriter
         ServiceGroup serviceGroup = url.getServiceGroup();
 
         klass.model.meta.domain.Service bootstrappedService = new klass.model.meta.domain.Service();
-        bootstrappedService.setClassName(serviceGroup.getKlass().getName());
+        bootstrappedService.setServiceGroupName(serviceGroup.getName());
         bootstrappedService.setUrlString(url.getUrlString());
         bootstrappedService.setVerb(service.getVerb().name());
         bootstrappedService.setServiceMultiplicity(service.getServiceMultiplicity().getPrettyName());
