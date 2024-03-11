@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>cool.klass</groupId>
+        <artifactId>klass-models</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <klass.version>${project.version}</klass.version>
+
+        <app.artifactId>klass-model-bootstrapped</app.artifactId>
+        <app.rootPackageName>klass.model.meta.domain</app.rootPackageName>
+        <app.name>KlassBootstrappedMetaModel</app.name>
+
+        <mainClass>${app.rootPackageName}.dropwizard.application.${app.name}Application</mainClass>
+
+    </properties>
+
+    <artifactId>klass-model-bootstrapped</artifactId>
+    <packaging>pom</packaging>
+
+    <name>${app.name} (Module Group)</name>
+
+    <build>
+        <defaultGoal>clean install</defaultGoal>
+
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+    <modules>
+        <module>klass-model-bootstrapped-domain-model</module>
+        <module>klass-model-bootstrapped-dropwizard-application</module>
+        <module>klass-model-bootstrapped-dropwizard-application-tests</module>
+        <module>klass-model-bootstrapped-dtos</module>
+        <module>klass-model-bootstrapped-graphql-data-fetchers</module>
+        <module>klass-model-bootstrapped-graphql-fragment</module>
+        <module>klass-model-bootstrapped-graphql-reladomo-finder</module>
+        <module>klass-model-bootstrapped-graphql-runtime-wiring</module>
+        <module>klass-model-bootstrapped-graphql-runtime-wiring-query</module>
+        <module>klass-model-bootstrapped-graphql-schema</module>
+        <module>klass-model-bootstrapped-graphql-schema-query</module>
+        <module>klass-model-bootstrapped-json-views</module>
+        <module>klass-model-bootstrapped-klass-macros</module>
+        <module>klass-model-bootstrapped-klass-projections</module>
+        <module>klass-model-bootstrapped-klass-services</module>
+        <!--<module>klass-model-bootstrapped-meta-model-json</module>-->
+        <module>klass-model-bootstrapped-liquibase-schema</module>
+        <module>klass-model-bootstrapped-reladomo-ddls</module>
+        <module>klass-model-bootstrapped-reladomo-definitions</module>
+        <module>klass-model-bootstrapped-reladomo-pojos</module>
+        <module>klass-model-bootstrapped-reladomo-runtime-configuration</module>
+        <module>klass-model-bootstrapped-relational-schema</module>
+        <module>klass-model-bootstrapped-services</module>
+        <module>klass-model-bootstrapped-uml-nomnoml</module>
+    </modules>
+</project>
