@@ -31,5 +31,3 @@
     * [Spring Boot / JHipster](part7/README.md#spring-boot--jhipster)
     * [GraphQL](part7/README.md#graphql)
 * [8: Model Converters](part8/README.md)
-* [9: Implementation Plan](part9/README.md)
-    * [Summary Implementation Plan](part9/1_summary_implementation.md)
