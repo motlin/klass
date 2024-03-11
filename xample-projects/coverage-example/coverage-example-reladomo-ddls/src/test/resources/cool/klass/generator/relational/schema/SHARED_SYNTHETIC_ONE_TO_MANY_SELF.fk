@@ -1,7 +1,0 @@
-alter table SHARED_SYNTHETIC_ONE_TO_MANY_SELF add constraint SHARED_SYNTHETIC_ONE_TO_MANY_SELF_FK_SOURCE foreign key (
-    source_id
-)
-references SHARED_SYNTHETIC_ONE_TO_MANY_SELF(
-    id
-);
-

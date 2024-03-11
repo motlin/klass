@@ -1,6 +1,0 @@
-alter table PROPERTIES_REQUIRED add constraint PROPERTIES_REQUIRED_PK primary key (properties_required_id, system_to);
-
-create index PROPERTIES_REQUIRED_IDX_CREATED_BY on PROPERTIES_REQUIRED(created_by_id, system_to);
-
-create index PROPERTIES_REQUIRED_IDX_LAST_UPDATED_BY on PROPERTIES_REQUIRED(last_updated_by_id, system_to);
-

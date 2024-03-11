@@ -1,7 +1,0 @@
-alter table OWNED_NATURAL_ONE_TO_MANY_SELF add constraint OWNED_NATURAL_ONE_TO_MANY_SELF_FK_SOURCE foreign key (
-    source_key
-)
-references OWNED_NATURAL_ONE_TO_MANY_SELF(
-    key
-);
-

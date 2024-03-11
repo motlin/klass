@@ -1,2 +1,0 @@
-alter table ALL_CRITERIA add constraint ALL_CRITERIA_PK primary key (id);
-

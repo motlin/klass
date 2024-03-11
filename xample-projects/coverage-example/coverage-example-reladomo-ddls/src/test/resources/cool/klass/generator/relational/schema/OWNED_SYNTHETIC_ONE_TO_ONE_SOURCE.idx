@@ -1,2 +1,0 @@
-alter table OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE add constraint OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE_PK primary key (id);
-

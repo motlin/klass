@@ -1,4 +1,0 @@
-alter table ASSOCIATION_END_ORDER_BY add constraint ASSOCIATION_END_ORDER_BY_PK primary key (association_end_class_name, association_end_name, this_member_reference_path_id);
-
-create index ASSOCIATION_END_ORDER_BY_IDX_THIS_MEMBER_REFERENCE_PATH on ASSOCIATION_END_ORDER_BY(this_member_reference_path_id);
-

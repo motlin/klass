@@ -1,6 +1,0 @@
-alter table PROPERTIES_REQUIRED_VERSION add constraint PROPERTIES_REQUIRED_VERSION_PK primary key (properties_required_id, system_to);
-
-create index PROPERTIES_REQUIRED_VERSION_IDX_CREATED_BY on PROPERTIES_REQUIRED_VERSION(created_by_id, system_to);
-
-create index PROPERTIES_REQUIRED_VERSION_IDX_LAST_UPDATED_BY on PROPERTIES_REQUIRED_VERSION(last_updated_by_id, system_to);
-

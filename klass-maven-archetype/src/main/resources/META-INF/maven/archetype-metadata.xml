@@ -244,19 +244,6 @@
         </module>
         <!--endregion-->
 
-        <!--region ${rootArtifactId}-reladomo-ddls-->
-        <module
-                id="${rootArtifactId}-reladomo-ddls"
-                dir="__rootArtifactId__-reladomo-ddls"
-                name="${rootArtifactId}-reladomo-ddls">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-        <!--endregion-->
-
         <!--region ${rootArtifactId}-reladomo-definitions-->
         <module
                 id="${rootArtifactId}-reladomo-definitions"

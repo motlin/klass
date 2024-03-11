@@ -1,2 +1,0 @@
-alter table PACKAGEABLE_ELEMENT add constraint PACKAGEABLE_ELEMENT_PK primary key (name);
-

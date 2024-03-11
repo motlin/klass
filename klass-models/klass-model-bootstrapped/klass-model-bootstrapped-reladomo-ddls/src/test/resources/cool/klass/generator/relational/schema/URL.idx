@@ -1,2 +1,0 @@
-alter table URL add constraint URL_PK primary key (service_group_name, url);
-

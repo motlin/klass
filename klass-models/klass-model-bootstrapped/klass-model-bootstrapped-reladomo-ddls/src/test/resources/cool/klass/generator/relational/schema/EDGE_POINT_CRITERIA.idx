@@ -1,4 +1,0 @@
-alter table EDGE_POINT_CRITERIA add constraint EDGE_POINT_CRITERIA_PK primary key (id);
-
-create index EDGE_POINT_CRITERIA_IDX_MEMBER_REFERENCE_PATH on EDGE_POINT_CRITERIA(member_reference_path_id);
-

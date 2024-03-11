@@ -1,4 +1,0 @@
-alter table OWNED_NATURAL_ONE_TO_MANY_SELF add constraint OWNED_NATURAL_ONE_TO_MANY_SELF_PK primary key (key);
-
-create index OWNED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE on OWNED_NATURAL_ONE_TO_MANY_SELF(source_key);
-

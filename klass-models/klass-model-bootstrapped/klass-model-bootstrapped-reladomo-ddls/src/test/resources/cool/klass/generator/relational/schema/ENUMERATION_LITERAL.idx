@@ -1,2 +1,0 @@
-alter table ENUMERATION_LITERAL add constraint ENUMERATION_LITERAL_PK primary key (enumeration_name, name);
-

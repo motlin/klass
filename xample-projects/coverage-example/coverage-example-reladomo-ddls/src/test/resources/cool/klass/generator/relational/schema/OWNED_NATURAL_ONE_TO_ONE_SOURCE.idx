@@ -1,2 +1,0 @@
-alter table OWNED_NATURAL_ONE_TO_ONE_SOURCE add constraint OWNED_NATURAL_ONE_TO_ONE_SOURCE_PK primary key (key);
-

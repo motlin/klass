@@ -1,6 +1,0 @@
-alter table PROPERTIES_OPTIONAL add constraint PROPERTIES_OPTIONAL_PK primary key (properties_optional_id, system_to);
-
-create index PROPERTIES_OPTIONAL_IDX_CREATED_BY on PROPERTIES_OPTIONAL(created_by_id, system_to);
-
-create index PROPERTIES_OPTIONAL_IDX_LAST_UPDATED_BY on PROPERTIES_OPTIONAL(last_updated_by_id, system_to);
-

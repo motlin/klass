@@ -1,2 +1,0 @@
-alter table ENUMERATION add constraint ENUMERATION_PK primary key (name);
-

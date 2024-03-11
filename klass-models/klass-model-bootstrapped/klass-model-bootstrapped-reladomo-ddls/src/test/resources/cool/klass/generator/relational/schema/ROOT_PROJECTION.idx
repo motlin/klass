@@ -1,4 +1,0 @@
-alter table ROOT_PROJECTION add constraint ROOT_PROJECTION_PK primary key (id);
-
-create index ROOT_PROJECTION_IDX_CLASSIFIER on ROOT_PROJECTION(classifier_name);
-

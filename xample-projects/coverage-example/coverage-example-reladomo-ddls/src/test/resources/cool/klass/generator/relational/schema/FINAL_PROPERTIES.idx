@@ -1,2 +1,0 @@
-alter table FINAL_PROPERTIES add constraint FINAL_PROPERTIES_PK primary key (id);
-

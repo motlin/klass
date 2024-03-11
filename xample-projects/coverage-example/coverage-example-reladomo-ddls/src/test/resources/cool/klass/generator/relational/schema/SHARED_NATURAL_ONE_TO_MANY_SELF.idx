@@ -1,4 +1,0 @@
-alter table SHARED_NATURAL_ONE_TO_MANY_SELF add constraint SHARED_NATURAL_ONE_TO_MANY_SELF_PK primary key (key);
-
-create index SHARED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE on SHARED_NATURAL_ONE_TO_MANY_SELF(source_key);
-

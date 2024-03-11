@@ -1,7 +1,0 @@
-alter table ENUMERATION_PROPERTY add constraint ENUMERATION_PROPERTY_FK_ENUMERATION foreign key (
-    enumeration_name
-)
-references ENUMERATION(
-    name
-);
-

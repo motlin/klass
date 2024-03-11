@@ -1,4 +1,0 @@
-alter table EVERY_TYPE_FOREIGN_KEY_PROPERTY add constraint EVERY_TYPE_FOREIGN_KEY_PROPERTY_PK primary key (id, system_to);
-
-create index EVERY_TYPE_FOREIGN_KEY_PROPERTY_IDX_EVERY_TYPE_KEY_PROPERTY on EVERY_TYPE_FOREIGN_KEY_PROPERTY(foreign_key_string, foreign_key_integer, foreign_key_long, foreign_key_double, foreign_key_float, foreign_key_boolean, foreign_key_instant, foreign_key_local_date, system_to);
-

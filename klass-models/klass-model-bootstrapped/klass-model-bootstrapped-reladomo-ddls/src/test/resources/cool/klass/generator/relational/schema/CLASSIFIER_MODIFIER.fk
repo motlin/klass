@@ -1,7 +1,0 @@
-alter table CLASSIFIER_MODIFIER add constraint CLASSIFIER_MODIFIER_FK_OWNING_CLASSIFIER foreign key (
-    classifier_name
-)
-references CLASSIFIER(
-    name
-);
-

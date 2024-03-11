@@ -72,7 +72,6 @@
         <module>klass-model-bootstrapped-klass-services</module>
         <!--<module>klass-model-bootstrapped-meta-model-json</module>-->
         <module>klass-model-bootstrapped-liquibase-schema</module>
-        <module>klass-model-bootstrapped-reladomo-ddls</module>
         <module>klass-model-bootstrapped-reladomo-definitions</module>
         <module>klass-model-bootstrapped-reladomo-pojos</module>
         <module>klass-model-bootstrapped-reladomo-runtime-configuration</module>

@@ -1,2 +1,0 @@
-alter table USER_VERSION add constraint USER_VERSION_PK primary key (user_id, system_to);
-

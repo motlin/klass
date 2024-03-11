@@ -1,6 +1,0 @@
-alter table EVERY_TYPE_KEY_PROPERTY_VERSION add constraint EVERY_TYPE_KEY_PROPERTY_VERSION_PK primary key (key_string, key_integer, key_long, key_double, key_float, key_boolean, key_instant, key_local_date, system_to);
-
-create index EVERY_TYPE_KEY_PROPERTY_VERSION_IDX_CREATED_BY on EVERY_TYPE_KEY_PROPERTY_VERSION(created_by_id, system_to);
-
-create index EVERY_TYPE_KEY_PROPERTY_VERSION_IDX_LAST_UPDATED_BY on EVERY_TYPE_KEY_PROPERTY_VERSION(last_updated_by_id, system_to);
-

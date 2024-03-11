@@ -1,2 +1,0 @@
-alter table PROPERTY_MODIFIER add constraint PROPERTY_MODIFIER_PK primary key (classifier_name, property_name, keyword);
-

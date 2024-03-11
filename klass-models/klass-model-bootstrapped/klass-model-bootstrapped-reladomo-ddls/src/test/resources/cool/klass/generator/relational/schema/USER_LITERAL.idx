@@ -1,2 +1,0 @@
-alter table USER_LITERAL add constraint USER_LITERAL_PK primary key (id);
-

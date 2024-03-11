@@ -1,7 +1,0 @@
-alter table PROJECTION_WITH_ASSOCIATION_END add constraint PROJECTION_WITH_ASSOCIATION_END_FK_ASSOCIATION_END foreign key (
-    association_end_class, association_end_name
-)
-references ASSOCIATION_END(
-    owning_class_name, name
-);
-

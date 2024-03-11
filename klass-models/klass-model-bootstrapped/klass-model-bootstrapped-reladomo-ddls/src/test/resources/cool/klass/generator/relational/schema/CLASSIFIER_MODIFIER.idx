@@ -1,2 +1,0 @@
-alter table CLASSIFIER_MODIFIER add constraint CLASSIFIER_MODIFIER_PK primary key (classifier_name, keyword);
-

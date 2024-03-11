@@ -1,2 +1,0 @@
-alter table PRIMITIVE_PARAMETER add constraint PRIMITIVE_PARAMETER_PK primary key (id);
-

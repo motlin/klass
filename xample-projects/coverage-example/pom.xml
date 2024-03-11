@@ -119,7 +119,6 @@
         <module>coverage-example-klass-projections</module>
         <module>coverage-example-klass-services</module>
         <module>coverage-example-liquibase-schema</module>
-        <module>coverage-example-reladomo-ddls</module>
         <module>coverage-example-reladomo-definitions</module>
         <module>coverage-example-reladomo-merge-hooks</module>
         <module>coverage-example-reladomo-pojos</module>

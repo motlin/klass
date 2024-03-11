@@ -1,2 +1,0 @@
-alter table INTERFACE add constraint INTERFACE_PK primary key (name);
-

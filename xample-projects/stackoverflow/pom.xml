@@ -113,7 +113,6 @@
         <module>stackoverflow-klass-services</module>
         <module>stackoverflow-liquibase-schema</module>
         <!--<module>stackoverflow-meta-model-json</module>-->
-        <module>stackoverflow-reladomo-ddls</module>
         <module>stackoverflow-reladomo-definitions</module>
         <module>stackoverflow-reladomo-merge-hooks</module>
         <module>stackoverflow-reladomo-pojos</module>

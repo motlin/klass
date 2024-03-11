@@ -1,2 +1,0 @@
-alter table CLASSIFIER add constraint CLASSIFIER_PK primary key (name);
-

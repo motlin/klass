@@ -1,2 +1,0 @@
-alter table PRIMITIVE_PROPERTY add constraint PRIMITIVE_PROPERTY_PK primary key (classifier_name, name);
-

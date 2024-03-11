@@ -1,2 +1,0 @@
-alter table NULL_LITERAL add constraint NULL_LITERAL_PK primary key (id);
-
