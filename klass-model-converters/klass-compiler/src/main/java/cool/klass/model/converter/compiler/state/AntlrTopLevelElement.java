@@ -17,7 +17,7 @@ public interface AntlrTopLevelElement
     @Override
     default Pair<Token, Token> getContextBefore()
     {
-        return Tuples.pair(this.getElementContext().getStart(), this.getBodyContext().getStart());
+        return Tuples.pair(this.getElementContext().getStart(), this.getBlockContext().getStart());
     }
 
     @Nonnull
@@ -28,7 +28,11 @@ public interface AntlrTopLevelElement
         return Tuples.pair(token, token);
     }
 
-    default ParserRuleContext getBodyContext()
+    /**
+     * @return a context representing a block, where '{' and '}' are the start and stop tokens.
+     * @throws UnsupportedOperationException unless overridden
+     */
+    default ParserRuleContext getBlockContext()
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".getBodyContext() not implemented yet");

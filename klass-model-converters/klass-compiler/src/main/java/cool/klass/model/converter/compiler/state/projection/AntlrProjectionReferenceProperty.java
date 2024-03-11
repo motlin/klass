@@ -69,14 +69,15 @@ public class AntlrProjectionReferenceProperty
     @Override
     public Pair<Token, Token> getContextBefore()
     {
-        return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().projectionBody().getStart());
+        return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().projectionBlock().getStart());
     }
 
     @Override
     public Pair<Token, Token> getContextAfter()
     {
         return Tuples.pair(
-                this.getElementContext().projectionBody().getStop(),
+                this.getElementContext().projectionBlock()
+                        .getStop(),
                 this.getElementContext().PUNCTUATION_COMMA().getSymbol());
     }
 

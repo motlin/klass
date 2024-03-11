@@ -103,15 +103,15 @@ public class AntlrService
     {
         return Tuples.pair(
                 this.getElementContext().getStart(),
-                this.getElementContext().serviceDeclarationBody().getStart());
+                this.getElementContext().serviceBlock().getStart());
     }
 
     @Override
     public Pair<Token, Token> getContextAfter()
     {
         return Tuples.pair(
-                this.getElementContext().serviceDeclarationBody().getStop(),
-                this.getElementContext().serviceDeclarationBody().getStop());
+                this.getElementContext().serviceBlock().getStop(),
+                this.getElementContext().serviceBlock().getStop());
     }
 
     @Nonnull

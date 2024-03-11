@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
-import cool.klass.model.meta.grammar.KlassParser.EnumerationBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationBlockContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.eclipse.collections.api.bag.MutableBag;
@@ -115,9 +115,9 @@ public class AntlrEnumeration
     }
 
     @Override
-    public EnumerationBodyContext getBodyContext()
+    public EnumerationBlockContext getBlockContext()
     {
-        return this.getElementContext().enumerationBody();
+        return this.getElementContext().enumerationBlock();
     }
 
     @Nonnull

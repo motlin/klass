@@ -6,8 +6,8 @@ import cool.klass.model.meta.grammar.KlassListener;
 import cool.klass.model.meta.grammar.KlassParser.AbstractDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentContext;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentListContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationBlockContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationBodyContext;
-import cool.klass.model.meta.grammar.KlassParser.AssociationBodyDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
@@ -15,8 +15,8 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.BooleanLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.CharacterLiteralContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassBlockContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassBodyContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassBodyDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassMemberContext;
@@ -36,6 +36,7 @@ import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationBlockContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
@@ -55,8 +56,8 @@ import cool.klass.model.meta.grammar.KlassParser.InOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.InequalityOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerValidationParameterContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceBlockContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
-import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceMemberContext;
@@ -94,6 +95,7 @@ import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertySignatureC
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionBlockContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionMemberContext;
@@ -104,13 +106,14 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferencePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.QueryParameterListContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceBlockContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCategoryModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaKeywordContext;
-import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceGroupBlockContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceGroupBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityDeclarationContext;
@@ -242,15 +245,17 @@ public class DelegatingKlassListener
     }
 
     @Override
-    public void enterInterfaceBodyDeclaration(InterfaceBodyDeclarationContext ctx)
+    @OverridingMethodsMustInvokeSuper
+    public void enterInterfaceBlock(InterfaceBlockContext ctx)
     {
-        this.getDelegate().enterInterfaceBodyDeclaration(ctx);
+        this.getDelegate().enterInterfaceBlock(ctx);
     }
 
     @Override
-    public void exitInterfaceBodyDeclaration(InterfaceBodyDeclarationContext ctx)
+    @OverridingMethodsMustInvokeSuper
+    public void exitInterfaceBlock(InterfaceBlockContext ctx)
     {
-        this.getDelegate().exitInterfaceBodyDeclaration(ctx);
+        this.getDelegate().exitInterfaceBlock(ctx);
     }
 
     @Override
@@ -338,15 +343,17 @@ public class DelegatingKlassListener
     }
 
     @Override
-    public void enterClassBodyDeclaration(ClassBodyDeclarationContext ctx)
+    @OverridingMethodsMustInvokeSuper
+    public void enterClassBlock(ClassBlockContext ctx)
     {
-        this.getDelegate().enterClassBodyDeclaration(ctx);
+        this.getDelegate().enterClassBlock(ctx);
     }
 
     @Override
-    public void exitClassBodyDeclaration(ClassBodyDeclarationContext ctx)
+    @OverridingMethodsMustInvokeSuper
+    public void exitClassBlock(ClassBlockContext ctx)
     {
-        this.getDelegate().exitClassBodyDeclaration(ctx);
+        this.getDelegate().exitClassBlock(ctx);
     }
 
     @Override
@@ -421,6 +428,20 @@ public class DelegatingKlassListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
+    public void enterEnumerationBlock(EnumerationBlockContext ctx)
+    {
+        this.getDelegate().enterEnumerationBlock(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void exitEnumerationBlock(EnumerationBlockContext ctx)
+    {
+        this.getDelegate().exitEnumerationBlock(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
     public void enterEnumerationBody(EnumerationBodyContext ctx)
     {
         this.getDelegate().enterEnumerationBody(ctx);
@@ -476,15 +497,17 @@ public class DelegatingKlassListener
     }
 
     @Override
-    public void enterAssociationBodyDeclaration(AssociationBodyDeclarationContext ctx)
+    @OverridingMethodsMustInvokeSuper
+    public void enterAssociationBlock(AssociationBlockContext ctx)
     {
-        this.getDelegate().enterAssociationBodyDeclaration(ctx);
+        this.getDelegate().enterAssociationBlock(ctx);
     }
 
     @Override
-    public void exitAssociationBodyDeclaration(AssociationBodyDeclarationContext ctx)
+    @OverridingMethodsMustInvokeSuper
+    public void exitAssociationBlock(AssociationBlockContext ctx)
     {
-        this.getDelegate().exitAssociationBodyDeclaration(ctx);
+        this.getDelegate().exitAssociationBlock(ctx);
     }
 
     @Override
@@ -555,6 +578,20 @@ public class DelegatingKlassListener
     public void exitProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
         this.getDelegate().exitProjectionDeclaration(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void enterProjectionBlock(ProjectionBlockContext ctx)
+    {
+        this.getDelegate().enterProjectionBlock(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void exitProjectionBlock(ProjectionBlockContext ctx)
+    {
+        this.getDelegate().exitProjectionBlock(ctx);
     }
 
     @Override
@@ -671,16 +708,30 @@ public class DelegatingKlassListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterServiceGroupDeclarationBody(ServiceGroupDeclarationBodyContext ctx)
+    public void enterServiceGroupBlock(ServiceGroupBlockContext ctx)
     {
-        this.getDelegate().enterServiceGroupDeclarationBody(ctx);
+        this.getDelegate().enterServiceGroupBlock(ctx);
     }
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitServiceGroupDeclarationBody(ServiceGroupDeclarationBodyContext ctx)
+    public void exitServiceGroupBlock(ServiceGroupBlockContext ctx)
     {
-        this.getDelegate().exitServiceGroupDeclarationBody(ctx);
+        this.getDelegate().exitServiceGroupBlock(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void enterServiceGroupBody(ServiceGroupBodyContext ctx)
+    {
+        this.getDelegate().enterServiceGroupBody(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void exitServiceGroupBody(ServiceGroupBodyContext ctx)
+    {
+        this.getDelegate().exitServiceGroupBody(ctx);
     }
 
     @Override
@@ -783,25 +834,27 @@ public class DelegatingKlassListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterServiceDeclarationBody(ServiceDeclarationBodyContext ctx)
+    public void enterServiceBlock(ServiceBlockContext ctx)
     {
-        this.getDelegate().enterServiceDeclarationBody(ctx);
+        this.getDelegate().enterServiceBlock(ctx);
     }
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitServiceDeclarationBody(ServiceDeclarationBodyContext ctx)
+    public void exitServiceBlock(ServiceBlockContext ctx)
     {
-        this.getDelegate().exitServiceDeclarationBody(ctx);
+        this.getDelegate().exitServiceBlock(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void enterServiceBody(ServiceBodyContext ctx)
     {
         this.getDelegate().enterServiceBody(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void exitServiceBody(ServiceBodyContext ctx)
     {
         this.getDelegate().exitServiceBody(ctx);

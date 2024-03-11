@@ -93,7 +93,7 @@ public class AntlrProjection
     @Override
     public Pair<Token, Token> getContextBefore()
     {
-        return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().projectionBody().getStart());
+        return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().projectionBlock().getStart());
     }
 
     @Nonnull

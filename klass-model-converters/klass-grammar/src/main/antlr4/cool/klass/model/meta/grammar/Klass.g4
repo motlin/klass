@@ -23,19 +23,19 @@ topLevelDeclaration
 
 // TODO: Consider splitting separate interfaceModifiers from classifierModifiers
 // interface
-interfaceDeclaration: interfaceHeader interfaceBodyDeclaration;
+interfaceDeclaration: interfaceHeader interfaceBlock;
 interfaceHeader : 'interface' identifier implementsDeclaration? classifierModifier* ;
-interfaceBodyDeclaration: '{' interfaceBody '}';
-interfaceBody : interfaceMember* ;
+interfaceBlock: '{' interfaceBody '}';
+interfaceBody: interfaceMember*;
 
 // class
-classDeclaration: classHeader classBodyDeclaration;
+classDeclaration: classHeader classBlock;
 classHeader : classOrUser identifier abstractDeclaration? extendsDeclaration? implementsDeclaration? classServiceModifier* classifierModifier* ;
 classOrUser: 'class' | 'user';
 classServiceModifier: serviceCategoryModifier ('(' projectionReference ')')?;
 serviceCategoryModifier: 'read' | 'write' | 'create' | 'update' | 'delete';
-classBodyDeclaration: '{' classBody '}';
-classBody : classMember* ;
+classBlock: '{' classBody '}';
+classBody: classMember*;
 
 // inheritance
 abstractDeclaration: 'abstract';
@@ -43,14 +43,15 @@ extendsDeclaration: 'extends' classReference;
 implementsDeclaration: 'implements' interfaceReference (',' interfaceReference)*;
 
 // enumeration
-enumerationDeclaration: 'enumeration' identifier enumerationBody;
-enumerationBody: '{' enumerationLiteral* '}';
+enumerationDeclaration: 'enumeration' identifier enumerationBlock;
+enumerationBlock: '{' enumerationBody '}';
+enumerationBody: enumerationLiteral*;
 enumerationLiteral: identifier ('(' enumerationPrettyName ')')? ',';
 enumerationPrettyName: StringLiteral;
 
 // association
-associationDeclaration: 'association' identifier associationBodyDeclaration;
-associationBodyDeclaration: '{' associationBody '}';
+associationDeclaration: 'association' identifier associationBlock;
+associationBlock: '{' associationBody '}';
 associationBody: associationEnd? associationEnd? relationship? ;
 associationEnd
     : identifier ':' classReference multiplicity associationEndModifier* orderByDeclaration? ';'
@@ -59,19 +60,21 @@ associationEndSignature: identifier ':' classifierReference multiplicity associa
 relationship: 'relationship' criteriaExpression;
 
 // projection
-projectionDeclaration: 'projection' identifier (parameterDeclarationList)? 'on' classifierReference projectionBody;
-projectionBody: '{' projectionMember* '}';
+projectionDeclaration: 'projection' identifier (parameterDeclarationList)? 'on' classifierReference projectionBlock;
+projectionBlock: '{' projectionBody '}';
+projectionBody: projectionMember*;
 projectionMember: projectionPrimitiveMember | projectionReferenceProperty | projectionParameterizedProperty | projectionProjectionReference;
 // TODO: Rename projectionPrimitiveMember --> projectionDataTypeMember
 projectionPrimitiveMember: (classifierReference '.')? identifier ':' header ',';
-projectionReferenceProperty: (classifierReference '.')? identifier ':' projectionBody ',';
+projectionReferenceProperty: (classifierReference '.')? identifier ':' projectionBlock ',';
 projectionProjectionReference: (classifierReference '.')? identifier ':' projectionReference ',';
-projectionParameterizedProperty: (classifierReference '.')? identifier argumentList ':' projectionBody ',';
+projectionParameterizedProperty: (classifierReference '.')? identifier argumentList ':' projectionBlock ',';
 header: StringLiteral;
 
 // service
-serviceGroupDeclaration: 'service' identifier 'on' classReference serviceGroupDeclarationBody;
-serviceGroupDeclarationBody : '{' urlDeclaration* '}' ;
+serviceGroupDeclaration: 'service' identifier 'on' classReference serviceGroupBlock;
+serviceGroupBlock : '{' serviceGroupBody '}' ;
+serviceGroupBody: urlDeclaration*;
 // url
 urlDeclaration: url serviceDeclaration+;
 url: urlPathSegment+ '/'? queryParameterList?;
@@ -80,8 +83,8 @@ urlConstant: identifier;
 queryParameterList: '?' urlParameterDeclaration ('&' urlParameterDeclaration)*;
 urlParameterDeclaration: '{' parameterDeclaration '}';
 // service
-serviceDeclaration: verb serviceDeclarationBody;
-serviceDeclarationBody : '{' serviceBody '}' ;
+serviceDeclaration: verb serviceBlock;
+serviceBlock : '{' serviceBody '}' ;
 serviceBody: serviceMultiplicityDeclaration? serviceCriteriaDeclaration* serviceProjectionDispatch? serviceOrderByDeclaration? ;
 serviceMultiplicityDeclaration: 'multiplicity' ':' serviceMultiplicity ';'
     | 'multiplicity' ':' serviceMultiplicity {notifyErrorListeners("Missing semi-colon after service multiplicity declaration.");};

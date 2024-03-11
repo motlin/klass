@@ -24,7 +24,7 @@ import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBu
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.domain.property.ReferencePropertyImpl.ReferencePropertyBuilder;
-import cool.klass.model.meta.grammar.KlassParser.ClassBodyDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassBlockContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -724,9 +724,9 @@ public class AntlrClass
     }
 
     @Override
-    public ClassBodyDeclarationContext getBodyContext()
+    public ClassBlockContext getBlockContext()
     {
-        return this.getElementContext().classBodyDeclaration();
+        return this.getElementContext().classBlock();
     }
 
     @Override

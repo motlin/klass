@@ -15,9 +15,9 @@ import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceGroupBlockContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.MutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
@@ -220,9 +220,9 @@ public class AntlrServiceGroup
     }
 
     @Override
-    public ParserRuleContext getBodyContext()
+    public ServiceGroupBlockContext getBlockContext()
     {
-        return this.getElementContext().serviceGroupDeclarationBody();
+        return this.getElementContext().serviceGroupBlock();
     }
 
     @Nonnull
