@@ -106,11 +106,8 @@
         <module>coverage-example-domain-model</module>
         <module>coverage-example-dropwizard-application</module>
         <module>coverage-example-dtos</module>
-        <module>coverage-example-graphql-data-fetchers</module>
         <module>coverage-example-graphql-fragment</module>
         <module>coverage-example-graphql-reladomo-finder</module>
-        <module>coverage-example-graphql-runtime-wiring-query</module>
-        <module>coverage-example-graphql-runtime-wiring</module>
         <module>coverage-example-graphql-schema-query</module>
         <module>coverage-example-graphql-schema</module>
         <module>coverage-example-json-views</module>

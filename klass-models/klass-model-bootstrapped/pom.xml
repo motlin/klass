@@ -59,11 +59,8 @@
         <module>klass-model-bootstrapped-dropwizard-application</module>
         <module>klass-model-bootstrapped-dropwizard-application-tests</module>
         <module>klass-model-bootstrapped-dtos</module>
-        <module>klass-model-bootstrapped-graphql-data-fetchers</module>
         <module>klass-model-bootstrapped-graphql-fragment</module>
         <module>klass-model-bootstrapped-graphql-reladomo-finder</module>
-        <module>klass-model-bootstrapped-graphql-runtime-wiring</module>
-        <module>klass-model-bootstrapped-graphql-runtime-wiring-query</module>
         <module>klass-model-bootstrapped-graphql-schema</module>
         <module>klass-model-bootstrapped-graphql-schema-query</module>
         <module>klass-model-bootstrapped-json-views</module>

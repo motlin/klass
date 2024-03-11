@@ -151,12 +151,6 @@
             <artifactId>${app.artifactId}-services</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-graphql-runtime-wiring</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <!--endregion-->
 
         <!--region Project runtime dependencies -->

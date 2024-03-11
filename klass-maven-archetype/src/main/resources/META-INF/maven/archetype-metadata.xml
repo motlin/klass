@@ -88,19 +88,6 @@
         </module>
         <!--endregion-->
 
-        <!--region ${rootArtifactId}-graphql-data-fetchers-->
-        <module
-                id="${rootArtifactId}-graphql-data-fetchers"
-                dir="__rootArtifactId__-graphql-data-fetchers"
-                name="${rootArtifactId}-graphql-data-fetchers">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-        <!--endregion-->
-
         <!--region ${rootArtifactId}-graphql-fragment-->
         <module
                 id="${rootArtifactId}-graphql-fragment"
@@ -119,32 +106,6 @@
                 id="${rootArtifactId}-graphql-reladomo-finder"
                 dir="__rootArtifactId__-graphql-reladomo-finder"
                 name="${rootArtifactId}-graphql-reladomo-finder">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-        <!--endregion-->
-
-        <!--region ${rootArtifactId}-graphql-runtime-wiring-->
-        <module
-                id="${rootArtifactId}-graphql-runtime-wiring"
-                dir="__rootArtifactId__-graphql-runtime-wiring"
-                name="${rootArtifactId}-graphql-runtime-wiring">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-        <!--endregion-->
-
-        <!--region ${rootArtifactId}-graphql-runtime-wiring-query-->
-        <module
-                id="${rootArtifactId}-graphql-runtime-wiring-query"
-                dir="__rootArtifactId__-graphql-runtime-wiring-query"
-                name="${rootArtifactId}-graphql-runtime-wiring-query">
             <fileSets>
                 <fileSet filtered="true">
                     <directory></directory>

@@ -99,11 +99,8 @@
         <module>stackoverflow-domain-model-tests</module>
         <module>stackoverflow-dropwizard-application</module>
         <module>stackoverflow-dtos</module>
-        <module>stackoverflow-graphql-data-fetchers</module>
         <module>stackoverflow-graphql-fragment</module>
         <module>stackoverflow-graphql-reladomo-finder</module>
-        <module>stackoverflow-graphql-runtime-wiring-query</module>
-        <module>stackoverflow-graphql-runtime-wiring</module>
         <module>stackoverflow-graphql-schema-query</module>
         <module>stackoverflow-graphql-schema</module>
         <module>stackoverflow-json-views</module>

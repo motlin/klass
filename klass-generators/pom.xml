@@ -32,11 +32,8 @@
     <modules>
         <module>klass-generator-dropwizard</module>
         <module>klass-generator-dto</module>
-        <module>klass-generator-graphql-data-fetcher</module>
         <module>klass-generator-graphql-fragment</module>
         <module>klass-generator-graphql-reladomo-finder</module>
-        <module>klass-generator-graphql-runtime-wiring-query</module>
-        <module>klass-generator-graphql-runtime-wiring</module>
         <module>klass-generator-graphql-schema-query</module>
         <module>klass-generator-graphql-schema</module>
         <module>klass-generator-json-view</module>
