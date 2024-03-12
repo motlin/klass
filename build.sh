@@ -122,10 +122,12 @@ if [[ $COMMIT_MESSAGE == *\[no-daemon\]* ]]; then
     MAVEN='./mvnw'
 fi
 
-PROFILES="dev"
+PROFILES='dev'
 if [ "$RECORD" = true ] || [[ $COMMIT_MESSAGE == *\[record\]* ]]; then
-  PROFILES="$PROFILES,rerecord"
+    LIFTWIZARD_RERECORD=true
+    PROFILES="$PROFILES,rerecord"
 fi
+export LIFTWIZARD_FILE_MATCH_RULE_RERECORD=${LIFTWIZARD_RERECORD}
 
 if [[ $COMMIT_MESSAGE == *\[serial\]* ]]; then
     SERIAL=true
