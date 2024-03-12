@@ -34,13 +34,10 @@ public final class ForeignKeyGenerator
 
     public static Optional<String> getForeignKeys(Klass klass, int ordinal)
     {
-        MutableOrderedMap<AssociationEnd, MutableOrderedMap<DataTypeProperty, DataTypeProperty>> foreignKeys = klass.getForeignKeys();
+        MutableOrderedMap<AssociationEnd, MutableOrderedMap<DataTypeProperty, DataTypeProperty>> foreignKeys = klass
+                .getForeignKeys()
+                .reject((key, value) -> key.getOwningClassifier().isTemporal() || key.getType().isTemporal());
         if (foreignKeys.isEmpty())
-        {
-            return Optional.empty();
-        }
-
-        if (klass.isTemporal())
         {
             return Optional.empty();
         }
