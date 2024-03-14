@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import com.smoketurner.dropwizard.graphql.GraphQLFactory;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import io.liftwizard.dropwizard.configuration.graphql.GraphQLFactoryProvider;
 import io.liftwizard.servlet.config.spa.SPARedirectFilterFactory;
 import io.liftwizard.servlet.config.spa.SPARedirectFilterFactoryProvider;

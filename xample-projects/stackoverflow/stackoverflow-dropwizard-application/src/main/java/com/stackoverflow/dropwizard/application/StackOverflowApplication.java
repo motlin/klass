@@ -5,12 +5,12 @@ import java.time.Clock;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stackoverflow.service.resource.QuestionResourceManual;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.bundle.graphql.KlassGraphQLBundle;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
-import com.stackoverflow.service.resource.QuestionResourceManual;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
