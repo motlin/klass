@@ -43,7 +43,7 @@
                 <include>checkstyle-suppressions.xml</include>
                 <include>mvnw</include>
                 <include>mvnw.cmd</include>
-                <include>.gitignore</include>
+                <include>gitignore</include>
             </includes>
         </fileSet>
     </fileSets>
@@ -71,7 +71,7 @@
                 <fileSet filtered="true" encoding="UTF-8">
                     <directory></directory>
                     <includes>
-                        <include>.gitignore</include>
+                        <include>gitignore</include>
                         <include>config.json5</include>
                         <include>src/test/resources/config-test.json5</include>
                         <include>README.md</include>
