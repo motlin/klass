@@ -34,6 +34,7 @@
     <name>Klass (Root Module Group)</name>
 
     <modules>
+        <module>docs</module>
         <module>klass-bom</module>
         <module>klass-data-store</module>
         <module>klass-dropwizard</module>
