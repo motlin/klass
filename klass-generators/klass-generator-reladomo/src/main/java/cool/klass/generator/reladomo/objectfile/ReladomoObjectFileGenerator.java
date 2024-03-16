@@ -63,7 +63,9 @@ import org.eclipse.collections.api.list.ImmutableList;
 public class ReladomoObjectFileGenerator
         extends AbstractReladomoGenerator
 {
-    public static final Converter<String, String> TO_LOWER = CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_CAMEL);
+    public static final Converter<String, String> TO_LOWER              = CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_CAMEL);
+    public static final Converter<String, String> TABLE_NAME_CONVERTER  = CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.UPPER_UNDERSCORE);
+    public static final Converter<String, String> COLUMN_NAME_CONVERTER = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_UNDERSCORE);
 
     public ReladomoObjectFileGenerator(@Nonnull DomainModel domainModel)
     {
@@ -144,7 +146,7 @@ public class ReladomoObjectFileGenerator
         MithraObject mithraObject = new MithraObject();
         this.convertCommonObject(klass, mithraObject);
 
-        mithraObject.setDefaultTable(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, klass.getName()));
+        mithraObject.setDefaultTable(quote(TABLE_NAME_CONVERTER.convert(klass.getName())));
 
         ImmutableList<String> superInterfaceNames = klass.getInterfaces().collect(NamedElement::getName);
         mithraObject.setMithraInterfaces(superInterfaceNames.castToList());
@@ -390,8 +392,8 @@ public class ReladomoObjectFileGenerator
         // TODO: Use actual temporal properties
         String fromName       = propertyName + "From";
         String toName         = propertyName + "To";
-        String fromColumnName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, fromName);
-        String toColumnName   = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, toName);
+        String fromColumnName = quote(COLUMN_NAME_CONVERTER.convert(fromName));
+        String toColumnName   = quote(COLUMN_NAME_CONVERTER.convert(toName));
 
         asOfAttributeType.setName(propertyName);
         asOfAttributeType.setFromColumnName(fromColumnName);
@@ -446,7 +448,7 @@ public class ReladomoObjectFileGenerator
     {
         String propertyName = dataTypeProperty.getName();
         attributeType.setName(propertyName);
-        attributeType.setColumnName(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, propertyName));
+        attributeType.setColumnName(quote(COLUMN_NAME_CONVERTER.convert(propertyName)));
         attributeType.setPrimaryKey(dataTypeProperty.isKey());
         attributeType.setNullable(dataTypeProperty.isOptional());
         if (dataTypeProperty.isKey() || dataTypeProperty.isFinal())
@@ -486,5 +488,10 @@ public class ReladomoObjectFileGenerator
         AttributePureType attributeType = new AttributePureType();
         this.convertToAttributeType(owningClass, dataTypeProperty, attributeType);
         return attributeType;
+    }
+
+    private static String quote(String string)
+    {
+        return "\\\"" + string + "\\\"";
     }
 }

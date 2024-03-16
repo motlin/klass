@@ -34,7 +34,7 @@ public final class IndexGenerator
 
     public static String getIndex(Klass klass, int ordinal)
     {
-        String tableName = TableGenerator.getTableName(klass);
+        String tableName = TableGenerator.TABLE_NAME_CONVERTER.convert(klass.getName());
 
         MutableOrderedMap<AssociationEnd, MutableOrderedMap<DataTypeProperty, DataTypeProperty>> foreignKeyConstraints = klass.getForeignKeys();
 
@@ -62,7 +62,7 @@ public final class IndexGenerator
             String tableName,
             int ordinal)
     {
-        String constraintName = tableName + "_IDX_" + TableGenerator.TABLE_NAME_CONVERTER.convert(associationEnd.getName());
+        String constraintName = tableName + "_IDX_" + TableGenerator.COLUMN_NAME_CONVERTER.convert(associationEnd.getName());
 
         ImmutableList<DataTypeProperty> toProperties = klass.getDataTypeProperties().select(DataTypeProperty::isTo);
 

@@ -58,6 +58,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.goldmansachs.reladomo</groupId>
+            <artifactId>reladomogen</artifactId>
+            <version>18.1.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.eclipse.collections</groupId>
             <artifactId>eclipse-collections-api</artifactId>
         </dependency>
@@ -113,7 +119,6 @@
             <artifactId>eclipse-collections</artifactId>
             <scope>test</scope>
         </dependency>
-
 
         <dependency>
             <groupId>cool.klass</groupId>

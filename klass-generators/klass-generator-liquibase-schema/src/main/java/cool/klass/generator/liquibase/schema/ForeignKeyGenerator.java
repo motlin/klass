@@ -68,7 +68,7 @@ public final class ForeignKeyGenerator
         String tableName = TableGenerator.TABLE_NAME_CONVERTER.convert(associationEnd.getOwningClassifier().getName());
         String constraintName = tableName
                 + "_FK_"
-                + TableGenerator.TABLE_NAME_CONVERTER.convert(associationEnd.getName());
+                + TableGenerator.COLUMN_NAME_CONVERTER.convert(associationEnd.getName());
 
         String foreignKeyColumnNames = dataTypeProperties
                 .keysView()
@@ -76,7 +76,8 @@ public final class ForeignKeyGenerator
                 .collect(TableGenerator.COLUMN_NAME_CONVERTER::convert)
                 .makeString(", ");
 
-        String referencedTableName = TableGenerator.TABLE_NAME_CONVERTER.convert(associationEnd.getType().getName());
+        String name                = associationEnd.getType().getName();
+        String referencedTableName = TableGenerator.TABLE_NAME_CONVERTER.convert(name);
 
         String referencedKeyColumnNames = dataTypeProperties
                 .valuesView()
