@@ -46,20 +46,14 @@ public final class TableGenerator
     {
         Objects.requireNonNull(klass);
 
-        String tableName            = getTableName(klass);
+        String tableName            = TABLE_NAME_CONVERTER.convert(klass.getName());
         String propertiesSourceCode = getPropertiesSourceCode(klass, tableName);
 
         return "    <changeSet author=\"Klass\" id=\"initial-table-" + ordinal + "-" + tableName + "\">\n"
-                + "        <createTable tableName=\"" + tableName + "\">\n"
-                + propertiesSourceCode
-                + "        </createTable>\n"
-                + "    </changeSet>\n\n";
-    }
-
-    @Nonnull
-    public static String getTableName(@Nonnull Klass klass)
-    {
-        return TABLE_NAME_CONVERTER.convert(klass.getName());
+               + "        <createTable tableName=\"" + tableName + "\">\n"
+               + propertiesSourceCode
+               + "        </createTable>\n"
+               + "    </changeSet>\n\n";
     }
 
     @Nonnull
@@ -97,8 +91,8 @@ public final class TableGenerator
         }
 
         return "            <column name=\"" + name + "\" type=\"" + dataType + "\">\n"
-                + "                <constraints" + nullability + primaryKey + " />\n"
-                + "            </column>\n";
+               + "                <constraints" + nullability + primaryKey + " />\n"
+               + "            </column>\n";
     }
 
     private static String getDataType(DataTypeProperty dataTypeProperty)

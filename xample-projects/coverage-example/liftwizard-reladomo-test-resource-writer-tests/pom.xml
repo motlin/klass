@@ -54,6 +54,7 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-simulated-sequence</artifactId>
+            <version>${liftwizard.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -86,12 +87,14 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-test-extension</artifactId>
+            <version>${liftwizard.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-test-resource-writer</artifactId>
+            <version>${liftwizard.version}</version>
             <scope>test</scope>
         </dependency>
 
