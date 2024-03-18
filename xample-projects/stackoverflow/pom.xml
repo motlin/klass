@@ -84,7 +84,7 @@
     </dependencyManagement>
 
     <build>
-        <defaultGoal>clean install</defaultGoal>
+        <defaultGoal>clean verify</defaultGoal>
 
         <plugins>
 

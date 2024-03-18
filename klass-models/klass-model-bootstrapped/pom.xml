@@ -44,7 +44,7 @@
     <name>${app.name} (Module Group)</name>
 
     <build>
-        <defaultGoal>clean install</defaultGoal>
+        <defaultGoal>clean verify</defaultGoal>
 
         <plugins>
 
