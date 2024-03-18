@@ -1,6 +1,0 @@
-package com.errors
-
-class DummyClass systemTemporal versioned audited
-{
-    id: Long id key;
-}

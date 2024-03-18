@@ -1,8 +1,0 @@
-package com.errors
-
-class ExampleVersion systemTemporal
-{
-    id: Long key;
-    number1: Integer version;
-    number2: Integer version;
-}

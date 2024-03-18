@@ -1,7 +1,0 @@
-package example
-
-class ExampleClass
-{
-    key: Long key;
-    id: Long id key;
-}

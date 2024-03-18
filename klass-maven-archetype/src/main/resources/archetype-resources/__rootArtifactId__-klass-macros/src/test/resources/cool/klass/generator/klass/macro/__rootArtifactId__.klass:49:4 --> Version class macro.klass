@@ -1,7 +1,0 @@
-package com.stackoverflow
-
-class DeleteMeExampleTypeVersion systemTemporal audited
-{
-    id: Long key;
-    number: Integer version;
-}

@@ -1,9 +1,0 @@
-package cool.klass.xample.coverage
-
-association UserHasVersion
-{
-    user: User[1..1];
-    version: UserVersion[1..1] owned version;
-
-    relationship this.userId == UserVersion.userId
-}

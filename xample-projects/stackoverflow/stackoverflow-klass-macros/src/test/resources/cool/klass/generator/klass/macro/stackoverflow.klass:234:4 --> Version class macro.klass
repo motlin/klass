@@ -1,7 +1,0 @@
-package com.stackoverflow
-
-class TagVersion systemTemporal audited
-{
-    name: String key;
-    number: Integer version;
-}

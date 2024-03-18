@@ -1,7 +1,0 @@
-package cool.klass.xample.coverage
-
-class PropertiesOptionalVersion systemTemporal audited
-{
-    propertiesOptionalId: Long key;
-    number: Integer version;
-}

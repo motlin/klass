@@ -1,9 +1,0 @@
-package com.stackoverflow
-
-association DeleteMeExampleTypeHasVersion
-{
-    deleteMeExampleType: DeleteMeExampleType[1..1];
-    version: DeleteMeExampleTypeVersion[1..1] owned version;
-
-    relationship this.id == DeleteMeExampleTypeVersion.id
-}

@@ -1,7 +1,0 @@
-package com.stackoverflow
-
-class AnswerVersion systemTemporal audited
-{
-    id: Long key;
-    number: Integer version;
-}

@@ -1,9 +1,0 @@
-package cool.klass.xample.coverage
-
-association PropertiesRequiredHasVersion
-{
-    propertiesRequired: PropertiesRequired[1..1];
-    version: PropertiesRequiredVersion[1..1] owned version;
-
-    relationship this.propertiesRequiredId == PropertiesRequiredVersion.propertiesRequiredId
-}

@@ -1,7 +1,0 @@
-package cool.klass.xample.coverage
-
-class UserVersion systemTemporal
-{
-    userId: String key userId;
-    number: Integer version;
-}

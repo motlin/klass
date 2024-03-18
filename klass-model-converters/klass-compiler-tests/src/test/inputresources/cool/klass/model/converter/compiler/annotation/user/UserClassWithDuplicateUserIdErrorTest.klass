@@ -1,7 +1,0 @@
-package com.errors
-
-user User
-{
-    userId1: String key userId maximumLength(256);
-    userId2: String key userId maximumLength(256);
-}

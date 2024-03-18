@@ -1,8 +1,0 @@
-package com.errors
-
-class ExampleVersion systemTemporal
-{
-    id: Long key;
-    // TODO: reject non-Integer version types
-    number: String version;
-}

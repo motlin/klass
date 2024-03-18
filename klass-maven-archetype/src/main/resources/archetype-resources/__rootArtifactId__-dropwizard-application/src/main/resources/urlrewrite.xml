@@ -1,6 +1,0 @@
-<urlrewrite>
-    <rule>
-        <from>^/(?!(api|meta|tasks|static/|icons/|manifest\.json|assets-manifest\.json|favicon\.ico|bootstrap\.min\.css|h2-console/|graphql|graphiql/|graphql-playground/|ads\.txt)).*$</from>
-        <to type="forward">/index.html</to>
-    </rule>
-</urlrewrite>

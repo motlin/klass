@@ -1,3 +1,0 @@
-[
-  "Error at PropertiesOptional.version.number. Mismatched value for version property 'PropertiesOptionalVersion.number: Integer'. Expected absent value or '1' but value was '2'."
-]
