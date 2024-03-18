@@ -30,6 +30,10 @@
 
     <name>${app.name} Application Tests</name>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <build>
         <testResources>
             <testResource>
@@ -41,15 +45,15 @@
         </testResources>
 
         <plugins>
-
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.4.0</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <skip>true</skip>
+                    <skipPublishing>true</skipPublishing>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
