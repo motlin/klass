@@ -61,7 +61,6 @@
       <option name="CATCH_ON_NEW_LINE" value="true" />
       <option name="FINALLY_ON_NEW_LINE" value="true" />
       <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
-      <option name="ALIGN_MULTILINE_BINARY_OPERATION" value="true" />
       <option name="ALIGN_MULTILINE_ASSIGNMENT" value="true" />
       <option name="ALIGN_GROUP_FIELD_DECLARATIONS" value="true" />
       <option name="ALIGN_CONSECUTIVE_VARIABLE_DECLARATIONS" value="true" />
