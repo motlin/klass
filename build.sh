@@ -166,6 +166,8 @@ fi
 
 mvnd --stop
 
+git clean -f -x '*pom.xml.releaseBackup' '*/spy.log' '*/dependency-reduced-pom.xml' release.properties
+
 $MAVEN verify $PARALLELISM -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip="$ANALYZE_SKIP" --activate-profiles $PROFILES
 EXIT_CODE=$?
 
