@@ -10,3 +10,7 @@ edit:
   label: Edit on GitHub
 footer:
   copyright: "&copy; Copyright {{ year }}. All rights reserved."
+integrations:
+  googleAnalytics:
+    id: G-ESDQJR61QN
+
