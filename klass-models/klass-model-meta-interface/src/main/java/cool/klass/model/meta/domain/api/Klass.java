@@ -18,7 +18,6 @@ package cool.klass.model.meta.domain.api;
 
 import java.util.Optional;
 
-import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
@@ -28,17 +27,19 @@ import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
+import javax.annotation.Nonnull;
+
 public interface Klass
         extends Classifier
 {
     @Override
-    default void visit(TopLevelElementVisitor visitor)
+    default void  visit(TopLevelElementVisitor visitor)
     {
         visitor.visitKlass(this);
     }
 
     @Override
-    default ImmutableList<Modifier> getInheritedModifiers()
+    default ImmutableList< Modifier> getInheritedModifiers( )
     {
         ImmutableList<Modifier> superClassModifiers = this.getSuperClass()
                 .map(Classifier::getModifiers)
@@ -63,13 +64,13 @@ public interface Klass
     @Override
     default ImmutableList<Property> getProperties()
     {
-        return Lists.immutable.<Property>empty()
+        return Lists. immutable.<Property>empty()
                 .newWithAll(this.getDataTypeProperties())
                 .newWithAll(this.getAssociationEnds());
     }
 
     @Override
-    default ImmutableList<Property> getDeclaredProperties()
+    public default ImmutableList<Property> getDeclaredProperties()
     {
         return Lists.immutable.<Property>empty()
                 .newWithAll(this.getDeclaredDataTypeProperties())
@@ -88,7 +89,7 @@ public interface Klass
     }
 
     @Nonnull
-    default Optional<Property> getPropertyByName(String name)
+    default Optional<Property> getPropertyByName(final String name)
     {
         DataTypeProperty dataTypeProperty   = this.getDataTypePropertyByName(name);
         AssociationEnd   associationEnd     = this.getAssociationEndByName(name);
