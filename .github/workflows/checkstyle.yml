@@ -12,8 +12,8 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
+          java-version-file: .tool-versions
           distribution: corretto
-          java-version: 17
 
       - run: ./mvnw checkstyle:check --activate-profiles 'dev' -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dcheckstyle.output.format=xml
 
