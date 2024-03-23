@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version-file: .tool-versions
-          distribution: corretto
+          distribution: oracle
 
       - name: Publish maven package
         uses: samuelmeuli/action-maven-publish@v1
