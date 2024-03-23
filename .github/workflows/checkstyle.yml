@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           java-version-file: .tool-versions
-          distribution: corretto
+          distribution: oracle
 
       - run: ./mvnw checkstyle:check --activate-profiles 'dev' -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dcheckstyle.output.format=xml
 
