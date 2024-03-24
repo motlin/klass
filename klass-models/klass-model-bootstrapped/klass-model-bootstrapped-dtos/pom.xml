@@ -41,12 +41,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
-
-        <!--Uncomment these dependencies to enable validations for required properties-->
-        <!--
-
-        -->
-
     </dependencies>
 
     <build>
