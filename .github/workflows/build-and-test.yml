@@ -17,8 +17,8 @@ jobs:
           java-version-file: .tool-versions
           distribution: oracle
 
-      - run: ./mvnw verify          --threads 2C --activate-profiles 'dev' -Dcheckstyle.skip -Dmaven.javadoc.skip
-      # - run: ./mvnw javadoc:javadoc --threads 2C --activate-profiles 'dev' -Dcheckstyle.skip -Denforcer.skip
+      - run: ./mvnw --color=always verify          --threads 2C --activate-profiles 'dev' -Dcheckstyle.skip -Dmaven.javadoc.skip
+      # - run: ./mvnw --color=always javadoc:javadoc --threads 2C --activate-profiles 'dev' -Dcheckstyle.skip -Denforcer.skip
 
   checkstyle:
     runs-on: ubuntu-latest
@@ -30,7 +30,7 @@ jobs:
           java-version-file: .tool-versions
           distribution: oracle
 
-      - run: ./mvnw checkstyle:check --activate-profiles 'dev' -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dcheckstyle.output.format=xml
+      - run: ./mvnw --color=always checkstyle:check --activate-profiles 'dev' -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dcheckstyle.output.format=xml
 
       - uses: jwgmeligmeyling/checkstyle-github-action@master
         with:
