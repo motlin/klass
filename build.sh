@@ -164,6 +164,8 @@ if [ "$INCREMENTAL" != true ]; then
     $MAVEN clean $PARALLELISM --quiet
 fi
 
+mvnd --stop
+
 $MAVEN verify $PARALLELISM -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip="$ANALYZE_SKIP" --activate-profiles $PROFILES
 EXIT_CODE=$?
 
