@@ -21,24 +21,23 @@ import java.util.Optional;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.loader.compiler.DomainModelCompilerLoader;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
+import io.liftwizard.junit.extension.match.file.FileMatchExtension;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.junit.Assert.fail;
 
 public class KlassMacroGeneratorTest
 {
-    @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
+    @RegisterExtension
+    private final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+    @RegisterExtension
+    private final LogMarkerTestExtension logMarkerTestExtension = new LogMarkerTestExtension();
 
     @Test
     public void smokeTest()
@@ -73,7 +72,7 @@ public class KlassMacroGeneratorTest
 
                 String resourceClassPathLocation = fullPathSourceName + ".klass";
 
-                this.fileMatchRule.assertFileContents(
+                this.fileMatchExtension.assertFileContents(
                         resourceClassPathLocation,
                         sourceCodeText);
             }

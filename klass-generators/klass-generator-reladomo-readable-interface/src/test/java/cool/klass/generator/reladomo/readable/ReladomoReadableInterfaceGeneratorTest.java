@@ -24,12 +24,12 @@ import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
+import io.liftwizard.junit.extension.match.FileSlurper;
+import io.liftwizard.junit.extension.match.file.FileMatchExtension;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -37,18 +37,18 @@ import static org.junit.Assert.fail;
 
 public class ReladomoReadableInterfaceGeneratorTest
 {
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+    @RegisterExtension
+    private final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
-    @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
+    @RegisterExtension
+    private final LogMarkerTestExtension logMarkerTestExtension = new LogMarkerTestExtension();
 
     @Test
     public void smokeTest()
     {
         String klassSourceCodeName = this.getClass().getSimpleName() + ".smokeTest.klass";
 
-        String klassSourceCode     = FileMatchRule.slurp(klassSourceCodeName, this.getClass());
+        String klassSourceCode     = FileSlurper.slurp(klassSourceCodeName, this.getClass());
 
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
                 0,
@@ -75,7 +75,7 @@ public class ReladomoReadableInterfaceGeneratorTest
             String javaSourceCode = generator.getSourceCode(klass);
 
             String resourceClassPathLocation = this.getClass().getSimpleName() + ".smokeTest.java";
-            this.fileMatchRule.assertFileContents(resourceClassPathLocation, javaSourceCode);
+            this.fileMatchExtension.assertFileContents(resourceClassPathLocation, javaSourceCode);
         }
     }
 }

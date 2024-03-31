@@ -23,24 +23,23 @@ import com.google.common.base.Converter;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.loader.compiler.DomainModelCompilerLoader;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
+import io.liftwizard.junit.extension.match.file.FileMatchExtension;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 public class RelationalSchemaGeneratorTest
 {
     private static final Converter<String, String> CONVERTER =
             CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.UPPER_UNDERSCORE);
 
-    @Rule
-    public final         FileMatchRule             fileMatchRule = new FileMatchRule(this.getClass());
+    @RegisterExtension
+    private final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+    @RegisterExtension
+    private final LogMarkerTestExtension logMarkerTestExtension = new LogMarkerTestExtension();
 
     @Test
     public void smokeTest()
@@ -59,17 +58,17 @@ public class RelationalSchemaGeneratorTest
             String tableName = CONVERTER.convert(klass.getName());
 
             String ddlSourceCode = DdlGenerator.getDdl(klass);
-            this.fileMatchRule.assertFileContents(
+            this.fileMatchExtension.assertFileContents(
                     tableName + ".ddl",
                     ddlSourceCode);
 
             String idxSourceCode = IdxGenerator.getIdx(klass);
-            this.fileMatchRule.assertFileContents(
+            this.fileMatchExtension.assertFileContents(
                     tableName + ".idx",
                     idxSourceCode);
 
             Optional<String> maybeFkSourceCode = FkGenerator.getFk(klass);
-            maybeFkSourceCode.ifPresent(fkSourceCode -> this.fileMatchRule.assertFileContents(
+            maybeFkSourceCode.ifPresent(fkSourceCode -> this.fileMatchExtension.assertFileContents(
                     tableName + ".fk",
                     fkSourceCode));
         }

@@ -24,11 +24,11 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
-import org.junit.Rule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
+import io.liftwizard.junit.extension.match.FileSlurper;
+import io.liftwizard.junit.extension.match.file.FileMatchExtension;
 import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -36,16 +36,16 @@ import static org.junit.Assert.fail;
 
 public class KlassSourceCodeHtmlGeneratorTest
 {
-    @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
+    @RegisterExtension
+    private final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+    @RegisterExtension
+    private final LogMarkerTestExtension logMarkerTestExtension = new LogMarkerTestExtension();
 
     @Test
     public void smokeTest()
     {
-        String              sourceCodeText = FileMatchRule.slurp("/com/stackoverflow/stackoverflow.klass", this.getClass());
+        String              sourceCodeText = FileSlurper.slurp("/com/stackoverflow/stackoverflow.klass", this.getClass());
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
                 0,
                 Optional.empty(),
@@ -69,7 +69,7 @@ public class KlassSourceCodeHtmlGeneratorTest
             String html = KlassSourceCodeHtmlGenerator.getSourceCode(domainModel, sourceCode);
 
             String resourceClassPathLocation = fullPathSourceName + ".html";
-            this.fileMatchRule.assertFileContents(
+            this.fileMatchExtension.assertFileContents(
                     resourceClassPathLocation,
                     html);
         }

@@ -28,8 +28,8 @@ import cool.klass.model.converter.compiler.token.categorizing.lexer.LexerBasedTo
 import cool.klass.model.converter.compiler.token.categorizing.parser.ParserBasedTokenCategorizer;
 import cool.klass.model.meta.grammar.KlassLexer;
 import cool.klass.model.meta.grammar.KlassParser;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
+import io.liftwizard.junit.extension.match.FileSlurper;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -37,9 +37,8 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.eclipse.collections.api.map.MapIterable;
 import org.fusesource.jansi.Ansi;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,8 +46,8 @@ public class SyntaxHighlighterListenerTest
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(SyntaxHighlighterListenerTest.class);
 
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+    @RegisterExtension
+    private final LogMarkerTestExtension logMarkerTestExtension = new LogMarkerTestExtension();
 
     @Test
     public void lightColorScheme()
@@ -65,7 +64,7 @@ public class SyntaxHighlighterListenerTest
     private void testColorScheme(AnsiColorScheme colorScheme)
     {
         Stopwatch           lexerStopwatch = Stopwatch.createStarted();
-        String              sourceCodeText = FileMatchRule.slurp("/com/stackoverflow/stackoverflow.klass", this.getClass());
+        String              sourceCodeText = FileSlurper.slurp("/com/stackoverflow/stackoverflow.klass", this.getClass());
         String              sourceName     = "example.klass";
         CodePointCharStream charStream     = CharStreams.fromString(sourceCodeText, sourceName);
         KlassLexer          lexer          = new KlassLexer(charStream);

@@ -21,7 +21,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.match.FileSlurper;
 import org.eclipse.collections.impl.factory.Maps;
 import org.junit.Test;
 
@@ -94,7 +94,7 @@ public class KlassBootstrappedMetaModelGraphQLTest
 
         Class<?> callingClass   = this.getClass();
         String   sourceName     = callingClass.getSimpleName() + "." + testName + ".graphql";
-        String   query = FileMatchRule.slurp(sourceName, callingClass);
+        String   query = FileSlurper.slurp(sourceName, callingClass);
 
         Response response = client.target("http://localhost:{port}/graphql")
                 .resolveTemplate("port", this.appRule.getLocalPort())

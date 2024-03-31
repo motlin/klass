@@ -21,15 +21,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
-import org.junit.Rule;
 import org.junit.Test;
 
 public class SourceCodeResourceTest
         extends AbstractCoverageTest
 {
-    @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
+    @RegisterExtension
+    private final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
     @Test
     public void smoke_test()
@@ -49,6 +47,6 @@ public class SourceCodeResourceTest
         // assertEquals(responseHtml, expected, responseHtml);
 
         String expectedStringClasspathLocation = this.getClass().getCanonicalName() + "#smoke_test.html";
-        this.fileMatchRule.assertFileContents(expectedStringClasspathLocation, responseHtml);
+        this.fileMatchExtension.assertFileContents(expectedStringClasspathLocation, responseHtml);
     }
 }

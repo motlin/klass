@@ -26,7 +26,7 @@ import com.stackoverflow.dropwizard.application.StackOverflowApplication;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.liftwizard.dropwizard.testing.junit.AbstractDropwizardAppTest;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.match.FileSlurper;
 import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
 import org.junit.Test;
 
@@ -72,7 +72,7 @@ public class QuestionResourceManualTest
     {
         Client client = this.getClient("post_invalid_data");
 
-        String invalidJson = FileMatchRule.slurp(
+        String invalidJson = FileSlurper.slurp(
                 this.getClass().getSimpleName() + ".invalid_data.json5",
                 this.getClass());
 
@@ -94,7 +94,7 @@ public class QuestionResourceManualTest
 
         //<editor-fold desc="POST valid json, status: CREATED">
         {
-            String validJson = FileMatchRule.slurp(
+            String validJson = FileSlurper.slurp(
                     this.getClass().getSimpleName() + ".create_data.json5",
                     this.getClass());
 
@@ -132,7 +132,7 @@ public class QuestionResourceManualTest
     {
         Client client = this.getClient("put_invalid_id");
 
-        String json = FileMatchRule.slurp(
+        String json = FileSlurper.slurp(
                 this.getClass().getSimpleName() + ".invalid_id_data.json5",
                 this.getClass());
 
@@ -155,7 +155,7 @@ public class QuestionResourceManualTest
     {
         Client client = this.getClient("put_conflict");
 
-        String validJson = FileMatchRule.slurp(
+        String validJson = FileSlurper.slurp(
                 this.getClass().getSimpleName() + ".valid_versioned_put_data.json5",
                 this.getClass());
 
@@ -181,7 +181,7 @@ public class QuestionResourceManualTest
 
         //<editor-fold desc="PUT id: 1, version: 2, status: NO_CONTENT">
         {
-            String validJson = FileMatchRule.slurp(
+            String validJson = FileSlurper.slurp(
                     this.getClass().getSimpleName() + ".valid_versioned_put_data.json5",
                     this.getClass());
 
@@ -217,7 +217,7 @@ public class QuestionResourceManualTest
         Client client = this.getClient("put_unchanged");
 
         String jsonName = this.getClass().getSimpleName() + ".put_unchanged.json5";
-        String json     = FileMatchRule.slurp(jsonName, this.getClass());
+        String json     = FileSlurper.slurp(jsonName, this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/api/manual/question/{id}")

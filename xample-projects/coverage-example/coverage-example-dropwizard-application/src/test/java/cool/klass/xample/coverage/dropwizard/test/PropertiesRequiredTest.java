@@ -21,7 +21,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.match.file.FileMatchExtension;
 import org.junit.Test;
 
 public class PropertiesRequiredTest
@@ -63,7 +63,7 @@ public class PropertiesRequiredTest
         Client client = this.getClient("putFirst");
 
         String jsonName = this.getClass().getSimpleName() + ".putFirst.json5";
-        String json     = FileMatchRule.slurp(jsonName, this.getClass());
+        String json     = FileSlurper.slurp(jsonName, this.getClass());
 
         Response putResponse = client
                 .target("http://localhost:{port}/api/propertiesRequired/{id}")

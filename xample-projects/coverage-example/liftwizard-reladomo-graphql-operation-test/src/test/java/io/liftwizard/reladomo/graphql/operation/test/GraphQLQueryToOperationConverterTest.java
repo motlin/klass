@@ -45,14 +45,14 @@ import graphql.schema.idl.TypeDefinitionRegistry;
 import io.liftwizard.graphql.reladomo.finder.fetcher.ReladomoFinderDataFetcher;
 import io.liftwizard.graphql.scalar.temporal.GraphQLLocalDateScalar;
 import io.liftwizard.graphql.scalar.temporal.GraphQLTemporalScalar;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.utility.Iterate;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.rules.ErrorCollector;
-import org.junit.rules.TestRule;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.emptyIterable;
@@ -62,10 +62,10 @@ import static org.junit.Assert.assertTrue;
 public class GraphQLQueryToOperationConverterTest
 {
     @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
-
-    @Rule
     public final ErrorCollector errorCollector = new ErrorCollector();
+
+    @RegisterExtension
+    private final LogMarkerTestExtension logMarkerTestExtension = new LogMarkerTestExtension();
 
     @Test
     public void convertQueries()

@@ -22,13 +22,12 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.annotation.AbstractCompilerAnnotation;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
+import io.liftwizard.junit.extension.match.FileSlurper;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -36,11 +35,8 @@ import static org.junit.Assert.assertTrue;
 
 public class KlassCompilerTest
 {
-    @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
-
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+    @RegisterExtension
+    private final LogMarkerTestExtension logMarkerTestExtension = new LogMarkerTestExtension();
 
     @Test
     public void stackOverflow()
@@ -62,7 +58,7 @@ public class KlassCompilerTest
 
     private void assertNoCompilerErrors(@Nonnull String sourceCodeName)
     {
-        String sourceCodeText = FileMatchRule.slurp(sourceCodeName, this.getClass());
+        String sourceCodeText = FileSlurper.slurp(sourceCodeName, this.getClass());
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
                 0,
                 Optional.empty(),

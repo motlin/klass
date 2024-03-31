@@ -24,11 +24,11 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
-import org.junit.Rule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
+import io.liftwizard.junit.extension.match.FileSlurper;
+import io.liftwizard.junit.extension.match.file.FileMatchExtension;
 import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -36,16 +36,16 @@ import static org.junit.Assert.fail;
 
 public class ServiceResourceGeneratorTest
 {
-    @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
+    @RegisterExtension
+    private final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+    @RegisterExtension
+    private final LogMarkerTestExtension logMarkerTestExtension = new LogMarkerTestExtension();
 
     @Test
     public void stackOverflow()
     {
-        String sourceCodeText = FileMatchRule.slurp("/com/stackoverflow/stackoverflow.klass", this.getClass());
+        String sourceCodeText = FileSlurper.slurp("/com/stackoverflow/stackoverflow.klass", this.getClass());
 
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
                 0,
@@ -73,7 +73,7 @@ public class ServiceResourceGeneratorTest
             ServiceGroup serviceGroup           = domainModel.getServiceGroups().getOnly();
             String       serviceGroupSourceCode = serviceResourceGenerator.getServiceGroupSourceCode(serviceGroup);
 
-            this.fileMatchRule.assertFileContents(
+            this.fileMatchExtension.assertFileContents(
                     this.getClass().getSimpleName() + ".java",
                     serviceGroupSourceCode);
         }

@@ -41,7 +41,7 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-junit-rule-match-file</artifactId>
+            <artifactId>liftwizard-junit-extension-match-file</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -53,7 +53,7 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-junit-rule-log-marker</artifactId>
+            <artifactId>liftwizard-junit-extension-log-marker</artifactId>
             <scope>test</scope>
         </dependency>
 

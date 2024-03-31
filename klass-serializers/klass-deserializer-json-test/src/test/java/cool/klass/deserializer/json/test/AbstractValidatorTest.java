@@ -31,26 +31,17 @@ import cool.klass.dropwizard.configuration.domain.model.loader.compiler.DomainMo
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import io.dropwizard.jackson.Jackson;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
-import io.liftwizard.junit.rule.match.json.JsonMatchRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
+import io.liftwizard.junit.extension.match.FileSlurper;
+import io.liftwizard.junit.extension.match.file.FileMatchExtension;
+import io.liftwizard.junit.extension.match.json.JsonMatchExtension;
 import io.liftwizard.serialization.jackson.config.ObjectMapperConfig;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
-import org.junit.Rule;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 public abstract class AbstractValidatorTest
 {
-    @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
-
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
-
-    @Rule
-    public final JsonMatchRule jsonMatchRule = new JsonMatchRule(this.getClass());
-
     protected final MutableList<String> actualErrors   = Lists.mutable.empty();
     protected final MutableList<String> actualWarnings = Lists.mutable.empty();
 
@@ -58,11 +49,20 @@ public abstract class AbstractValidatorTest
 
     protected final DomainModel domainModel = AbstractValidatorTest.getDomainModel(this.objectMapper);
 
+    @RegisterExtension
+    private final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
+
+    @RegisterExtension
+    private final LogMarkerTestExtension logMarkerTestExtension = new LogMarkerTestExtension();
+
+    @RegisterExtension
+    private final JsonMatchExtension jsonMatchExtension = new JsonMatchExtension(this.getClass());
+
     protected final void validate(
             String testName) throws IOException
     {
         String incomingJsonName = this.getClass().getSimpleName() + '.' + testName + ".json5";
-        String incomingJson     = FileMatchRule.slurp(incomingJsonName, this.getClass());
+        String incomingJson     = FileSlurper.slurp(incomingJsonName, this.getClass());
 
         ObjectNode incomingInstance = (ObjectNode) this.objectMapper.readTree(incomingJson);
         this.performValidation(incomingInstance);
@@ -73,11 +73,11 @@ public abstract class AbstractValidatorTest
             String testName)
             throws JsonProcessingException
     {
-        this.jsonMatchRule.assertFileContents(
+        this.jsonMatchExtension.assertFileContents(
                 this.getClass().getSimpleName() + '.' + testName + ".errors.json",
                 this.objectMapper.writeValueAsString(this.actualErrors));
 
-        this.jsonMatchRule.assertFileContents(
+        this.jsonMatchExtension.assertFileContents(
                 this.getClass().getSimpleName() + '.' + testName + ".warnings.json",
                 this.objectMapper.writeValueAsString(this.actualWarnings));
     }

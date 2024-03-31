@@ -24,14 +24,14 @@ import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
+import io.liftwizard.junit.extension.match.FileSlurper;
+import io.liftwizard.junit.extension.match.file.FileMatchExtension;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
 import org.eclipse.collections.impl.factory.Lists;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,11 +42,11 @@ public abstract class AbstractKlassCompilerErrorTestCase
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractKlassCompilerErrorTestCase.class);
 
-    @Rule
-    public final FileMatchRule rule = new FileMatchRule(this.getClass());
+    @RegisterExtension
+    private final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+    @RegisterExtension
+    private final LogMarkerTestExtension logMarkerTestExtension = new LogMarkerTestExtension();
 
     @Test
     public void smokeTest()
@@ -59,7 +59,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
         Class<?> callingClass   = this.getClass();
         String   testName       = callingClass.getSimpleName();
         String   sourceName     = testName + ".klass";
-        String   sourceCodeText = FileMatchRule.slurp(sourceName, callingClass);
+        String   sourceCodeText = FileSlurper.slurp(sourceName, callingClass);
 
         CompilationResult compilationResult = AbstractKlassCompilerErrorTestCase.getCompilationResult(
                 sourceName,
@@ -79,7 +79,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
         String   testName     = callingClass.getSimpleName();
         String   sourceName   = testName + ".klass";
 
-        String sourceCodeText = FileMatchRule.slurp(sourceName, callingClass);
+        String sourceCodeText = FileSlurper.slurp(sourceName, callingClass);
 
         CompilationResult compilationResult = AbstractKlassCompilerErrorTestCase.getCompilationResult(
                 sourceName,
@@ -116,7 +116,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
                     compilerAnnotation.getCharPositionInLine(),
                     compilerAnnotation.getAnnotationCode());
 
-            this.rule.assertFileContents(
+            this.fileMatchExtension.assertFileContents(
                     annotationSourceName,
                     compilerAnnotation.toString());
         }

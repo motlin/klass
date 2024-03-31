@@ -33,7 +33,7 @@ import cool.klass.xample.coverage.PropertiesOptional;
 import cool.klass.xample.coverage.PropertiesOptionalFinder;
 import cool.klass.xample.coverage.PropertiesOptionalFinder.PropertiesOptionalSingleFinder;
 import cool.klass.xample.coverage.PropertiesRequiredFinder;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
 import io.liftwizard.model.reladomo.operation.compiler.ReladomoOperationCompiler;
 import io.liftwizard.reladomo.test.rule.ReladomoInitializeTestRule;
 import org.eclipse.collections.impl.factory.primitive.BooleanSets;
@@ -43,8 +43,8 @@ import org.eclipse.collections.impl.factory.primitive.IntSets;
 import org.eclipse.collections.impl.factory.primitive.LongSets;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.rules.ErrorCollector;
-import org.junit.rules.TestRule;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -72,14 +72,14 @@ public class ReladomoOperationCompilerTest
             PropertiesOptionalFinder.getFinderInstance();
 
     @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
-
-    @Rule
     public final ReladomoInitializeTestRule initializeTestRule = new ReladomoInitializeTestRule(
             "reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml");
 
     @Rule
     public final ErrorCollector errorCollector = new ErrorCollector();
+
+    @RegisterExtension
+    private final LogMarkerTestExtension logMarkerTestExtension = new LogMarkerTestExtension();
 
     @Test
     public void invalidClassName()

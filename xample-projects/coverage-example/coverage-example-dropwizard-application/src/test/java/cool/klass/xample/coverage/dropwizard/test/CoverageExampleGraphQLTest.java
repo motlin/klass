@@ -21,7 +21,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.match.file.FileMatchExtension;
 import org.eclipse.collections.impl.factory.Maps;
 import org.junit.Test;
 
@@ -35,7 +35,7 @@ public class CoverageExampleGraphQLTest
 
         String graphqlQueryName = this.getClass().getSimpleName() + ".graphqlSmokeTest.graphql";
 
-        String graphqlQuery     = FileMatchRule.slurp(graphqlQueryName, this.getClass());
+        String graphqlQuery     = FileSlurper.slurp(graphqlQueryName, this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/graphql")

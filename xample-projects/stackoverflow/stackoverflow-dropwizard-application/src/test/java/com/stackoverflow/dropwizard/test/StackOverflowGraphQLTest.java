@@ -21,7 +21,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.match.FileSlurper;
 import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
 import org.eclipse.collections.impl.factory.Maps;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class StackOverflowGraphQLTest
         Client client = this.getClient("graphqlSmokeTest");
 
         String queryName = this.getClass().getSimpleName() + ".smokeTest.graphql";
-        String query     = FileMatchRule.slurp(queryName, this.getClass());
+        String query     = FileSlurper.slurp(queryName, this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/graphql")

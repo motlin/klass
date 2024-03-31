@@ -27,11 +27,10 @@ import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
 import io.dropwizard.jackson.DiscoverableSubtypeResolver;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.validation.Validators;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
 import io.liftwizard.serialization.jackson.config.ObjectMapperConfig;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -39,9 +38,6 @@ import static org.junit.Assert.assertThat;
 
 public class ReladomoDataStoreFactoryTest
 {
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
-
     private final ObjectMapper objectMapper = newObjectMapper();
     private final Validator    validator    = Validators.newValidator();
 
