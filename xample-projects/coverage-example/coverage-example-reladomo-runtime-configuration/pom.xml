@@ -37,7 +37,7 @@
             <plugin>
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-generator-reladomo-plugin</artifactId>
-                <version>${klass.version}</version>
+                <version>0.1.0-SNAPSHOT</version>
 
                 <configuration>
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
@@ -95,7 +95,7 @@
                     <dependency>
                         <groupId>cool.klass</groupId>
                         <artifactId>klass-model-bootstrapped-domain-model</artifactId>
-                        <version>${klass.version}</version>
+                        <version>0.1.0-SNAPSHOT</version>
                     </dependency>
 
                 </dependencies>

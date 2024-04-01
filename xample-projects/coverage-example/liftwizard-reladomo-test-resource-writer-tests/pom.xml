@@ -157,7 +157,7 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-bootstrapped-liquibase-schema</artifactId>
-            <version>${klass.version}</version>
+            <version>0.1.0-SNAPSHOT</version>
             <scope>runtime</scope>
         </dependency>
 
