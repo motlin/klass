@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+@ExtendWith(LogMarkerTestExtension.class)
 public class LiquibaseSchemaGeneratorTest
 {
     public static final String FULLY_QUALIFIED_PACKAGE = "cool.klass.generator.liquibase.schema";

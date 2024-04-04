@@ -36,6 +36,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
+@ExtendWith(LogMarkerTestExtension.class)
 public class ReladomoDataStoreFactoryTest
 {
     private final ObjectMapper objectMapper = newObjectMapper();
