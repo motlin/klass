@@ -114,13 +114,6 @@
             </plugin>
 
             <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <configuration>
-                    <ignoreNonCompile>true</ignoreNonCompile>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <artifactId>maven-shade-plugin</artifactId>
                 <configuration>
                     <createDependencyReducedPom>true</createDependencyReducedPom>

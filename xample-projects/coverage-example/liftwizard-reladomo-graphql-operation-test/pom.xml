@@ -30,19 +30,6 @@
 
     <name>Liftwizard Reladomo: GraphQL Query to Operation Converter Test</name>
 
-    <build>
-        <plugins>
-
-            <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <configuration>
-                    <ignoreNonCompile>true</ignoreNonCompile>
-                </configuration>
-            </plugin>
-
-        </plugins>
-    </build>
-
     <dependencies>
 
         <dependency>

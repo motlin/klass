@@ -104,13 +104,6 @@
             </plugin>
 
             <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <configuration>
-                    <ignoreNonCompile>true</ignoreNonCompile>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
                 <version>0.4.0</version>
