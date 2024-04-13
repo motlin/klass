@@ -1,3 +1,3 @@
-# Vision
+# Klass
 
-This document describes a vision for a model-driven services and data framework, called Klass. The framework does not yet exist, but this document is written in the style of documentation for a working framework.
+Klass is a rapid application development framework for Java with first class support for temporal data.
