@@ -63,12 +63,6 @@
                         <version>${project.version}</version>
                     </dependency>
 
-                    <!--<dependency>-->
-                        <!--<groupId>cool.klass</groupId>-->
-                        <!--<artifactId>klass-model-bootstrapped-domain-model</artifactId>-->
-                        <!--<version>0.1.0-SNAPSHOT</version>-->
-                    <!--</dependency>-->
-
                 </dependencies>
             </plugin>
 
