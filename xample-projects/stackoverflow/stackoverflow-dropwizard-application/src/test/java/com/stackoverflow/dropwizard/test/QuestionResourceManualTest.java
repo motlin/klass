@@ -30,8 +30,7 @@ import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class QuestionResourceManualTest
         extends AbstractDropwizardAppTest
@@ -106,7 +105,7 @@ public class QuestionResourceManualTest
                     .post(Entity.json(validJson));
 
             this.assertResponse("post_valid_data", Status.CREATED, response);
-            assertThat(response.getLocation().getPath(), is("/api/manual/question/2"));
+            assertThat(response.getLocation().getPath()).isEqualTo("/api/manual/question/2");
         }
         //</editor-fold>
 
