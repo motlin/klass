@@ -30,12 +30,16 @@ public final class TokenCategoryToCss
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    // TODO: turn this into a plugin and run it inside klass-syntax-css-class
+    /**
+     * The console output gets synced to the file klass-syntax/klass-syntax-css-class/src/main/resources/ui/static/css/klass-syntax.css
+     *
+     * @param args the command line arguments
+     */
     public static void main(String[] args)
     {
         for (TokenCategory tokenCategory : TokenCategory.values())
         {
-            //language=CSS
+            // language=CSS
             String result = ""
                     + ".klass-" + TokenCategoryToCss.getTokenCategoryName(tokenCategory) + " {\n"
                     + "    color: " + TokenCategoryToCss.getCssVar(tokenCategory) + ";\n"

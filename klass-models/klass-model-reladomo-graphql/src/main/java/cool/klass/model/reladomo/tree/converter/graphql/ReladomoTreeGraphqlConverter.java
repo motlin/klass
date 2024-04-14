@@ -60,17 +60,16 @@ public final class ReladomoTreeGraphqlConverter
 
         for (SelectedField selectedField : selectionSet.getImmediateFields())
         {
-            this.convertSelectedField(klass, selectedField, result);
+            this.convertSelectedField(selectedField, result);
         }
 
         return result;
     }
 
-    private void convertSelectedField(Klass klass, SelectedField selectedField, ReladomoTreeNode parentTreeNode)
+    private void convertSelectedField(SelectedField selectedField, ReladomoTreeNode parentTreeNode)
     {
         String       name            = selectedField.getName();
         List<String> objectTypeNames = selectedField.getObjectTypeNames();
-        boolean      conditional     = selectedField.isConditional();
 
         List<SelectedField> childrenFields = selectedField.getSelectionSet().getImmediateFields();
 
@@ -138,7 +137,7 @@ public final class ReladomoTreeGraphqlConverter
 
         for (SelectedField childSelectedField : childrenFields)
         {
-            this.convertSelectedField(associationEnd.getType(), childSelectedField, reladomoTreeNode);
+            this.convertSelectedField(childSelectedField, reladomoTreeNode);
         }
     }
 

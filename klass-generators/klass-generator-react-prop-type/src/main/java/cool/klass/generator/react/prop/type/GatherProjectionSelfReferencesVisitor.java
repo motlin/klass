@@ -38,7 +38,7 @@ public class GatherProjectionSelfReferencesVisitor
         implements ProjectionListener
 {
     private final MutableStack<String> context = Stacks.mutable.empty();
-    private final MutableList<String>  result  = Lists.mutable.empty();
+    private final MutableList<String>  results = Lists.mutable.empty();
     private final Projection           originalProjection;
 
     public GatherProjectionSelfReferencesVisitor(Projection originalProjection)
@@ -46,9 +46,9 @@ public class GatherProjectionSelfReferencesVisitor
         this.originalProjection = Objects.requireNonNull(originalProjection);
     }
 
-    public ImmutableList<String> getResult()
+    public ImmutableList<String> getResults()
     {
-        return this.result.toImmutable();
+        return this.results.toImmutable();
     }
 
     @Override
@@ -101,7 +101,7 @@ public class GatherProjectionSelfReferencesVisitor
                 this.context.makeString("."),
                 propType);
 
-        this.result.add(result);
+        this.results.add(result);
     }
 
     @Override

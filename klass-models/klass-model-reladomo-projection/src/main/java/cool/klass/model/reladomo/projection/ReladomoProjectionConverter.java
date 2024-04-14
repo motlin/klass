@@ -85,7 +85,6 @@ public final class ReladomoProjectionConverter
             ProjectionChild projectionChild)
     {
         Property property = projectionChild.getProperty();
-        Classifier declaredClassifier = projectionChild.getDeclaredClassifier();
         String name = property.getName();
 
         ProjectionElementReladomoNode reladomoNode = projectionReladomoNode;
