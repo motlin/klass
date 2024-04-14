@@ -130,7 +130,6 @@ maxLengthValidationKeyword : ('maxLength' | 'maximumLength') ;
 minValidationKeyword : ('min' | 'minimum') ;
 maxValidationKeyword : ('max' | 'maximum') ;
 
-
 // parameter
 parameterDeclaration: primitiveParameterDeclaration | enumerationParameterDeclaration | invalidParameterDeclaration;
 primitiveParameterDeclaration: identifier ':' primitiveType multiplicity parameterModifier*;

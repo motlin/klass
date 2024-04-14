@@ -114,7 +114,6 @@
             <scope>test</scope>
         </dependency>
 
-
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-compiler</artifactId>

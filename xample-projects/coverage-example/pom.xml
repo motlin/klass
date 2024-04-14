@@ -58,7 +58,6 @@
         <liftwizard.version>2.1.6</liftwizard.version>
     </properties>
 
-
     <name>${app.name} (Module Group)</name>
 
     <dependencyManagement>
