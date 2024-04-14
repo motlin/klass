@@ -915,9 +915,9 @@ public class ServiceResourceGenerator
             return "String";
             // return ((Enumeration) dataType).getName();
         }
-        if (dataType instanceof PrimitiveType)
+        if (dataType instanceof PrimitiveType primitiveType)
         {
-            return PrimitiveToJavaParameterTypeVisitor.getJavaType((PrimitiveType) dataType);
+            return PrimitiveToJavaParameterTypeVisitor.getJavaType(primitiveType);
         }
         throw new AssertionError();
     }

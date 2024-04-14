@@ -659,9 +659,9 @@ public abstract class AntlrClassifier
 
         if (classifier instanceof AntlrClass klass)
         {
-            if (this instanceof AntlrClass)
+            if (this instanceof AntlrClass thisClass)
             {
-                return ((AntlrClass) this).isSubClassOf(klass);
+                return thisClass.isSubClassOf(klass);
             }
             return false;
         }

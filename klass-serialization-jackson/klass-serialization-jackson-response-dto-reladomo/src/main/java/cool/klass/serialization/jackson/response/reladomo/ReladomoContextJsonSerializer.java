@@ -133,19 +133,19 @@ public class ReladomoContextJsonSerializer
         ImmutableList<? extends ProjectionChild> children = projectionParent.getChildren();
         for (ProjectionElement projectionElement : children)
         {
-            if (projectionElement instanceof ProjectionDataTypeProperty)
+            if (projectionElement instanceof ProjectionDataTypeProperty dataTypeProperty)
             {
                 this.handleProjectionPrimitiveMember(
                         jsonGenerator,
                         mithraObject,
-                        (ProjectionDataTypeProperty) projectionElement);
+                        dataTypeProperty);
             }
-            else if (projectionElement instanceof ProjectionWithReferenceProperty)
+            else if (projectionElement instanceof ProjectionWithReferenceProperty referenceProperty)
             {
                 this.handleProjectionWithReferenceProperty(
                         jsonGenerator,
                         mithraObject,
-                        (ProjectionWithReferenceProperty) projectionElement);
+                        referenceProperty);
             }
             else
             {
