@@ -973,7 +973,7 @@ public class KlassBootstrapWriter
         });
 
         // TODO: Bootstrap service orderBy
-        Optional<OrderBy> orderBy = service.getOrderBy();
+        // Optional<OrderBy> orderBy = service.getOrderBy();
         // bootstrappedService.insert();
 
         return bootstrappedService;
