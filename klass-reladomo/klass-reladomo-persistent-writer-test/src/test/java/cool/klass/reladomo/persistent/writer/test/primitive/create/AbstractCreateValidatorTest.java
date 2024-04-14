@@ -34,8 +34,7 @@ import org.eclipse.collections.api.map.ImmutableMap;
 import org.junit.Rule;
 import org.junit.rules.TestRule;
 
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractCreateValidatorTest
         extends AbstractValidatorTest
@@ -51,7 +50,7 @@ public abstract class AbstractCreateValidatorTest
     {
         Klass klass = this.getKlass();
         ImmutableMap<DataTypeProperty, Object> propertyDataFromUrl = this.getPropertyDataFromUrl();
-        propertyDataFromUrl.forEachKey(property -> assertThat(property.getOwningClassifier(), sameInstance(klass)));
+        propertyDataFromUrl.forEachKey(property -> assertThat(property.getOwningClassifier()).isSameAs(klass));
 
         JsonTypeCheckingValidator.validate(
                 incomingInstance,

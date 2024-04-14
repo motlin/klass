@@ -31,8 +31,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ReladomoConcreteClassGeneratorTest
@@ -67,7 +66,7 @@ public class ReladomoConcreteClassGeneratorTest
         else
         {
             DomainModelWithSourceCode domainModel = compilationResult.domainModelWithSourceCode().get();
-            assertThat(domainModel, notNullValue());
+            assertThat(domainModel).isNotNull();
 
             ReladomoConcreteClassGenerator generator = new ReladomoConcreteClassGenerator(domainModel);
 
