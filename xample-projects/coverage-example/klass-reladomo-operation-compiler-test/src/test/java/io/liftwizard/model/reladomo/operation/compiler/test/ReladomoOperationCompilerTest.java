@@ -46,8 +46,8 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.TestRule;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ReladomoOperationCompilerTest
@@ -94,9 +94,7 @@ public class ReladomoOperationCompilerTest
         }
         catch (IllegalArgumentException e)
         {
-            assertThat(
-                    e.getMessage(),
-                    is("Expected 'this' or <PropertiesRequired> but found: <InvalidClassName> in InvalidClassName.requiredString = \"Value\""));
+            assertThat(e.getMessage()).isEqualTo("Expected 'this' or <PropertiesRequired> but found: <InvalidClassName> in InvalidClassName.requiredString = \"Value\"");
         }
     }
 
@@ -113,9 +111,7 @@ public class ReladomoOperationCompilerTest
         }
         catch (IllegalArgumentException e)
         {
-            assertThat(
-                    e.getMessage(),
-                    is("Could not find attribute 'invalidAttributeName' on type 'PropertiesRequired' in this.invalidAttributeName = \"Value\". Valid attributes: [propertiesRequiredId, createdById, createdOn, lastUpdatedById, requiredString, requiredInteger, requiredLong, requiredDouble, requiredFloat, requiredBoolean, requiredInstant, requiredLocalDate, systemFrom, systemTo]"));
+            assertThat(e.getMessage()).isEqualTo("Could not find attribute 'invalidAttributeName' on type 'PropertiesRequired' in this.invalidAttributeName = \"Value\". Valid attributes: [propertiesRequiredId, createdById, createdOn, lastUpdatedById, requiredString, requiredInteger, requiredLong, requiredDouble, requiredFloat, requiredBoolean, requiredInstant, requiredLocalDate, systemFrom, systemTo]");
         }
     }
 
@@ -132,9 +128,7 @@ public class ReladomoOperationCompilerTest
         }
         catch (IllegalArgumentException e)
         {
-            assertThat(
-                    e.getMessage(),
-                    is("Could not find relationship 'invalidRelationshipName' on type 'OwnedNaturalOneToManySource' in OwnedNaturalOneToManySource.invalidRelationshipName.value = \"value\". Valid relationships: [targets]"));
+            assertThat(e.getMessage()).isEqualTo("Could not find relationship 'invalidRelationshipName' on type 'OwnedNaturalOneToManySource' in OwnedNaturalOneToManySource.invalidRelationshipName.value = \"value\". Valid relationships: [targets]");
         }
     }
 
@@ -151,9 +145,7 @@ public class ReladomoOperationCompilerTest
         }
         catch (IllegalArgumentException e)
         {
-            assertThat(
-                    e.getMessage(),
-                    is("Expected <String> but found: <1> in PropertiesRequired.requiredString = 1"));
+            assertThat(e.getMessage()).isEqualTo("Expected <String> but found: <1> in PropertiesRequired.requiredString = 1");
         }
     }
 
@@ -170,9 +162,7 @@ public class ReladomoOperationCompilerTest
         }
         catch (IllegalArgumentException e)
         {
-            assertThat(
-                    e.getMessage(),
-                    is("Expected <Instant> but found: <\"Invalid\"> in PropertiesRequired.requiredInstant = \"Invalid\""));
+            assertThat(e.getMessage()).isEqualTo("Expected <Instant> but found: <\"Invalid\"> in PropertiesRequired.requiredInstant = \"Invalid\"");
         }
     }
 

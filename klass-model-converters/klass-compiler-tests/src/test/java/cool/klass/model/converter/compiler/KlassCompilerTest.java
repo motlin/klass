@@ -30,8 +30,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KlassCompilerTest
@@ -74,10 +73,7 @@ public class KlassCompilerTest
                 .compilerAnnotations()
                 .select(AbstractCompilerAnnotation::isError);
 
-        assertThat(
-                compilerAnnotations.makeString("\n"),
-                compilerAnnotations,
-                equalTo(Lists.immutable.empty()));
+        assertThat(compilerAnnotations).as(compilerAnnotations.makeString("\n")).isEqualTo(Lists.immutable.empty());
 
         assertTrue(compilationResult.domainModelWithSourceCode().isPresent());
     }
