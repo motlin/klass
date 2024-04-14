@@ -161,9 +161,6 @@ public class ReladomoInterfaceFileGenerator
             @Nonnull AsOfAttributeInterfaceType asOfAttributeType)
     {
         String propertyName = dataTypeProperty.getName();
-        // TODO: Use actual temporal properties
-        String fromName = propertyName + "From";
-        String toName   = propertyName + "To";
 
         asOfAttributeType.setName(propertyName);
         asOfAttributeType.setToIsInclusive(false);
@@ -175,11 +172,11 @@ public class ReladomoInterfaceFileGenerator
         timezoneConversion.with("convert-to-utc", asOfAttributeType);
         asOfAttributeType.setTimezoneConversion(timezoneConversion);
 
-        if (propertyName.equals("valid"))
+        if (dataTypeProperty.isValid())
         {
             asOfAttributeType.setIsProcessingDate(false);
         }
-        else if (propertyName.equals("system"))
+        else if (dataTypeProperty.isSystem())
         {
             asOfAttributeType.setIsProcessingDate(true);
         }
