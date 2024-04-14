@@ -489,9 +489,9 @@ public class RequiredPropertiesValidator
         this.contextStack.push(associationEnd.getName());
         try
         {
-            if (jsonNode instanceof ObjectNode)
+            if (jsonNode instanceof ObjectNode objectNode)
             {
-                this.handleOwnedAssociationEnd(associationEnd, (ObjectNode) jsonNode);
+                this.handleOwnedAssociationEnd(associationEnd, objectNode);
             }
         }
         finally
@@ -520,9 +520,9 @@ public class RequiredPropertiesValidator
             try
             {
                 JsonNode childJsonNode = jsonNode.path(index);
-                if (childJsonNode instanceof ObjectNode)
+                if (childJsonNode instanceof ObjectNode objectNode)
                 {
-                    this.handleOwnedAssociationEnd(associationEnd, (ObjectNode) childJsonNode);
+                    this.handleOwnedAssociationEnd(associationEnd, objectNode);
                 }
             }
             finally
@@ -859,12 +859,12 @@ public class RequiredPropertiesValidator
             this.contextStack.push(associationEnd.getName());
             try
             {
-                if (jsonNode instanceof ObjectNode)
+                if (jsonNode instanceof ObjectNode objectNode)
                 {
                     OperationMode nextMode = this.getNextMode(this.operationMode, associationEnd);
                     RequiredPropertiesValidator validator = new RequiredPropertiesValidator(
                             associationEnd.getType(),
-                            (ObjectNode) jsonNode,
+                            objectNode,
                             nextMode,
                             this.errors,
                             this.warnings,

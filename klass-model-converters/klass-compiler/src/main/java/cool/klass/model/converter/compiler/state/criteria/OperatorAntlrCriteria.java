@@ -148,21 +148,21 @@ public class OperatorAntlrCriteria
         ImmutableList<AntlrType> sourcePossibleTypes = this.sourceValue.getPossibleTypes();
         ImmutableList<AntlrType> targetPossibleTypes = this.targetValue.getPossibleTypes();
 
-        if (this.sourceValue instanceof AbstractAntlrLiteralValue)
+        if (this.sourceValue instanceof AbstractAntlrLiteralValue literalValue)
         {
             if (targetPossibleTypes.size() != 1)
             {
                 return;
             }
-            ((AbstractAntlrLiteralValue) this.sourceValue).setInferredType(targetPossibleTypes.getOnly());
+            literalValue.setInferredType(targetPossibleTypes.getOnly());
         }
-        if (this.targetValue instanceof AbstractAntlrLiteralValue)
+        if (this.targetValue instanceof AbstractAntlrLiteralValue literalValue)
         {
             if (sourcePossibleTypes.size() != 1)
             {
                 return;
             }
-            ((AbstractAntlrLiteralValue) this.targetValue).setInferredType(sourcePossibleTypes.getOnly());
+            literalValue.setInferredType(sourcePossibleTypes.getOnly());
         }
     }
 
@@ -299,14 +299,14 @@ public class OperatorAntlrCriteria
     @Nonnull
     private AntlrThisMemberReferencePath getThisMemberReferencePath()
     {
-        if (this.sourceValue instanceof AntlrThisMemberReferencePath)
+        if (this.sourceValue instanceof AntlrThisMemberReferencePath memberReferencePath)
         {
-            return (AntlrThisMemberReferencePath) this.sourceValue;
+            return memberReferencePath;
         }
 
-        if (this.targetValue instanceof AntlrThisMemberReferencePath)
+        if (this.targetValue instanceof AntlrThisMemberReferencePath memberReferencePath)
         {
-            return (AntlrThisMemberReferencePath) this.targetValue;
+            return memberReferencePath;
         }
 
         throw new AssertionError();
@@ -315,14 +315,14 @@ public class OperatorAntlrCriteria
     @Nonnull
     private AntlrTypeMemberReferencePath getTypeMemberReferencePath()
     {
-        if (this.sourceValue instanceof AntlrTypeMemberReferencePath)
+        if (this.sourceValue instanceof AntlrTypeMemberReferencePath memberReferencePath)
         {
-            return (AntlrTypeMemberReferencePath) this.sourceValue;
+            return memberReferencePath;
         }
 
-        if (this.targetValue instanceof AntlrTypeMemberReferencePath)
+        if (this.targetValue instanceof AntlrTypeMemberReferencePath memberReferencePath)
         {
-            return (AntlrTypeMemberReferencePath) this.targetValue;
+            return memberReferencePath;
         }
 
         throw new AssertionError();

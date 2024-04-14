@@ -230,13 +230,13 @@ public class DataTransferObjectsGenerator
     @Nonnull
     private String getType(DataType dataType)
     {
-        if (dataType instanceof Enumeration)
+        if (dataType instanceof Enumeration enumeration)
         {
-            return ((Enumeration) dataType).getName() + "DTO";
+            return enumeration.getName() + "DTO";
         }
-        if (dataType instanceof PrimitiveType)
+        if (dataType instanceof PrimitiveType primitiveType)
         {
-            return PrimitiveToJavaTypeVisitor.getJavaType((PrimitiveType) dataType);
+            return PrimitiveToJavaTypeVisitor.getJavaType(primitiveType);
         }
         throw new AssertionError();
     }

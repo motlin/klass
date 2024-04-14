@@ -728,13 +728,13 @@ public class ReladomoDataStore
     @Override
     public void deleteOrTerminate(@Nonnull Object persistentInstance)
     {
-        if (persistentInstance instanceof MithraDatedTransactionalObject)
+        if (persistentInstance instanceof MithraDatedTransactionalObject transactionalObject)
         {
-            ((MithraDatedTransactionalObject) persistentInstance).terminate();
+            transactionalObject.terminate();
         }
-        else if (persistentInstance instanceof MithraTransactionalObject)
+        else if (persistentInstance instanceof MithraTransactionalObject transactionalObject)
         {
-            ((MithraTransactionalObject) persistentInstance).delete();
+            transactionalObject.delete();
         }
         else
         {

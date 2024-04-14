@@ -574,8 +574,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
 
         AntlrType antlrType = this.getType();
-        if (antlrType instanceof AntlrPrimitiveType
-                && ((AntlrPrimitiveType) antlrType).getPrimitiveType() == PrimitiveType.STRING)
+        if (antlrType instanceof AntlrPrimitiveType primitiveType
+                && primitiveType.getPrimitiveType() == PrimitiveType.STRING)
         {
             return;
         }
@@ -602,8 +602,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
 
         AntlrType antlrType = this.getType();
-        if (antlrType instanceof AntlrPrimitiveType
-                && ALLOWED_VERSION_TYPES.contains(((AntlrPrimitiveType) antlrType).getPrimitiveType()))
+        if (antlrType instanceof AntlrPrimitiveType primitiveType
+                && ALLOWED_VERSION_TYPES.contains(primitiveType.getPrimitiveType()))
         {
             return;
         }

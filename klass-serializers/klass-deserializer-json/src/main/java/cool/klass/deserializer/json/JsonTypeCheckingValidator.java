@@ -269,10 +269,10 @@ public final class JsonTypeCheckingValidator
                 try
                 {
                     JsonNode jsonNode = this.jsonNode.path(index);
-                    if (jsonNode instanceof ObjectNode)
+                    if (jsonNode instanceof ObjectNode objectNode)
                     {
                         JsonTypeCheckingValidator.this.validateIncomingData(
-                                (ObjectNode) jsonNode,
+                                objectNode,
                                 associationEnd.getType());
                     }
                     else

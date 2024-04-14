@@ -691,11 +691,11 @@ public abstract class PersistentSynchronizer
             Pair<AssociationEnd, DataTypeProperty> pair = keysMatchingThisForeignKey.keyValuesView().getOnly();
 
             JsonNode childNode = jsonNode.path(pair.getOne().getName());
-            if (childNode instanceof ObjectNode)
+            if (childNode instanceof ObjectNode objectNode)
             {
                 Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
                         pair.getTwo(),
-                        (ObjectNode) childNode);
+                        objectNode);
                 return Objects.requireNonNull(result);
             }
 

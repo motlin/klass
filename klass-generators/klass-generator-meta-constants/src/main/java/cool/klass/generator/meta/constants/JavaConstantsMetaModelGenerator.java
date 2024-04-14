@@ -854,14 +854,12 @@ public class JavaConstantsMetaModelGenerator
     @Nonnull
     private String getDataTypePropertySourceCode(DataTypeProperty dataTypeProperty)
     {
-        if (dataTypeProperty instanceof PrimitiveProperty)
+        if (dataTypeProperty instanceof PrimitiveProperty primitiveProperty)
         {
-            PrimitiveProperty primitiveProperty = (PrimitiveProperty) dataTypeProperty;
             return this.getPrimitivePropertySourceCode(primitiveProperty);
         }
-        if (dataTypeProperty instanceof EnumerationProperty)
+        if (dataTypeProperty instanceof EnumerationProperty enumerationProperty)
         {
-            EnumerationProperty enumerationProperty = (EnumerationProperty) dataTypeProperty;
             return this.getEnumerationPropertySourceCode(enumerationProperty);
         }
         throw new AssertionError();

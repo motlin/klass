@@ -51,9 +51,9 @@ public class CompilerAnnotationHolder
             @Nonnull AnnotationSeverity severity)
     {
         Objects.requireNonNull(element);
-        if (element instanceof AntlrNamedElement)
+        if (element instanceof AntlrNamedElement namedElement)
         {
-            this.add(annotationCode, message, element, ((AntlrNamedElement) element).getNameContext(), severity);
+            this.add(annotationCode, message, element, namedElement.getNameContext(), severity);
         }
         else
         {
