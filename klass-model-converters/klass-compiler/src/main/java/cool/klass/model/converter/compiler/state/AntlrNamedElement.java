@@ -91,7 +91,7 @@ public abstract class AntlrNamedElement
 
     protected static final ImmutableList<String> JAVA_LITERALS = Lists.immutable.with("true", "false", "null");
 
-    protected static final ImmutableList<String> SQL_KEYWORDS = Lists.immutable.with(/*"user", "User"*/);
+    protected static final ImmutableList<String> SQL_KEYWORDS = Lists.immutable.with();
 
     protected static final ImmutableList<String> RELADOMO_TYPES =
             Lists.immutable.with("OrderBy");
