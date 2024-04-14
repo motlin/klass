@@ -33,9 +33,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DomainModelCompilerFactoryTest
 {
@@ -54,7 +52,7 @@ public class DomainModelCompilerFactoryTest
         // Make sure the types we specified in META-INF gets picked up
         var            discoverableSubtypeResolver = new DiscoverableSubtypeResolver();
         List<Class<?>> discoveredSubtypes          = discoverableSubtypeResolver.getDiscoveredSubtypes();
-        assertThat(discoveredSubtypes, hasItem(DomainModelCompilerFactory.class));
+        assertThat(discoveredSubtypes).contains(DomainModelCompilerFactory.class);
     }
 
     @Test
@@ -64,7 +62,7 @@ public class DomainModelCompilerFactoryTest
         DomainModelFactory domainModelFactory = this.factory.build(
                 new ResourceConfigurationSourceProvider(),
                 "config-test.json5");
-        assertThat(domainModelFactory, instanceOf(DomainModelCompilerFactory.class));
+        assertThat(domainModelFactory).isInstanceOf(DomainModelCompilerFactory.class);
     }
 
     private static ObjectMapper newObjectMapper()

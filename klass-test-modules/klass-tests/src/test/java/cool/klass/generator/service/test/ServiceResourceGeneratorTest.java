@@ -30,9 +30,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ServiceResourceGeneratorTest
 {
@@ -63,7 +62,7 @@ public class ServiceResourceGeneratorTest
         else
         {
             DomainModelWithSourceCode domainModel = compilationResult.domainModelWithSourceCode().get();
-            assertThat(domainModel, notNullValue());
+            assertThat(domainModel).isNotNull();
 
             ServiceResourceGenerator serviceResourceGenerator = new ServiceResourceGenerator(
                     domainModel,
