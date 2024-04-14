@@ -17,16 +17,20 @@
 package cool.klass.model.converter.compiler.annotation.general;
 
 import cool.klass.model.converter.compiler.annotation.AbstractKlassCompilerErrorTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MiscErrorTest
         extends AbstractKlassCompilerErrorTestCase
 {
     // TODO: Implement projection parameterized properties
     @Override
-    @Test(expected = RuntimeException.class)
+    @Test
     public void smokeTest()
     {
-        this.assertCompilerErrors();
+        RuntimeException runtimeException = Assertions.assertThrows(RuntimeException.class, this::assertCompilerErrors);
+        assertThat(runtimeException.getMessage()).isEqualTo("Exception in compiler during phase: ParameterizedPropertyPhase for compilation unit: MiscErrorTest.klass");
     }
 }
