@@ -22,7 +22,7 @@
 <suppressions>
 
     <suppress files="[\\/]generated-sources[\\/]" checks="[a-zA-Z0-9]*" />
-
     <suppress files="[\\/]ReladomoOperationCompilerTest.java" checks="NoWhitespaceBefore" />
+    <suppress files="[\\/]TokenCategoryToCss.java" checks="UncommentedMain" />
 
 </suppressions>

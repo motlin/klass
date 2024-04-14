@@ -82,7 +82,7 @@ public class PropTypeSourceCodeProjectionVisitor
         GatherProjectionSelfReferencesVisitor visitor2 =
                 new GatherProjectionSelfReferencesVisitor(this.originalProjection);
         projection.getChildren().forEachWith(ProjectionElement::visit, visitor2);
-        ImmutableList<String> selfReferences = visitor2.getResult();
+        ImmutableList<String> selfReferences = visitor2.getResults();
         String selfReferencesSourceCode = selfReferences
                 .makeString("");
 

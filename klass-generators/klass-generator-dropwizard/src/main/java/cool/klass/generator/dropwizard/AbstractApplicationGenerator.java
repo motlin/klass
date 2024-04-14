@@ -138,8 +138,7 @@ public class AbstractApplicationGenerator
     private String getResourceImport(ServiceGroup serviceGroup)
     {
         return String.format(
-                "import %s.service.resource.%s"
-                        + ";\n",
+                "import %s.service.resource.%s;\n",
                 serviceGroup.getPackageName(),
                 serviceGroup.getName());
     }
