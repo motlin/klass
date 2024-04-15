@@ -57,7 +57,6 @@ import org.junit.rules.TestRule;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.emptyIterable;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GraphQLQueryToOperationConverterTest
 {
@@ -497,7 +496,7 @@ public class GraphQLQueryToOperationConverterTest
             assertThat(operation).isNotNull();
             if (!inputOrderByList.isEmpty())
             {
-                assertTrue(orderBy.isPresent());
+                assertThat(orderBy).isPresent();
             }
             return Lists.mutable.empty();
         }

@@ -31,7 +31,6 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KlassCompilerTest
 {
@@ -75,6 +74,6 @@ public class KlassCompilerTest
 
         assertThat(compilerAnnotations).as(compilerAnnotations.makeString("\n")).isEqualTo(Lists.immutable.empty());
 
-        assertTrue(compilationResult.domainModelWithSourceCode().isPresent());
+        assertThat(compilationResult.domainModelWithSourceCode()).isPresent();
     }
 }
