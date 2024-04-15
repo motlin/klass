@@ -17,10 +17,10 @@
 package cool.klass.model.converter.compiler.annotation.general;
 
 import cool.klass.model.converter.compiler.annotation.AbstractKlassCompilerErrorTestCase;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MiscErrorTest
         extends AbstractKlassCompilerErrorTestCase
@@ -30,7 +30,7 @@ public class MiscErrorTest
     @Test
     public void smokeTest()
     {
-        RuntimeException runtimeException = Assertions.assertThrows(RuntimeException.class, this::assertCompilerErrors);
+        RuntimeException runtimeException = assertThrows(RuntimeException.class, this::assertCompilerErrors);
         assertThat(runtimeException.getMessage()).isEqualTo("Exception in compiler during phase: ParameterizedPropertyPhase for compilation unit: MiscErrorTest.klass");
     }
 }
