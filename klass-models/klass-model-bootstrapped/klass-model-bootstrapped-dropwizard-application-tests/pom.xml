@@ -43,18 +43,6 @@
                 <directory>src/test/inputresources</directory>
             </testResource>
         </testResources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.4.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <skipPublishing>true</skipPublishing>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 
     <dependencies>
