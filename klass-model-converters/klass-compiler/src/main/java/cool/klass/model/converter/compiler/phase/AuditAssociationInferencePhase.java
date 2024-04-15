@@ -107,7 +107,7 @@ public class AuditAssociationInferencePhase
 
         StringBuilder stringBuilder = new StringBuilder();
         AntlrClass    klass    = this.compilerState.getCompilerWalk().getKlass();
-        stringBuilder.append("package " + klass.getPackageName() + "\n");
+        stringBuilder.append("package ").append(klass.getPackageName()).append("\n");
 
         if (needsCreatedBy)
         {

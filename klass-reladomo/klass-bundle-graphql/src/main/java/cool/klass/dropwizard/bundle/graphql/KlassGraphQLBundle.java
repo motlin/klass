@@ -39,6 +39,7 @@ import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
 import graphql.kickstart.execution.GraphQLObjectMapper;
 import graphql.kickstart.execution.GraphQLQueryInvoker;
+import graphql.kickstart.servlet.GraphQLConfiguration;
 import graphql.kickstart.servlet.GraphQLHttpServlet;
 import graphql.scalars.java.JavaPrimitives;
 import graphql.schema.GraphQLSchema;
@@ -124,7 +125,7 @@ public class KlassGraphQLBundle<T extends Configuration & GraphQLFactoryProvider
                 .withGraphQLErrorHandler(new KlassGraphQLErrorHandler())
                 .build();
 
-        graphql.kickstart.servlet.GraphQLConfiguration config = graphql.kickstart.servlet.GraphQLConfiguration
+        GraphQLConfiguration config = GraphQLConfiguration
                         .with(schema)
                         .with(queryInvoker)
                         .with(graphQLObjectMapper)

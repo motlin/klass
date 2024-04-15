@@ -57,9 +57,14 @@ import cool.klass.model.meta.domain.api.service.url.Url;
 import cool.klass.model.meta.domain.api.value.ExpressionValue;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
 import klass.model.meta.domain.AssociationEndFinder;
+import klass.model.meta.domain.AssociationEndList;
+import klass.model.meta.domain.AssociationEndModifier;
 import klass.model.meta.domain.AssociationEndModifierFinder;
+import klass.model.meta.domain.AssociationEndModifierList;
 import klass.model.meta.domain.AssociationEndOrderBy;
+import klass.model.meta.domain.AssociationEndOrderByList;
 import klass.model.meta.domain.AssociationFinder;
+import klass.model.meta.domain.AssociationList;
 import klass.model.meta.domain.ClassifierInterfaceMapping;
 import klass.model.meta.domain.ClassifierInterfaceMappingFinder;
 import klass.model.meta.domain.ClassifierInterfaceMappingList;
@@ -73,30 +78,42 @@ import klass.model.meta.domain.EnumerationList;
 import klass.model.meta.domain.EnumerationLiteralFinder;
 import klass.model.meta.domain.EnumerationLiteralList;
 import klass.model.meta.domain.EnumerationParameter;
+import klass.model.meta.domain.EnumerationParameterList;
 import klass.model.meta.domain.EnumerationPropertyFinder;
 import klass.model.meta.domain.EnumerationPropertyList;
 import klass.model.meta.domain.InterfaceFinder;
 import klass.model.meta.domain.InterfaceList;
 import klass.model.meta.domain.KlassFinder;
+import klass.model.meta.domain.KlassList;
+import klass.model.meta.domain.MaxLengthPropertyValidation;
 import klass.model.meta.domain.MaxLengthPropertyValidationFinder;
 import klass.model.meta.domain.MaxLengthPropertyValidationList;
+import klass.model.meta.domain.MaxPropertyValidation;
 import klass.model.meta.domain.MaxPropertyValidationFinder;
 import klass.model.meta.domain.MaxPropertyValidationList;
+import klass.model.meta.domain.MemberReferencePath;
 import klass.model.meta.domain.MemberReferencePathList;
+import klass.model.meta.domain.MinLengthPropertyValidation;
 import klass.model.meta.domain.MinLengthPropertyValidationFinder;
 import klass.model.meta.domain.MinLengthPropertyValidationList;
+import klass.model.meta.domain.MinPropertyValidation;
 import klass.model.meta.domain.MinPropertyValidationFinder;
 import klass.model.meta.domain.MinPropertyValidationList;
 import klass.model.meta.domain.NamedElementAbstract;
 import klass.model.meta.domain.NamedProjection;
 import klass.model.meta.domain.NamedProjectionFinder;
+import klass.model.meta.domain.NamedProjectionList;
+import klass.model.meta.domain.PackageableElementList;
 import klass.model.meta.domain.PrimitiveParameter;
+import klass.model.meta.domain.PrimitiveParameterList;
 import klass.model.meta.domain.PrimitivePropertyFinder;
 import klass.model.meta.domain.PrimitivePropertyList;
 import klass.model.meta.domain.ProjectionDataTypePropertyFinder;
 import klass.model.meta.domain.ProjectionElementList;
 import klass.model.meta.domain.ProjectionProjectionReferenceFinder;
 import klass.model.meta.domain.ProjectionReferencePropertyFinder;
+import klass.model.meta.domain.ProjectionWithAssociationEnd;
+import klass.model.meta.domain.PropertyModifier;
 import klass.model.meta.domain.PropertyModifierFinder;
 import klass.model.meta.domain.PropertyModifierList;
 import klass.model.meta.domain.RootProjection;
@@ -104,11 +121,15 @@ import klass.model.meta.domain.RootProjectionFinder;
 import klass.model.meta.domain.RootProjectionList;
 import klass.model.meta.domain.ServiceFinder;
 import klass.model.meta.domain.ServiceGroupFinder;
+import klass.model.meta.domain.ServiceGroupList;
+import klass.model.meta.domain.ServiceList;
 import klass.model.meta.domain.ThisMemberReferencePathFinder;
 import klass.model.meta.domain.ThisMemberReferencePathList;
 import klass.model.meta.domain.TypeMemberReferencePathList;
 import klass.model.meta.domain.UrlFinder;
+import klass.model.meta.domain.UrlList;
 import klass.model.meta.domain.UrlParameter;
+import klass.model.meta.domain.UrlParameterList;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MutableMap;
@@ -165,7 +186,7 @@ public class KlassBootstrapWriter
 
         this.domainModel
         .getTopLevelElements()
-                .collect(this::handlePackageableElement, new klass.model.meta.domain.PackageableElementList())
+                .collect(this::handlePackageableElement, new PackageableElementList())
                 .insertAll();
 
         this.domainModel
@@ -187,7 +208,7 @@ public class KlassBootstrapWriter
                 .insertAll();
         this.domainModel
                 .getClasses()
-                .collect(this::handleClass, new klass.model.meta.domain.KlassList())
+                .collect(this::handleClass, new KlassList())
                 .insertAll();
         this.domainModel
                 .getClassifiers()
@@ -300,17 +321,17 @@ public class KlassBootstrapWriter
 
         this.domainModel
                 .getAssociations()
-                .collectWith(this::handleAssociation, criteriaByCriteria, new klass.model.meta.domain.AssociationList())
+                .collectWith(this::handleAssociation, criteriaByCriteria, new AssociationList())
                 .insertAll();
         associationEnds
-                .collect(this::handleAssociationEnd, new klass.model.meta.domain.AssociationEndList())
+                .collect(this::handleAssociationEnd, new AssociationEndList())
                 .insertAll();
         associationEnds
                 .flatCollect(
                         associationEnd -> associationEnd
                                 .getModifiers()
                                 .collectWith(this::handleAssociationEndModifier, associationEnd),
-                        new klass.model.meta.domain.AssociationEndModifierList())
+                        new AssociationEndModifierList())
                 .insertAll();
 
         associationEnds
@@ -319,7 +340,7 @@ public class KlassBootstrapWriter
                                 .getOrderBy()
                                 .map(OrderBy::getOrderByMemberReferencePaths).orElseGet(Lists.immutable::empty)
                                 .collect(memberReferencePath -> this.handleOrderByMemberReferencePath(memberReferencePath, associationEnd, expressionValuesByExpressionValue)),
-                        new klass.model.meta.domain.AssociationEndOrderByList())
+                        new AssociationEndOrderByList())
                 .insertAll();
 
         MutableMap<Projection, klass.model.meta.domain.ProjectionElement> rootProjectionByProjection = Maps.mutable.empty();
@@ -342,7 +363,7 @@ public class KlassBootstrapWriter
 
         this.domainModel
                 .getProjections()
-                .collect(projection -> this.handleNamedProjection(projection, rootProjectionByProjection), new klass.model.meta.domain.NamedProjectionList())
+                .collect(projection -> this.handleNamedProjection(projection, rootProjectionByProjection), new NamedProjectionList())
                 .insertAll();
 
         this.domainModel
@@ -353,11 +374,11 @@ public class KlassBootstrapWriter
 
         this.domainModel
                 .getServiceGroups()
-                .collect(this::handleServiceGroup, new klass.model.meta.domain.ServiceGroupList())
+                .collect(this::handleServiceGroup, new ServiceGroupList())
                 .insertAll();
 
         urls
-                .collect(this::handleUrl, new klass.model.meta.domain.UrlList())
+                .collect(this::handleUrl, new UrlList())
                 .insertAll();
 
         MutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter = Maps.mutable.empty();
@@ -373,7 +394,7 @@ public class KlassBootstrapWriter
                                                         eachPathParameter,
                                                         "path",
                                                         bootstrappedParametersByParameter)),
-                        new klass.model.meta.domain.UrlParameterList())
+                        new UrlParameterList())
                 .insertAll();
 
         urls
@@ -387,7 +408,7 @@ public class KlassBootstrapWriter
                                                         eachPathParameter,
                                                         "query",
                                                         bootstrappedParametersByParameter)),
-                        new klass.model.meta.domain.UrlParameterList())
+                        new UrlParameterList())
                 .insertAll();
 
         ImmutableList<Parameter> parameters = urls.flatCollect(Url::getParameters);
@@ -396,14 +417,14 @@ public class KlassBootstrapWriter
                 .select(each -> each.getType() instanceof PrimitiveType)
                 .collect(
                         each -> this.handleUrlPrimitiveParameter(each, bootstrappedParametersByParameter),
-                        new klass.model.meta.domain.PrimitiveParameterList())
+                        new PrimitiveParameterList())
                 .insertAll();
 
         parameters
                 .select(each -> each.getType() instanceof Enumeration)
                 .collect(
                         each -> this.handleUrlEnumerationParameter(each, bootstrappedParametersByParameter),
-                        new klass.model.meta.domain.EnumerationParameterList())
+                        new EnumerationParameterList())
                 .insertAll();
 
         var expressionValueVisitor3 = new BootstrapExpressionValueVisitor3(expressionValuesByExpressionValue, bootstrappedParametersByParameter.toImmutable());
@@ -412,7 +433,7 @@ public class KlassBootstrapWriter
         serviceCriteria.each(criteria -> criteria.visit(criteriaVisitor5));
 
         services
-                .collectWith(this::handleService, criteriaByCriteria, new klass.model.meta.domain.ServiceList())
+                .collectWith(this::handleService, criteriaByCriteria, new ServiceList())
                 .insertAll();
     }
 
@@ -482,9 +503,9 @@ public class KlassBootstrapWriter
                 .collect(modifier -> this.getClassifierModifier(classifier, modifier));
     }
 
-    private klass.model.meta.domain.ClassifierModifier getClassifierModifier(Classifier classifier, Modifier modifier)
+    private ClassifierModifier getClassifierModifier(Classifier classifier, Modifier modifier)
     {
-        var bootstrappedClassifierModifier = new klass.model.meta.domain.ClassifierModifier();
+        var bootstrappedClassifierModifier = new ClassifierModifier();
         bootstrappedClassifierModifier.setKeyword(modifier.getKeyword());
         bootstrappedClassifierModifier.setOrdinal(modifier.getOrdinal());
         bootstrappedClassifierModifier.setClassifierName(classifier.getName());
@@ -511,16 +532,16 @@ public class KlassBootstrapWriter
         return bootstrappedDataTypeProperty;
     }
 
-    private ImmutableList<klass.model.meta.domain.PropertyModifier> handlePropertyModifier(@Nonnull DataTypeProperty dataTypeProperty)
+    private ImmutableList<PropertyModifier> handlePropertyModifier(@Nonnull DataTypeProperty dataTypeProperty)
     {
         return dataTypeProperty
                 .getModifiers()
                 .collect(modifier -> this.getPropertyModifier(dataTypeProperty, modifier));
     }
 
-    private klass.model.meta.domain.PropertyModifier getPropertyModifier(DataTypeProperty dataTypeProperty, Modifier modifier)
+    private PropertyModifier getPropertyModifier(DataTypeProperty dataTypeProperty, Modifier modifier)
     {
-        var bootstrappedPropertyModifier = new klass.model.meta.domain.PropertyModifier();
+        var bootstrappedPropertyModifier = new PropertyModifier();
         bootstrappedPropertyModifier.setKeyword(modifier.getKeyword());
         bootstrappedPropertyModifier.setOrdinal(modifier.getOrdinal());
         bootstrappedPropertyModifier.setClassifierName(dataTypeProperty.getOwningClassifier().getName());
@@ -528,13 +549,13 @@ public class KlassBootstrapWriter
         return bootstrappedPropertyModifier;
     }
 
-    private Optional<klass.model.meta.domain.MinLengthPropertyValidation> handleMinLengthPropertyValidation(DataTypeProperty dataTypeProperty)
+    private Optional<MinLengthPropertyValidation> handleMinLengthPropertyValidation(DataTypeProperty dataTypeProperty)
     {
         return dataTypeProperty.getMinLengthPropertyValidation().map(validation ->
         {
             Classifier classifier = dataTypeProperty.getOwningClassifier();
 
-            var bootstrappedMinLengthPropertyValidation = new klass.model.meta.domain.MinLengthPropertyValidation();
+            var bootstrappedMinLengthPropertyValidation = new MinLengthPropertyValidation();
             bootstrappedMinLengthPropertyValidation.setClassifierName(classifier.getName());
             bootstrappedMinLengthPropertyValidation.setPropertyName(dataTypeProperty.getName());
             bootstrappedMinLengthPropertyValidation.setNumber(validation.getNumber());
@@ -543,13 +564,13 @@ public class KlassBootstrapWriter
         });
     }
 
-    private Optional<klass.model.meta.domain.MaxLengthPropertyValidation> handleMaxLengthPropertyValidation(DataTypeProperty dataTypeProperty)
+    private Optional<MaxLengthPropertyValidation> handleMaxLengthPropertyValidation(DataTypeProperty dataTypeProperty)
     {
         return dataTypeProperty.getMaxLengthPropertyValidation().map(validation ->
         {
             Classifier classifier = dataTypeProperty.getOwningClassifier();
 
-            var bootstrappedMaxLengthPropertyValidation = new klass.model.meta.domain.MaxLengthPropertyValidation();
+            var bootstrappedMaxLengthPropertyValidation = new MaxLengthPropertyValidation();
             bootstrappedMaxLengthPropertyValidation.setClassifierName(classifier.getName());
             bootstrappedMaxLengthPropertyValidation.setPropertyName(dataTypeProperty.getName());
             bootstrappedMaxLengthPropertyValidation.setNumber(validation.getNumber());
@@ -558,13 +579,13 @@ public class KlassBootstrapWriter
         });
     }
 
-    private Optional<klass.model.meta.domain.MinPropertyValidation> handleMinPropertyValidation(DataTypeProperty dataTypeProperty)
+    private Optional<MinPropertyValidation> handleMinPropertyValidation(DataTypeProperty dataTypeProperty)
     {
         return dataTypeProperty.getMinPropertyValidation().map(validation ->
         {
             Classifier classifier = dataTypeProperty.getOwningClassifier();
 
-            var bootstrappedMinPropertyValidation = new klass.model.meta.domain.MinPropertyValidation();
+            var bootstrappedMinPropertyValidation = new MinPropertyValidation();
             bootstrappedMinPropertyValidation.setClassifierName(classifier.getName());
             bootstrappedMinPropertyValidation.setPropertyName(dataTypeProperty.getName());
             bootstrappedMinPropertyValidation.setNumber(validation.getNumber());
@@ -573,13 +594,13 @@ public class KlassBootstrapWriter
         });
     }
 
-    private Optional<klass.model.meta.domain.MaxPropertyValidation> handleMaxPropertyValidation(DataTypeProperty dataTypeProperty)
+    private Optional<MaxPropertyValidation> handleMaxPropertyValidation(DataTypeProperty dataTypeProperty)
     {
         return dataTypeProperty.getMaxPropertyValidation().map(validation ->
         {
             Classifier classifier = dataTypeProperty.getOwningClassifier();
 
-            var bootstrappedMaxPropertyValidation = new klass.model.meta.domain.MaxPropertyValidation();
+            var bootstrappedMaxPropertyValidation = new MaxPropertyValidation();
             bootstrappedMaxPropertyValidation.setClassifierName(classifier.getName());
             bootstrappedMaxPropertyValidation.setPropertyName(dataTypeProperty.getName());
             bootstrappedMaxPropertyValidation.setNumber(validation.getNumber());
@@ -656,10 +677,10 @@ public class KlassBootstrapWriter
         return bootstrappedAssociationEnd;
     }
 
-    private klass.model.meta.domain.AssociationEndModifier handleAssociationEndModifier(
+    private AssociationEndModifier handleAssociationEndModifier(
             @Nonnull Modifier modifier, @Nonnull AssociationEnd associationEnd)
     {
-        var bootstrappedAssociationEndModifier = new klass.model.meta.domain.AssociationEndModifier();
+        var bootstrappedAssociationEndModifier = new AssociationEndModifier();
         bootstrappedAssociationEndModifier.setOwningClassName(associationEnd.getOwningClassifier().getName());
         bootstrappedAssociationEndModifier.setAssociationEndName(associationEnd.getName());
         bootstrappedAssociationEndModifier.setKeyword(modifier.getKeyword());
@@ -735,7 +756,7 @@ public class KlassBootstrapWriter
         return bootstrappedProjectionElement;
     }
 
-    private klass.model.meta.domain.RootProjection handleRootProjection(
+    private RootProjection handleRootProjection(
             @Nonnull Projection projection,
             @Nonnull    klass.model.meta.domain.ProjectionElement projectionElement)
     {
@@ -778,7 +799,7 @@ public class KlassBootstrapWriter
                 bootstrappedProjectionElement.setParentId(bootstrappedProjectionParent.getId());
                 bootstrappedProjectionElement.insert();
 
-                var bootstrappedProjectionWithAssociationEnd = new klass.model.meta.domain.ProjectionWithAssociationEnd();
+                var bootstrappedProjectionWithAssociationEnd = new ProjectionWithAssociationEnd();
                 bootstrappedProjectionWithAssociationEnd.setId(bootstrappedProjectionElement.getId());
                 bootstrappedProjectionWithAssociationEnd.setAssociationEndClass(projectionReferenceProperty
                         .getProperty()
@@ -808,7 +829,7 @@ public class KlassBootstrapWriter
                 bootstrappedProjectionElement.setParentId(bootstrappedProjectionParent.getId());
                 bootstrappedProjectionElement.insert();
 
-                var bootstrappedProjectionWithAssociationEnd = new klass.model.meta.domain.ProjectionWithAssociationEnd();
+                var bootstrappedProjectionWithAssociationEnd = new ProjectionWithAssociationEnd();
                 bootstrappedProjectionWithAssociationEnd.setId(bootstrappedProjectionElement.getId());
                 bootstrappedProjectionWithAssociationEnd.setAssociationEndClass(projectionProjectionReference
                         .getProperty()
@@ -855,7 +876,7 @@ public class KlassBootstrapWriter
             @Nonnull MutableMap<Projection, klass.model.meta.domain.ProjectionElement> rootProjectionByProjection)
     {
         var bootstrappedRootProjection = rootProjectionByProjection.get(projection);
-        var bootstrappedProjection = new klass.model.meta.domain.NamedProjection();
+        var bootstrappedProjection = new NamedProjection();
         bootstrappedProjection.setName(projection.getName());
         bootstrappedProjection.setProjectionId(bootstrappedRootProjection.getId());
         return bootstrappedProjection;
@@ -988,7 +1009,7 @@ public class KlassBootstrapWriter
         Klass            klass    = thisMemberReferencePath.getKlass();
         DataTypeProperty property = thisMemberReferencePath.getProperty();
 
-        var bootstrappedMemberReferencePath = new klass.model.meta.domain.MemberReferencePath();
+        var bootstrappedMemberReferencePath = new MemberReferencePath();
         bootstrappedMemberReferencePath.setId(bootstrappedExpressionValue.getId());
         bootstrappedMemberReferencePath.setClassName(klass.getName());
         bootstrappedMemberReferencePath.setPropertyClassName(property.getOwningClassifier().getName());
