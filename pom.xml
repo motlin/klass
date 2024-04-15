@@ -140,7 +140,7 @@
     </dependencyManagement>
 
     <build>
-        <defaultGoal>clean verify</defaultGoal>
+        <defaultGoal>verify</defaultGoal>
 
         <pluginManagement>
             <plugins>
