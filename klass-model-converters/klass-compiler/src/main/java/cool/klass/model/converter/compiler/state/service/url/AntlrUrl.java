@@ -166,7 +166,7 @@ public class AntlrUrl
         }
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         this.reportDuplicateParameterErrors(compilerAnnotationHolder);
@@ -215,7 +215,7 @@ public class AntlrUrl
             compilerAnnotationHolder.add("ERR_URL_EMP", message, this);
         }
     }
-    //</editor-fold>
+    // </editor-fold>
 
     @Nonnull
     @Override

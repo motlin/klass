@@ -148,7 +148,7 @@ public class IncomingUpdateDataModelValidator
         }
     }
 
-    //region DataTypeProperties
+    // region DataTypeProperties
     private void handleDataTypePropertiesInsideProjection()
     {
         ImmutableList<DataTypeProperty> dataTypeProperties = this.klass.getDataTypeProperties();
@@ -272,9 +272,9 @@ public class IncomingUpdateDataModelValidator
                 .asReversed()
                 .makeString(".");
     }
-    //endregion
+    // endregion
 
-    //region AssociationEnds
+    // region AssociationEnds
     private void handleAssociationEnds()
     {
         for (AssociationEnd associationEnd : this.klass.getAssociationEnds())
@@ -518,9 +518,11 @@ public class IncomingUpdateDataModelValidator
             return;
         }
 
+        /*
         ImmutableList<JsonNode> incomingInstancesForInsert = this.filterIncomingInstancesForInsert(
                 incomingChildInstances,
                 associationEnd);
+        */
 
         // TODO: Figure out how to recurse without checking key
         ImmutableList<JsonNode> incomingInstancesForUpdate = this.filterIncomingInstancesForUpdate(

@@ -16,8 +16,6 @@
 
 package cool.klass.reladomo.persistent.writer;
 
-import java.time.Instant;
-import java.time.format.DateTimeParseException;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Optional;
@@ -136,7 +134,7 @@ public class IncomingCreateDataModelValidator
         }
     }
 
-    //region DataTypeProperties
+    // region DataTypeProperties
     private void handleDataTypePropertiesInsideProjection()
     {
         ImmutableList<DataTypeProperty> dataTypeProperties = this.klass.getDataTypeProperties();
@@ -295,18 +293,6 @@ public class IncomingCreateDataModelValidator
         }
     }
 
-    private static Optional<Instant> getInstant(JsonNode jsonDataTypeValue)
-    {
-        try
-        {
-            return Optional.of(Instant.parse(jsonDataTypeValue.asText()));
-        }
-        catch (DateTimeParseException e)
-        {
-            return Optional.empty();
-        }
-    }
-
     public String getContextString()
     {
         return this.contextStack
@@ -314,9 +300,9 @@ public class IncomingCreateDataModelValidator
                 .asReversed()
                 .makeString(".");
     }
-    //endregion
+    // endregion
 
-    //region AssociationEnds
+    // region AssociationEnds
     private void handleAssociationEnds()
     {
         for (AssociationEnd associationEnd : this.klass.getAssociationEnds())
@@ -367,10 +353,12 @@ public class IncomingCreateDataModelValidator
         String associationEndName = associationEnd.getName();
         this.contextStack.push(associationEndName);
 
+        /*
         MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
                 childJsonNode,
                 associationEnd,
                 this.objectNode);
+        */
 
         try
         {
@@ -594,7 +582,7 @@ public class IncomingCreateDataModelValidator
     {
         for (JsonNode childJsonNode : childrenJsonNodes)
         {
-            MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
+            this.getKeysFromJsonNode(
                     childJsonNode,
                     associationEnd,
                     parentJsonNode);
@@ -610,10 +598,12 @@ public class IncomingCreateDataModelValidator
         String associationEndName = associationEnd.getName();
         this.contextStack.push(associationEndName);
 
+        /*
         MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
                 childJsonNode,
                 associationEnd,
                 this.objectNode);
+        */
 
         try
         {
@@ -651,6 +641,7 @@ public class IncomingCreateDataModelValidator
         JsonNode incomingChildInstances = this.objectNode.path(associationEnd.getName());
 
         // TODO: Figure out how to recurse without checking key
+        /*
         ImmutableList<JsonNode> incomingInstancesForInsert = this.filterIncomingInstancesForInsert(
                 incomingChildInstances,
                 associationEnd);
@@ -659,7 +650,6 @@ public class IncomingCreateDataModelValidator
                 incomingChildInstances,
                 associationEnd);
 
-        /*
         MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey = this.indexIncomingJsonInstances(
                 incomingInstances,
                 associationEnd,
@@ -741,7 +731,7 @@ public class IncomingCreateDataModelValidator
                         associationEnd);
     }
 
-    //endregion
+    // endregion
 
     private boolean jsonNodeNeedsIdInferredOnInsert(
             JsonNode jsonNode,

@@ -97,15 +97,15 @@ if [[ $COMMIT_MESSAGE == *\[serial\]* ]]; then
 fi
 
 if [ "$SERIAL" = true ]; then
-    PARALLELISM=""
+    PARALLELISM="--threads=1 --fail-fast"
 else
-    PARALLELISM="--threads 2C --fail-at-end"
+    PARALLELISM="--fail-at-end"
 fi
 
 echo "Beginning build of commit: $COMMIT_MESSAGE"
 
 if [ "$INCREMENTAL" != true ]; then
-    $MAVEN clean --threads 2C --quiet
+    $MAVEN clean --quiet
 fi
 
 $MAVEN checkstyle:check $PARALLELISM

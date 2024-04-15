@@ -22,7 +22,7 @@
     <parent>
         <groupId>io.liftwizard</groupId>
         <artifactId>liftwizard-parent-build</artifactId>
-        <version>2.1.6</version>
+        <version>2.1.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -68,7 +68,7 @@
         <checkstyle.suppressions>${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</checkstyle.suppressions>
         <checkstyle.cache>${project.build.directory}/checkstyle-cache</checkstyle.cache>
 
-        <liftwizard.version>2.1.6</liftwizard.version>
+        <liftwizard.version>2.1.7</liftwizard.version>
     </properties>
 
     <description>Klass is a rapid application development framework with full support for temporal data.</description>
@@ -136,6 +136,24 @@
                 <version>1.4.200</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-core</artifactId>
+                <version>1.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-testing</artifactId>
+                <version>2.1.12</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.hamcrest</groupId>
+                        <artifactId>hamcrest</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -144,11 +162,6 @@
 
         <pluginManagement>
             <plugins>
-
-                <plugin>
-                    <artifactId>maven-wrapper-plugin</artifactId>
-                    <version>3.2.0</version>
-                </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -160,74 +173,6 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>3.2.0</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.6.3</version>
-                    <configuration>
-                        <notimestamp>true</notimestamp>
-                        <additionalOptions>-Xdoclint:all -Xdoclint:-missing</additionalOptions>
-                        <additionalJOptions>
-                            <additionalJOption>-Xdoclint:all</additionalJOption>
-                            <additionalJOption>-Xdoclint:-missing</additionalJOption>
-                        </additionalJOptions>
-                        <additionalDependencies>
-                            <additionalDependency>
-                                <groupId>cool.klass</groupId>
-                                <artifactId>klass-generator-dto</artifactId>
-                                <version>${project.version}</version>
-                            </additionalDependency>
-                            <additionalDependency>
-                                <groupId>cool.klass</groupId>
-                                <artifactId>klass-generator-json-view</artifactId>
-                                <version>${project.version}</version>
-                            </additionalDependency>
-                            <additionalDependency>
-                                <groupId>cool.klass</groupId>
-                                <artifactId>klass-generator-service-resources</artifactId>
-                                <version>${project.version}</version>
-                            </additionalDependency>
-                            <additionalDependency>
-                                <groupId>cool.klass</groupId>
-                                <artifactId>klass-generator-reladomo</artifactId>
-                                <version>${project.version}</version>
-                            </additionalDependency>
-                            <additionalDependency>
-                                <groupId>cool.klass</groupId>
-                                <artifactId>klass-generator-reladomo-readable-interface</artifactId>
-                                <version>${project.version}</version>
-                            </additionalDependency>
-                            <additionalDependency>
-                                <groupId>cool.klass</groupId>
-                                <artifactId>klass-generator-dropwizard</artifactId>
-                                <version>${project.version}</version>
-                            </additionalDependency>
-                        </additionalDependencies>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-plugin-plugin</artifactId>
-                    <configuration>
-                        <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>mojo-descriptor</id>
-                            <goals>
-                                <goal>descriptor</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>help-goal</id>
-                            <goals>
-                                <goal>helpmojo</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
 
             </plugins>
@@ -300,128 +245,63 @@
                     <plugins>
                         <plugin>
                             <artifactId>maven-dependency-plugin</artifactId>
-                            <version>3.6.1</version>
                             <configuration>
-                                <failOnWarning>true</failOnWarning>
-                                <!-- Workaround for bug in maven-dependency-plugin tracked in https://issues.apache.org/jira/browse/MDEP-791 -->
-                                <!-- Version 3.1.2 was the last version with a working algorithm. Version 3.2.0 and 3.6.1 support Java 17. -->
-                                <ignoredNonTestScopedDependencies>
-                                    <ignoredNonTestScopedDependency>*</ignoredNonTestScopedDependency>
-                                </ignoredNonTestScopedDependencies>
                                 <ignoredUnusedDeclaredDependencies>
-                                    <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>com.google.auto.service:auto-service-annotations
-                                    </ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.google.auto.service:auto-service-annotations</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>com.h2database:h2</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>com.stackoverflow:stackoverflow-domain-model
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>com.stackoverflow:stackoverflow-domain-model
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>
-                                        cool.klass.xample.coverage:coverage-example-domain-model
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>
-                                        cool.klass.xample.coverage:coverage-example-domain-model
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>
-                                        cool.klass:klass-dropwizard-bundle-bootstrap-writer
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>
-                                        cool.klass:klass-dropwizard-bundle-reladomo-jsonview
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>
-                                        cool.klass:klass-dropwizard-bundle-reladomo-response
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-sample-data
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>
-                                        cool.klass:klass-dropwizard-configuration-domain-model-loader-compiler
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>
-                                        cool.klass:klass-dropwizard-configuration-domain-model-loader-constant
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-domain-model
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>
-                                        io.liftwizard:liftwizard-bundle-connection-manager-holder
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-ddl-executor
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-h2
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-logging-config
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-logging-http
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-object-mapper
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-reladomo
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-clock-fixed
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-clock-system
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>
-                                        io.liftwizard:liftwizard-config-logging-logstash-console
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-uuid-seed
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-uuid-system
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>
-                                        io.liftwizard:liftwizard-logging-buffered-appender
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>
-                                        io.liftwizard:liftwizard-reladomo-simulated-sequence
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>junit:junit</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>org.eclipse.collections:eclipse-collections
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>org.junit.jupiter:junit-jupiter-api
-                                    </ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>org.junit.vintage:junit-vintage-engine
-                                    </ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.stackoverflow:stackoverflow-domain-model</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass.xample.coverage:coverage-example-domain-model</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass.xample.coverage:coverage-example-graphql-reladomo-finder</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass.xample.coverage:coverage-example-graphql-schema-query</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass.xample.coverage:coverage-example-graphql-schema</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass.xample.coverage:coverage-example-liquibase-schema</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass.xample.coverage:coverage-example-reladomo-runtime-configuration</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-bootstrap-writer</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo-jsonview</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo-response</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-sample-data</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-data-store-reladomo</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-domain-model-loader-compiler</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-domain-model-loader-constant</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-domain-model</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-graphql-reladomo-finder</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-graphql-schema</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-liquibase-schema</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-reladomo-pojos</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-syntax-css-class</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-auth-filter</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-connection-manager-holder</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-cors</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-ddl-executor</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-h2</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-liquibase-migration</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-logging-config</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-logging-http</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-logging-uncaught-exception-handler</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-object-mapper</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-reladomo</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-clock-fixed</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-clock-incrementing</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-clock-system</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-logging-filter-janino</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-logging-filter-requesturl</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-logging-logstash-console</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-logging-logstash-file</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-uuid-seed</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-uuid-system</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-graphql-query-schema</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-graphql-reladomo-meta</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-logging-buffered-appender</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-logging-p6spy</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-reladomo-simulated-sequence</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>org.eclipse.collections:eclipse-collections</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>org.junit.vintage:junit-vintage-engine</ignoredUnusedDeclaredDependency>
                                 </ignoredUnusedDeclaredDependencies>
-                                <ignoredUsedUndeclaredDependencies>
-                                    <ignoredUsedUndeclaredDependency>org.hamcrest:hamcrest
-                                    </ignoredUsedUndeclaredDependency>
-                                    <ignoredUsedUndeclaredDependency>jakarta.ws.rs:jakarta.ws.rs-api
-                                    </ignoredUsedUndeclaredDependency>
-                                    <ignoredUsedUndeclaredDependency>jakarta.validation:jakarta.validation-api
-                                    </ignoredUsedUndeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>javax.servlet:javax.servlet-api
-                                    </ignoredUnusedDeclaredDependency>
-                                </ignoredUsedUndeclaredDependencies>
-                                <ignoredNonTestScopedDependencies>
-                                    <ignoredNonTestScopedDependency>io.dropwizard:dropwizard-jackson
-                                    </ignoredNonTestScopedDependency>
-                                    <ignoredNonTestScopedDependency>jakarta.ws.rs:jakarta.ws.rs-api
-                                    </ignoredNonTestScopedDependency>
-                                    <ignoredNonTestScopedDependency>jakarta.validation:jakarta.validation-api
-                                    </ignoredNonTestScopedDependency>
-                                    <ignoredNonTestScopedDependency>javax.servlet:javax.servlet-api
-                                    </ignoredNonTestScopedDependency>
-                                </ignoredNonTestScopedDependencies>
                             </configuration>
-
-                            <executions>
-                                <execution>
-                                    <goals>
-                                        <goal>analyze-only</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
                         </plugin>
-
                     </plugins>
                 </pluginManagement>
-
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-dependency-plugin</artifactId>
-                    </plugin>
-                </plugins>
             </build>
         </profile>
         <!--endregion-->

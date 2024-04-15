@@ -43,7 +43,7 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 public class AntlrAssociationEnd
         extends AntlrClassReferenceProperty
 {
-    //<editor-fold desc="AMBIGUOUS">
+    // <editor-fold desc="AMBIGUOUS">
     public static final AntlrAssociationEnd AMBIGUOUS = new AntlrAssociationEnd(
             new AssociationEndContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
@@ -64,9 +64,9 @@ public class AntlrAssociationEnd
             return AntlrAssociationEnd.class.getSimpleName() + ".AMBIGUOUS";
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
-    //<editor-fold desc="NOT_FOUND">
+    // <editor-fold desc="NOT_FOUND">
     public static final AntlrAssociationEnd NOT_FOUND = new AntlrAssociationEnd(
             new AssociationEndContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
@@ -87,7 +87,7 @@ public class AntlrAssociationEnd
             return AntlrAssociationEnd.class.getSimpleName() + ".NOT_FOUND";
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
     @Nonnull
     private final AntlrAssociation owningAssociation;
@@ -157,7 +157,7 @@ public class AntlrAssociationEnd
         return this.associationEnd;
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @Override
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
@@ -338,7 +338,7 @@ public class AntlrAssociationEnd
                 this,
                 this.getElementContext().classReference());
     }
-    //</editor-fold>
+    // </editor-fold>
 
     @Nonnull
     @Override

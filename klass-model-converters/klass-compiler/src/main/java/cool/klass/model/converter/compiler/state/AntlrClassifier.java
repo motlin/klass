@@ -50,7 +50,7 @@ public abstract class AntlrClassifier
         extends AntlrPackageableElement
         implements AntlrType, AntlrTopLevelElement
 {
-    //<editor-fold desc="AMBIGUOUS">
+    // <editor-fold desc="AMBIGUOUS">
     public static final AntlrClassifier AMBIGUOUS = new AntlrClassifier(
             new ClassDeclarationContext(AMBIGUOUS_PARENT, -1),
             AntlrCompilationUnit.AMBIGUOUS,
@@ -75,9 +75,9 @@ public abstract class AntlrClassifier
             return AntlrClassifier.class.getSimpleName() + ".AMBIGUOUS";
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
-    //<editor-fold desc="NOT_FOUND">
+    // <editor-fold desc="NOT_FOUND">
     public static final AntlrClassifier NOT_FOUND = new AntlrClassifier(
             new ClassDeclarationContext(NOT_FOUND_PARENT, -1),
             AntlrCompilationUnit.AMBIGUOUS,
@@ -102,7 +102,7 @@ public abstract class AntlrClassifier
             return AntlrClassifier.class.getSimpleName() + ".NOT_FOUND";
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
     protected final MutableList<AntlrModifier>                declaredModifiers                = Lists.mutable.empty();
     protected final MutableList<AntlrProperty>                declaredProperties               = Lists.mutable.empty();
@@ -350,7 +350,7 @@ public abstract class AntlrClassifier
         this.declaredInterfaces.add(iface);
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @Override
     @OverridingMethodsMustInvokeSuper
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
@@ -603,7 +603,7 @@ public abstract class AntlrClassifier
             }
         }
     }
-    //</editor-fold>
+    // </editor-fold>
 
     protected boolean isInterfaceRedundant(int index, @Nonnull AntlrInterface iface)
     {

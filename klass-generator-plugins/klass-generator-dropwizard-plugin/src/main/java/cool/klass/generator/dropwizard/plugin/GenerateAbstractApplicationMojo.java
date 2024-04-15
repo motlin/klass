@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import cool.klass.generator.dropwizard.AbstractApplicationGenerator;
+import cool.klass.generator.dropwizard.ApplicationSuperClassGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.model.meta.domain.api.DomainModel;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -60,7 +60,7 @@ public class GenerateAbstractApplicationMojo
         Path        outputPath  = this.outputDirectory.toPath();
         try
         {
-            AbstractApplicationGenerator abstractApplicationGenerator = new AbstractApplicationGenerator(
+            ApplicationSuperClassGenerator abstractApplicationGenerator = new ApplicationSuperClassGenerator(
                     domainModel,
                     this.rootPackageName,
                     this.applicationName);

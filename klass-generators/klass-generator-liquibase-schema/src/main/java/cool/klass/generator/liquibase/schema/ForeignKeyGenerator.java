@@ -84,7 +84,7 @@ public final class ForeignKeyGenerator
                 .collect(TableGenerator.COLUMN_NAME_CONVERTER::convert)
                 .makeString(", ");
 
-        //language=XML
+        // language=XML
         String format = """
                     <changeSet author="Klass" id="initial-foreign-key-%d-%s">
                         <addForeignKeyConstraint

@@ -20,17 +20,17 @@ import javax.annotation.Nonnull;
 
 import cool.klass.xample.coverage.dropwizard.application.CoverageExampleApplication;
 import io.dropwizard.testing.ResourceHelpers;
-import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.liftwizard.dropwizard.testing.junit.AbstractDropwizardAppTest;
+import io.liftwizard.junit.extension.app.LiftwizardAppExtension;
 
 public abstract class AbstractCoverageTest
         extends AbstractDropwizardAppTest
 {
     @Nonnull
     @Override
-    protected DropwizardAppRule getDropwizardAppRule()
+    protected LiftwizardAppExtension<?> getDropwizardAppExtension()
     {
-        return new DropwizardAppRule<>(
+        return new LiftwizardAppExtension<>(
                 CoverageExampleApplication.class,
                 ResourceHelpers.resourceFilePath("config-test.json5"));
     }

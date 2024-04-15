@@ -85,7 +85,7 @@ public class ReladomoReadableInterfaceGenerator
 
         String propertiesSourceCode = this.getPropertiesSourceCode(primitiveProperties);
 
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "package " + packageName + ".reladomo.readable;\n"
                 + "\n"

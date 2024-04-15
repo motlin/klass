@@ -16,43 +16,43 @@
 
 package klass.model.meta.domain.dropwizard.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class MetaResourceManualTest
+class MetaResourceManualTest
         extends AbstractResourceTestCase
 {
     @Test
-    public void metaEnumeration()
+    void metaEnumeration()
     {
         this.assertUrlReturns("metaEnumeration", "/meta/enumeration/PrimitiveType");
     }
 
     @Test
-    public void metaInterface()
+    void metaInterface()
     {
         this.assertUrlReturns("metaInterface", "/meta/interface/NamedElement");
     }
 
     @Test
-    public void metaClass()
+    void metaClass()
     {
         this.assertUrlReturns("metaClass", "/meta/class/Classifier");
     }
 
     @Test
-    public void metaAssociation()
+    void metaAssociation()
     {
         this.assertUrlReturns("metaAssociation", "/meta/association/DataTypePropertyHasModifiers");
     }
 
     @Test
-    public void metaProjection()
+    void metaProjection()
     {
         this.assertUrlReturns("metaProjection", "/meta/projection/ProjectionElementProjection");
     }
 
     @Test
-    public void metaServiceGroup()
+    void metaServiceGroup()
     {
         this.assertUrlReturns("metaServiceGroup", "/meta/serviceGroup/ServiceGroupResource");
     }

@@ -39,7 +39,7 @@ public class AntlrEnumeration
         extends AntlrPackageableElement
         implements AntlrType, AntlrTopLevelElement
 {
-    //<editor-fold desc="AMBIGUOUS">
+    // <editor-fold desc="AMBIGUOUS">
     public static final AntlrEnumeration AMBIGUOUS = new AntlrEnumeration(
             new EnumerationDeclarationContext(AMBIGUOUS_PARENT, -1),
             AntlrCompilationUnit.AMBIGUOUS,
@@ -52,9 +52,9 @@ public class AntlrEnumeration
             return AntlrEnumeration.class.getSimpleName() + ".AMBIGUOUS";
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
-    //<editor-fold desc="NOT_FOUND">
+    // <editor-fold desc="NOT_FOUND">
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
             new EnumerationDeclarationContext(NOT_FOUND_PARENT, -1),
             AntlrCompilationUnit.NOT_FOUND,
@@ -67,7 +67,7 @@ public class AntlrEnumeration
             return AntlrEnumeration.class.getSimpleName() + ".NOT_FOUND";
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
     private final MutableList<AntlrEnumerationLiteral>               enumerationLiteral        = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrEnumerationLiteral> enumerationLiteralsByName =
@@ -143,7 +143,7 @@ public class AntlrEnumeration
         return Objects.requireNonNull(this.enumerationBuilder);
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @Override
     public void reportNameErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
@@ -157,7 +157,7 @@ public class AntlrEnumeration
         this.logDuplicateLiteralNames(compilerAnnotationHolder);
         this.logDuplicatePrettyNames(compilerAnnotationHolder);
     }
-    //</editor-fold>
+    // </editor-fold>
 
     public void logDuplicateLiteralNames(CompilerAnnotationHolder compilerAnnotationHolder)
     {

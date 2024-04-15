@@ -17,9 +17,9 @@
 package cool.klass.model.converter.compiler.annotation.association;
 
 import cool.klass.model.converter.compiler.annotation.AbstractKlassCompilerErrorTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class DoubleOwnerAssociationErrorTest
+class DoubleOwnerAssociationErrorTest
         extends AbstractKlassCompilerErrorTestCase
 {
     @Test

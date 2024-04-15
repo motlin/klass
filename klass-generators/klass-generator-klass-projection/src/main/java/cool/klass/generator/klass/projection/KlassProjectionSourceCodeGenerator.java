@@ -43,7 +43,7 @@ public final class KlassProjectionSourceCodeGenerator
                 .collect(KlassProjectionSourceCodeGenerator::getClassifierSourceCode)
                 .makeString("\n");
 
-        //language=Klass
+        // language=Klass
         return "package " + fullyQualifiedPackage + ".inference\n"
                 + '\n'
                 + "/*\n"

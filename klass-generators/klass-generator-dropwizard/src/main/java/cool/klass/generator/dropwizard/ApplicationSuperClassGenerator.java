@@ -28,7 +28,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 
-public class AbstractApplicationGenerator
+public class ApplicationSuperClassGenerator
 {
     @Nonnull
     private final DomainModel domainModel;
@@ -41,7 +41,7 @@ public class AbstractApplicationGenerator
     @Nonnull
     private final String      relativePath;
 
-    public AbstractApplicationGenerator(
+    public ApplicationSuperClassGenerator(
             @Nonnull DomainModel domainModel,
             @Nonnull String rootPackageName,
             @Nonnull String applicationName)
@@ -60,7 +60,7 @@ public class AbstractApplicationGenerator
         Path javaPath = path.resolve("Abstract" + this.applicationName + "Application.java");
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         String sourceCode = ""
                 + "package " + this.packageName + ";\n"
                 + "\n"

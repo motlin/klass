@@ -38,7 +38,7 @@ import org.eclipse.collections.api.list.ListIterable;
 public class AntlrEnumerationProperty
         extends AntlrDataTypeProperty<EnumerationImpl>
 {
-    //<editor-fold desc="AMBIGUOUS">
+    // <editor-fold desc="AMBIGUOUS">
     public static final AntlrEnumerationProperty AMBIGUOUS = new AntlrEnumerationProperty(
             new EnumerationPropertyContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
@@ -54,9 +54,9 @@ public class AntlrEnumerationProperty
             return "AntlrEnumerationProperty.AMBIGUOUS";
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
-    //<editor-fold desc="NOT_FOUND">
+    // <editor-fold desc="NOT_FOUND">
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
             new EnumerationPropertyContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
@@ -72,7 +72,7 @@ public class AntlrEnumerationProperty
             return "AntlrEnumerationProperty.NOT_FOUND";
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
     // TODO: Check that it's not NOT_FOUND
     @Nonnull
@@ -154,7 +154,7 @@ public class AntlrEnumerationProperty
         return this.getElementContext().enumerationReference().getText();
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @Override
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
@@ -209,7 +209,7 @@ public class AntlrEnumerationProperty
             compilerAnnotationHolder.add("ERR_ENM_IDP", message, this, idModifier.getElementContext());
         }
     }
-    //</editor-fold>
+    // </editor-fold>
 
     @Nonnull
     @Override

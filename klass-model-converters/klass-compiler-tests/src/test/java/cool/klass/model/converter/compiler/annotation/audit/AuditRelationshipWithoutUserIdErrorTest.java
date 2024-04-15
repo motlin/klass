@@ -17,9 +17,9 @@
 package cool.klass.model.converter.compiler.annotation.audit;
 
 import cool.klass.model.converter.compiler.annotation.AbstractKlassCompilerErrorTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class AuditRelationshipWithoutUserIdErrorTest
+class AuditRelationshipWithoutUserIdErrorTest
         extends AbstractKlassCompilerErrorTestCase
 {
     @Test

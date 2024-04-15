@@ -55,7 +55,7 @@
         <checkstyle.suppressions>${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</checkstyle.suppressions>
         <checkstyle.cache>${project.build.directory}/checkstyle-cache</checkstyle.cache>
 
-        <liftwizard.version>2.1.6</liftwizard.version>
+        <liftwizard.version>2.1.7</liftwizard.version>
     </properties>
 
     <name>${app.name} (Module Group)</name>
@@ -92,19 +92,6 @@
 
     <build>
         <defaultGoal>verify</defaultGoal>
-
-        <plugins>
-
-            <plugin>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-            </plugin>
-
-        </plugins>
 
     </build>
 

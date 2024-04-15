@@ -44,7 +44,7 @@ public class BootstrapExpressionValueVisitor2
 {
     private final ImmutableMap<ExpressionValue, klass.model.meta.domain.ExpressionValue> expressionValuesByExpressionValue;
 
-    private final MutableList<klass.model.meta.domain.MemberReferencePath>     bootstrappedMemberReferencePaths     = Lists.mutable.empty();
+    private final MutableList<MemberReferencePath>     bootstrappedMemberReferencePaths     = Lists.mutable.empty();
     private final MutableList<klass.model.meta.domain.TypeMemberReferencePath> bootstrappedTypeMemberReferencePaths = Lists.mutable.empty();
     private final MutableList<klass.model.meta.domain.ThisMemberReferencePath> bootstrappedThisMemberReferencePaths = Lists.mutable.empty();
 

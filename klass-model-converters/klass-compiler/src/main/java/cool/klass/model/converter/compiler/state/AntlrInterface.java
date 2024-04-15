@@ -47,7 +47,7 @@ import org.eclipse.collections.impl.factory.Sets;
 public class AntlrInterface
         extends AntlrClassifier
 {
-    //<editor-fold desc="AMBIGUOUS">
+    // <editor-fold desc="AMBIGUOUS">
     public static final AntlrInterface AMBIGUOUS = new AntlrInterface(
             new InterfaceDeclarationContext(AMBIGUOUS_PARENT, -1),
             AntlrCompilationUnit.AMBIGUOUS,
@@ -61,9 +61,9 @@ public class AntlrInterface
                     + ".enterDataTypeProperty() not implemented yet");
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
-    //<editor-fold desc="NOT_FOUND">
+    // <editor-fold desc="NOT_FOUND">
     public static final AntlrInterface NOT_FOUND = new AntlrInterface(
             new InterfaceDeclarationContext(NOT_FOUND_PARENT, -1),
             AntlrCompilationUnit.NOT_FOUND,
@@ -77,7 +77,7 @@ public class AntlrInterface
                     + ".enterDataTypeProperty() not implemented yet");
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
     // TODO: Unified list of all members
 
@@ -184,7 +184,7 @@ public class AntlrInterface
         this.interfaceBuilder.setDeclaredInterfaces(declaredInterfaces);
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @Override
     public void reportNameErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
@@ -282,7 +282,7 @@ public class AntlrInterface
             this.reportForwardReference(compilerAnnotationHolder);
         }
     }
-    //</editor-fold>
+    // </editor-fold>
 
     private boolean extendsInterface(
             AntlrInterface iface,

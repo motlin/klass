@@ -1,14 +1,11 @@
-name: Publish Retype docs to GitHub Pages
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
-  retype:
-    name: Publish to retype branch
-
+  deploy-github-pages:
     runs-on: ubuntu-latest
 
     permissions:
@@ -17,12 +14,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: retypeapp/action-build@latest
+      - name: Generate Retype docs
+        uses: retypeapp/action-build@latest
         with:
           # config: retype.yml is the default
           config: docs/retype.yml
 
-      - uses: retypeapp/action-github-pages@latest
+      - name: Push to GitHub Pages
+        uses: retypeapp/action-github-pages@latest
+        if: github.event_name == 'push'
         with:
           # branch: retype is the default
           branch: retype

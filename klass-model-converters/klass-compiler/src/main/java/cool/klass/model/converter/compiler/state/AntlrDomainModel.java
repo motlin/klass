@@ -432,7 +432,7 @@ public class AntlrDomainModel
         return this.serviceGroupsByContext.get(context);
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         for (AntlrClass userClass : this.userClasses)
@@ -581,7 +581,7 @@ public class AntlrDomainModel
             }
         }
     }
-    //</editor-fold>
+    // </editor-fold>
 
     @Nonnull
     public DomainModelBuilder build(ImmutableList<CompilationUnit> compilationUnits)

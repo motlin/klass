@@ -102,7 +102,7 @@ public class DataTransferObjectsGenerator
                 : "";
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "package " + packageName + ";\n"
                 + "\n"
@@ -155,7 +155,7 @@ public class DataTransferObjectsGenerator
         String abstractKeyword = klass.isAbstract() ? "abstract " : "";
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         String sourceCode = ""
                 + "package " + packageName + ";\n"
                 + "\n"
@@ -213,7 +213,7 @@ public class DataTransferObjectsGenerator
     @Nonnull
     private String getGetterSetter(String type, String name, String uppercaseName)
     {
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "\n"
                 + "    public " + type + " get" + uppercaseName + "()\n"

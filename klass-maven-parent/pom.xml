@@ -23,7 +23,7 @@
     <parent>
         <groupId>io.liftwizard</groupId>
         <artifactId>liftwizard-parent-build</artifactId>
-        <version>2.1.6</version>
+        <version>2.1.7</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -56,7 +56,7 @@
         <checkstyle.suppressions>${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</checkstyle.suppressions>
         <checkstyle.cache>${project.build.directory}/checkstyle-cache</checkstyle.cache>
 
-        <liftwizard.version>2.1.6</liftwizard.version>
+        <liftwizard.version>2.1.7</liftwizard.version>
     </properties>
 
     <dependencyManagement>
@@ -91,19 +91,6 @@
 
     <build>
         <defaultGoal>verify</defaultGoal>
-
-        <plugins>
-
-            <plugin>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-            </plugin>
-
-        </plugins>
 
         <pluginManagement>
             <plugins>
@@ -189,65 +176,11 @@
                     </dependencies>
                 </plugin>
 
-                <plugin>
-                    <artifactId>maven-shade-plugin</artifactId>
-                    <configuration>
-                        <createDependencyReducedPom>true</createDependencyReducedPom>
-                        <transformers>
-                            <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                <resource>reference.conf</resource>
-                            </transformer>
-                            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                <mainClass>${mainClass}</mainClass>
-                            </transformer>
-                        </transformers>
-                        <!-- exclude signed Manifests -->
-                        <filters>
-                            <filter>
-                                <artifact>*:*</artifact>
-                                <excludes>
-                                    <exclude>module-info.class</exclude>
-                                    <exclude>META-INF/*.SF</exclude>
-                                    <exclude>META-INF/*.DSA</exclude>
-                                    <exclude>META-INF/*.RSA</exclude>
-                                </excludes>
-                            </filter>
-                        </filters>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>shade</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-
             </plugins>
         </pluginManagement>
     </build>
 
     <profiles>
-        <profile>
-            <id>dev</id>
-            <build>
-                <plugins>
-
-                    <plugin>
-                        <artifactId>maven-shade-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>none</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                </plugins>
-            </build>
-        </profile>
-
         <profile>
             <id>rerecord</id>
 
@@ -266,6 +199,19 @@
                 </pluginManagement>
             </build>
         </profile>
+
+        <!--region Phase 17: package-->
+        <profile>
+            <id>maven-shade-plugin</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-shade-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!--endregion-->
 
     </profiles>
 

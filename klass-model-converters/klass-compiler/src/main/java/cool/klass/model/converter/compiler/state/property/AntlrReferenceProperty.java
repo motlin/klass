@@ -40,7 +40,7 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         extends AntlrProperty
         implements AntlrOrderByOwner, AntlrMultiplicityOwner
 {
-    //<editor-fold desc="AMBIGUOUS">
+    // <editor-fold desc="AMBIGUOUS">
     public static final AntlrReferenceProperty AMBIGUOUS = new AntlrReferenceProperty(
             new ParserRuleContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
@@ -105,9 +105,9 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
                     + ".getSurroundingElement() not implemented yet");
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
-    //<editor-fold desc="NOT_FOUND">
+    // <editor-fold desc="NOT_FOUND">
     public static final AntlrReferenceProperty NOT_FOUND = new AntlrReferenceProperty(
             new ParserRuleContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
@@ -172,7 +172,7 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
                     + ".getTypeIdentifier() not implemented yet");
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
     @Nonnull
     protected Optional<AntlrOrderBy> orderBy = Optional.empty();
@@ -279,7 +279,7 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         return this.orderBy;
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @Override
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
@@ -321,7 +321,7 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
                 this.getName());
         compilerAnnotationHolder.add("ERR_REF_ORD", message, this.orderBy.get());
     }
-    //</editor-fold>
+    // </editor-fold>
 
     protected abstract IdentifierContext getTypeIdentifier();
 

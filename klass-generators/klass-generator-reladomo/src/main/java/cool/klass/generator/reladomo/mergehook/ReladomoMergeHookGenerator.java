@@ -114,7 +114,7 @@ public class ReladomoMergeHookGenerator
                 : "";
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         String sourceCode = ""
                 + "package " + klass.getPackageName() + ".reladomo.merge.hook;\n"
                 + "\n"

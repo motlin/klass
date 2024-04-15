@@ -46,19 +46,6 @@
     <build>
         <defaultGoal>verify</defaultGoal>
 
-        <plugins>
-
-            <plugin>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-            </plugin>
-
-        </plugins>
-
     </build>
 
     <modules>

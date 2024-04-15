@@ -27,19 +27,16 @@ import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
 import io.dropwizard.jackson.DiscoverableSubtypeResolver;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.validation.Validators;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
 import io.liftwizard.serialization.jackson.config.ObjectMapperConfig;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReladomoDataStoreFactoryTest
+@ExtendWith(LogMarkerTestExtension.class)
+class ReladomoDataStoreFactoryTest
 {
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
-
     private final ObjectMapper objectMapper = newObjectMapper();
     private final Validator    validator    = Validators.newValidator();
 
@@ -47,7 +44,7 @@ public class ReladomoDataStoreFactoryTest
             new JsonConfigurationFactory<>(DataStoreFactory.class, this.validator, this.objectMapper, "dw");
 
     @Test
-    public void isDiscoverable()
+    void isDiscoverable()
     {
         // Make sure the types we specified in META-INF gets picked up
         var            discoverableSubtypeResolver = new DiscoverableSubtypeResolver();
@@ -56,7 +53,7 @@ public class ReladomoDataStoreFactoryTest
     }
 
     @Test
-    public void reladomoDataStore()
+    void reladomoDataStore()
             throws Exception
     {
         DataStoreFactory dataStoreFactory = this.factory.build(

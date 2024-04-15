@@ -25,53 +25,52 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.klass.dropwizard.configuration.domain.model.loader.compiler.DomainModelCompilerFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.NamedElement;
-import io.liftwizard.junit.rule.liquibase.migrations.LiquibaseTestRule;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.liquibase.migrations.LiquibaseTestExtension;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
+import io.liftwizard.junit.extension.match.file.FileMatchExtension;
+import io.liftwizard.reladomo.test.extension.ReladomoInitializeExtension;
+import io.liftwizard.reladomo.test.extension.ReladomoLoadDataExtension;
+import io.liftwizard.reladomo.test.extension.ReladomoTestFile;
 import io.liftwizard.reladomo.test.resource.writer.ReladomoTestResourceWriter;
-import io.liftwizard.reladomo.test.rule.ReladomoInitializeTestRule;
-import io.liftwizard.reladomo.test.rule.ReladomoLoadDataTestRule;
-import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.RuleChain;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
+@ExtendWith(LogMarkerTestExtension.class)
 public class ReladomoTestResourceWriterTest
 {
-    @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
+    @Order(1)
+    @RegisterExtension
+    final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
-
-    private final LiquibaseTestRule liquibaseTestRule = new LiquibaseTestRule(
+    @Order(2)
+    @RegisterExtension
+    private final LiquibaseTestExtension liquibaseTestExtension = new LiquibaseTestExtension(
             "cool/klass/xample/coverage/migrations.xml");
 
-    private final ReladomoInitializeTestRule initializeTestRule =
-            new ReladomoInitializeTestRule("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml");
+    @Order(3)
+    @RegisterExtension
+    private final ReladomoInitializeExtension initializeTestExtension =
+            new ReladomoInitializeExtension("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml");
 
-    private final ReladomoLoadDataTestRule loadDataTestRule = new ReladomoLoadDataTestRule();
+    @Order(4)
+    @RegisterExtension
+    private final ReladomoLoadDataExtension loadDataTestExtension = new ReladomoLoadDataExtension();
 
     private final ObjectMapper objectMapper = getObjectMapper();
     private final DomainModel  domainModel  = getDomainModel(this.objectMapper);
 
-    @Rule
-    public final RuleChain ruleChain = RuleChain.emptyRuleChain()
-            .around(this.liquibaseTestRule)
-            .around(this.initializeTestRule)
-            .around(this.loadDataTestRule);
-
     @Test
     @ReladomoTestFile("test-data/ReladomoTestResourceWriterTest.txt")
-    public void reladomoTestResourceWriter()
+    void reladomoTestResourceWriter()
     {
         ImmutableList<String> classNames = this.domainModel.getClasses().collect(NamedElement::getName);
         String                actual     = ReladomoTestResourceWriter.generate(classNames);
 
         String resourceClassPathLocation = this.getClass().getSimpleName() + ".reladomoTestResourceWriter.txt";
-        this.fileMatchRule.assertFileContents(resourceClassPathLocation, actual);
+        this.fileMatchExtension.assertFileContents(resourceClassPathLocation, actual);
     }
 
     @Nonnull

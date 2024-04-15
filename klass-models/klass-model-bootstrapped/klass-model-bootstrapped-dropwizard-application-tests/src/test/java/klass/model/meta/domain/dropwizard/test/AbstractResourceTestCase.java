@@ -22,8 +22,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import io.dropwizard.testing.ResourceHelpers;
-import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.liftwizard.dropwizard.testing.junit.AbstractDropwizardAppTest;
+import io.liftwizard.junit.extension.app.LiftwizardAppExtension;
 import klass.model.meta.domain.dropwizard.application.KlassBootstrappedMetaModelApplication;
 
 public abstract class AbstractResourceTestCase
@@ -31,9 +31,9 @@ public abstract class AbstractResourceTestCase
 {
     @Nonnull
     @Override
-    protected DropwizardAppRule getDropwizardAppRule()
+    protected LiftwizardAppExtension<?> getDropwizardAppExtension()
     {
-        return new DropwizardAppRule<>(
+        return new LiftwizardAppExtension<>(
                 KlassBootstrappedMetaModelApplication.class,
                 ResourceHelpers.resourceFilePath("config-test.json5"));
     }
@@ -45,7 +45,7 @@ public abstract class AbstractResourceTestCase
         Client   client     = this.getClient(clientName);
         Response response = client
                 .target("http://localhost:{port}/api/" + url)
-                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("port", this.appExtension.getLocalPort())
                 .request()
                 .get();
 
@@ -53,6 +53,6 @@ public abstract class AbstractResourceTestCase
         String jsonResponse = response.readEntity(String.class);
 
         String resourceClassPathLocation = klass.getSimpleName() + '.' + testName + ".json";
-        this.jsonMatchRule.assertFileContents(resourceClassPathLocation, jsonResponse);
+        this.jsonMatchExtension.assertFileContents(resourceClassPathLocation, jsonResponse);
     }
 }

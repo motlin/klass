@@ -20,15 +20,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.grammar.KlassLexer;
 import org.antlr.v4.runtime.Token;
+import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
-
-import static org.fusesource.jansi.Ansi.Color.BLUE;
-import static org.fusesource.jansi.Ansi.Color.CYAN;
-import static org.fusesource.jansi.Ansi.Color.DEFAULT;
-import static org.fusesource.jansi.Ansi.Color.GREEN;
-import static org.fusesource.jansi.Ansi.Color.MAGENTA;
-import static org.fusesource.jansi.Ansi.Color.RED;
-import static org.fusesource.jansi.Ansi.ansi;
 
 public final class LexicalColorizer
 {
@@ -65,18 +58,18 @@ public final class LexicalColorizer
             case KlassLexer.MODIFIER_PROPERTY_LAST_UPDATED_BY:
             case KlassLexer.MODIFIER_PROPERTY_DERIVED:
             {
-                return getStringBright(text, GREEN);
+                return getStringBright(text, Color.GREEN);
             }
             case KlassLexer.MODIFIER_ASSOCIATION_END_OWNED:
             case KlassLexer.MODIFIER_ASSOCIATION_END_FINAL:
             {
-                return getStringBright(text, GREEN);
+                return getStringBright(text, Color.GREEN);
             }
             case KlassLexer.MODIFIER_VERSION:
             case KlassLexer.MODIFIER_USER_ID:
             case KlassLexer.MODIFIER_ID:
             {
-                return getStringBright(text, GREEN);
+                return getStringBright(text, Color.GREEN);
             }
             case KlassLexer.VALIDATION_MIN_LENGTH:
             case KlassLexer.VALIDATION_MINIMUM_LENGTH:
@@ -87,7 +80,7 @@ public final class LexicalColorizer
             case KlassLexer.VALIDATION_MAX:
             case KlassLexer.VALIDATION_MAXIMUM:
             {
-                return getStringBright(text, GREEN);
+                return getStringBright(text, Color.GREEN);
             }
             // Keywords
             case KlassLexer.KEYWORD_PACKAGE:
@@ -98,7 +91,7 @@ public final class LexicalColorizer
             case KlassLexer.KEYWORD_PROJECTION:
             case KlassLexer.KEYWORD_SERVICE:
             {
-                return getStringDim(text, MAGENTA);
+                return getStringDim(text, Color.MAGENTA);
             }
             case KlassLexer.KEYWORD_USER:
             case KlassLexer.KEYWORD_NATIVE:
@@ -114,12 +107,12 @@ public final class LexicalColorizer
             case KlassLexer.KEYWORD_TABLE_PER_SUBCLASS:
             case KlassLexer.KEYWORD_TABLE_FOR_ALL_SUBCLASSES:
             {
-                return getStringBright(text, MAGENTA);
+                return getStringBright(text, Color.MAGENTA);
             }
             case KlassLexer.LITERAL_NULL:
             case KlassLexer.LITERAL_THIS:
             {
-                return getStringBright(text, GREEN);
+                return getStringBright(text, Color.GREEN);
             }
             // Primitives
             case KlassLexer.PRIMITIVE_TYPE_BOOLEAN:
@@ -133,7 +126,7 @@ public final class LexicalColorizer
             case KlassLexer.PRIMITIVE_TYPE_TEMPORAL_INSTANT:
             case KlassLexer.PRIMITIVE_TYPE_TEMPORAL_RANGE:
             {
-                return getStringBright(text, MAGENTA);
+                return getStringBright(text, Color.MAGENTA);
             }
             // Literals
             case KlassLexer.StringLiteral:
@@ -143,11 +136,11 @@ public final class LexicalColorizer
             case KlassLexer.FloatingPointLiteral:
             case KlassLexer.PUNCTUATION_ASTERISK:
             {
-                return getStringBright(text, BLUE);
+                return getStringBright(text, Color.BLUE);
             }
             case KlassLexer.Identifier:
             {
-                return getStringBright(text, DEFAULT);
+                return getStringBright(text, Color.DEFAULT);
             }
             case KlassLexer.PUNCTUATION_LPAREN:
             case KlassLexer.PUNCTUATION_RPAREN:
@@ -163,12 +156,12 @@ public final class LexicalColorizer
             case KlassLexer.PUNCTUATION_SLASH:
             case KlassLexer.PUNCTUATION_QUESTION:
             {
-                return getStringDim(text, CYAN);
+                return getStringDim(text, Color.CYAN);
             }
             // Operators
             case KlassLexer.OPERATOR_EQ:
             {
-                return getStringDim(text, MAGENTA);
+                return getStringDim(text, Color.MAGENTA);
             }
             // Verbs
             case KlassLexer.VERB_GET:
@@ -177,22 +170,22 @@ public final class LexicalColorizer
             case KlassLexer.VERB_PATCH:
             case KlassLexer.VERB_DELETE:
             {
-                return getStringBright(text, GREEN);
+                return getStringBright(text, Color.GREEN);
             }
             default:
             {
-                return getStringBright(text, RED);
+                return getStringBright(text, Color.RED);
             }
         }
     }
 
     private static String getStringBright(String text, @Nonnull Color color)
     {
-        return ansi().fg(color).a(text).toString();
+        return Ansi.ansi().fg(color).a(text).toString();
     }
 
     private static String getStringDim(String text, @Nonnull Color color)
     {
-        return ansi().fg(color).a(text).toString();
+        return Ansi.ansi().fg(color).a(text).toString();
     }
 }

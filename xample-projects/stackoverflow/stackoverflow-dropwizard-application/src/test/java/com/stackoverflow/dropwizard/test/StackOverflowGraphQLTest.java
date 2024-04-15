@@ -21,26 +21,26 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
-import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
+import io.liftwizard.junit.extension.match.FileSlurper;
+import io.liftwizard.reladomo.test.extension.ReladomoTestFile;
 import org.eclipse.collections.impl.factory.Maps;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class StackOverflowGraphQLTest
+class StackOverflowGraphQLTest
         extends AbstractStackOverflowApplicationTest
 {
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void smokeTest()
+    void smokeTest()
     {
         Client client = this.getClient("graphqlSmokeTest");
 
         String queryName = this.getClass().getSimpleName() + ".smokeTest.graphql";
-        String query     = FileMatchRule.slurp(queryName, this.getClass());
+        String query     = FileSlurper.slurp(queryName, this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/graphql")
-                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("port", this.appExtension.getLocalPort())
                 .request()
                 .post(Entity.json(Maps.mutable.with("query", query)));
 

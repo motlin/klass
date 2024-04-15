@@ -74,7 +74,7 @@ public final class FkGenerator
                 .collect(DdlGenerator.COLUMN_NAME_CONVERTER::convert)
                 .makeString(", ");
 
-        //language=SQL
+        // language=SQL
         String format = """
                 alter table %s add constraint %s foreign key (
                     %s

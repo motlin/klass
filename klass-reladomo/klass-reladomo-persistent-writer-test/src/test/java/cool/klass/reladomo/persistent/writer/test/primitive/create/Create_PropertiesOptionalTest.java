@@ -26,9 +26,9 @@ import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.reladomo.persistent.writer.test.primitive.PrimitiveValidatorTest;
 import org.eclipse.collections.api.factory.Maps;
 import org.eclipse.collections.api.map.ImmutableMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class Create_PropertiesOptionalTest
+class Create_PropertiesOptionalTest
         extends AbstractCreateValidatorTest
         implements PrimitiveValidatorTest
 {

@@ -146,7 +146,7 @@ public class ServiceResourceGenerator
                 : "";
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "package " + packageName + ";\n"
                 + "\n"
@@ -327,7 +327,7 @@ public class ServiceResourceGenerator
         String orderBySourceCode = service.getOrderBy().map(this::getOrderBysSourceCode).orElse("");
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "    @Timed\n"
                 + "    @ExceptionMetered\n"
@@ -458,7 +458,7 @@ public class ServiceResourceGenerator
         String orderBySourceCode = service.getOrderBy().map(this::getOrderBysSourceCode).orElse("");
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "    @Timed\n"
                 + "    @ExceptionMetered\n"
@@ -588,7 +588,7 @@ public class ServiceResourceGenerator
         String orderBySourceCode = service.getOrderBy().map(this::getOrderBysSourceCode).orElse("");
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "    @Timed\n"
                 + "    @ExceptionMetered\n"

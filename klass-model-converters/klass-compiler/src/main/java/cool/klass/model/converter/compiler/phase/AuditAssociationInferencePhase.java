@@ -107,7 +107,7 @@ public class AuditAssociationInferencePhase
 
         StringBuilder stringBuilder = new StringBuilder();
         AntlrClass    klass    = this.compilerState.getCompilerWalk().getKlass();
-        stringBuilder.append("package " + klass.getPackageName() + "\n");
+        stringBuilder.append("package ").append(klass.getPackageName()).append("\n");
 
         if (needsCreatedBy)
         {
@@ -171,7 +171,7 @@ public class AuditAssociationInferencePhase
 
         AntlrDataTypeProperty<?> auditProperty = klass.getAllDataTypeProperties().detect(predicate);
 
-        //language=Klass
+        // language=Klass
         return "\n"
                 + "association " + className + "Has" + suffix + "\n"
                 + "{\n"

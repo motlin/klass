@@ -25,28 +25,27 @@ import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
+import io.liftwizard.junit.extension.match.FileSlurper;
+import io.liftwizard.junit.extension.match.file.FileMatchExtension;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+@ExtendWith(LogMarkerTestExtension.class)
 public class DataTransferObjectGeneratorTest
 {
-    @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
-
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+    @RegisterExtension
+    final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
     @Test
-    public void stackOverflow()
+    void stackOverflow()
     {
-        String sourceCodeText = FileMatchRule.slurp("/com/stackoverflow/stackoverflow.klass", this.getClass());
+        String sourceCodeText = FileSlurper.slurp("/com/stackoverflow/stackoverflow.klass", this.getClass());
 
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
                 0,
@@ -72,7 +71,7 @@ public class DataTransferObjectGeneratorTest
             Klass  klass           = domainModel.getClassByName("Question");
             String klassSourceCode = dataTransferObjectsGenerator.getClassSourceCode(klass);
 
-            this.fileMatchRule.assertFileContents(
+            this.fileMatchExtension.assertFileContents(
                     this.getClass().getSimpleName() + ".java",
                     klassSourceCode);
         }

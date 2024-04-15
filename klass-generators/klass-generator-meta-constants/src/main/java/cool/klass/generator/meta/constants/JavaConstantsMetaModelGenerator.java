@@ -134,7 +134,7 @@ public class JavaConstantsMetaModelGenerator
                 .makeString("");
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "package " + this.rootPackageName + ".meta.constants;\n"
                 + "\n"
@@ -409,7 +409,7 @@ public class JavaConstantsMetaModelGenerator
         String packageName = enumeration.getPackageName() + ".meta.constants";
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "package " + packageName + ";\n"
                 + "\n"
@@ -507,7 +507,7 @@ public class JavaConstantsMetaModelGenerator
                 .orElse("empty()");
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "public static enum " + uppercaseName + "_EnumerationLiteral implements EnumerationLiteral\n"
                 + "{\n"
@@ -580,7 +580,7 @@ public class JavaConstantsMetaModelGenerator
     private String getInterfaceSourceCode(@Nonnull Interface eachInterface)
     {
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "package " + eachInterface.getPackageName() + ".meta.constants;\n"
                 + "\n"
@@ -675,7 +675,7 @@ public class JavaConstantsMetaModelGenerator
     private String getClassSourceCode(@Nonnull Klass klass)
     {
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "package " + klass.getPackageName() + ".meta.constants;\n"
                 + "\n"
@@ -870,7 +870,7 @@ public class JavaConstantsMetaModelGenerator
     {
         String uppercaseName = this.getUppercaseName(primitiveProperty);
 
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "    public static enum " + uppercaseName + "_PrimitiveProperty implements PrimitiveProperty\n"
                 + "    {\n"
@@ -1044,7 +1044,7 @@ public class JavaConstantsMetaModelGenerator
         ModifierOwner modifierOwner = modifier.getModifierOwner();
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "            " + className + " " + modifier.getKeyword() + "_" + className + " = new " + className + "()\n"
                 + "            {\n"
@@ -1088,7 +1088,7 @@ public class JavaConstantsMetaModelGenerator
         String uppercaseName = this.getUppercaseName(enumerationProperty);
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "    public static enum " + uppercaseName + "_EnumerationProperty implements EnumerationProperty\n"
                 + "    {\n"
@@ -1221,7 +1221,7 @@ public class JavaConstantsMetaModelGenerator
     private String getAssociationSourceCode(@Nonnull Association association)
     {
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "package " + association.getPackageName() + ".meta.constants;\n"
                 + "\n"
@@ -1316,7 +1316,7 @@ public class JavaConstantsMetaModelGenerator
         String uppercaseName = this.getUppercaseName(associationEnd);
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "    public static enum " + uppercaseName + "_AssociationEnd implements AssociationEnd\n"
                 + "    {\n"
@@ -1407,10 +1407,9 @@ public class JavaConstantsMetaModelGenerator
     private String getModifierConstantSourceCode(@Nonnull Modifier modifier)
     {
         String        className     = Modifier.class.getSimpleName();
-        ModifierOwner modifierOwner = modifier.getModifierOwner();
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "        public static final " + className + " " + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, modifier.getKeyword()) + "_MODIFIER = new " + className + "()\n"
                 + "        {\n"
@@ -1490,7 +1489,7 @@ public class JavaConstantsMetaModelGenerator
     private String getProjectionSourceCode(@Nonnull Projection projection)
     {
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "package " + projection.getPackageName() + ".meta.constants;\n"
                 + "\n"
@@ -1637,7 +1636,7 @@ public class JavaConstantsMetaModelGenerator
         DataTypeProperty dataTypeProperty = projectionDataTypeProperty.getProperty();
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "public static enum " + uppercaseName + "_ProjectionDataTypeProperty implements ProjectionDataTypeProperty\n"
                 + "{\n"
@@ -1704,7 +1703,7 @@ public class JavaConstantsMetaModelGenerator
         ReferenceProperty referenceProperty = projectionReferenceProperty.getProperty();
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "public static enum " + uppercaseName + "_ProjectionReferenceProperty implements ProjectionReferenceProperty\n"
                 + "{\n"
@@ -1773,7 +1772,7 @@ public class JavaConstantsMetaModelGenerator
         ReferenceProperty referenceProperty = projectionProjectionReference.getProperty();
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "public static enum " + uppercaseName + "_ProjectionProjectionReference implements ProjectionProjectionReference\n"
                 + "{\n"

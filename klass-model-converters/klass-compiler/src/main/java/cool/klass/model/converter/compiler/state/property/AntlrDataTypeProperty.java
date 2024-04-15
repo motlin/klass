@@ -61,7 +61,7 @@ import org.eclipse.collections.impl.tuple.Tuples;
 public abstract class AntlrDataTypeProperty<T extends DataType>
         extends AntlrProperty
 {
-    //<editor-fold desc="AMBIGUOUS">
+    // <editor-fold desc="AMBIGUOUS">
     public static final AntlrDataTypeProperty AMBIGUOUS = new AntlrDataTypeProperty(
             new ClassDeclarationContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
@@ -113,9 +113,9 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     + ".reportInvalidIdProperties() not implemented yet");
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
-    //<editor-fold desc="NOT_FOUND">
+    // <editor-fold desc="NOT_FOUND">
     public static final AntlrDataTypeProperty NOT_FOUND = new AntlrDataTypeProperty(
             new ClassDeclarationContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
@@ -167,7 +167,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     + ".reportInvalidIdProperties() not implemented yet");
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
     private static final ImmutableList<PrimitiveType> ALLOWED_VERSION_TYPES =
             Lists.immutable.with(
@@ -373,7 +373,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         return this.owningClassifier.getOverriddenDataTypeProperties(this.getName());
     }
 
-    //<editor-fold desc="Perform Compilation">
+    // <editor-fold desc="Perform Compilation">
     @Nonnull
     @Override
     public abstract DataTypePropertyBuilder<T, ?, ?> build();
@@ -421,9 +421,9 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
         this.getElementBuilder().setForeignKeyBuildersMatchingThisKey(foreignKeysMatchingThisKey.asUnmodifiable());
     }
-    //</editor-fold>
+    // </editor-fold>
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @Override
     @OverridingMethodsMustInvokeSuper
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
@@ -899,7 +899,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 this,
                 idModifiers.collect(AntlrElement::getElementContext));
     }
-    //</editor-fold>
+    // </editor-fold>
 
     @Override
     public String toString()

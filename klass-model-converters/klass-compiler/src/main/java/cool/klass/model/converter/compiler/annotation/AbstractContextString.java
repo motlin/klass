@@ -22,8 +22,7 @@ import javax.annotation.Nonnull;
 
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
-
-import static org.fusesource.jansi.Ansi.ansi;
+import org.fusesource.jansi.Ansi;
 
 public abstract class AbstractContextString
 {
@@ -59,7 +58,7 @@ public abstract class AbstractContextString
     {
         String lineNumberString       = this.getLineNumberString(this.line + offset);
         String paddedLineNumberString = AbstractContextString.padLeft(lineNumberString, lineNumberWidth);
-        return ansi().fgDefault().a(paddedLineNumberString).a(" ").a(string).toString();
+        return Ansi.ansi().fgDefault().a(paddedLineNumberString).a(" ").a(string).toString();
     }
 
     @Override

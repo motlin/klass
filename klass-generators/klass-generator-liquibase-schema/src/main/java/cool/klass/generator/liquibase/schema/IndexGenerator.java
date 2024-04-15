@@ -82,7 +82,7 @@ public final class IndexGenerator
                 .collect(TableGenerator.COLUMN_NAME_CONVERTER::convert)
                 .collect(columnName -> "            <column name=\"" + columnName + "\" />\n");
 
-        //language=XML
+        // language=XML
         return "    <changeSet author=\"Klass\" id=\"initial-indices-" + ordinal + "-" + constraintName + "\">\n"
                + "        <createIndex\n"
                + "                indexName=\"" + constraintName + "\"\n"
