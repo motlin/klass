@@ -90,7 +90,7 @@
     </dependencyManagement>
 
     <build>
-        <defaultGoal>clean verify</defaultGoal>
+        <defaultGoal>verify</defaultGoal>
 
         <plugins>
 
