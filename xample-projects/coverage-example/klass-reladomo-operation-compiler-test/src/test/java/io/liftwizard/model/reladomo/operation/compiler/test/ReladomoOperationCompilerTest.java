@@ -47,8 +47,8 @@ import org.junit.rules.ErrorCollector;
 import org.junit.rules.TestRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class ReladomoOperationCompilerTest
 {
@@ -90,7 +90,7 @@ public class ReladomoOperationCompilerTest
             reladomoOperationCompiler.compile(
                     PropertiesRequiredFinder.getFinderInstance(),
                     "InvalidClassName.requiredString = \"Value\"");
-            fail();
+            fail("");
         }
         catch (IllegalArgumentException e)
         {
@@ -107,7 +107,7 @@ public class ReladomoOperationCompilerTest
             reladomoOperationCompiler.compile(
                     PropertiesRequiredFinder.getFinderInstance(),
                     "this.invalidAttributeName = \"Value\"");
-            fail();
+            fail("");
         }
         catch (IllegalArgumentException e)
         {
@@ -124,7 +124,7 @@ public class ReladomoOperationCompilerTest
             reladomoOperationCompiler.compile(
                     OwnedNaturalOneToManySourceFinder.getFinderInstance(),
                     "OwnedNaturalOneToManySource.invalidRelationshipName.value = \"value\"");
-            fail();
+            fail("");
         }
         catch (IllegalArgumentException e)
         {
@@ -141,7 +141,7 @@ public class ReladomoOperationCompilerTest
             reladomoOperationCompiler.compile(
                     PropertiesRequiredFinder.getFinderInstance(),
                     "PropertiesRequired.requiredString = 1");
-            fail();
+            fail("");
         }
         catch (IllegalArgumentException e)
         {
@@ -158,7 +158,7 @@ public class ReladomoOperationCompilerTest
             reladomoOperationCompiler.compile(
                     PropertiesRequiredFinder.getFinderInstance(),
                     "PropertiesRequired.requiredInstant = \"Invalid\"");
-            fail();
+            fail("");
         }
         catch (IllegalArgumentException e)
         {
