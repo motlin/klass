@@ -55,7 +55,7 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-reladomo-test-rule</artifactId>
+            <artifactId>liftwizard-reladomo-test-extension</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -92,7 +92,7 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-junit-rule-log-marker</artifactId>
+            <artifactId>liftwizard-junit-extension-log-marker</artifactId>
             <version>${liftwizard.version}</version>
             <scope>test</scope>
         </dependency>
@@ -100,24 +100,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
             <scope>test</scope>
         </dependency>
 

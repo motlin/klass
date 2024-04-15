@@ -23,20 +23,20 @@ import javax.annotation.Nonnull;
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.reladomo.persistent.writer.test.primitive.create.AbstractCreateValidatorTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class Create_OwnedNaturalOneToManyTest
+class Create_OwnedNaturalOneToManyTest
         extends AbstractCreateValidatorTest
 {
     @Test
-    public void validate_good()
+    void validate_good()
             throws IOException
     {
         this.validate("validate_good");
     }
 
     @Test
-    public void validate_backwards_association_end()
+    void validate_backwards_association_end()
             throws IOException
     {
         this.validate("validate_backwards_association_end");
@@ -44,49 +44,49 @@ public class Create_OwnedNaturalOneToManyTest
 
     // TODO: This should fail, or there should be an additional validation
     @Test
-    public void validate_duplicate_keys()
+    void validate_duplicate_keys()
             throws IOException
     {
         this.validate("validate_duplicate_keys");
     }
 
     @Test
-    public void validate_extra_properties()
+    void validate_extra_properties()
             throws IOException
     {
         this.validate("validate_extra_properties");
     }
 
     @Test
-    public void validate_expected_actual_missing()
+    void validate_expected_actual_missing()
             throws IOException
     {
         this.validate("validate_expected_actual_missing");
     }
 
     @Test
-    public void validate_expected_actual_array()
+    void validate_expected_actual_array()
             throws IOException
     {
         this.validate("validate_expected_actual_array");
     }
 
     @Test
-    public void validate_expected_actual_object()
+    void validate_expected_actual_object()
             throws IOException
     {
         this.validate("validate_expected_actual_object");
     }
 
     @Test
-    public void validate_expected_actual_null()
+    void validate_expected_actual_null()
             throws IOException
     {
         this.validate("validate_expected_actual_null");
     }
 
     @Test
-    public void validate_expected_actual_boolean()
+    void validate_expected_actual_boolean()
             throws IOException
     {
         this.validate("validate_expected_actual_boolean");

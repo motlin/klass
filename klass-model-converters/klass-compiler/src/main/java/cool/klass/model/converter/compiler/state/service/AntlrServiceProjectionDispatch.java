@@ -79,7 +79,7 @@ public class AntlrServiceProjectionDispatch
         return this.projection;
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         if (this.projection == AntlrProjection.NOT_FOUND)
@@ -148,7 +148,7 @@ public class AntlrServiceProjectionDispatch
                 this,
                 this.getElementContext().projectionReference());
     }
-    //</editor-fold>
+    // </editor-fold>
 
     @Nonnull
     @Override

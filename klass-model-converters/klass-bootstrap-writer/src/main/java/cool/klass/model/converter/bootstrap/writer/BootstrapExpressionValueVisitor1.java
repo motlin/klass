@@ -57,7 +57,7 @@ public class BootstrapExpressionValueVisitor1
     @Override
     public void visitTypeMember(@Nonnull TypeMemberReferencePath typeMemberExpressionValue)
     {
-        var bootstrappedExpressionValue = new klass.model.meta.domain.ExpressionValue();
+        var bootstrappedExpressionValue = new ExpressionValue();
         this.bootstrappedExpressionValues.add(bootstrappedExpressionValue);
         this.expressionValuesByExpressionValue.put(typeMemberExpressionValue, bootstrappedExpressionValue);
     }
@@ -65,7 +65,7 @@ public class BootstrapExpressionValueVisitor1
     @Override
     public void visitThisMember(@Nonnull ThisMemberReferencePath thisMemberExpressionValue)
     {
-        var bootstrappedExpressionValue = new klass.model.meta.domain.ExpressionValue();
+        var bootstrappedExpressionValue = new ExpressionValue();
         this.bootstrappedExpressionValues.add(bootstrappedExpressionValue);
         this.expressionValuesByExpressionValue.put(thisMemberExpressionValue, bootstrappedExpressionValue);
     }
@@ -73,7 +73,7 @@ public class BootstrapExpressionValueVisitor1
     @Override
     public void visitVariableReference(@Nonnull VariableReference variableReference)
     {
-        var bootstrappedExpressionValue = new klass.model.meta.domain.ExpressionValue();
+        var bootstrappedExpressionValue = new ExpressionValue();
         this.bootstrappedExpressionValues.add(bootstrappedExpressionValue);
         this.expressionValuesByExpressionValue.put(variableReference, bootstrappedExpressionValue);
     }

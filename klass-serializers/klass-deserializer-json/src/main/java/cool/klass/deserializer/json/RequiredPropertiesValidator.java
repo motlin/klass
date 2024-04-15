@@ -117,7 +117,7 @@ public class RequiredPropertiesValidator
         }
     }
 
-    //region DataTypeProperties
+    // region DataTypeProperties
     protected void handleDataTypeProperties()
     {
         ImmutableList<DataTypeProperty> dataTypeProperties = this.klass.getDataTypeProperties();
@@ -447,9 +447,9 @@ public class RequiredPropertiesValidator
             this.errors.add(error);
         }
     }
-    //endregion
+    // endregion
 
-    //region AssociationEnds
+    // region AssociationEnds
     protected void handleAssociationEnds()
     {
         for (AssociationEnd associationEnd : this.klass.getAssociationEnds())

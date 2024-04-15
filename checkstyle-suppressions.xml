@@ -24,5 +24,15 @@
     <suppress files="[\\/]generated-sources[\\/]" checks="[a-zA-Z0-9]*" />
     <suppress files="[\\/]ReladomoOperationCompilerTest.java" checks="NoWhitespaceBefore" />
     <suppress files="[\\/]TokenCategoryToCss.java" checks="UncommentedMain" />
+    <suppress files="[\\/]KlassBootstrappedMetaModelApplication.java" checks="UncommentedMain" />
+    <suppress files="[\\/]CoverageExampleApplication.java" checks="UncommentedMain" />
+    <suppress files="[\\/]StackOverflowApplication.java" checks="UncommentedMain" />
+    <suppress files=".*" checks="AbstractClassName" />
+    <suppress files=".*" checks="AvoidNestedBlocks" />
+    <suppress files=".*" checks="HiddenField" />
+    <suppress files=".*" checks="SingleSpaceSeparator" />
+    <suppress files=".*" checks="VariableDeclarationUsageDistance" />
+    <suppress files=".*" checks="VisibilityModifier" />
+    <suppress files=".*" id="checkASCII" />
 
 </suppressions>

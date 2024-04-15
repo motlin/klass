@@ -24,29 +24,29 @@ import javax.ws.rs.core.Response.Status;
 
 import com.stackoverflow.dropwizard.application.StackOverflowApplication;
 import io.dropwizard.testing.ResourceHelpers;
-import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.liftwizard.dropwizard.testing.junit.AbstractDropwizardAppTest;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
-import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
-import org.junit.Test;
+import io.liftwizard.junit.extension.app.LiftwizardAppExtension;
+import io.liftwizard.junit.extension.match.FileSlurper;
+import io.liftwizard.reladomo.test.extension.ReladomoTestFile;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class QuestionResourceManualTest
+class QuestionResourceManualTest
         extends AbstractDropwizardAppTest
 {
     @Nonnull
     @Override
-    protected DropwizardAppRule getDropwizardAppRule()
+    protected LiftwizardAppExtension<?> getDropwizardAppExtension()
     {
-        return new DropwizardAppRule<>(
+        return new LiftwizardAppExtension<>(
                 StackOverflowApplication.class,
                 ResourceHelpers.resourceFilePath("config-test.json5"));
     }
 
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void get_smoke_test()
+    void get_smoke_test()
     {
         Client client = this.getClient("get_smoke_test");
 
@@ -57,7 +57,7 @@ public class QuestionResourceManualTest
     {
         Response response = client
                 .target("http://localhost:{port}/api/manual/question/{id}")
-                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("port", this.appExtension.getLocalPort())
                 .resolveTemplate("id", 1)
                 .request()
                 .get();
@@ -67,17 +67,17 @@ public class QuestionResourceManualTest
 
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void post_invalid_data()
+    void post_invalid_data()
     {
         Client client = this.getClient("post_invalid_data");
 
-        String invalidJson = FileMatchRule.slurp(
+        String invalidJson = FileSlurper.slurp(
                 this.getClass().getSimpleName() + ".invalid_data.json5",
                 this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/api/manual/question/")
-                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("port", this.appExtension.getLocalPort())
                 .request()
                 .header("Authorization", "Impersonation test user 1")
                 .post(Entity.json(invalidJson));
@@ -87,19 +87,19 @@ public class QuestionResourceManualTest
 
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void post_valid_data()
+    void post_valid_data()
     {
         Client client = this.getClient("post_valid_data");
 
-        //<editor-fold desc="POST valid json, status: CREATED">
+        // <editor-fold desc="POST valid json, status: CREATED">
         {
-            String validJson = FileMatchRule.slurp(
+            String validJson = FileSlurper.slurp(
                     this.getClass().getSimpleName() + ".create_data.json5",
                     this.getClass());
 
             Response response = client
                     .target("http://localhost:{port}/api/manual/question/")
-                    .resolveTemplate("port", this.appRule.getLocalPort())
+                    .resolveTemplate("port", this.appExtension.getLocalPort())
                     .request()
                     .header("Authorization", "Impersonation test user 1")
                     .post(Entity.json(validJson));
@@ -107,37 +107,37 @@ public class QuestionResourceManualTest
             this.assertResponse("post_valid_data", Status.CREATED, response);
             assertThat(response.getLocation().getPath()).isEqualTo("/api/manual/question/2");
         }
-        //</editor-fold>
+        // </editor-fold>
 
         this.assertQuestion1Unchanged(client, "assertQuestion1Unchanged_post_valid_data");
 
-        //<editor-fold desc="GET id: 2, status: ok">
+        // <editor-fold desc="GET id: 2, status: ok">
         {
             Response response = client
                     .target("http://localhost:{port}/api/manual/question/{id}")
-                    .resolveTemplate("port", this.appRule.getLocalPort())
+                    .resolveTemplate("port", this.appExtension.getLocalPort())
                     .resolveTemplate("id", 2)
                     .request()
                     .get();
 
             this.assertResponse("post_valid_data_get", Status.OK, response);
         }
-        //</editor-fold>
+        // </editor-fold>
     }
 
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void put_invalid_id()
+    void put_invalid_id()
     {
         Client client = this.getClient("put_invalid_id");
 
-        String json = FileMatchRule.slurp(
+        String json = FileSlurper.slurp(
                 this.getClass().getSimpleName() + ".invalid_id_data.json5",
                 this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/api/manual/question/{id}")
-                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("port", this.appExtension.getLocalPort())
                 .resolveTemplate("id", 1)
                 .queryParam("version", "2")
                 .request()
@@ -150,17 +150,17 @@ public class QuestionResourceManualTest
 
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void put_conflict()
+    void put_conflict()
     {
         Client client = this.getClient("put_conflict");
 
-        String validJson = FileMatchRule.slurp(
+        String validJson = FileSlurper.slurp(
                 this.getClass().getSimpleName() + ".valid_versioned_put_data.json5",
                 this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/api/manual/question/{id}")
-                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("port", this.appExtension.getLocalPort())
                 .resolveTemplate("id", 1)
                 .queryParam("version", "1")
                 .request()
@@ -174,19 +174,19 @@ public class QuestionResourceManualTest
 
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void put()
+    void put()
     {
         Client client = this.getClient("put");
 
-        //<editor-fold desc="PUT id: 1, version: 2, status: NO_CONTENT">
+        // <editor-fold desc="PUT id: 1, version: 2, status: NO_CONTENT">
         {
-            String validJson = FileMatchRule.slurp(
+            String validJson = FileSlurper.slurp(
                     this.getClass().getSimpleName() + ".valid_versioned_put_data.json5",
                     this.getClass());
 
             Response response = client
                     .target("http://localhost:{port}/api/manual/question/{id}")
-                    .resolveTemplate("port", this.appRule.getLocalPort())
+                    .resolveTemplate("port", this.appExtension.getLocalPort())
                     .resolveTemplate("id", 1)
                     .queryParam("version", "2")
                     .request()
@@ -195,11 +195,11 @@ public class QuestionResourceManualTest
 
             this.assertResponse("put", Status.OK, response);
         }
-        //</editor-fold>
+        // </editor-fold>
 
         Response response = client
                 .target("http://localhost:{port}/api/manual/question/{id}")
-                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("port", this.appExtension.getLocalPort())
                 .resolveTemplate("id", 1)
                 .request()
                 .get();
@@ -211,16 +211,16 @@ public class QuestionResourceManualTest
 
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void put_unchanged()
+    void put_unchanged()
     {
         Client client = this.getClient("put_unchanged");
 
         String jsonName = this.getClass().getSimpleName() + ".put_unchanged.json5";
-        String json     = FileMatchRule.slurp(jsonName, this.getClass());
+        String json     = FileSlurper.slurp(jsonName, this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/api/manual/question/{id}")
-                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("port", this.appExtension.getLocalPort())
                 .resolveTemplate("id", 1)
                 .queryParam("version", "2")
                 .request()
@@ -233,14 +233,14 @@ public class QuestionResourceManualTest
     }
 
     @Test
-    public void restSet()
+    void restSet()
     {
         Client client = this.getClient("restSet");
 
         {
             Response response = client
                     .target("http://localhost:{port}/api/manual/set")
-                    .resolveTemplate("port", this.appRule.getLocalPort())
+                    .resolveTemplate("port", this.appExtension.getLocalPort())
                     .request()
                     .get();
 
@@ -250,7 +250,7 @@ public class QuestionResourceManualTest
         {
             Response response = client
                     .target("http://localhost:{port}/api/manual/map")
-                    .resolveTemplate("port", this.appRule.getLocalPort())
+                    .resolveTemplate("port", this.appExtension.getLocalPort())
                     .request()
                     .get();
 

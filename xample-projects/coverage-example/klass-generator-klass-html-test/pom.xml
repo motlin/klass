@@ -75,13 +75,19 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-junit-rule-log-marker</artifactId>
+            <artifactId>liftwizard-junit-extension-log-marker</artifactId>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-junit-rule-match-file</artifactId>
+            <artifactId>liftwizard-junit-extension-match-file</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-junit-extension-match-abstract</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -92,32 +98,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
             <scope>test</scope>
         </dependency>
 

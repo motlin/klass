@@ -138,7 +138,7 @@ if [[ $COMMIT_MESSAGE == *\[no-daemon\]* ]]; then
     MAVEN='./mvnw'
 fi
 
-PROFILES='dev'
+PROFILES='maven-enforcer-plugin,maven-dependency-plugin'
 if [ "$RECORD" = true ] || [[ $COMMIT_MESSAGE == *\[record\]* ]]; then
     LIFTWIZARD_RERECORD=true
     PROFILES="$PROFILES,rerecord"
@@ -150,9 +150,9 @@ if [[ $COMMIT_MESSAGE == *\[serial\]* ]]; then
 fi
 
 if [ "$SERIAL" = true ]; then
-    PARALLELISM="--fail-fast"
+    PARALLELISM="--threads=1 --fail-fast"
 else
-    PARALLELISM="--threads 2C --fail-at-end"
+    PARALLELISM="--fail-at-end"
 fi
 
 checkLocalModification

@@ -21,25 +21,23 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.match.FileSlurper;
 import org.eclipse.collections.impl.factory.Maps;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class CoverageExampleGraphQLTest
+class CoverageExampleGraphQLTest
         extends AbstractCoverageTest
 {
     @Test
-    public void graphqlSmokeTest()
+    void graphqlSmokeTest()
     {
-        Client client = this.getClient("graphqlSmokeTest");
-
+        Client client           = this.getClient("graphqlSmokeTest");
         String graphqlQueryName = this.getClass().getSimpleName() + ".graphqlSmokeTest.graphql";
-
-        String graphqlQuery     = FileMatchRule.slurp(graphqlQueryName, this.getClass());
+        String graphqlQuery     = FileSlurper.slurp(graphqlQueryName, this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/graphql")
-                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("port", this.appExtension.getLocalPort())
                 .request()
                 .post(Entity.json(Maps.mutable.with("query", graphqlQuery)));
 

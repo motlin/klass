@@ -91,7 +91,7 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
 
         String associationEndName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, className);
 
-        //language=Klass
+        // language=Klass
         return ""
                 + "package " + klass.getPackageName() + "\n"
                 + "\n"

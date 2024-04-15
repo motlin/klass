@@ -22,45 +22,39 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.annotation.AbstractCompilerAnnotation;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
+import io.liftwizard.junit.extension.match.FileSlurper;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class KlassCompilerTest
+@ExtendWith(LogMarkerTestExtension.class)
+class KlassCompilerTest
 {
-    @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
-
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
-
     @Test
-    public void stackOverflow()
+    void stackOverflow()
     {
         this.assertNoCompilerErrors("/com/stackoverflow/stackoverflow.klass");
     }
 
     @Test
-    public void emoji()
+    void emoji()
     {
         this.assertNoCompilerErrors("emoji.klass");
     }
 
     @Test
-    public void projectionOnInterface()
+    void projectionOnInterface()
     {
         this.assertNoCompilerErrors("projectionOnInterface.klass");
     }
 
     private void assertNoCompilerErrors(@Nonnull String sourceCodeName)
     {
-        String sourceCodeText = FileMatchRule.slurp(sourceCodeName, this.getClass());
+        String sourceCodeText = FileSlurper.slurp(sourceCodeName, this.getClass());
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
                 0,
                 Optional.empty(),

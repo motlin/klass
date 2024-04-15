@@ -88,7 +88,7 @@ public class VersionClassInferencePhase
         String        auditedSourceCode = auditedModifier == AntlrModifier.NOT_FOUND ? "" : " audited";
 
         // TODO: If main class is transient, version should also be transient, so copy classifier modifiers
-        //language=Klass
+        // language=Klass
         return "package " + klass.getPackageName() + "\n"
                 + "\n"
                 + "class " + klass.getName() + "Version systemTemporal" + auditedSourceCode + "\n"

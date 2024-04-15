@@ -27,8 +27,6 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.fusesource.jansi.Ansi.Color;
 
-import static org.fusesource.jansi.Ansi.Color.GREEN;
-
 public class CauseCompilerAnnotation
         extends AbstractCompilerAnnotation
 {
@@ -53,7 +51,7 @@ public class CauseCompilerAnnotation
     @Override
     protected Color getCaretColor()
     {
-        return GREEN;
+        return Color.GREEN;
     }
 
     @Nonnull

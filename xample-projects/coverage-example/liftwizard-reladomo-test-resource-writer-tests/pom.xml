@@ -88,7 +88,7 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-reladomo-test-rule</artifactId>
+            <artifactId>liftwizard-reladomo-test-extension</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -107,21 +107,21 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-junit-rule-log-marker</artifactId>
+            <artifactId>liftwizard-junit-extension-log-marker</artifactId>
             <version>${liftwizard.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-junit-rule-match-file</artifactId>
+            <artifactId>liftwizard-junit-extension-match-file</artifactId>
             <version>${liftwizard.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-junit-rule-liquibase-migrations</artifactId>
+            <artifactId>liftwizard-junit-extension-liquibase-migrations</artifactId>
             <version>${liftwizard.version}</version>
             <scope>test</scope>
         </dependency>
@@ -162,19 +162,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -190,18 +179,34 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-db</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-migrations</artifactId>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
+
+    <profiles>
+        <!--region Phase 21: verify-->
+        <profile>
+            <id>maven-dependency-plugin</id>
+
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <artifactId>maven-dependency-plugin</artifactId>
+                            <configuration>
+                                <ignoreNonCompile>true</ignoreNonCompile>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!--endregion-->
+    </profiles>
+
 
 </project>

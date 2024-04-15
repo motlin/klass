@@ -21,20 +21,20 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import io.liftwizard.junit.rule.match.file.FileMatchRule;
-import org.junit.Test;
+import io.liftwizard.junit.extension.match.FileSlurper;
+import org.junit.jupiter.api.Test;
 
-public class PropertiesOptionalTest
+class PropertiesOptionalTest
         extends AbstractCoverageTest
 {
     @Test
-    public void getFirst()
+    void getFirst()
     {
         Client client = this.getClient("getFirst");
 
         Response response = client
                 .target("http://localhost:{port}/api/propertiesOptional/{id}")
-                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("port", this.appExtension.getLocalPort())
                 .resolveTemplate("id", 1)
                 .request()
                 .get();
@@ -43,13 +43,13 @@ public class PropertiesOptionalTest
     }
 
     @Test
-    public void getSecond()
+    void getSecond()
     {
         Client client = this.getClient("getSecond");
 
         Response response = client
                 .target("http://localhost:{port}/api/propertiesOptional/{id}")
-                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("port", this.appExtension.getLocalPort())
                 .resolveTemplate("id", 2)
                 .request()
                 .get();
@@ -58,16 +58,15 @@ public class PropertiesOptionalTest
     }
 
     @Test
-    public void putFirst()
+    void putFirst()
     {
-        Client client = this.getClient("putFirst");
-
+        Client client   = this.getClient("putFirst");
         String jsonName = this.getClass().getSimpleName() + ".putFirst.json5";
-        String json     = FileMatchRule.slurp(jsonName, this.getClass());
+        String json     = FileSlurper.slurp(jsonName, this.getClass());
 
         Response putResponse = client
                 .target("http://localhost:{port}/api/propertiesOptional/{id}")
-                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("port", this.appExtension.getLocalPort())
                 .resolveTemplate("id", 1)
                 .request()
                 .put(Entity.json(json));
@@ -76,7 +75,7 @@ public class PropertiesOptionalTest
 
         Response getResponse = client
                 .target("http://localhost:{port}/api/propertiesOptional/{id}")
-                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("port", this.appExtension.getLocalPort())
                 .resolveTemplate("id", 1)
                 .request()
                 .get();

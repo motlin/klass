@@ -29,21 +29,19 @@ import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.reladomo.persistent.writer.IncomingCreateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.MutationContext;
 import cool.klass.reladomo.persistent.writer.test.AbstractValidatorTest;
-import io.liftwizard.reladomo.test.rule.ReladomoTestRuleBuilder;
+import io.liftwizard.reladomo.test.extension.ReladomoExtensionBuilder;
 import org.eclipse.collections.api.map.ImmutableMap;
-import org.junit.Rule;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractCreateValidatorTest
         extends AbstractValidatorTest
 {
-    @Rule
-    public final TestRule reladomoTestRule = new ReladomoTestRuleBuilder()
+    @RegisterExtension
+    public final ReladomoExtensionBuilder reladomoTestExtension = new ReladomoExtensionBuilder()
             .setRuntimeConfigurationPath("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml")
-            .setTestDataFileNames("test-data/User.txt")
-            .build();
+            .setTestDataFileNames("test-data/User.txt");
 
     @Override
     protected final void validate(@Nonnull ObjectNode incomingInstance, Object persistentInstance)

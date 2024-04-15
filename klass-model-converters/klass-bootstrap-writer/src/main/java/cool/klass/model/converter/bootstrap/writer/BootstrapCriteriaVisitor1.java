@@ -35,7 +35,7 @@ import org.eclipse.collections.impl.map.mutable.MapAdapter;
 public class BootstrapCriteriaVisitor1
         implements CriteriaVisitor
 {
-    private final MutableMap<cool.klass.model.meta.domain.api.criteria.Criteria, klass.model.meta.domain.Criteria> criteriaByCriteria = MapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableMap<Criteria, klass.model.meta.domain.Criteria> criteriaByCriteria = MapAdapter.adapt(new LinkedHashMap<>());
 
     private final CriteriaList bootstrappedCriteria = new CriteriaList();
 

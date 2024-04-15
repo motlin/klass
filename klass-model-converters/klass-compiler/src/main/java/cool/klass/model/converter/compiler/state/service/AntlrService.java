@@ -176,7 +176,7 @@ public class AntlrService
         this.serviceProjectionDispatch = Optional.of(projectionDispatch);
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         this.reportDuplicateKeywords(compilerAnnotationHolder);
@@ -252,7 +252,7 @@ public class AntlrService
                 projectionDispatch,
                 elementContext);
     }
-    //</editor-fold>
+    // </editor-fold>
 
     @Nonnull
     public AntlrVerb getVerb()

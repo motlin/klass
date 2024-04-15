@@ -80,7 +80,7 @@ import io.liftwizard.dropwizard.configuration.uuid.UUIDSupplierFactoryProvider;
         "sampleData",
         "bootstrap",
 })
-public class AbstractKlassConfiguration
+public abstract class AbstractKlassConfiguration
         extends Configuration
         implements ConfigLoggingFactoryProvider,
         CorsFactoryProvider,
@@ -134,7 +134,7 @@ public class AbstractKlassConfiguration
     }
 
     @JsonProperty("klass")
-    public void setKlass(KlassFactory klassFactory)
+    public void setKlassFactory(KlassFactory klassFactory)
     {
         this.klassFactory = klassFactory;
     }

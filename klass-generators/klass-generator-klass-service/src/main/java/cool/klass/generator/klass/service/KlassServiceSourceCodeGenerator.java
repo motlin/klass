@@ -44,7 +44,7 @@ public final class KlassServiceSourceCodeGenerator
                 .collect(KlassServiceSourceCodeGenerator::getSourceCode)
                 .makeString("");
 
-        //language=Klass
+        // language=Klass
         return ""
                + "package " + fullyQualifiedPackage + ".inference\n"
                 + "\n"

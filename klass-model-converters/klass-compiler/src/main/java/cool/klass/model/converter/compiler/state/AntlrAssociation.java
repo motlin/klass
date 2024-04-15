@@ -42,7 +42,7 @@ public class AntlrAssociation
         extends AntlrPackageableElement
         implements AntlrTopLevelElement
 {
-    //<editor-fold desc="AMBIGUOUS">
+    // <editor-fold desc="AMBIGUOUS">
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
             new AssociationDeclarationContext(AMBIGUOUS_PARENT, -1),
             AntlrCompilationUnit.AMBIGUOUS,
@@ -56,9 +56,9 @@ public class AntlrAssociation
                     + ".enterAssociationEnd() not implemented yet");
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
-    //<editor-fold desc="NOT_FOUND">
+    // <editor-fold desc="NOT_FOUND">
     public static final AntlrAssociation NOT_FOUND = new AntlrAssociation(
             new AssociationDeclarationContext(NOT_FOUND_PARENT, -1),
             AntlrCompilationUnit.NOT_FOUND,
@@ -72,7 +72,7 @@ public class AntlrAssociation
                     + ".enterAssociationEnd() not implemented yet");
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
     private final MutableList<AntlrAssociationEnd>                              associationEnds          =
             Lists.mutable.empty();

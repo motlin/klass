@@ -29,11 +29,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.tuple.Pair;
+import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
-
-import static org.fusesource.jansi.Ansi.Color.RED;
-import static org.fusesource.jansi.Ansi.Color.YELLOW;
-import static org.fusesource.jansi.Ansi.ansi;
 
 public class RootCompilerAnnotation
         extends AbstractCompilerAnnotation
@@ -114,7 +111,7 @@ public class RootCompilerAnnotation
                 locationMessage,
                 causeString);
 
-        return ansi().render(ansi).toString();
+        return Ansi.ansi().render(ansi).toString();
     }
 
     @Nonnull
@@ -123,8 +120,8 @@ public class RootCompilerAnnotation
     {
         return switch (this.severity)
         {
-            case ERROR -> RED;
-            case WARNING -> YELLOW;
+            case ERROR -> Color.RED;
+            case WARNING -> Color.YELLOW;
         };
     }
 

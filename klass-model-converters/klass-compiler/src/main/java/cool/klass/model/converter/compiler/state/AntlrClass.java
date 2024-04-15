@@ -59,7 +59,7 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 public class AntlrClass
         extends AntlrClassifier
 {
-    //<editor-fold desc="AMBIGUOUS">
+    // <editor-fold desc="AMBIGUOUS">
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
             new ClassDeclarationContext(AMBIGUOUS_PARENT, -1),
             AntlrCompilationUnit.AMBIGUOUS,
@@ -94,9 +94,9 @@ public class AntlrClass
                     + ".enterParameterizedProperty() not implemented yet");
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
-    //<editor-fold desc="NOT_FOUND">
+    // <editor-fold desc="NOT_FOUND">
     public static final AntlrClass NOT_FOUND = new AntlrClass(
             new ClassDeclarationContext(NOT_FOUND_PARENT, -1),
             AntlrCompilationUnit.NOT_FOUND,
@@ -131,7 +131,7 @@ public class AntlrClass
                     + ".enterParameterizedProperty() not implemented yet");
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
     // TODO: Unified list of dataType and parameterized properties
 
@@ -418,7 +418,7 @@ public class AntlrClass
         this.klassBuilder.setSubClassBuilders(subClasses);
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @Override
     public void reportNameErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
@@ -634,7 +634,7 @@ public class AntlrClass
                     this.getElementContext().classHeader().extendsDeclaration().classReference());
         }
     }
-    //</editor-fold>
+    // </editor-fold>
 
     private boolean hasIDProperty()
     {

@@ -49,9 +49,6 @@ import org.fusesource.jansi.Ansi.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.fusesource.jansi.Ansi.Color.CYAN;
-import static org.fusesource.jansi.Ansi.ansi;
-
 public abstract class AbstractCompilerAnnotation
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCompilerAnnotation.class);
@@ -134,7 +131,7 @@ public abstract class AbstractCompilerAnnotation
         String entireContext = contextStrings
                 .collect(contextString -> contextString.toString(lineNumberWidth))
                 .makeString("", "\n", "\n");
-        return ansi().a(entireContext).reset().toString();
+        return Ansi.ansi().a(entireContext).reset().toString();
     }
 
     @Nonnull
@@ -207,7 +204,7 @@ public abstract class AbstractCompilerAnnotation
 
         for (TokenLine tokenLine : tokenLines)
         {
-            Ansi ansi = ansi();
+            Ansi ansi = Ansi.ansi();
             tokenLine.getTokens().forEach(token -> this.ansiTokenColorizer.colorizeText(ansi, token));
 
             if (!ansi.toString().endsWith(System.getProperty("line.separator")))
@@ -349,7 +346,7 @@ public abstract class AbstractCompilerAnnotation
 
         Color caretColor = this.getCaretColor();
 
-        return ansi().fg(caretColor).a(uncoloredString + "\n").toString();
+        return Ansi.ansi().fg(caretColor).a(uncoloredString + "\n").toString();
     }
 
     @Nonnull
@@ -421,11 +418,11 @@ public abstract class AbstractCompilerAnnotation
     private String getLocationMessage()
     {
         // @formatter:off
-        return ansi().a("\n")
-                .fg(CYAN).a("Location:  ").reset().a(this.getFilenameWithoutDirectory()).a(":").a(this.getLine()).reset().a("\n")
-                .fg(CYAN).a("File:      ").reset().a(this.compilationUnit).reset().a("\n")
-                .fg(CYAN).a("Line:      ").reset().a(this.getLine()).reset().a("\n")
-                .fg(CYAN).a("Character: ").reset().a(this.getCharPositionInLine() + 1)
+        return Ansi.ansi().a("\n")
+                .fg(Color.CYAN).a("Location:  ").reset().a(this.getFilenameWithoutDirectory()).a(":").a(this.getLine()).reset().a("\n")
+                .fg(Color.CYAN).a("File:      ").reset().a(this.compilationUnit).reset().a("\n")
+                .fg(Color.CYAN).a("Line:      ").reset().a(this.getLine()).reset().a("\n")
+                .fg(Color.CYAN).a("Character: ").reset().a(this.getCharPositionInLine() + 1)
                 .toString();
         // @formatter:on
     }

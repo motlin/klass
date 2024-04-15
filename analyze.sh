@@ -49,8 +49,8 @@ COMMIT_MESSAGE=$(git log --format=%B -n 1 HEAD)
 
 echoSay "[[volm 0.10]] Beginning build of commit: $COMMIT_MESSAGE" &
 
-$MAVEN clean            --threads 2C
-$MAVEN install          --threads 2C -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true --activate-profiles 'dev'
+$MAVEN clean
+$MAVEN install -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true --activate-profiles 'dev'
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -ne 0 ]; then

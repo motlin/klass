@@ -59,7 +59,6 @@ import com.gs.fw.common.mithra.util.MithraTimestamp;
 import com.stackoverflow.Question;
 import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
-import com.stackoverflow.QuestionVersionFinder;
 import com.stackoverflow.json.view.QuestionReadProjection_JsonView;
 import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.JsonTypeCheckingValidator;
@@ -396,18 +395,22 @@ public class QuestionResourceManual
         Operation queryOperation = QuestionFinder.id().eq(id)
                 .and(QuestionFinder.system().equalsEdgePoint())
                 .and(QuestionFinder.version().number().eq(version));
+        /*
         Operation authorizeOperation = QuestionFinder.all();
         Operation validateOperation  = QuestionFinder.all();
         Operation conflictOperation  = QuestionFinder.all();
+        */
 
         QuestionList result = QuestionFinder.findMany(queryOperation);
         result.deepFetch(QuestionFinder.answers());
         result.deepFetch(QuestionFinder.version());
         // TODO: Deep fetch using projection QuestionWriteProjection
 
+        /*
         boolean isAuthorized = !result.asEcList().allSatisfy(authorizeOperation::matches);
         boolean isValidated  = !result.asEcList().allSatisfy(validateOperation::matches);
         boolean hasConflict  = !result.asEcList().allSatisfy(conflictOperation::matches);
+        */
         if (result.isEmpty())
         {
             throw new ClientErrorException("Url valid, data not found.", Status.GONE);
@@ -439,18 +442,24 @@ public class QuestionResourceManual
             @QueryParam("version") Integer version,
             @Nonnull @Context SecurityContext securityContext)
     {
+        /*
         String    userPrincipalName  = securityContext.getUserPrincipal().getName();
+        */
         Operation queryOperation     = QuestionFinder.id().eq(id);
+        /*
         Operation authorizeOperation = QuestionFinder.createdById().eq(userPrincipalName);
         Operation validateOperation  = QuestionFinder.id().eq(QuestionVersionFinder.id()).and(QuestionVersionFinder.number().eq(version));
         Operation conflictOperation  = QuestionFinder.all();
+        */
 
         QuestionList result = QuestionFinder.findMany(queryOperation);
         // TODO: Deep fetch using projection QuestionWriteProjection
 
+        /*
         boolean isAuthorized = !result.asEcList().allSatisfy(authorizeOperation::matches);
         boolean isValidated  = !result.asEcList().allSatisfy(validateOperation::matches);
         boolean hasConflict  = !result.asEcList().allSatisfy(conflictOperation::matches);
+        */
         if (result.isEmpty())
         {
             throw new ClientErrorException("Url valid, data not found.", Status.GONE);

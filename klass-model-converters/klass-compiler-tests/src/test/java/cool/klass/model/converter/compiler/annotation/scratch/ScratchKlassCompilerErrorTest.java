@@ -17,9 +17,9 @@
 package cool.klass.model.converter.compiler.annotation.scratch;
 
 import cool.klass.model.converter.compiler.annotation.AbstractKlassCompilerErrorTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ScratchKlassCompilerErrorTest
+class ScratchKlassCompilerErrorTest
         extends AbstractKlassCompilerErrorTestCase
 {
     @Test

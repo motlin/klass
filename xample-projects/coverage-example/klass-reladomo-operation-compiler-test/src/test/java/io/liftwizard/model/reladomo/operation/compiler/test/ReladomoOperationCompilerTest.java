@@ -33,22 +33,19 @@ import cool.klass.xample.coverage.PropertiesOptional;
 import cool.klass.xample.coverage.PropertiesOptionalFinder;
 import cool.klass.xample.coverage.PropertiesOptionalFinder.PropertiesOptionalSingleFinder;
 import cool.klass.xample.coverage.PropertiesRequiredFinder;
-import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
+import io.liftwizard.junit.extension.log.marker.LogMarkerTestExtension;
 import io.liftwizard.model.reladomo.operation.compiler.ReladomoOperationCompiler;
-import io.liftwizard.reladomo.test.rule.ReladomoInitializeTestRule;
+import io.liftwizard.reladomo.test.extension.ReladomoInitializeExtension;
 import org.eclipse.collections.impl.factory.primitive.BooleanSets;
 import org.eclipse.collections.impl.factory.primitive.DoubleSets;
 import org.eclipse.collections.impl.factory.primitive.FloatSets;
 import org.eclipse.collections.impl.factory.primitive.IntSets;
 import org.eclipse.collections.impl.factory.primitive.LongSets;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ErrorCollector;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.hamcrest.CoreMatchers.is;
 
 public class ReladomoOperationCompilerTest
 {
@@ -71,18 +68,15 @@ public class ReladomoOperationCompilerTest
     public static final PropertiesOptionalSingleFinder<PropertiesOptional, Object, PropertiesOptional> FINDER =
             PropertiesOptionalFinder.getFinderInstance();
 
-    @Rule
-    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+    @RegisterExtension
+    private final LogMarkerTestExtension logMarkerTestExtension = new LogMarkerTestExtension();
 
-    @Rule
-    public final ReladomoInitializeTestRule initializeTestRule = new ReladomoInitializeTestRule(
+    @RegisterExtension
+    private final ReladomoInitializeExtension initializeTestExtension = new ReladomoInitializeExtension(
             "reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml");
 
-    @Rule
-    public final ErrorCollector errorCollector = new ErrorCollector();
-
     @Test
-    public void invalidClassName()
+    void invalidClassName()
     {
         try
         {
@@ -99,7 +93,7 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void invalidAttributeName()
+    void invalidAttributeName()
     {
         try
         {
@@ -116,7 +110,7 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void invalidRelationshipName()
+    void invalidRelationshipName()
     {
         try
         {
@@ -133,7 +127,7 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void invalidParameterType()
+    void invalidParameterType()
     {
         try
         {
@@ -150,7 +144,7 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void invalidDateFormat()
+    void invalidDateFormat()
     {
         try
         {
@@ -167,7 +161,7 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void nullForList()
+    void nullForList()
     {
         this.assertCompiles(
                 "this.optionalString in [\"example\", null]",
@@ -175,7 +169,7 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void nullityOperation()
+    void nullityOperation()
     {
         this.assertCompiles("this.optionalBoolean is null",       FINDER.optionalBoolean()  .isNull());
         this.assertCompiles("this.optionalInteger is null",       FINDER.optionalInteger()  .isNull());
@@ -219,13 +213,13 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void equalsEdgePointOperation()
+    void equalsEdgePointOperation()
     {
         this.assertCompiles("this.system equalsEdgePoint", FINDER.system().equalsEdgePoint());
     }
 
     @Test
-    public void numberFormats()
+    void numberFormats()
     {
         this.assertCompiles("this.optionalFloat = 42.0f",           FINDER.optionalFloat().eq(42));
         this.assertCompiles("this.optionalFloat = 42.0d",           FINDER.optionalFloat().eq(42));
@@ -238,7 +232,7 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void equalityOperation()
+    void equalityOperation()
     {
         this.assertCompiles("this.optionalBoolean = true",                        FINDER.optionalBoolean()  .eq(true));
         this.assertCompiles("this.optionalInteger = 4",                           FINDER.optionalInteger()  .eq(4));
@@ -271,7 +265,7 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void inequalityOperation()
+    void inequalityOperation()
     {
         this.assertCompiles("this.optionalInteger > 4",                           FINDER.optionalInteger()  .greaterThan(4));
         this.assertCompiles("this.optionalLong > 5",                              FINDER.optionalLong()     .greaterThan(5L));
@@ -307,7 +301,7 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void stringLikeOperations()
+    void stringLikeOperations()
     {
         this.assertCompiles("this.optionalString endsWith \"Value\"",            FINDER.optionalString().endsWith("Value"));
         this.assertCompiles("this.optionalString contains \"Value\"",            FINDER.optionalString().contains("Value"));
@@ -321,7 +315,7 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void stringDerivedAttributes()
+    void stringDerivedAttributes()
     {
         this.assertCompiles("lower( this.optionalString ) = \"value\"", FINDER.optionalString().toLowerCase().eq("value"));
         this.assertCompiles("substring(this.optionalString, 2, 3) = \"value\"", FINDER.optionalString().substring(2, 3).eq("value"));
@@ -329,13 +323,13 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void numberDerivedAttributes()
+    void numberDerivedAttributes()
     {
         this.assertCompiles("abs(this.optionalInteger) = 1", FINDER.optionalInteger().absoluteValue().eq(1));
     }
 
     @Test
-    public void instantDerivedAttributes()
+    void instantDerivedAttributes()
     {
         this.assertCompiles("year(this.optionalInstant) = 1999",       FINDER.optionalInstant()  .year()      .eq(1999));
         this.assertCompiles("month(this.optionalInstant) = 12",        FINDER.optionalInstant()  .month()     .eq(12));
@@ -347,7 +341,7 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void inOperation()
+    void inOperation()
     {
         this.assertCompiles("this.optionalBoolean in [true, false]",                                                      FINDER.optionalBoolean()  .in(BooleanSets.mutable.with(true, false)));
         this.assertCompiles("this.optionalInteger in [4, 5]",                                                             FINDER.optionalInteger()  .in(IntSets.mutable.with(4, 5)));
@@ -368,7 +362,7 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void relationshipNavigation()
+    void relationshipNavigation()
     {
         RelatedFinder finder = OwnedNaturalOneToManySourceFinder.getFinderInstance();
 
@@ -383,7 +377,7 @@ public class ReladomoOperationCompilerTest
     }
 
     @Test
-    public void conjunctionOperations()
+    void conjunctionOperations()
     {
         this.assertCompiles(
                 "this.optionalBoolean = true & this.optionalInteger = 4",
@@ -420,27 +414,14 @@ public class ReladomoOperationCompilerTest
         Operation compiledOperation = this.compile(finder, sourceCodeText);
         if (compiledOperation != null)
         {
-            if (!compiledOperation.equals(operation))
-            {
-                this.errorCollector.checkThat(compiledOperation, is(operation));
-            }
+            assertThat(compiledOperation).isEqualTo(operation);
         }
     }
 
     @Nullable
-    private Operation compile(
-            RelatedFinder finder,
-            String sourceCodeText)
+    private Operation compile(RelatedFinder finder, String sourceCodeText)
     {
-        try
-        {
-            var reladomoOperationCompiler = new ReladomoOperationCompiler();
-            return reladomoOperationCompiler.compile(finder, sourceCodeText);
-        }
-        catch (IllegalArgumentException e)
-        {
-            this.errorCollector.addError(e);
-            return null;
-        }
+        var reladomoOperationCompiler = new ReladomoOperationCompiler();
+        return reladomoOperationCompiler.compile(finder, sourceCodeText);
     }
 }

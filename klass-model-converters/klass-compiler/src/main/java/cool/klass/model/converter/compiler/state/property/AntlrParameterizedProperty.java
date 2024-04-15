@@ -173,7 +173,7 @@ public class AntlrParameterizedProperty
         return Objects.requireNonNull(this.owningClass);
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @Override
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
@@ -193,5 +193,5 @@ public class AntlrParameterizedProperty
         super.reportNameErrors(compilerAnnotationHolder);
         this.parameterHolder.reportNameErrors(compilerAnnotationHolder);
     }
-    //</editor-fold>
+    // </editor-fold>
 }

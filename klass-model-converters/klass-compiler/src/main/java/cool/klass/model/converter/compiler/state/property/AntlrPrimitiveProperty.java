@@ -133,7 +133,7 @@ public class AntlrPrimitiveProperty
         return this.getElementContext().primitiveType().getText();
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @Override
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
@@ -296,5 +296,5 @@ public class AntlrPrimitiveProperty
         this.minValidations.each(each -> each.reportInvalidType(compilerAnnotationHolder, primitiveType));
         this.maxValidations.each(each -> each.reportInvalidType(compilerAnnotationHolder, primitiveType));
     }
-    //</editor-fold>
+    // </editor-fold>
 }

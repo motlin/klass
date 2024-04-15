@@ -22,9 +22,9 @@ import javax.annotation.Nonnull;
 
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class PropertiesRequiredTest extends AbstractPrimitiveValidatorTest
+class PropertiesRequiredTest extends AbstractPrimitiveValidatorTest
 {
     @Override
     @Test

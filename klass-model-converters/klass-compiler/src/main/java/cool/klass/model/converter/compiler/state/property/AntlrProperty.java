@@ -139,7 +139,7 @@ public abstract class AntlrProperty
         return result == null ? Lists.immutable.empty() : result.toImmutable();
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @OverridingMethodsMustInvokeSuper
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
@@ -282,7 +282,7 @@ public abstract class AntlrProperty
                 this.getName());
         compilerAnnotationHolder.add("ERR_PRP_REF", message, this, severity);
     }
-    //</editor-fold>
+    // </editor-fold>
 
     @Override
     protected Pattern getNamePattern()

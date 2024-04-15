@@ -16,13 +16,13 @@
 
 package klass.model.meta.domain.dropwizard.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class PackageableElementResourceManualTest
+class PackageableElementResourceManualTest
         extends AbstractResourceTestCase
 {
     @Test
-    public void getAllMeta()
+    void getAllMeta()
     {
         this.assertUrlReturns("getAllMeta", "/meta/packageableElement");
     }

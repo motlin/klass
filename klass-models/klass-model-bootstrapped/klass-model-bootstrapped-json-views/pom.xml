@@ -81,4 +81,29 @@
 
     </dependencies>
 
+    <profiles>
+        <!--region Phase 17: package-->
+        <profile>
+            <id>maven-javadoc-plugin</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <configuration>
+                            <additionalDependencies>
+                                <additionalDependency>
+                                    <groupId>cool.klass</groupId>
+                                    <artifactId>klass-generator-json-view</artifactId>
+                                    <version>${project.version}</version>
+                                </additionalDependency>
+                            </additionalDependencies>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!--endregion-->
+    </profiles>
 </project>

@@ -113,7 +113,7 @@ public class AntlrServiceGroup
         return (ServiceGroupDeclarationContext) super.getElementContext();
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @Override
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
@@ -209,7 +209,7 @@ public class AntlrServiceGroup
                 this,
                 this.getElementContext().classReference());
     }
-    //</editor-fold>
+    // </editor-fold>
 
     public ServiceGroupBuilder build()
     {

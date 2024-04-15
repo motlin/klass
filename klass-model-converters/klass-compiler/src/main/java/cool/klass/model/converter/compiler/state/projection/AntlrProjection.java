@@ -43,7 +43,7 @@ public class AntlrProjection
         extends AntlrProjectionParent
         implements AntlrTopLevelElement
 {
-    //<editor-fold desc="AMBIGUOUS">
+    // <editor-fold desc="AMBIGUOUS">
     public static final AntlrProjection AMBIGUOUS = new AntlrProjection(
             new ProjectionDeclarationContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
@@ -59,9 +59,9 @@ public class AntlrProjection
             return AntlrProjection.class + ".AMBIGUOUS";
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
-    //<editor-fold desc="NOT_FOUND">
+    // <editor-fold desc="NOT_FOUND">
     public static final AntlrProjection NOT_FOUND = new AntlrProjection(
             new ProjectionDeclarationContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
@@ -77,7 +77,7 @@ public class AntlrProjection
             return AntlrProjection.class + ".NOT_FOUND";
         }
     };
-    //</editor-fold>
+    // </editor-fold>
 
     @Nonnull
     private final AntlrCompilationUnit compilationUnitState;
@@ -161,7 +161,7 @@ public class AntlrProjection
         return this.projectionBuilder;
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @Override
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
@@ -210,5 +210,5 @@ public class AntlrProjection
                     this.getElementContext().classifierReference());
         }
     }
-    //</editor-fold>
+    // </editor-fold>
 }

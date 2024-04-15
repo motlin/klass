@@ -85,7 +85,7 @@ public class JsonViewGenerator
     private String getJsonViewSourceCode(@Nonnull Projection projection)
     {
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "package " + projection.getPackageName() + ".json.view;\n"
                 + "\n"

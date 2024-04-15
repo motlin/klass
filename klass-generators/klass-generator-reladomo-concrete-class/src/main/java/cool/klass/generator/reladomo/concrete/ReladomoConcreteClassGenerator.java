@@ -92,7 +92,7 @@ public class ReladomoConcreteClassGenerator
 
         String derivedPropertiesSourceCode = this.getDerivedPropertiesSourceCode(primitiveProperties);
 
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "package " + packageName + ";\n"
                 + "\n"
@@ -146,7 +146,7 @@ public class ReladomoConcreteClassGenerator
         primitiveType.visit(sourceCodeVisitor);
         String valueSourceCode = sourceCodeVisitor.getResult();
 
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "\n"
                 + "    @Override\n"

@@ -158,7 +158,7 @@ public class AntlrProjectionDataTypeProperty
         return this.antlrProjectionParent;
     }
 
-    //<editor-fold desc="Report Compiler Errors">
+    // <editor-fold desc="Report Compiler Errors">
     @Override
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
@@ -246,7 +246,7 @@ public class AntlrProjectionDataTypeProperty
     {
         // Intentionally blank. Reference to a named element that gets its name checked.
     }
-    //</editor-fold>
+    // </editor-fold>
 
     @Nonnull
     @Override

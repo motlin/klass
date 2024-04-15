@@ -101,7 +101,7 @@ public class AuditPropertyInferencePhase
         StringBuilder sourceCodeText = new StringBuilder();
         if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isCreatedBy))
         {
-            sourceCodeText.append("    createdById    : String createdBy private userId final" + validationSourceCode + ";\n");
+            sourceCodeText.append("    createdById    : String createdBy private userId final").append(validationSourceCode).append(";\n");
         }
         if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isCreatedOn))
         {
@@ -109,7 +109,7 @@ public class AuditPropertyInferencePhase
         }
         if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isLastUpdatedBy))
         {
-            sourceCodeText.append("    lastUpdatedById: String lastUpdatedBy private userId" + validationSourceCode + ";\n");
+            sourceCodeText.append("    lastUpdatedById: String lastUpdatedBy private userId").append(validationSourceCode).append(";\n");
         }
 
         /*

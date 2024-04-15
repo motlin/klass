@@ -29,7 +29,7 @@ import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 
-public class AbstractReladomoGenerator
+public abstract class AbstractReladomoGenerator
 {
     @Nonnull
     protected final DomainModel domainModel;

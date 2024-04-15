@@ -191,7 +191,7 @@ public abstract class PersistentSynchronizer
         });
     }
 
-    //region DataTypeProperties
+    // region DataTypeProperties
     private boolean isRestrictedFromWriting(@Nonnull Klass klass)
     {
         return klass.isTransient() || klass.getVersionedProperty().isPresent();
@@ -247,9 +247,9 @@ public abstract class PersistentSynchronizer
                 || dataTypeProperty.isKey() && !this.shouldWriteKey()
                 || dataTypeProperty.isID() && !this.shouldWriteId();
     }
-    //endregion
+    // endregion
 
-    //region AssociationEnds
+    // region AssociationEnds
     private boolean synchronizeAssociationEnds(
             @Nonnull Klass klass,
             @Nonnull Optional<AssociationEnd> pathHere,
@@ -574,8 +574,10 @@ public abstract class PersistentSynchronizer
             Object persistentChildInstance = persistentChildInstancesByKey.get(keys);
             if (persistentChildInstance == null)
             {
+                /*
                 Klass  resultType  = associationEnd.getType();
                 Object newInstance = this.dataStore.instantiate(resultType, keys);
+                */
 
                 if (associationEnd.isOwned())
                 {
@@ -657,7 +659,7 @@ public abstract class PersistentSynchronizer
             Klass klass)
     {
     }
-    //endregion
+    // endregion
 
     private Object getKeyFromJsonNode(
             @Nonnull DataTypeProperty keyProperty,

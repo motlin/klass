@@ -147,7 +147,7 @@ public class KlassSourceCodeHtmlGenerator
                 .collect(token -> getSourceCode(token, domainModel, topLevelElementToHighlight, memberNameToHighlight))
                 .makeString("");
 
-        //language=HTML
+        // language=HTML
         String prefix = """
                 <html>
                 <head>
