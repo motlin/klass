@@ -42,7 +42,6 @@
         <module>klass-graphql</module>
         <module>klass-logging</module>
         <module>klass-maven-archetype</module>
-        <module>klass-maven-parent</module>
         <module>klass-model-converters</module>
         <module>klass-models</module>
         <module>klass-reladomo</module>
