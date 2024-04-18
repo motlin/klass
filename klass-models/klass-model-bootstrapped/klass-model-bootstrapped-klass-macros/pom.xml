@@ -32,6 +32,11 @@
 
     <name>${app.name} Klass Macros</name>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+    </properties>
+
     <dependencies>
 
         <dependency>
