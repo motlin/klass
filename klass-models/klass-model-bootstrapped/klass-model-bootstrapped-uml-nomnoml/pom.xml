@@ -30,6 +30,11 @@
 
     <name>${app.name} Nomnoml UML Diagram</name>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+    </properties>
+
     <build>
         <plugins>
 
