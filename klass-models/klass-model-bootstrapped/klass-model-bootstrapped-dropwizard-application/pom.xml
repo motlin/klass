@@ -15,14 +15,11 @@
   ~ limitations under the License.
   -->
 
-<project
-        xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>cool.klass</groupId>
         <artifactId>klass-model-bootstrapped</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -74,7 +71,7 @@
             <plugin>
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-generator-dropwizard-plugin</artifactId>
-                <version>0.1.0-SNAPSHOT</version>
+                <version>0.1.0</version>
 
                 <configuration>
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
@@ -355,55 +352,55 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-data-store</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-data-store</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-meta-interface</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-source-code-meta-interface</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-domain-model-loader</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-service-klass-html</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-serialization-jackson-module-meta-model</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-bundle-graphql</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
         <!--endregion-->
 
@@ -411,49 +408,49 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-sample-data</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-syntax-css-class</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-data-store-reladomo</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-domain-model-loader-compiler</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-reladomo-jsonview</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-reladomo-response</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-bootstrap-writer</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
         <!--endregion-->
