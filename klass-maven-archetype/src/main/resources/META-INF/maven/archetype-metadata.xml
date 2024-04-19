@@ -260,19 +260,6 @@
         </module>
         <!--endregion-->
 
-        <!--region ${rootArtifactId}-reladomo-readable-interfaces-->
-        <module
-                id="${rootArtifactId}-reladomo-readable-interfaces"
-                dir="__rootArtifactId__-reladomo-readable-interfaces"
-                name="${rootArtifactId}-reladomo-readable-interfaces">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-        <!--endregion-->
-
         <!--region ${rootArtifactId}-reladomo-runtime-configuration-->
         <module
                 id="${rootArtifactId}-reladomo-runtime-configuration"
