@@ -61,7 +61,7 @@
             <plugin>
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-generator-dropwizard-plugin</artifactId>
-                <version>0.1.0-SNAPSHOT</version>
+                <version>${klass.version}</version>
 
                 <configuration>
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
@@ -91,7 +91,7 @@
                     <dependency>
                         <groupId>cool.klass</groupId>
                         <artifactId>klass-model-bootstrapped-domain-model</artifactId>
-                        <version>0.1.0-SNAPSHOT</version>
+                        <version>${klass.version}</version>
                     </dependency>
 
                 </dependencies>
@@ -213,6 +213,11 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-named-data-source-factory</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-servlet-logging-typesafe</artifactId>
         </dependency>
         <!--endregion-->
 
@@ -554,25 +559,13 @@
         </dependency>
 
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
             <scope>runtime</scope>
         </dependency>
         <!--endregion-->
 
         <!--region Test dependencies -->
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-reladomo-test-extension</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-auth-filter-header</artifactId>
@@ -587,19 +580,13 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-junit-extension-log-marker</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-junit-extension-match-file</artifactId>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-junit-extension-match-json</artifactId>
+            <artifactId>liftwizard-junit-extension-match-abstract</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -610,42 +597,20 @@
         </dependency>
 
         <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-junit-extension-app</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-testing</artifactId>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-client</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-util</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.skyscreamer</groupId>
-            <artifactId>jsonassert</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.vaadin.external.google</groupId>
-            <artifactId>android-json</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
 

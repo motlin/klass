@@ -22,9 +22,17 @@
     <parent>
         <groupId>cool.klass</groupId>
         <artifactId>xample-projects</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.2.0-SNAPSHOT</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.repro.reladomo.abstractimplementsinterface</groupId>
+    <artifactId>reladomo-abstract-implements-interface</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>${app.name} (Module Group)</name>
 
     <properties>
         <klass.version>0.1.0-SNAPSHOT</klass.version>
@@ -35,16 +43,8 @@
 
         <mainClass>${app.rootPackageName}.dropwizard.application.${app.name}Application</mainClass>
 
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <liftwizard.version>2.1.7</liftwizard.version>
     </properties>
-
-    <groupId>com.repro.reladomo.abstractimplementsinterface</groupId>
-    <artifactId>reladomo-abstract-implements-interface</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-
-    <name>${app.name} (Module Group)</name>
 
     <dependencyManagement>
         <dependencies>
@@ -65,13 +65,16 @@
                 <scope>import</scope>
             </dependency>
 
+            <dependency>
+                <groupId>cool.klass</groupId>
+                <artifactId>klass-bom</artifactId>
+                <version>0.2.0-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <defaultGoal>verify</defaultGoal>
-
-    </build>
 
     <modules>
         <module>reladomo-abstract-implements-interface-domain-model</module>

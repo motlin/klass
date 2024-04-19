@@ -8,10 +8,15 @@
     <parent>
         <groupId>io.liftwizard</groupId>
         <artifactId>liftwizard-parent-build</artifactId>
-        <version>2.1.7-SNAPSHOT</version>
+        <version>2.1.7</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
+    <groupId>\${groupId}</groupId>
+    <artifactId>\${artifactId}</artifactId>
+    <version>\${version}</version>
+    <packaging>pom</packaging>
 
     <properties>
         <klass.version>${project.version}</klass.version>
@@ -19,12 +24,42 @@
         <app.artifactId>\${artifactId}</app.artifactId>
         <app.rootPackageName>\${package}</app.rootPackageName>
         <app.name>\${name}</app.name>
+
+        <mainClass>${app.rootPackageName}.dropwizard.application.${app.name}Application</mainClass>
+
+        <liftwizard.version>2.1.7</liftwizard.version>
     </properties>
 
-    <groupId>\${groupId}</groupId>
-    <artifactId>\${artifactId}</artifactId>
-    <version>\${version}</version>
-    <packaging>pom</packaging>
-
     <name>${app.name} (Module Group)</name>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>io.liftwizard</groupId>
+                <artifactId>liftwizard-dependencies</artifactId>
+                <version>${liftwizard.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.liftwizard</groupId>
+                <artifactId>liftwizard-bom</artifactId>
+                <version>${liftwizard.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>cool.klass</groupId>
+                <artifactId>klass-bom</artifactId>
+                <version>0.2.0-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
 </project>
