@@ -193,6 +193,10 @@
                                 <configuration>
                                     <rules>
                                         <requirePluginVersions>
+                                            <banLatest>true</banLatest>
+                                            <banRelease>true</banRelease>
+                                            <!--Ban snapshots later, for now it's too common to depend on klass snapshots-->
+                                            <banSnapshots>false</banSnapshots>
                                             <unCheckedPluginList>
                                                 org.apache.maven.plugins:maven-site-plugin,
                                                 org.apache.maven.plugins:maven-deploy-plugin,
