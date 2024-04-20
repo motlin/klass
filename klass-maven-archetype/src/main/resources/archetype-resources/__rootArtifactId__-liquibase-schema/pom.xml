@@ -46,28 +46,28 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-generator-liquibase-schema</artifactId>
-            <version>${project.version}</version>
+            <version>${klass.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-meta-interface</artifactId>
-            <version>${project.version}</version>
+            <version>${klass.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-source-code-meta-interface</artifactId>
-            <version>${project.version}</version>
+            <version>${klass.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-compiler</artifactId>
-            <version>${project.version}</version>
+            <version>${klass.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -115,7 +115,7 @@
             <plugin>
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-generator-liquibase-schema-plugin</artifactId>
-                <version>0.1.0-SNAPSHOT</version>
+                <version>${klass.version}</version>
 
                 <configuration>
                     <klassSourcePackages>
