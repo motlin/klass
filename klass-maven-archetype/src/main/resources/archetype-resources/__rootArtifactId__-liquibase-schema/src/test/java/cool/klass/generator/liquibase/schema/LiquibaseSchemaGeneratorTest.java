@@ -19,7 +19,7 @@ public class LiquibaseSchemaGeneratorTest
     final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
     @Test
-    public void smokeTest()
+    void smokeTest()
     {
         ImmutableList<String> klassSourcePackages = Lists.immutable.with(FULLY_QUALIFIED_PACKAGE);
 
