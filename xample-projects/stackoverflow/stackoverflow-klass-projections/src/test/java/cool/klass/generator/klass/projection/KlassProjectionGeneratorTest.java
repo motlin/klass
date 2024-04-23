@@ -30,13 +30,15 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 @ExtendWith(LogMarkerTestExtension.class)
 public class KlassProjectionGeneratorTest
 {
+    public static final String FULLY_QUALIFIED_PACKAGE = "com.stackoverflow";
+
     @RegisterExtension
     final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
     @Test
     void smokeTest()
     {
-        ImmutableList<String> klassSourcePackages = Lists.immutable.with("com.stackoverflow");
+        ImmutableList<String> klassSourcePackages = Lists.immutable.with(FULLY_QUALIFIED_PACKAGE);
 
         var domainModelCompilerLoader = new DomainModelCompilerLoader(
                 klassSourcePackages,

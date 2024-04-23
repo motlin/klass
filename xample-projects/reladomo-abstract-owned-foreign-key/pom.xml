@@ -36,8 +36,6 @@
     <name>${app.name} (Module Group)</name>
 
     <properties>
-        <klass.version>0.1.0-SNAPSHOT</klass.version>
-
         <app.artifactId>reladomo-abstract-owned-foreign-key</app.artifactId>
         <app.rootPackageName>com.repro.reladomo.abstractownedforeignkey</app.rootPackageName>
         <app.name>ReladomoAbstractOwnedForeignKey</app.name>

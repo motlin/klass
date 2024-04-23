@@ -34,19 +34,6 @@
             <artifactId>jakarta.validation-api</artifactId>
         </dependency>
 
-        <!--Uncomment these dependencies to enable validations for required properties-->
-        <!--
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        -->
-
     </dependencies>
 
     <build>
@@ -98,7 +85,7 @@
                                 <additionalDependency>
                                     <groupId>cool.klass</groupId>
                                     <artifactId>klass-generator-dto</artifactId>
-                                    <version>${project.version}</version>
+                                    <version>0.2.0-SNAPSHOT</version>
                                 </additionalDependency>
                             </additionalDependencies>
                         </configuration>

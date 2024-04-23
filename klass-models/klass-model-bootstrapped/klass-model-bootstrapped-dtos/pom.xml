@@ -89,7 +89,7 @@
                                 <additionalDependency>
                                     <groupId>cool.klass</groupId>
                                     <artifactId>klass-generator-dto</artifactId>
-                                    <version>${project.version}</version>
+                                    <version>${klass.version}</version>
                                 </additionalDependency>
                             </additionalDependencies>
                         </configuration>

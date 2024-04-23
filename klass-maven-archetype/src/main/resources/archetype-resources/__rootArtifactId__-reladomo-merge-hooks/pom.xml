@@ -88,7 +88,7 @@
                                 <additionalDependency>
                                     <groupId>cool.klass</groupId>
                                     <artifactId>klass-generator-reladomo</artifactId>
-                                    <version>${project.version}</version>
+                                    <version>${klass.version}</version>
                                 </additionalDependency>
                             </additionalDependencies>
                         </configuration>
@@ -97,6 +97,30 @@
             </build>
         </profile>
         <!--endregion-->
+
+        <!--region Phase 21: verify-->
+        <profile>
+            <id>maven-dependency-plugin</id>
+
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <artifactId>maven-dependency-plugin</artifactId>
+                            <configuration>
+                                <ignoredUnusedDeclaredDependencies>
+                                    <dependency>${project.groupId}:${app.artifactId}-reladomo-pojos</dependency>
+                                    <dependency>com.goldmansachs.reladomo:reladomo</dependency>
+                                    <dependency>com.google.code.findbugs:jsr305</dependency>
+                                </ignoredUnusedDeclaredDependencies>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <!--endregion-->
+
     </profiles>
 
 </project>

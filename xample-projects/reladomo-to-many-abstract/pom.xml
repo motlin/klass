@@ -33,8 +33,6 @@
     <name>${app.name} (Module Group)</name>
 
     <properties>
-        <klass.version>0.1.0-SNAPSHOT</klass.version>
-
         <app.artifactId>reladomo-to-many-abstract</app.artifactId>
         <app.rootPackageName>com.repro.reladomo.tomanyabstract</app.rootPackageName>
         <app.name>ReladomoToManyAbstract</app.name>
