@@ -102,7 +102,7 @@
                                 <additionalDependency>
                                     <groupId>cool.klass</groupId>
                                     <artifactId>klass-generator-reladomo</artifactId>
-                                    <version>${project.version}</version>
+                                    <version>${klass.version}</version>
                                 </additionalDependency>
                             </additionalDependencies>
                         </configuration>

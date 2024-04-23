@@ -34,13 +34,15 @@ import static org.junit.jupiter.api.Assertions.fail;
 @ExtendWith(LogMarkerTestExtension.class)
 public class KlassSourceCodeHtmlGeneratorTest
 {
+    public static final String FULLY_QUALIFIED_PACKAGE = "cool.klass.xample.coverage";
+
     @RegisterExtension
     final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
     @Test
     void smokeTest()
     {
-        ImmutableList<String> klassSourcePackages = Lists.immutable.with("cool.klass.xample.coverage");
+        ImmutableList<String> klassSourcePackages = Lists.immutable.with(FULLY_QUALIFIED_PACKAGE);
 
         var domainModelCompilerLoader = new DomainModelCompilerLoader(
                 klassSourcePackages,

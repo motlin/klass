@@ -74,7 +74,7 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-loader-compiler</artifactId>
-            <version>${project.version}</version>
+            <version>${klass.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -136,5 +136,26 @@
 
         </plugins>
     </build>
+
+    <profiles>
+        <!--region Phase 21: verify-->
+        <profile>
+            <id>maven-dependency-plugin</id>
+
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <artifactId>maven-dependency-plugin</artifactId>
+                            <configuration>
+                                <ignoreNonCompile>true</ignoreNonCompile>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <!--endregion-->
+    </profiles>
 
 </project>

@@ -21,16 +21,6 @@
             <artifactId>jakarta.validation-api</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -43,7 +33,6 @@
                 <version>${klass.version}</version>
                 <configuration>
                     <klassSourcePackages>
-                        <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>
@@ -52,6 +41,7 @@
                         <goals>
                             <goal>generate-data-transfer-objects</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                     </execution>
                 </executions>
                 <dependencies>

@@ -14,18 +14,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith(LogMarkerTestExtension.class)
 public class KlassMacroGeneratorTest
 {
+    public static final String FULLY_QUALIFIED_PACKAGE = "${package}";
+
     @RegisterExtension
     final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
     @Test
-    public void smokeTest()
+    void smokeTest()
     {
-        ImmutableList<String> klassSourcePackages = Lists.immutable.with("${package}");
+        ImmutableList<String> klassSourcePackages = Lists.immutable.with(FULLY_QUALIFIED_PACKAGE);
 
         var domainModelCompilerLoader = new DomainModelCompilerLoader(
                 klassSourcePackages,

@@ -667,7 +667,7 @@
                                 <additionalDependency>
                                     <groupId>cool.klass</groupId>
                                     <artifactId>klass-generator-dropwizard</artifactId>
-                                    <version>${project.version}</version>
+                                    <version>${klass.version}</version>
                                 </additionalDependency>
                             </additionalDependencies>
                         </configuration>

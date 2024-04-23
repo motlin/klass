@@ -527,11 +527,6 @@
         </dependency>
 
         <dependency>
-            <groupId>jakarta.ws.rs</groupId>
-            <artifactId>jakarta.ws.rs-api</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
@@ -654,7 +649,7 @@
                                 <additionalDependency>
                                     <groupId>cool.klass</groupId>
                                     <artifactId>klass-generator-dropwizard</artifactId>
-                                    <version>${project.version}</version>
+                                    <version>${klass.version}</version>
                                 </additionalDependency>
                             </additionalDependencies>
                         </configuration>

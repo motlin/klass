@@ -33,8 +33,6 @@
     <name>${app.name} (Module Group)</name>
 
     <properties>
-        <klass.version>0.1.0-SNAPSHOT</klass.version>
-
         <app.artifactId>stackoverflow</app.artifactId>
         <app.rootPackageName>com.stackoverflow</app.rootPackageName>
         <app.name>StackOverflow</app.name>
