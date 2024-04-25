@@ -41,6 +41,12 @@ class KlassCompilerTest
     }
 
     @Test
+    void factorioPrints()
+    {
+        this.assertNoCompilerErrors("factorio-prints.klass");
+    }
+
+    @Test
     void emoji()
     {
         this.assertNoCompilerErrors("emoji.klass");
