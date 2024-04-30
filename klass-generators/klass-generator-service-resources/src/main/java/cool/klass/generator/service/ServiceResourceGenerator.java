@@ -777,7 +777,7 @@ public class ServiceResourceGenerator
         String orderBySourceCode = service.getOrderBy().map(this::getOrderBysSourceCode).orElse("");
 
         // @formatter:off
-        //language=JAVA
+        // language=JAVA
         return ""
                 + "    @Timed\n"
                 + "    @ExceptionMetered\n"
