@@ -54,6 +54,7 @@
     <build>
         <plugins>
 
+            <!--region Phase 3: generate-sources-->
             <plugin>
                 <groupId>io.liftwizard</groupId>
                 <artifactId>liftwizard-generator-reladomo-code-plugin</artifactId>
@@ -64,6 +65,7 @@
                         <goals>
                             <goal>generate-reladomo-pojos</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                     </execution>
                 </executions>
                 <dependencies>
@@ -75,7 +77,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
-
+            <!--endregion-->
         </plugins>
     </build>
 </project>
