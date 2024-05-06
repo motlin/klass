@@ -21,6 +21,27 @@
               ]
             }
           ]
+        },
+        {
+          "type": "file-access-logstash",
+          "currentLogFilename": "./logs/logstash-access.jsonl",
+          "archivedLogFilenamePattern": "./logs/logstash-access-%d.jsonl",
+          "includeCallerData": true,
+          "filterFactories": [
+            {
+              "type": "url",
+              "onMatch": "DENY",
+              "urls": [
+                "/icons/",
+                "/static/",
+                "/manifest.json",
+                "/assets-manifest.json",
+                "/favicon.ico",
+                "/service-worker.js",
+                "/bootstrap.min.css"
+              ]
+            }
+          ]
         }
       ]
     }
@@ -60,10 +81,8 @@
       },
       {
         "type": "file-logstash",
-        "threshold": "ALL",
-        "timeZone": "UTC",
-        "currentLogFilename": "./logs/app.json",
-        "archivedLogFilenamePattern": "./logs/app-%d.json",
+        "currentLogFilename": "./logs/logstash.jsonl",
+        "archivedLogFilenamePattern": "./logs/logstash-%d.jsonl",
         "encoder": {
           "includeContext": true,
           "includeMdc": true,

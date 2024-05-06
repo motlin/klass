@@ -51,8 +51,6 @@
       },
       {
         "type": "file-logstash",
-        "threshold": "ALL",
-        "timeZone": "UTC",
         "currentLogFilename": "./logs/app.json",
         "archivedLogFilenamePattern": "./logs/app-%d.json",
         "encoder": {
