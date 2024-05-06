@@ -64,7 +64,7 @@
         <checkstyle.suppressions>${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</checkstyle.suppressions>
         <checkstyle.cache>${project.build.directory}/checkstyle-cache</checkstyle.cache>
 
-        <liftwizard.version>2.1.7</liftwizard.version>
+        <liftwizard.version>2.1.8</liftwizard.version>
     </properties>
 
     <description>Klass is a rapid application development framework with full support for temporal data.</description>
