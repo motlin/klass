@@ -75,13 +75,11 @@
     "appenders": [
       {
         "type": "console",
-        "timeZone": "system",
         "logFormat": "%highlight(%-5level) %cyan(%date{HH:mm:ss.SSS}) %gray(\\(%file:%line\\)) [%white(%thread)] %blue(%marker) {%magenta(%mdc)} %green(%logger): %message%n%rootException",
         "includeCallerData": true,
       },
       {
-        "type": "file-logstash",
-        "timeZone": "UTC",
+        "type"                      : "file-logstash",
         "currentLogFilename"        : "./logs/logstash.jsonl",
         "archivedLogFilenamePattern": "./logs/logstash-%d.jsonl",
         "includeCallerData"         : true,
@@ -92,7 +90,6 @@
           "includedNonStructuredArguments": true,
           "includeTags": true,
           "prettyPrint": false,
-          "serializationInclusion": "NON_ABSENT"
         },
       },
     ]

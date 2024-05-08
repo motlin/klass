@@ -90,7 +90,6 @@
           "includedNonStructuredArguments": false,
           "includeTags": true,
           "prettyPrint": false,
-          "serializationInclusion": "NON_ABSENT"
         },
       },
     ]
