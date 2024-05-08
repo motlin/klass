@@ -40,8 +40,6 @@
         <app.name>ReladomoAbstractImplementInterface</app.name>
 
         <mainClass>${app.rootPackageName}.dropwizard.application.${app.name}Application</mainClass>
-
-        <liftwizard.version>2.1.9</liftwizard.version>
     </properties>
 
     <dependencyManagement>
