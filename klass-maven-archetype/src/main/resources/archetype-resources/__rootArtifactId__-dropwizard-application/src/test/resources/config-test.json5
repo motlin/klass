@@ -57,11 +57,11 @@
       }
     ]
   },
+  "clock": {
+    "type": "fixed",
+    "instant": "2000-12-31T23:59:59Z"
+  },
   "klass": {
-    "clock": {
-      "type": "fixed",
-      "instant": "2000-12-31T23:59:59Z"
-    },
     "domainModel": {
       "type": "compiler",
       "sourcePackages": [

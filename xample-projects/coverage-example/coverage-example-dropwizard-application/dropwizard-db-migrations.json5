@@ -25,10 +25,10 @@
       },
     ]
   },
+  "clock": {
+    "type": "system"
+  },
   "klass": {
-    "clock": {
-      "type": "system"
-    },
     "domainModel": {
       "type": "compiler",
       "sourcePackages": [

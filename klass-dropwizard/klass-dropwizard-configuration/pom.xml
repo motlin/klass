@@ -30,7 +30,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-data-store</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -55,12 +55,7 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-clock</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-logging-http</artifactId>
+            <artifactId>liftwizard-config-abstract</artifactId>
         </dependency>
 
         <dependency>
@@ -75,27 +70,7 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-cors</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-auth-filter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-object-mapper</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-reladomo</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-clock-fixed</artifactId>
         </dependency>
 
         <dependency>
@@ -110,11 +85,6 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-logging-config</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-data-source</artifactId>
         </dependency>
 
@@ -125,17 +95,7 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-system-properties</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-liquibase-migration</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-core</artifactId>
         </dependency>
 
         <dependency>

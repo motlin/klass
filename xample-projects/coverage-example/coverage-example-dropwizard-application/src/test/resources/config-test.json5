@@ -99,12 +99,12 @@
       }
     ]
   },
+  "clock": {
+    "type": "incrementing",
+    "instant": "2000-12-31T23:59:59Z",
+    "incrementAmount": "1 day"
+  },
   "klass": {
-    "clock": {
-      "type": "incrementing",
-      "instant": "2000-12-31T23:59:59Z",
-      "incrementAmount": "1 day"
-    },
     "domainModel": {
       "type": "compiler",
       "sourcePackages": [
