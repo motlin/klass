@@ -27,8 +27,7 @@ mvn archetype:generate \
   -DartifactId=coverage-example \
   -Dversion=0.1.0-SNAPSHOT \
   -Dpackage=cool.klass.xample.coverage \
-  -Dname=CoverageExample \
-  -DpackageInPathFormat=cool/klass/xample/coverage
+  -Dname=CoverageExample
 
 cd coverage-example
 
