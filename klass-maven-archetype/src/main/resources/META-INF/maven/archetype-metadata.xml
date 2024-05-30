@@ -22,7 +22,6 @@
 
     <requiredProperties>
         <requiredProperty key="name" />
-        <requiredProperty key="packageInPathFormat" />
     </requiredProperties>
 
     <fileSets>
