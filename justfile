@@ -16,7 +16,7 @@ asdf:
 
 # git clean
 _git-clean:
-    git clean -fdx release.properties '*/pom.xml.releaseBackup' pom.xml.releaseBackup target '*/target' '*/*/target'
+    git clean -fdx release.properties **/pom.xml.releaseBackup **/target
 
 # rm -rf ~/.m2/repository/...
 _clean-m2:
@@ -192,6 +192,8 @@ rebase-all:
     #!/usr/bin/env zsh
     set -Eeuo pipefail
 
+    git fetch {{upstream_remote}}
+
     branches=($(git for-each-ref --format='%(refname:short)' refs/heads/ --sort -committerdate --no-contains {{upstream_remote}}/{{upstream_branch}}))
     for branch in "${branches[@]}"
     do
@@ -211,4 +213,10 @@ rebase:
 
 # Delete branches from origin merged into configurable upstream/main
 delete-merged:
-    git branch --all --merged remotes/{{upstream_remote}}/{{upstream_branch}} | grep --invert-match {{upstream_branch}} | grep --invert-match HEAD | grep "remotes/origin/" | cut -d "/" -f 3- | xargs git push --delete origin
+    git branch --all --merged remotes/{{upstream_remote}}/{{upstream_branch}} \
+        | grep --invert-match {{upstream_branch}} \
+        | grep --invert-match HEAD \
+        | grep "remotes/origin/" \
+        | grep --invert-match "remotes/origin/pr/" \
+        | cut -d "/" -f 3- \
+        | xargs git push --delete origin
