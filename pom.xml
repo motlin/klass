@@ -64,7 +64,7 @@
         <checkstyle.suppressions>${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</checkstyle.suppressions>
         <checkstyle.cache>${project.build.directory}/checkstyle-cache</checkstyle.cache>
 
-        <liftwizard.version>2.1.10</liftwizard.version>
+        <liftwizard.version>2.1.11</liftwizard.version>
         <klass.version>0.2.0-SNAPSHOT</klass.version>
     </properties>
 
