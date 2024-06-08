@@ -171,6 +171,7 @@
       "schemaName": "stackoverflow-h2"
     }
   ],
+  "timeZone": "system",
   "jerseyHttpLogging": {
     "enabled": true,
     "maxEntitySize": "1 kilobyte"
