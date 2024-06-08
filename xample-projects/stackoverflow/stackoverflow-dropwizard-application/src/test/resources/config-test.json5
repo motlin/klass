@@ -17,7 +17,8 @@
     "requestLog": {
       "appenders": [
         {
-          "type": "console",
+          "type": "buffered",
+          "timeZone": "system",
           "filterFactories": [
             {
               "type": "url",
