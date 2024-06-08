@@ -196,6 +196,21 @@
                                                 cool.klass:klass-generator-uml-nomnoml-plugin,
                                             </unCheckedPluginList>
                                         </requirePluginVersions>
+                                        <bannedDependencies>
+                                            <excludes>
+                                                <exclude>log4j:log4j</exclude>
+                                                <exclude>commons-logging-api</exclude>
+                                                <exclude>commons-logging</exclude>
+                                                <exclude>org.apache.logging.log4j:log4j</exclude>
+                                                <exclude>org.slf4j:slf4j-simple</exclude>
+                                                <exclude>org.slf4j:slf4j-log4j12</exclude>
+                                                <exclude>org.slf4j:slf4j-jdk14</exclude>
+                                                <exclude>org.slf4j:nop</exclude>
+                                                <exclude>org.slf4j:jcl</exclude>
+                                                <exclude>org.hamcrest:hamcrest-core</exclude>
+                                                <exclude>org.hamcrest:hamcrest</exclude>
+                                            </excludes>
+                                        </bannedDependencies>
                                     </rules>
                                 </configuration>
                             </execution>
