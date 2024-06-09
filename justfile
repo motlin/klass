@@ -25,36 +25,41 @@ _clean-m2:
     rm -rf ~/.m2/repository/{{group_id_with_slashes}}/**/*-SNAPSHOT
     exit 0
 
+default_mvn      := env('MVN_BINARY',   "mvnd")
 # clean (maven and git)
-clean MVN="mvnd": && _git-clean _clean-m2
+clean MVN=default_mvn: && _git-clean _clean-m2
     {{MVN}} clean
 
 # mvn verify
-verify MVN="mvnd":
+verify MVN=default_mvn:
     {{MVN}} verify
 
+# mvn install
+install MVN=default_mvn:
+    {{MVN}} install
+
 # mvn enforcer
-enforcer MVN="mvnd":
+enforcer MVN=default_mvn:
     {{MVN}} verify -DskipTests --activate-profiles maven-enforcer-plugin
 
 # mvn dependency
-analyze MVN="mvnd":
+analyze MVN=default_mvn:
     {{MVN}} verify -DskipTests --activate-profiles maven-dependency-plugin
 
 # mvn javadoc
-javadoc MVN="mvnd":
+javadoc MVN=default_mvn:
     {{MVN}} verify -DskipTests --activate-profiles maven-javadoc-plugin
 
 # mvn checkstyle
-checkstyle MVN="mvnd":
+checkstyle MVN=default_mvn:
     {{MVN}} verify -DskipTests --activate-profiles checkstyle-semantics,checkstyle-formatting,checkstyle-semantics-strict
 
 # mvn reproducible
-reproducible MVN="mvnd":
+reproducible MVN=default_mvn:
     {{MVN}} verify -DskipTests artifact:check-buildplan
 
 # mvn rewrite
-rewrite-dry-run MVN="mvnd":
+rewrite-dry-run MVN=default_mvn:
     {{MVN}} install -DskipTests org.openrewrite.maven:rewrite-maven-plugin:dryRun --activate-profiles rewrite-maven-plugin,rewrite-maven-plugin-dryRun
 
 # mvn rewrite
@@ -112,11 +117,12 @@ _check-local-modifications:
 
 pushover := env('PUSHOVER', "false")
 
-default_target := env('MVN_TARGET', "verify")
+default_target   := env('MVN_TARGET',   "verify")
 default_profiles := env('MVN_PROFILES', "--activate-profiles maven-enforcer-plugin,maven-dependency-plugin,checkstyle-semantics,checkstyle-formatting,checkstyle-semantics-strict")
+default_flags    := env('MVN_FLAGS',    "--threads 2C")
 
 # mvn
-mvn MVN="mvnd" TARGET=default_target PROFILES=default_profiles *FLAGS="--threads 2C":
+mvn MVN=default_mvn TARGET=default_target PROFILES=default_profiles *FLAGS=default_flags:
     #!/usr/bin/env zsh
     set -uo pipefail
 
