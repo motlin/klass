@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.stackoverflow</groupId>
         <artifactId>stackoverflow</artifactId>
-        <version>0.2.0</version>
+        <version>0.3.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>stackoverflow-domain-model-tests</artifactId>
@@ -34,7 +34,7 @@
             <plugin>
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-compiler-plugin</artifactId>
-                <version>0.2.0</version>
+                <version>0.3.0-SNAPSHOT</version>
                 <configuration>
                     <klassSourcePackages>
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>

@@ -25,7 +25,7 @@
 
     <groupId>cool.klass</groupId>
     <artifactId>klass</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Klass (Root Module Group)</name>
@@ -65,7 +65,7 @@
         <checkstyle.cache>${project.build.directory}/checkstyle-cache</checkstyle.cache>
 
         <liftwizard.version>2.1.13</liftwizard.version>
-        <klass.version>0.2.0-SNAPSHOT</klass.version>
+        <klass.version>0.3.0-SNAPSHOT</klass.version>
     </properties>
 
     <description>Klass is a rapid application development framework with full support for temporal data.</description>
@@ -94,7 +94,7 @@
         <url>https://github.com/motlin/klass</url>
         <connection>scm:git:https://github.com/motlin/klass.git</connection>
         <developerConnection>scm:git:https@github.com:motlin/klass.git</developerConnection>
-        <tag>0.2.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <inceptionYear>2024</inceptionYear>

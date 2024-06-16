@@ -20,14 +20,14 @@
     <parent>
         <groupId>cool.klass</groupId>
         <artifactId>xample-projects</artifactId>
-        <version>0.2.0</version>
+        <version>0.3.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.stackoverflow</groupId>
     <artifactId>stackoverflow</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${app.name} (Module Group)</name>
@@ -62,7 +62,7 @@
             <dependency>
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-bom</artifactId>
-                <version>0.2.0</version>
+                <version>0.3.0-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
