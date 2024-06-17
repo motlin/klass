@@ -34,6 +34,10 @@
             <artifactId>jakarta.validation-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -43,7 +47,7 @@
             <plugin>
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-generator-dto-plugin</artifactId>
-                <version>0.2.0-SNAPSHOT</version>
+                <version>${klass.version}</version>
                 <configuration>
                     <klassSourcePackages>
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
@@ -85,7 +89,7 @@
                                 <additionalDependency>
                                     <groupId>cool.klass</groupId>
                                     <artifactId>klass-generator-dto</artifactId>
-                                    <version>0.2.0-SNAPSHOT</version>
+                                    <version>${klass.version}</version>
                                 </additionalDependency>
                             </additionalDependencies>
                         </configuration>
