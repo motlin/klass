@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cool.klass.generator.liquibase.schema;
+package cool.klass.generator.liquibase.schema.test;
 
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.loader.compiler.DomainModelCompilerLoader;
@@ -27,10 +27,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 @ExtendWith(LogMarkerTestExtension.class)
-public class LiquibaseSchemaGeneratorTest
+public class LiquibaseSchemaGeneratorStackOverflowTest extends AbstractLiquibaseSchemaGeneratorTest
 {
-    public static final String FULLY_QUALIFIED_PACKAGE = "com.stackoverflow";
-
     @RegisterExtension
     final FileMatchExtension fileMatchExtension = new FileMatchExtension(this.getClass());
 
