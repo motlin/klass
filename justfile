@@ -3,16 +3,15 @@ set dotenv-filename := ".envrc"
 
 group_id_with_slashes := "cool/klass"
 
-# Setup the project (asdf) and run the default build (mvn)
-default: asdf mvn
+# Setup the project (mise) and run the default build (mvn)
+default: mise mvn
 
-# asdf install
-asdf:
-    asdf plugin-add java
-    asdf plugin-add maven
-    asdf plugin-add mvnd https://github.com/joschi/asdf-mvnd
-    asdf install
-    asdf current
+# mise install
+mise:
+    mise plugin install maven
+    mise plugin install mvnd https://github.com/joschi/asdf-mvnd
+    mise install
+    mise current
 
 # git clean
 _git-clean:
