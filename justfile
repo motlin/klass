@@ -142,7 +142,9 @@ mvn MVN=default_mvn TARGET=default_target PROFILES=default_profiles *FLAGS=defau
         exit 0
     fi
 
-    MESSAGE="Failed on commit: '$COMMIT_MESSAGE' with exit code $EXIT_CODE"
+    DIRECTORY=$(basename $(pwd))
+
+    MESSAGE="Failed in directory ${DIRECTORY} on commit: '${COMMIT_MESSAGE}' with exit code ${EXIT_CODE}"
     {{echo_command}} "$MESSAGE" &
 
     if [ "{{pushover}}" = true ]; then
