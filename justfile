@@ -93,6 +93,8 @@ release NEXT_VERSION: && _git-clean
 scc:
     scc **/src/{main,test}
 
+# Override this with a command called `woof` which notifies you in whatever ways you prefer.
+# My `woof` command uses `echo`, `say`, and sends a Pushover notification.
 echo_command := env('ECHO_COMMAND', "echo")
 
 # Fail if there are local modifications or untracked files
@@ -113,8 +115,6 @@ _check-local-modifications:
         {{echo_command}} "Untracked files" &
         exit $EXIT_CODE
     fi
-
-pushover := env('PUSHOVER', "false")
 
 default_target   := env('MVN_TARGET',   "verify")
 default_profiles := env('MVN_PROFILES', "--activate-profiles maven-enforcer-plugin,maven-dependency-plugin,checkstyle-semantics,checkstyle-formatting,checkstyle-semantics-strict")
@@ -146,15 +146,6 @@ mvn MVN=default_mvn TARGET=default_target PROFILES=default_profiles *FLAGS=defau
 
     MESSAGE="Failed in directory ${DIRECTORY} on commit: '${COMMIT_MESSAGE}' with exit code ${EXIT_CODE}"
     {{echo_command}} "$MESSAGE" &
-
-    if [ "{{pushover}}" = true ]; then
-        curl -s \
-            --form-string "token=$PUSHOVER_TOKEN" \
-            --form-string "user=$PUSHOVER_USER" \
-            --form-string "message=$MESSAGE" \
-            --form-string "title=mvn" \
-            https://api.pushover.net/1/messages.json
-    fi
     exit $EXIT_CODE
 
 # end-to-end test for git-test
@@ -194,12 +185,15 @@ test-results:
         git test results {{upstream_remote}}/{{upstream_branch}}..${branch}
     done
 
+offline := env_var_or_default('OFFLINE', 'false')
 # Rebase all branches onto configurable upstream/main
 rebase-all:
     #!/usr/bin/env bash
     set -Eeuo pipefail
 
-    git fetch {{upstream_remote}}
+    if [ "{{offline}}" != "true" ]; then
+        git fetch {{upstream_remote}}
+    fi
 
     branches=($(git for-each-ref --format='%(refname:short)' refs/heads/ --sort -committerdate --no-contains {{upstream_remote}}/{{upstream_branch}}))
     for branch in "${branches[@]}"
@@ -212,24 +206,52 @@ rebase-all:
 
         echo "Rebasing branch: $branch"
         git checkout "$branch"
-        git pull {{upstream_remote}} {{upstream_branch}} --rebase=merges
+        git rebase {{upstream_remote}}/{{upstream_branch}}
     done
 
 # git absorb into configurable upstream/main
 absorb:
-    git absorb --base {{upstream_remote}}/{{upstream_branch}} --force
+    git absorb \
+        --base {{upstream_remote}}/{{upstream_branch}} \
+        --force
 
 # git rebase onto configurable upstream/main
 rebase:
-    git fetch {{upstream_remote}} {{upstream_branch}}
+    #!/usr/bin/env bash
+    set -Eeuo pipefail
+    if [ "{{offline}}" != "true" ]; then
+        git fetch {{upstream_remote}} {{upstream_branch}}
+    fi
     git rebase --interactive --autosquash {{upstream_remote}}/{{upstream_branch}}
 
+# Delete local branches merged into configurable upstream/main
+delete-local-merged:
+    git branch --merged remotes/{{upstream_remote}}/{{upstream_branch}} \
+        | grep -v "^\*\\|main" \
+        | xargs git branch --delete
+
 # Delete branches from origin merged into configurable upstream/main
-delete-merged:
-    git branch --all --merged remotes/{{upstream_remote}}/{{upstream_branch}} \
-        | grep --invert-match {{upstream_branch}} \
-        | grep --invert-match HEAD \
-        | grep "remotes/origin/" \
-        | grep --invert-match "remotes/origin/pr/" \
-        | cut -d "/" -f 3- \
-        | xargs git push --delete origin
+delete-remote-merged:
+    #!/usr/bin/env bash
+    set -Eeu
+    if [ "{{offline}}" != "true" ]; then
+        git branch --remote --list 'origin/*' --merged remotes/{{upstream_remote}}/{{upstream_branch}} \
+            | grep --invert-match {{upstream_branch}} \
+            | grep --invert-match HEAD \
+            | grep "origin/" \
+            | grep --invert-match "origin/pr/" \
+            | cut -d "/" -f 2- \
+            | xargs git push --delete origin
+    else
+        echo "Skipping delete-remote-merged in offline mode"
+    fi
+
+# Delete local and remote branches that are merged into configurable upstream/main
+delete-merged: delete-local-merged delete-remote-merged
+
+qodana:
+    op run -- qodana scan \
+        --disable-update-checks \
+        --apply-fixes \
+        --print-problems \
+        --linter jetbrains/qodana-jvm:2024.1
