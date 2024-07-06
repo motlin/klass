@@ -35,13 +35,13 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           },
           {
             "url": "/meta/packageableElement",
-            "parameters": [ ],
+            "parameters": [],
             "services": [
               {
                 "verb": "GET",
@@ -55,7 +55,7 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           }
@@ -95,13 +95,13 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           },
           {
             "url": "/meta/enumeration",
-            "parameters": [ ],
+            "parameters": [],
             "services": [
               {
                 "verb": "GET",
@@ -115,7 +115,7 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           }
@@ -155,13 +155,13 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           },
           {
             "url": "/meta/interface",
-            "parameters": [ ],
+            "parameters": [],
             "services": [
               {
                 "verb": "GET",
@@ -175,7 +175,7 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           }
@@ -215,13 +215,13 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           },
           {
             "url": "/meta/class",
-            "parameters": [ ],
+            "parameters": [],
             "services": [
               {
                 "verb": "GET",
@@ -235,7 +235,7 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           }
@@ -275,13 +275,13 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           },
           {
             "url": "/meta/classifier",
-            "parameters": [ ],
+            "parameters": [],
             "services": [
               {
                 "verb": "GET",
@@ -295,7 +295,7 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           }
@@ -335,13 +335,13 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           },
           {
             "url": "/meta/association",
-            "parameters": [ ],
+            "parameters": [],
             "services": [
               {
                 "verb": "GET",
@@ -355,7 +355,7 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           }
@@ -395,13 +395,13 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           },
           {
             "url": "/meta/projection",
-            "parameters": [ ],
+            "parameters": [],
             "services": [
               {
                 "verb": "GET",
@@ -415,7 +415,7 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           }
@@ -455,13 +455,13 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           },
           {
             "url": "/meta/serviceGroup",
-            "parameters": [ ],
+            "parameters": [],
             "services": [
               {
                 "verb": "GET",
@@ -475,7 +475,7 @@
                 "authorizeCriteria": null,
                 "validateCriteria": null,
                 "conflictCriteria": null,
-                "orderBys": [ ]
+                "orderBys": []
               }
             ]
           }
