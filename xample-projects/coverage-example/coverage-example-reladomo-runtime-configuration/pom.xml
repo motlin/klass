@@ -14,14 +14,13 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cool.klass.xample.coverage</groupId>
         <artifactId>coverage-example</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>coverage-example-reladomo-runtime-configuration</artifactId>
 
@@ -44,43 +43,6 @@
                     </klassSourcePackages>
                 </configuration>
 
-                <executions>
-
-                    <execution>
-                        <id>generate-production-runtime-configuration</id>
-                        <goals>
-                            <goal>generate-reladomo-runtime-configuration</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <outputDirectory>
-                                ${project.build.directory}/generated-resources/reladomo-runtime-configuration
-                            </outputDirectory>
-                            <outputFilename>ReladomoRuntimeConfiguration.xml</outputFilename>
-                            <connectionManagerName>h2-tcp</connectionManagerName>
-                            <isTest>false</isTest>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>generate-fully-cached-runtime-configuration</id>
-                        <goals>
-                            <goal>generate-reladomo-runtime-configuration</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <outputDirectory>
-                                ${project.build.directory}/generated-resources/reladomo-runtime-configuration
-                            </outputDirectory>
-                            <outputFilename>ReladomoRuntimeFullyCachedConfiguration.xml</outputFilename>
-                            <connectionManagerName>h2-tcp</connectionManagerName>
-                            <isTest>false</isTest>
-                            <cacheType>full</cacheType>
-                        </configuration>
-                    </execution>
-
-                </executions>
-
                 <dependencies>
 
                     <dependency>
@@ -96,6 +58,39 @@
                     </dependency>
 
                 </dependencies>
+
+                <executions>
+
+                    <execution>
+                        <id>generate-production-runtime-configuration</id>
+                        <goals>
+                            <goal>generate-reladomo-runtime-configuration</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/generated-resources/reladomo-runtime-configuration</outputDirectory>
+                            <outputFilename>ReladomoRuntimeConfiguration.xml</outputFilename>
+                            <connectionManagerName>h2-tcp</connectionManagerName>
+                            <isTest>false</isTest>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-fully-cached-runtime-configuration</id>
+                        <goals>
+                            <goal>generate-reladomo-runtime-configuration</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/generated-resources/reladomo-runtime-configuration</outputDirectory>
+                            <outputFilename>ReladomoRuntimeFullyCachedConfiguration.xml</outputFilename>
+                            <connectionManagerName>h2-tcp</connectionManagerName>
+                            <isTest>false</isTest>
+                            <cacheType>full</cacheType>
+                        </configuration>
+                    </execution>
+
+                </executions>
             </plugin>
 
         </plugins>

@@ -14,7 +14,6 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -28,20 +27,6 @@
     <packaging>pom</packaging>
 
     <name>Klass Generator Maven Plugins (Module Group)</name>
-
-    <dependencyManagement>
-        <dependencies>
-
-            <dependency>
-                <groupId>cool.klass</groupId>
-                <artifactId>klass-bom</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-        </dependencies>
-    </dependencyManagement>
 
     <modules>
         <module>klass-compiler-plugin</module>
@@ -67,4 +52,18 @@
         <module>klass-generator-service-resources-plugin</module>
         <module>klass-generator-uml-nomnoml-plugin</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>cool.klass</groupId>
+                <artifactId>klass-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 </project>
