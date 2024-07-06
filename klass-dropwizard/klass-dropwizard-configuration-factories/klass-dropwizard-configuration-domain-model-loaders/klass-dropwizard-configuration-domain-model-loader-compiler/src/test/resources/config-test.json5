@@ -1,6 +1,4 @@
 {
-  type          : "compiler",
-  sourcePackages: [
-    "com.example",
-  ],
+  type: "compiler",
+  sourcePackages: ["com.example"],
 }
