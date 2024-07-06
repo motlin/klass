@@ -1,11 +1,11 @@
 {
-  "key": true,
-  "value": true,
-  "targets": [
+  key: true,
+  value: true,
+  targets: [
     {
-      "key": true,
-      "sourceKey": true,
-      "value": true,
+      key: true,
+      sourceKey: true,
+      value: true,
     },
   ],
 }
