@@ -66,3 +66,4 @@ public abstract class MyAbstractClassAbstract extends com.gs.fw.common.mithra.su
     // ...
 }
 ```
+

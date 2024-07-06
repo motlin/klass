@@ -161,10 +161,12 @@ Now we can GET http://.../api/question/1?system=2018-01-01T00:00:00.000Z to see 
 Time ranges are inclusive on the `from` end and exclusive on the `to` end. So any time within the range `[2017-12-31T23:59:59.000Z, 2018-01-01T23:59:59.000Z)` would return the first version.
 
 The time range check is fairly complex at the data layer. If we're querying for the current version (the system parameter is not provided or is null) then we have to check that systemTo is also null. Otherwise we have to check that the system parameter falls between systemFrom and systemTo, also taking into account the fact that systemTo may be null. We could have defined the additional criteria like this:
+
 ```
 this.systemTo == null && system == null
   || system != null
     && this.systemFrom <= system
     && (this.systemTo == null || system < this.systemTo)
 ```
+
 The synthetic property `system` exists to simplify criteria like this, and to use in association criteria as described in [Audit Model](1_audit_model.md#systemtemporal). Thus we're able to simplify the optionalCriteria to just `this.system == system`.

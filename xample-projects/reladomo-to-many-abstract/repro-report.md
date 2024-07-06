@@ -12,12 +12,14 @@ String text = chapterWithQuote.getText();
 ```
 
 The error:
+
 ```
 java.lang.ClassCastException: com.repro.reladomo.bug.ChapterWithQuoteData cannot be cast to com.repro.reladomo.bug.AbstractChapterData
     at com.repro.reladomo.bug.AbstractChapterAbstract.getText(AbstractChapterAbstract.java:166)
 ```
 
 Coming from this cast in AbstractChapterAbstract.java:
+
 ```java
 public String getText()
 {
@@ -47,6 +49,7 @@ chapterWithQuote.setText("chapter text");
 ```
 
 The error:
+
 ```
 java.lang.ClassCastException: com.repro.reladomo.bug.ChapterWithQuoteData cannot be cast to com.repro.reladomo.bug.AbstractChapter
     at mithra.gen.Attribute1.stringValueOf(Unknown Source)
@@ -64,6 +67,7 @@ public void setText(String newValue)
 ```
 
 Which delegates to AbstractChapterCommonAbstract.java:
+
 ```java
 protected MithraDataObject zSetString(StringAttribute attr, String newValue, boolean isReadOnly, boolean hasOptimistic)
 {
@@ -103,6 +107,7 @@ Is this a bug? If not, what am I doing wrong? Is there a missing error message?
 ## xml definitions
 
 AbstractChapter.xml
+
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <MithraObject
@@ -139,6 +144,7 @@ AbstractChapter.xml
 ```
 
 ChapterWithQuote.xml
+
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <MithraObject
@@ -175,6 +181,7 @@ ChapterWithQuote.xml
 ```
 
 Book.xml
+
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <MithraObject
@@ -205,3 +212,4 @@ Book.xml
 
 </MithraObject>
 ```
+

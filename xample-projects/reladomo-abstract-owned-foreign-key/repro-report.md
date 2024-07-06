@@ -78,6 +78,7 @@ If I change relatedIsDependent to false, I don't get any compiler errors. I'm us
 Full xmls below.
 
 Parent.xml:
+
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <MithraObject
@@ -111,6 +112,7 @@ Parent.xml:
 ```
 
 AbstractChild.xml:
+
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <MithraObject
@@ -144,6 +146,7 @@ AbstractChild.xml:
 ```
 
 ConcreteChild.xml
+
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <MithraObject
@@ -166,3 +169,4 @@ ConcreteChild.xml
             trim="false" />
 </MithraObject>
 ```
+
