@@ -13,4 +13,4 @@ Klass is a rapid application development framework for Java with first class sup
 
 ## Documentation
 
-See the full docs at https://liftwizard.io/docs/
+See the full docs at <https://klass.cool/>
