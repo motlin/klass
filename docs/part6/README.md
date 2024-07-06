@@ -45,7 +45,7 @@ This would improve the performance of queries for active data. It would complica
 The docs show a syntax for relationship criteria that is similar to a sql join.
 
 ```klass
-    relationship this.id == Answer.questionId
+relationship this.id == Answer.questionId
 ```
 
 It's possible to use a syntax where a property is annotated as a foreign key instead.
@@ -71,3 +71,4 @@ service QuestionResource
         }
 }
 ```
+

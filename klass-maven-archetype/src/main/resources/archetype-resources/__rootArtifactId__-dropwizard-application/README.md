@@ -1,7 +1,7 @@
 # ${name}
 
 How to start the ${name} application
----
+------------------------------------
 
 1. Run `mvn clean install` to build your application
 2. Start application with `java -jar target/${artifactId}-${version}.jar server config.json5`
