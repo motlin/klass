@@ -1,14 +1,14 @@
 {
-  "everyTypeForeignKeyProperties": [
+  everyTypeForeignKeyProperties: [
     {
-      "id": 1,
-      "data": "edited"
+      id: 1,
+      data: "edited",
     },
     {
-      "data": "new"
-    }
+      data: "new",
+    },
   ],
-  "version": {
-    "number": 1
-  }
+  version: {
+    number: 1,
+  },
 }
