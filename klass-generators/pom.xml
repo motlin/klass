@@ -14,33 +14,18 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cool.klass</groupId>
         <artifactId>klass</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>klass-generators</artifactId>
     <packaging>pom</packaging>
 
     <name>Klass Generators (Module Group)</name>
-
-    <dependencyManagement>
-        <dependencies>
-
-            <dependency>
-                <groupId>cool.klass</groupId>
-                <artifactId>klass-bom</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-        </dependencies>
-    </dependencyManagement>
 
     <modules>
         <module>klass-generator-dropwizard</module>
@@ -64,4 +49,18 @@
         <module>klass-generator-service-resources</module>
         <module>klass-generator-uml-nomnoml</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>cool.klass</groupId>
+                <artifactId>klass-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 </project>

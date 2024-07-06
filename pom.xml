@@ -14,14 +14,13 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.liftwizard</groupId>
         <artifactId>liftwizard-parent-build</artifactId>
         <version>2.1.14</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <groupId>cool.klass</groupId>
     <artifactId>klass</artifactId>
@@ -29,6 +28,29 @@
     <packaging>pom</packaging>
 
     <name>Klass (Root Module Group)</name>
+
+    <description>Klass is a rapid application development framework with full support for temporal data.</description>
+
+    <url>https://github.com/motlin/klass</url>
+
+    <inceptionYear>2024</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>motlin</id>
+            <name>Craig Motlin</name>
+            <email>cmotlin@gmail.com</email>
+            <url>https://github.com/motlin</url>
+        </developer>
+    </developers>
 
     <modules>
         <module>klass-bom</module>
@@ -49,6 +71,23 @@
         <module>xample-projects</module>
     </modules>
 
+    <scm>
+        <connection>scm:git:https://github.com/motlin/klass.git</connection>
+        <developerConnection>scm:git:https@github.com:motlin/klass.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/motlin/klass</url>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/motlin/klass/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>GitHub</system>
+        <url>https://github.com/motlin/klass/actions</url>
+    </ciManagement>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -67,46 +106,6 @@
         <liftwizard.version>2.1.14</liftwizard.version>
         <klass.version>0.3.0-SNAPSHOT</klass.version>
     </properties>
-
-    <description>Klass is a rapid application development framework with full support for temporal data.</description>
-
-    <url>https://github.com/motlin/klass</url>
-
-    <issueManagement>
-        <system>GitHub Issues</system>
-        <url>https://github.com/motlin/klass/issues</url>
-    </issueManagement>
-
-    <ciManagement>
-        <system>GitHub</system>
-        <url>https://github.com/motlin/klass/actions</url>
-    </ciManagement>
-
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <scm>
-        <url>https://github.com/motlin/klass</url>
-        <connection>scm:git:https://github.com/motlin/klass.git</connection>
-        <developerConnection>scm:git:https@github.com:motlin/klass.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
-
-    <inceptionYear>2024</inceptionYear>
-
-    <developers>
-        <developer>
-            <name>Craig Motlin</name>
-            <email>cmotlin@gmail.com</email>
-            <url>https://github.com/motlin</url>
-            <id>motlin</id>
-        </developer>
-    </developers>
 
     <dependencyManagement>
         <dependencies>
@@ -168,8 +167,7 @@
                                             <banRelease>true</banRelease>
                                             <!--Ban snapshots later, for now it's too common to depend on klass snapshots-->
                                             <banSnapshots>false</banSnapshots>
-                                            <unCheckedPluginList>
-                                                org.apache.maven.plugins:maven-site-plugin,
+                                            <unCheckedPluginList>org.apache.maven.plugins:maven-site-plugin,
                                                 org.apache.maven.plugins:maven-deploy-plugin,
                                                 io.liftwizard:liftwizard-generator-reladomo-code-plugin,
                                                 io.liftwizard:liftwizard-generator-reladomo-database-plugin,
@@ -193,8 +191,7 @@
                                                 cool.klass:klass-generator-reladomo-readable-interface-plugin,
                                                 cool.klass:klass-generator-relational-schema-plugin,
                                                 cool.klass:klass-generator-service-resources-plugin,
-                                                cool.klass:klass-generator-uml-nomnoml-plugin,
-                                            </unCheckedPluginList>
+                                                cool.klass:klass-generator-uml-nomnoml-plugin,</unCheckedPluginList>
                                         </requirePluginVersions>
                                         <bannedDependencies>
                                             <excludes>

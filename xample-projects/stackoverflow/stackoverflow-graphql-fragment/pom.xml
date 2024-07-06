@@ -14,7 +14,6 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -44,15 +43,6 @@
                     </klassSourcePackages>
                 </configuration>
 
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate-graphql-fragment</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                    </execution>
-                </executions>
-
                 <dependencies>
 
                     <dependency>
@@ -62,6 +52,15 @@
                     </dependency>
 
                 </dependencies>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate-graphql-fragment</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>

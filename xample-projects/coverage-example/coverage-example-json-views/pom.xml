@@ -14,18 +14,27 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cool.klass.xample.coverage</groupId>
         <artifactId>coverage-example</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>coverage-example-json-views</artifactId>
 
     <name>${app.name} Json Views</name>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-serialization-jackson-jsonview</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
 
     <build>
         <plugins>
@@ -42,6 +51,16 @@
                     </klassSourcePackages>
                 </configuration>
 
+                <dependencies>
+
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>${app.artifactId}-domain-model</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+
+                </dependencies>
+
                 <executions>
 
                     <execution>
@@ -53,30 +72,10 @@
                     </execution>
                 </executions>
 
-                <dependencies>
-
-                    <dependency>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>${app.artifactId}-domain-model</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-
-                </dependencies>
-
             </plugin>
 
         </plugins>
     </build>
-
-    <dependencies>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-serialization-jackson-jsonview</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-    </dependencies>
 
     <profiles>
         <!--region Phase 17: package-->
