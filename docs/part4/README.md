@@ -286,7 +286,7 @@ When a json response includes parameterized properties, the parameters become pa
 [StackOverflow's documentation](https://stackoverflow.com/help/privileges/established-user) states:
 
 > Voting scores, as displayed, are the sum of the up and down votes on a post. Vote counts are the individual up and down votes that make up the score.
-
+>
 > You can view the vote counts by clicking on the score of a post. This will break the score into upvotes and downvotes.
 
 We add two aggregation properties to Question; `upvotes` and `downvotes`.
