@@ -58,7 +58,7 @@ jobs:
       - name: 'Clean Maven cache'
         run: rm -rf ~/.m2/repository/cool/klass
 
-  enforcer:
+  maven-enforcer:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -82,7 +82,7 @@ jobs:
       - name: 'Clean Maven cache'
         run: rm -rf ~/.m2/repository/cool/klass
 
-  dependency:
+  maven-dependency:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -106,7 +106,7 @@ jobs:
       - name: 'Clean Maven cache'
         run: rm -rf ~/.m2/repository/cool/klass
 
-  javadoc:
+  maven-javadoc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -262,7 +262,7 @@ jobs:
       - name: 'Clean Maven cache'
         run: rm -rf ~/.m2/repository/cool/klass
 
-  rewrite:
+  maven-rewrite:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -287,7 +287,7 @@ jobs:
         run: rm -rf ~/.m2/repository/cool/klass
 
   # Check for reproducible builds with artifact:check-buildplan
-  reproducible:
+  maven-reproducible:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
