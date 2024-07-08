@@ -24,7 +24,7 @@ Read-write systems can't support complex mappings, but can rely on the data stor
 #### Things to like
 
 * [SwaggerHub](https://swagger.io/tools/swaggerhub/) is a site for "Hosted, Interactive API Documentation".
-    * It's a great resource for developers to find an use a documented api.
+    * It's a great resource for developers to find and use a documented api.
     * You could imagine it as the foundation for a service discovery mechanism.
 
 #### Drawbacks
@@ -43,7 +43,7 @@ Read-write systems can't support complex mappings, but can rely on the data stor
     * The various code generators for different technologies have different maintainers and varying quality.
     * The Jersey 2 generator, which is the most popular http variant for Java, has quality problems.
         * Minor releases have produced breaking changes in both the code and the http api.
-        * Exception handling is isn't done in Jersey's idiomatic way.
+        * Exception handling isn't done in Jersey's idiomatic way.
         * Serializer plugins aren't done in Jersey's idiomatic way.
 * The community's top contributors created a [hostile fork called openapi-generator](https://github.com/OpenAPITools/openapi-generator/blob/master/docs/qna.md).
     * Some of the issues above, like breaking changes, were mentioned in the rationale.
