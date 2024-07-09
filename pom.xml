@@ -168,7 +168,7 @@
                                             <banRelease>true</banRelease>
                                             <!--Ban snapshots later, for now it's too common to depend on klass snapshots-->
                                             <banSnapshots>false</banSnapshots>
-                                            <unCheckedPluginList>
+                                            <unCheckedPluginList xml:space="preserve">
                                                 org.apache.maven.plugins:maven-site-plugin,
                                                 org.apache.maven.plugins:maven-deploy-plugin,
                                                 io.liftwizard:liftwizard-generator-reladomo-code-plugin,
@@ -193,7 +193,7 @@
                                                 cool.klass:klass-generator-reladomo-readable-interface-plugin,
                                                 cool.klass:klass-generator-relational-schema-plugin,
                                                 cool.klass:klass-generator-service-resources-plugin,
-                                                cool.klass:klass-generator-uml-nomnoml-plugin,
+                                                cool.klass:klass-generator-uml-nomnoml-plugin
                                             </unCheckedPluginList>
                                         </requirePluginVersions>
                                         <bannedDependencies>
