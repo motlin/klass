@@ -53,6 +53,10 @@ javadoc MVN=default_mvn:
 checkstyle MVN=default_mvn:
     {{MVN}} verify -DskipTests --activate-profiles checkstyle-semantics,checkstyle-formatting,checkstyle-semantics-strict
 
+# spotless
+spotless NAME MVN=default_mvn:
+    {{MVN}} spotless:apply --activate-profiles 'spotless-check,spotless-{{NAME}}'
+
 # mvn reproducible
 reproducible MVN=default_mvn:
     {{MVN}} verify -DskipTests artifact:check-buildplan
