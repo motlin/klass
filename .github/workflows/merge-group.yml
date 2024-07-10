@@ -278,3 +278,192 @@ jobs:
 
       - name: 'Clean Maven cache'
         run: rm -rf ~/.m2/repository/cool/klass
+
+  spotless-formats:
+    name: spotless (formats)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/cache@v4
+        with:
+          key: maven-spotless-formats-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository
+          restore-keys: |
+            maven-spotless-
+            maven-
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version-file: .tool-versions
+          distribution: oracle
+
+      - name: 'Spotless Check: Formats'
+        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-formats'
+
+      - name: 'Clean Maven cache'
+        run: rm -rf ~/.m2/repository/cool/klass
+
+  spotless-java:
+    name: spotless (java)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/cache@v4
+        with:
+          key: maven-spotless-java-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository
+          restore-keys: |
+            maven-spotless-
+            maven-
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version-file: .tool-versions
+          distribution: oracle
+
+      - name: 'Spotless Check: Java'
+        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-java'
+
+      - name: 'Clean Maven cache'
+        run: rm -rf ~/.m2/repository/cool/klass
+
+  spotless-sql:
+    name: spotless (sql)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/cache@v4
+        with:
+          key: maven-spotless-sql-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository
+          restore-keys: |
+            maven-spotless-
+            maven-
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version-file: .tool-versions
+          distribution: oracle
+
+      - name: 'Spotless Check: Sql'
+        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-sql'
+
+      - name: 'Clean Maven cache'
+        run: rm -rf ~/.m2/repository/cool/klass
+
+  spotless-pom:
+    name: spotless (pom)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/cache@v4
+        with:
+          key: maven-spotless-pom-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository
+          restore-keys: |
+            maven-spotless-
+            maven-
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version-file: .tool-versions
+          distribution: oracle
+
+      - name: 'Spotless Check: Pom'
+        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-pom'
+
+      - name: 'Clean Maven cache'
+        run: rm -rf ~/.m2/repository/cool/klass
+
+  spotless-markdown:
+    name: spotless (markdown)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/cache@v4
+        with:
+          key: maven-spotless-markdown-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository
+          restore-keys: |
+            maven-spotless-
+            maven-
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version-file: .tool-versions
+          distribution: oracle
+
+      - name: 'Spotless Check: Markdown'
+        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-markdown'
+
+      - name: 'Clean Maven cache'
+        run: rm -rf ~/.m2/repository/cool/klass
+
+  spotless-json:
+    name: spotless (json)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/cache@v4
+        with:
+          key: maven-spotless-json-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository
+          restore-keys: |
+            maven-spotless-
+            maven-
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version-file: .tool-versions
+          distribution: oracle
+
+      - name: 'Spotless Check: Json'
+        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-json'
+
+      - name: 'Clean Maven cache'
+        run: rm -rf ~/.m2/repository/cool/klass
+
+  spotless-yaml:
+    name: spotless (yaml)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/cache@v4
+        with:
+          key: maven-spotless-yaml-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository
+          restore-keys: |
+            maven-spotless-
+            maven-
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version-file: .tool-versions
+          distribution: oracle
+
+      - name: 'Spotless Check: Yaml'
+        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-yaml'
+
+      - name: 'Clean Maven cache'
+        run: rm -rf ~/.m2/repository/cool/klass
