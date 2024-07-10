@@ -55,7 +55,8 @@ checkstyle MVN=default_mvn:
 
 # spotless
 spotless NAME MVN=default_mvn:
-    {{MVN}} spotless:apply --activate-profiles 'spotless-check,spotless-{{NAME}}'
+    {{MVN}} spotless:apply \
+      --activate-profiles 'spotless-check,spotless-{{NAME}}'
 
 # mvn reproducible
 reproducible MVN=default_mvn:
@@ -232,7 +233,7 @@ rebase:
 delete-local-merged:
     git branch --merged remotes/{{upstream_remote}}/{{upstream_branch}} \
         | grep -v "^\*\\|main" \
-        | xargs git branch --delete
+        | xargs git branch -D
 
 # Delete branches from origin merged into configurable upstream/main
 delete-remote-merged:
@@ -255,7 +256,5 @@ delete-merged: delete-local-merged delete-remote-merged
 
 qodana:
     op run -- qodana scan \
-        --disable-update-checks \
         --apply-fixes \
-        --print-problems \
         --linter jetbrains/qodana-jvm:2024.1
