@@ -1,23 +1,59 @@
-# Minimal Viable Product
+# Alternative implementation choices
 
-The MVP can leave out of scope many of the features in the long-term vision. It should support the creation of a relational schema and basic crud services, but not much more.
+### One-time generation
 
-### JSON instead of DSL
+Instead of a maven archetype, initial project creation could be done with:
 
-Instead of a DSL with a compiler, the initial model can be hand-written in json. Ideally, the json should be a strict subset of the planned bootstrapped meta-model, for an easy transition.
+* [Yeoman](http://yeoman.io/).
+* A webapp that produces a zip for download, like [Spring Initializr](https://start.spring.io/) for Spring Boot.
+* A custom CLI, possibly in python.
 
-### Keys
+### Meta-model
 
-The MVP should include either auto-incrementing ids as keys, or regular natural keys, but not both. If the MVP implements natural keys, it probably does not need to implement composite keys.
+Instead of a new meta-model, Klass could use an existing meta-model like [Eclipse Modeling Framework's ECore](https://www.eclipse.org/modeling/emf/).
 
-### Operations
+ECore is a fairly complete implementation of UML, with all its warts. ECore also has enhancements to allow it to represent anything expressible in Java, including Generics.
 
-The MVP could start with read, followed by replace, upsert, and create. The operations delete and patch (update) could be postponed indefinitely.
+Klass's meta-model is a fairly narrow subset of UML. It addresses some weaknesses in UML, such as the lack of a type hierarchy between the various types of properties.
+
+Klass's meta-model also includes projections and services.
+
+### Meta-model language
+
+Instead of a new DSL, the model could be expressed using:
+
+* [OpenAPI vendor extensions](https://swagger.io/docs/specification/openapi-extensions/) (maybe, unproven)
+* A data format that's not a DSL, like json, yml, or xml, conforming to a json schema or xsd.
+* Annotations inside a Java or Python program.
+* A graphical language like UML.
+
+### Data Store
+
+Rather than a relational database, the data could be stored in:
+
+* A specific non-relational store, like a documentation database or a graph database.
+* An abstract DataStore interface, with multiple implementations.
 
 ### Audit Data
 
-The MVP could start without any audit features (`systemTemporal`, `versioned`, `audited`). It could start without other modifiers, like `final` and `owned`. It wouldn't need any macros or inference at first.
+Rather than storing phased-out data in the same tables as active data, they could be stored in separate audit tables.
 
-### Bootstrapped meta-model
+This would improve the performance of queries for active data. It would complicate querying for previous versions, especially when those versions have relationships to data that is still active.
 
-The meta-model needs to be robust even in the MVP, but it need not be queryable over services in the MVP. Similarly, the dynamic UIs built on the bootstrapped meta-model could come later.
+### Relationship criteria
+
+The docs show a syntax for relationship criteria that is similar to a sql join.
+
+```klass
+relationship this.id == Answer.questionId
+```
+
+It's possible to use a syntax where a property is annotated as a foreign key instead.
+
+It's possible to use a syntax where a foreign key tuple is listed instead.
+
+However, parameterized properties would need a more powerful syntax.
+
+### Service syntax
+
+The service syntax is url-centric. If we want to support both http and rpc, we may want a more flexible syntax.
