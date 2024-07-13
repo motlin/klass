@@ -1,4 +1,5 @@
-## Classes
+Classes
+-------
 
 Let's add the classes `Question` and `Answer` to the model in stackoverflow.klass.
 

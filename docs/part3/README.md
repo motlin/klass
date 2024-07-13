@@ -1,13 +1,14 @@
-# Bootstrapped Meta-Model
+Bootstrapped Metamodel
+======================
 
-Klass has a meta-model; a model of models. In fact, it has several representations of the same meta-model.
+Klass has a metamodel; a model of models. In fact, it has several representations of the same metamodel.
 
 * The Abstract Syntax Tree used internally by the compiler.
 * The in-memory DomainModel object returned upon successful compilation.
-* The bootstrapped meta-model.
+* The bootstrapped metamodel.
 * etc.
 
-The bootstrapped meta-model is expressed like a regular model. The first few meta-types are defined like this:
+The bootstrapped metamodel is expressed like a regular model. The first few meta-types are defined like this:
 
 ```klass
 package klass.model.meta.domain
@@ -89,7 +90,7 @@ association ClassifierHasDataTypeTypeProperties
 
 The full source is too large to include here. It defines enumeration, class, association, projection, and service, plus their parts.
 
-The bootstrapped meta-model allows us to work with metadata like regular data. It defines some projections and services which return model data. For example, here's the service to get a class by its name:
+The bootstrapped metamodel allows us to work with metadata like regular data. It defines some projections and services which return model data. For example, here's the service to get a class by its name:
 
 ```klass
 package klass.model.meta.domain

@@ -1,4 +1,5 @@
-## Audited Services
+Audited Services
+----------------
 
 Stack Overflow allows collaborative editing. Let's walk through an example where Alice creates a new question and Bob edits the text. Since all audit features are on, both versions of the question are retained and can be fetched through services.
 
@@ -162,7 +163,7 @@ Time ranges are inclusive on the `from` end and exclusive on the `to` end. So an
 
 The time range check is fairly complex at the data layer. If we're querying for the current version (the system parameter is not provided or is null) then we have to check that systemTo is also null. Otherwise we have to check that the system parameter falls between systemFrom and systemTo, also taking into account the fact that systemTo may be null. We could have defined the additional criteria like this:
 
-```
+```ReladomoOperation
 this.systemTo == null && system == null
   || system != null
     && this.systemFrom <= system

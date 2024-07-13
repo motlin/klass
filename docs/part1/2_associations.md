@@ -1,4 +1,5 @@
-## Associations
+Associations
+------------
 
 Let's add the one-to-many association between questions and answers.
 

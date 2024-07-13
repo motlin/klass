@@ -1,4 +1,5 @@
-## Dynamic UI
+Dynamic UI
+----------
 
 Production UI components are code-generated, but the dynamic UI used in development is static JavaScript.
 

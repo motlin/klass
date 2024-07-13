@@ -1,4 +1,5 @@
-# CoverageExample
+CoverageExample
+===============
 
 How to start the CoverageExample application
 --------------------------------------------

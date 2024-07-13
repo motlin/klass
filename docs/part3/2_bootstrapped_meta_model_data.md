@@ -1,6 +1,7 @@
-## Bootstrapped Meta-Model Data
+Bootstrapped Metamodel Data
+---------------------------
 
-Since the meta-model is part of the model, the bootstrap process populates meta-model types too. This means that we can GET `/api/meta/class/Class` for the Class class in any application.
+Since the metamodel is part of the model, the bootstrap process populates metamodel types too. This means that we can GET `/api/meta/class/Class` for the Class class in any application.
 
 ```json
 {

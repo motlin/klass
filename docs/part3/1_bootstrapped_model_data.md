@@ -1,6 +1,7 @@
-## Bootstrapped Model Data
+Bootstrapped Model Data
+-----------------------
 
-The Klass meta-model is part of every Klass model. When an Klass application starts, it "bootstraps" the meta-model by populating model data into the data store. This means that in the Stack Overflow application, we can GET `/api/meta/class/Question` to get the Question class as data.
+The Klass metamodel is part of every Klass model. When an Klass application starts, it "bootstraps" the metamodel by populating model data into the data store. This means that in the Stack Overflow application, we can GET `/api/meta/class/Question` to get the Question class as data.
 
 ```json
 {

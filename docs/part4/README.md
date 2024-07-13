@@ -1,10 +1,12 @@
-# Additional Features
+Additional Features
+===================
 
 In this section, we'll continue the Stack Overflow example and implement up/down votes on Questions.
 
 We'll explore enumerations, parameterized properties, parameterized projections, and aggregations.
 
-## Enumerations
+Enumerations
+------------
 
 We'll start with an enumeration to indicate the direction of a vote.
 
@@ -18,7 +20,8 @@ enumeration VoteDirection
 
 The upper-case literal names are used within the model. The quoted strings are pretty names that will appear in service request and response bodies.
 
-## Partial inference, composite keys
+Partial inference, composite keys
+---------------------------------
 
 Next we'll define the vote class.
 
@@ -43,7 +46,8 @@ Normally, we'd allow the `createdById` property to be inferred based on the `aud
 
 A user cannot upvote and downvote the same question, so `direction` is not part of the key.
 
-## Associations
+Associations
+------------
 
 ```klass
 association QuestionHasVotes
@@ -65,7 +69,8 @@ association UserHasQuestionVotes
 
 A vote is like many-to-many mapping from Question to User.
 
-## Services
+Services
+--------
 
 We'll create an upsert service for creating and editing votes. No create service is necessary because there's no auto-incrementing id.
 
@@ -139,11 +144,12 @@ service QuestionVote
 
 The DELETE service is very similar. It just doesn't need to validate that the vote exists, and it doesn't need to validate that the voter and the question author are different users.
 
-## Parameterized properties
+Parameterized properties
+------------------------
 
 When viewing a question on Stack Overflow, you can see your own vote if you've cast one.
 
-```
+```klass
 class Question
     systemTemporal
     versioned
@@ -160,13 +166,14 @@ class Question
 
 We add `myVote()` as a parameterized property, though there are no parameters in this example. This criteria is another example using the global `userId`. Once the parameterized property is defined, it can be included in a projection using the same syntax as an association end. In fact, a parameterized property without any parameters can be thought of as a uni-directional association.
 
-## Parameterized projections
+Parameterized projections
+-------------------------
 
 The definition of `myVote()` above is fine, and fairly similar to the `upvoted` and `downvoted` properties in [the real StackOverflow api](https://api.stackexchange.com/docs/types/question).
 
 However, let's add some perhaps unrealistic variants that take parameters, just to see what parameterized properties can do.
 
-```
+```klass
 class Question
     systemTemporal
     versioned
@@ -281,7 +288,8 @@ When a json response includes parameterized properties, the parameters become pa
 }
 ```
 
-## Aggregations
+Aggregations
+------------
 
 [StackOverflow's documentation](https://stackoverflow.com/help/privileges/established-user) states:
 
@@ -291,7 +299,7 @@ When a json response includes parameterized properties, the parameters become pa
 
 We add two aggregation properties to Question; `upvotes` and `downvotes`.
 
-```
+```klass
 class Question
     systemTemporal
     versioned
