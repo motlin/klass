@@ -1,4 +1,5 @@
-# Summary
+Summary
+=======
 
 * [1: Vision](part1/README.md)
   * [Classes](part1/1_classes.md)
@@ -7,9 +8,9 @@
 * [2: Audit Data](part2/README.md)
   * [Audit Model](part2/1_audit_model.md)
   * [Audited Services](part2/2_audited_services.md)
-* [3: Bootstrapped Meta-Model](part3/README.md)
+* [3: Bootstrapped Metamodel](part3/README.md)
   * [Bootstrapped Model Data](part3/1_bootstrapped_model_data.md)
-  * [Bootstrapped Meta-Model Data](part3/2_bootstrapped_meta_model_data.md)
+  * [Bootstrapped Metamodel Data](part3/2_bootstrapped_meta_model_data.md)
   * [Dynamic Query](part3/3_dynamic_query.md)
   * [Dynamic UI](part3/4_dynamic_ui.md)
   * [Dynamic Model](part3/5_dynamic_model.md)

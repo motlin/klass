@@ -1,4 +1,5 @@
-# KlassModelBootstrapped
+KlassModelBootstrapped
+======================
 
 How to start the KlassModelBootstrapped application
 ---------------------------------------------------

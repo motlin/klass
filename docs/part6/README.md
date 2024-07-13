@@ -1,6 +1,8 @@
-# Related Works
+Related Works
+=============
 
-## Data mapping aggregators
+Data mapping aggregators
+------------------------
 
 Examples:
 
@@ -19,15 +21,16 @@ These systems are powerful analytical tools. Catalyst is a powerful query engine
 
 Read-write systems can't support complex mappings, but can rely on the data store for efficient query execution.
 
-## OpenAPI
+OpenAPI
+-------
 
-#### Things to like
+### Things to like
 
 * [SwaggerHub](https://swagger.io/tools/swaggerhub/) is a site for "Hosted, Interactive API Documentation".
   * It's a great resource for developers to find and use a documented api.
   * You could imagine it as the foundation for a service discovery mechanism.
 
-#### Drawbacks
+### Drawbacks
 
 * The OpenAPI model is tightly bound to http.
   * It includes implementation details like numeric http codes.
@@ -48,13 +51,14 @@ Read-write systems can't support complex mappings, but can rely on the data stor
 * The community's top contributors created a [hostile fork called openapi-generator](https://github.com/OpenAPITools/openapi-generator/blob/master/docs/qna.md).
   * Some of the issues above, like breaking changes, were mentioned in the rationale.
 
-## Spring Boot / JHipster
+Spring Boot / JHipster
+----------------------
 
 Spring Boot builds on top of Spring. JHipster builds on top of Spring Boot.
 
 The Spring Boot stack is probably the most spiritually similar related work. There's plenty to like about it, and some drawbacks that may justify not using it.
 
-#### Things to like
+### Things to like
 
 * JHipster includes JDL, a spiritually similar DSL.
 * [JDL-Studio](https://start.jhipster.tech/jdl-studio/) is a web-based IDE with syntax-highlighting and live-updating read-only UML diagrams.
@@ -62,7 +66,7 @@ The Spring Boot stack is probably the most spiritually similar related work. The
 * [Relationships can be annotated with a display field](https://www.jhipster.tech/jdl/#relationshipdeclaration), which is "the name of the field that should show up in select boxes." For example, in an auto-generated form to create Answers, there may be a select box for which Question it answers. It should display title, rather than id.
 * Spring Data supports many data stores.
 
-#### Drawbacks
+### Drawbacks
 
 * Every entity (class) gets an id property, which is an auto-incrementing integer. There are no natural keys.
 * Spring Data has limited support for audit-data. It can track the version number, last updated time, and last updated user. However, all previous versions are lost.
@@ -71,13 +75,14 @@ The Spring Boot stack is probably the most spiritually similar related work. The
   * Envers keeps audit data in separate audit tables with a completely different schema. It is difficult to recreate previous state of anything other than a single vertex in isolation.
   * Envers adds audit functionality, but doesn't disable Hibernate's destructive. You have to remember not to call update() and delete().
 
-## GraphQL
+GraphQL
+-------
 
 [GraphQL](https://graphql.org/) is a query language for APIs. The ecosystem of frameworks that have developed around it can be considered related work.
 
 GraphQL's query language is probably the closest thing in open source to Klass's projections.
 
-#### Things to like
+### Things to like
 
 * GraphQL's [query fields](https://graphql.org/learn/queries/#fields) are similar to Klass's read projections.
   * The nested structure exactly matches the structure of the returned json.
@@ -86,7 +91,7 @@ GraphQL's query language is probably the closest thing in open source to Klass's
   * This is a powerful technique for refining relationships.
   * For example, we can refine the relationship between Question and Answer by declaring a field for a Question's answers by some user.
 
-#### Drawbacks
+### Drawbacks
 
 * [GraphQL's relationships](https://graphql.org/learn/schema/#object-types-and-fields) are uni-directional. So a Question has answers, and Answer has a question, but nothing in the schema links these two properties. This is fine for reads; and after all GraphQL started as just a query language. Bidirectional relationships are critical for writes. This is one reason why [dgraph's query language](https://docs.dgraph.io/master/query-language/) is GraphQL+-, which extends edge declarations with a [reverse edge](https://docs.dgraph.io/master/query-language/#reverse-edges).
 * GraphQL makes it easy to express powerful queries for which there is no efficient execution plan.
@@ -97,7 +102,8 @@ GraphQL's query language is probably the closest thing in open source to Klass's
 * Mutations feel second class. The mutation bodies conform to a schema, but you're on your own for performing the mutation.
 * It's common to expose a /graphql/ endpoint over http. While not as dangerous as exposing a /sql/ endpoint, it gives complete control to clients by default. It requires extra effort to handle some cross cutting concerns like recording meaningful metrics,  rate limiting, data-level entitlements, etc.
 
-## Other related works
+Other related works
+-------------------
 
 * EdgeDB
 * Relay

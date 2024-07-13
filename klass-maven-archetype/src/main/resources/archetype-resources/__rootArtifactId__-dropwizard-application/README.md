@@ -1,4 +1,5 @@
-# ${name}
+${name}
+=======
 
 How to start the ${name} application
 ------------------------------------
