@@ -2,11 +2,11 @@
 
 This document covers long-term vision. A shorter-term, **minimal-viable-product** is discussed [here](../part5/README.md).
 
-This covers one set of implementation choices. **Alternatives** are discussed [here](../part6/README.md).
+This covers one set of implementation choices. **Alternatives** are discussed [here](../part5/README.md).
 
 Business value, rationale, justification are discussed [here](TODO).
 
-**Related works** are discussed [here](../part7/README.md).
+**Related works** are discussed [here](../part6/README.md).
 
 Internal design is discussed [here](TODO).
 
