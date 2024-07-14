@@ -27,7 +27,7 @@ Metamodel language
 Instead of a new DSL, the model could be expressed using:
 
 * [OpenAPI vendor extensions](https://swagger.io/docs/specification/openapi-extensions/) (maybe, unproven)
-* A data format that's not a DSL, like json, yml, or xml, conforming to a json schema or xsd.
+* A data format that's not a DSL, like JSON, YML, or XML, conforming to a JSON schema or XSD.
 * Annotations inside a Java or Python program.
 * A graphical language like UML.
 

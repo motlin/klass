@@ -63,12 +63,12 @@ The Spring Boot stack is probably the most spiritually similar related work. The
 * JHipster includes JDL, a spiritually similar DSL.
 * [JDL-Studio](https://start.jhipster.tech/jdl-studio/) is a web-based IDE with syntax-highlighting and live-updating read-only UML diagrams.
 * Relationships in JDL are bidirectional.
-* [Relationships can be annotated with a display field](https://www.jhipster.tech/jdl/#relationshipdeclaration), which is "the name of the field that should show up in select boxes." For example, in an auto-generated form to create Answers, there may be a select box for which Question it answers. It should display title, rather than id.
+* [Relationships can be annotated with a display field](https://www.jhipster.tech/jdl/#relationshipdeclaration), which is "the name of the field that should show up in select boxes." For example, in an auto-generated form to create Answers, there may be a select box for which Question it answers. It should display `title`, rather than `id`.
 * Spring Data supports many data stores.
 
 ### Drawbacks
 
-* Every entity (class) gets an id property, which is an auto-incrementing integer. There are no natural keys.
+* Every entity (class) gets an `id` property, which is an auto-incrementing integer. There are no natural keys.
 * Spring Data has limited support for audit-data. It can track the version number, last updated time, and last updated user. However, all previous versions are lost.
 * Hibernate Envers is an extension that is meant to be non-lossy. However:
   * Envers is not integrated into Spring Boot / JHipster
@@ -100,7 +100,7 @@ GraphQL's query language is probably the closest thing in open source to Klass's
   * GraphQL was invented to stitch together microservice responses into a cohesive subgraph. It assumes that a "foreign key" in one json response will lead to a GET against another service.
 * GraphQL's responses are always json. There's no notion of flattening. GraphQL cannot return csv, [GraphML](http://graphml.graphdrawing.org/), etc.
 * Mutations feel second class. The mutation bodies conform to a schema, but you're on your own for performing the mutation.
-* It's common to expose a /graphql/ endpoint over http. While not as dangerous as exposing a /sql/ endpoint, it gives complete control to clients by default. It requires extra effort to handle some cross cutting concerns like recording meaningful metrics,  rate limiting, data-level entitlements, etc.
+* It's common to expose a /graphql/ endpoint over http. While not as dangerous as exposing a /sql/ endpoint, it gives complete control to clients by default. It requires extra effort to handle some cross-cutting concerns like recording meaningful metrics,  rate limiting, data-level entitlements, etc.
 
 Other related works
 -------------------
