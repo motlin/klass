@@ -4,163 +4,71 @@ Since the meta-model is part of the model, the bootstrap process populates meta-
 
 ```json
 {
-  "name": "Class",
-  "inferred": false,
+  "name": "Klass",
   "packageName": "klass.model.meta.domain",
-  "ordinal": 1,
-  "sourceCode": "class Class\n    transient\n{\n    name                          : String key;\n    inferred                      : Boolean;\n    packageName                   : String;\n    ordinal                       : Integer;\n    sourceCode                    : String;\n    primitiveProperties: PrimitiveProperty[0..*] owned\n        orderBy: this.ordinal;\n    enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;\n    classifierModifiers: ClassifierModifier[0..*]\n        orderBy: this.ordinal;\n    associationEnds: AssociationEnd[0..*];\n    associationEndsResultTypeOf: AssociationEnd[0..*];\n    serviceGroup: ServiceGroup[0..1];\n}\n",
-  "classifierModifiers": [
+  "superInterfaces": [],
+  "classifierModifiers": [],
+  "dataTypeProperties": [
     {
-      "name": "transient",
-      "inferred": false,
-      "ordinal": 1
-    }
-  ],
-  "primitiveProperties": [
-    {
-      "name": "name",
-      "inferred": false,
-      "primitiveType": "String",
-      "optional": false,
-      "key": true,
-      "id": false,
-      "ordinal": 1,
-      "primitivePropertyModifiers": [
+      "__typename": "klass.model.meta.domain.PrimitiveProperty",
+      "name": "superClassName",
+      "optional": true,
+      "minLengthValidation": null,
+      "maxLengthValidation": {
+        "number": 256
+      },
+      "propertyModifiers": [
         {
-          "name": "key",
-          "inferred": false,
-          "ordinal": 1
+          "keyword": "private"
         }
-      ]
+      ],
+      "primitiveType": "String",
+      "minValidation": null,
+      "maxValidation": null
     },
     {
-      "name": "inferred",
-      "inferred": false,
+      "__typename": "klass.model.meta.domain.PrimitiveProperty",
+      "name": "abstractClass",
+      "optional": false,
+      "minLengthValidation": null,
+      "maxLengthValidation": null,
+      "propertyModifiers": [],
       "primitiveType": "Boolean",
-      "optional": false,
-      "key": false,
-      "id": false,
-      "ordinal": 2,
-      "primitivePropertyModifiers": []
-    },
-    {
-      "name": "packageName",
-      "inferred": false,
-      "primitiveType": "String",
-      "optional": false,
-      "key": false,
-      "id": false,
-      "ordinal": 3,
-      "primitivePropertyModifiers": []
-    },
-    {
-      "name": "ordinal",
-      "inferred": false,
-      "primitiveType": "Integer",
-      "optional": false,
-      "key": false,
-      "id": false,
-      "ordinal": 4,
-      "primitivePropertyModifiers": []
-    },
-    {
-      "name": "sourceCode",
-      "inferred": false,
-      "primitiveType": "String",
-      "optional": false,
-      "key": false,
-      "id": false,
-      "ordinal": 5,
-      "primitivePropertyModifiers": []
+      "minValidation": null,
+      "maxValidation": null
     }
   ],
-  "enumerationProperties": [],
+  "abstractClass": false,
+  "superClass": {
+    "name": "Classifier"
+  },
   "associationEnds": [
     {
-      "name": "enumerationProperties",
-      "inferred": false,
-      "direction": "target",
-      "multiplicity": "0..*",
-      "resultType": {
-        "name": "EnumerationProperty"
-      },
-      "owningAssociation": {
-        "name": "ClassHasEnumerationProperties"
-      },
-      "associationEndModifiers": []
+      "name": "subClasses"
     },
     {
-      "name": "classifierModifiers",
-      "inferred": false,
-      "direction": "target",
-      "multiplicity": "0..*",
-      "resultType": {
-        "name": "ClassifierModifier"
-      },
-      "owningAssociation": {
-        "name": "ClassHasModifiers"
-      },
-      "associationEndModifiers": []
+      "name": "superClass"
     },
     {
-      "name": "primitiveProperties",
-      "inferred": false,
-      "direction": "target",
-      "multiplicity": "0..*",
-      "resultType": {
-        "name": "PrimitiveProperty"
-      },
-      "owningAssociation": {
-        "name": "ClassHasPrimitiveTypeProperties"
-      },
-      "associationEndModifiers": [
-        {
-          "name": "owned",
-          "inferred": false,
-          "ordinal": 1
-        }
-      ]
+      "name": "associationEnds"
     },
     {
-      "name": "associationEnds",
-      "inferred": false,
-      "direction": "target",
-      "multiplicity": "0..*",
-      "resultType": {
-        "name": "AssociationEnd"
-      },
-      "owningAssociation": {
-        "name": "ClassHasAssociationEnds"
-      },
-      "associationEndModifiers": []
+      "name": "associationEndsResultTypeOf"
     },
     {
-      "name": "associationEndsResultTypeOf",
-      "inferred": false,
-      "direction": "source",
-      "multiplicity": "0..*",
-      "resultType": {
-        "name": "AssociationEnd"
-      },
-      "owningAssociation": {
-        "name": "AssociationEndHasResultType"
-      },
-      "associationEndModifiers": []
+      "name": "memberReferencePaths"
     },
     {
-      "name": "serviceGroup",
-      "inferred": false,
-      "direction": "source",
-      "multiplicity": "0..1",
-      "resultType": {
-        "name": "ServiceGroup"
-      },
-      "owningAssociation": {
-        "name": "ServiceGroupHasClass"
-      },
-      "associationEndModifiers": []
+      "name": "parameterizedProperties"
+    },
+    {
+      "name": "parameterizedPropertiesResultTypeOf"
+    },
+    {
+      "name": "serviceGroups"
     }
-  ]
+  ],
+  "parameterizedProperties": []
 }
 ```
 
