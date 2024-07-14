@@ -36,7 +36,6 @@
         <fileSet>
             <directory></directory>
             <includes>
-                <include>build.sh</include>
                 <include>first-build.sh</include>
                 <include>checkstyle-configuration.xml</include>
                 <include>checkstyle-suppressions.xml</include>
