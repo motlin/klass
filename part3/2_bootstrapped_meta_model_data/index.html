@@ -6,7 +6,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774275316849">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774275443444">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -33,12 +33,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.5.0.774275316849" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.774275443444" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.774275316849" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.774275443444" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.774275316849" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.774275316849" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.774275443444" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.774275443444" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -168,163 +168,71 @@
 <p>Since the meta-model is part of the model, the bootstrap process populates meta-model types too. This means that we can GET <code v-pre>/api/meta/class/Class</code> for the Class class in any application.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-json"><code v-pre class="language-json">{
-  &quot;name&quot;: &quot;Class&quot;,
-  &quot;inferred&quot;: false,
+  &quot;name&quot;: &quot;Klass&quot;,
   &quot;packageName&quot;: &quot;klass.model.meta.domain&quot;,
-  &quot;ordinal&quot;: 1,
-  &quot;sourceCode&quot;: &quot;class Class\n    transient\n{\n    name                          : String key;\n    inferred                      : Boolean;\n    packageName                   : String;\n    ordinal                       : Integer;\n    sourceCode                    : String;\n    primitiveProperties: PrimitiveProperty[0..*] owned\n        orderBy: this.ordinal;\n    enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;\n    classifierModifiers: ClassifierModifier[0..*]\n        orderBy: this.ordinal;\n    associationEnds: AssociationEnd[0..*];\n    associationEndsResultTypeOf: AssociationEnd[0..*];\n    serviceGroup: ServiceGroup[0..1];\n}\n&quot;,
-  &quot;classifierModifiers&quot;: [
+  &quot;superInterfaces&quot;: [],
+  &quot;classifierModifiers&quot;: [],
+  &quot;dataTypeProperties&quot;: [
     {
-      &quot;name&quot;: &quot;transient&quot;,
-      &quot;inferred&quot;: false,
-      &quot;ordinal&quot;: 1
-    }
-  ],
-  &quot;primitiveProperties&quot;: [
-    {
-      &quot;name&quot;: &quot;name&quot;,
-      &quot;inferred&quot;: false,
-      &quot;primitiveType&quot;: &quot;String&quot;,
-      &quot;optional&quot;: false,
-      &quot;key&quot;: true,
-      &quot;id&quot;: false,
-      &quot;ordinal&quot;: 1,
-      &quot;primitivePropertyModifiers&quot;: [
+      &quot;__typename&quot;: &quot;klass.model.meta.domain.PrimitiveProperty&quot;,
+      &quot;name&quot;: &quot;superClassName&quot;,
+      &quot;optional&quot;: true,
+      &quot;minLengthValidation&quot;: null,
+      &quot;maxLengthValidation&quot;: {
+        &quot;number&quot;: 256
+      },
+      &quot;propertyModifiers&quot;: [
         {
-          &quot;name&quot;: &quot;key&quot;,
-          &quot;inferred&quot;: false,
-          &quot;ordinal&quot;: 1
+          &quot;keyword&quot;: &quot;private&quot;
         }
-      ]
+      ],
+      &quot;primitiveType&quot;: &quot;String&quot;,
+      &quot;minValidation&quot;: null,
+      &quot;maxValidation&quot;: null
     },
     {
-      &quot;name&quot;: &quot;inferred&quot;,
-      &quot;inferred&quot;: false,
+      &quot;__typename&quot;: &quot;klass.model.meta.domain.PrimitiveProperty&quot;,
+      &quot;name&quot;: &quot;abstractClass&quot;,
+      &quot;optional&quot;: false,
+      &quot;minLengthValidation&quot;: null,
+      &quot;maxLengthValidation&quot;: null,
+      &quot;propertyModifiers&quot;: [],
       &quot;primitiveType&quot;: &quot;Boolean&quot;,
-      &quot;optional&quot;: false,
-      &quot;key&quot;: false,
-      &quot;id&quot;: false,
-      &quot;ordinal&quot;: 2,
-      &quot;primitivePropertyModifiers&quot;: []
-    },
-    {
-      &quot;name&quot;: &quot;packageName&quot;,
-      &quot;inferred&quot;: false,
-      &quot;primitiveType&quot;: &quot;String&quot;,
-      &quot;optional&quot;: false,
-      &quot;key&quot;: false,
-      &quot;id&quot;: false,
-      &quot;ordinal&quot;: 3,
-      &quot;primitivePropertyModifiers&quot;: []
-    },
-    {
-      &quot;name&quot;: &quot;ordinal&quot;,
-      &quot;inferred&quot;: false,
-      &quot;primitiveType&quot;: &quot;Integer&quot;,
-      &quot;optional&quot;: false,
-      &quot;key&quot;: false,
-      &quot;id&quot;: false,
-      &quot;ordinal&quot;: 4,
-      &quot;primitivePropertyModifiers&quot;: []
-    },
-    {
-      &quot;name&quot;: &quot;sourceCode&quot;,
-      &quot;inferred&quot;: false,
-      &quot;primitiveType&quot;: &quot;String&quot;,
-      &quot;optional&quot;: false,
-      &quot;key&quot;: false,
-      &quot;id&quot;: false,
-      &quot;ordinal&quot;: 5,
-      &quot;primitivePropertyModifiers&quot;: []
+      &quot;minValidation&quot;: null,
+      &quot;maxValidation&quot;: null
     }
   ],
-  &quot;enumerationProperties&quot;: [],
+  &quot;abstractClass&quot;: false,
+  &quot;superClass&quot;: {
+    &quot;name&quot;: &quot;Classifier&quot;
+  },
   &quot;associationEnds&quot;: [
     {
-      &quot;name&quot;: &quot;enumerationProperties&quot;,
-      &quot;inferred&quot;: false,
-      &quot;direction&quot;: &quot;target&quot;,
-      &quot;multiplicity&quot;: &quot;0..*&quot;,
-      &quot;resultType&quot;: {
-        &quot;name&quot;: &quot;EnumerationProperty&quot;
-      },
-      &quot;owningAssociation&quot;: {
-        &quot;name&quot;: &quot;ClassHasEnumerationProperties&quot;
-      },
-      &quot;associationEndModifiers&quot;: []
+      &quot;name&quot;: &quot;subClasses&quot;
     },
     {
-      &quot;name&quot;: &quot;classifierModifiers&quot;,
-      &quot;inferred&quot;: false,
-      &quot;direction&quot;: &quot;target&quot;,
-      &quot;multiplicity&quot;: &quot;0..*&quot;,
-      &quot;resultType&quot;: {
-        &quot;name&quot;: &quot;ClassifierModifier&quot;
-      },
-      &quot;owningAssociation&quot;: {
-        &quot;name&quot;: &quot;ClassHasModifiers&quot;
-      },
-      &quot;associationEndModifiers&quot;: []
+      &quot;name&quot;: &quot;superClass&quot;
     },
     {
-      &quot;name&quot;: &quot;primitiveProperties&quot;,
-      &quot;inferred&quot;: false,
-      &quot;direction&quot;: &quot;target&quot;,
-      &quot;multiplicity&quot;: &quot;0..*&quot;,
-      &quot;resultType&quot;: {
-        &quot;name&quot;: &quot;PrimitiveProperty&quot;
-      },
-      &quot;owningAssociation&quot;: {
-        &quot;name&quot;: &quot;ClassHasPrimitiveTypeProperties&quot;
-      },
-      &quot;associationEndModifiers&quot;: [
-        {
-          &quot;name&quot;: &quot;owned&quot;,
-          &quot;inferred&quot;: false,
-          &quot;ordinal&quot;: 1
-        }
-      ]
+      &quot;name&quot;: &quot;associationEnds&quot;
     },
     {
-      &quot;name&quot;: &quot;associationEnds&quot;,
-      &quot;inferred&quot;: false,
-      &quot;direction&quot;: &quot;target&quot;,
-      &quot;multiplicity&quot;: &quot;0..*&quot;,
-      &quot;resultType&quot;: {
-        &quot;name&quot;: &quot;AssociationEnd&quot;
-      },
-      &quot;owningAssociation&quot;: {
-        &quot;name&quot;: &quot;ClassHasAssociationEnds&quot;
-      },
-      &quot;associationEndModifiers&quot;: []
+      &quot;name&quot;: &quot;associationEndsResultTypeOf&quot;
     },
     {
-      &quot;name&quot;: &quot;associationEndsResultTypeOf&quot;,
-      &quot;inferred&quot;: false,
-      &quot;direction&quot;: &quot;source&quot;,
-      &quot;multiplicity&quot;: &quot;0..*&quot;,
-      &quot;resultType&quot;: {
-        &quot;name&quot;: &quot;AssociationEnd&quot;
-      },
-      &quot;owningAssociation&quot;: {
-        &quot;name&quot;: &quot;AssociationEndHasResultType&quot;
-      },
-      &quot;associationEndModifiers&quot;: []
+      &quot;name&quot;: &quot;memberReferencePaths&quot;
     },
     {
-      &quot;name&quot;: &quot;serviceGroup&quot;,
-      &quot;inferred&quot;: false,
-      &quot;direction&quot;: &quot;source&quot;,
-      &quot;multiplicity&quot;: &quot;0..1&quot;,
-      &quot;resultType&quot;: {
-        &quot;name&quot;: &quot;ServiceGroup&quot;
-      },
-      &quot;owningAssociation&quot;: {
-        &quot;name&quot;: &quot;ServiceGroupHasClass&quot;
-      },
-      &quot;associationEndModifiers&quot;: []
+      &quot;name&quot;: &quot;parameterizedProperties&quot;
+    },
+    {
+      &quot;name&quot;: &quot;parameterizedPropertiesResultTypeOf&quot;
+    },
+    {
+      &quot;name&quot;: &quot;serviceGroups&quot;
     }
-  ]
+  ],
+  &quot;parameterizedProperties&quot;: []
 }</code></pre>
 </doc-codeblock></div>
 
