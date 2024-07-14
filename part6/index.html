@@ -6,15 +6,15 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774274755508">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774275316849">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
 
     <!-- Primary Meta Tags -->
-    <title>Alternative implementation choices</title>
-    <meta name="title" content="Alternative implementation choices">
-    <meta name="description" content="Instead of a maven archetype, initial project creation could be done with:">
+    <title>Related Works</title>
+    <meta name="title" content="Related Works">
+    <meta name="description" content="Examples:">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://klass.cool/part6/">
@@ -22,22 +22,22 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://klass.cool/part6/">
-    <meta property="og:title" content="Alternative implementation choices">
-    <meta property="og:description" content="Instead of a maven archetype, initial project creation could be done with:">
+    <meta property="og:title" content="Related Works">
+    <meta property="og:description" content="Examples:">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://klass.cool/part6/">
-    <meta property="twitter:title" content="Alternative implementation choices">
-    <meta property="twitter:description" content="Instead of a maven archetype, initial project creation could be done with:">
+    <meta property="twitter:title" content="Related Works">
+    <meta property="twitter:description" content="Examples:">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../resources/css/retype.css?v=3.5.0.774274755508" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.5.0.774275316849" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.774274755508" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.774275316849" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.774274755508" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.774275316849" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -152,101 +152,191 @@
                                 <!-- Rendered if sidebar right is enabled -->
                                 <div id="docs-sidebar-right-toggle"></div>
                                 <!-- Page content  -->
-<doc-anchor-target id="alternative-implementation-choices" class="break-words">
+<doc-anchor-target id="related-works" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#alternative-implementation-choices">#</doc-anchor-trigger>
-        <span>Alternative implementation choices</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#related-works">#</doc-anchor-trigger>
+        <span>Related Works</span>
     </h1>
 </doc-anchor-target>
-<doc-anchor-target id="one-time-generation">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#one-time-generation">#</doc-anchor-trigger>
-        <span>One-time generation</span>
-    </h3>
+<doc-anchor-target id="data-mapping-aggregators">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#data-mapping-aggregators">#</doc-anchor-trigger>
+        <span>Data mapping aggregators</span>
+    </h2>
 </doc-anchor-target>
-<p>Instead of a maven archetype, initial project creation could be done with:</p>
+<p>Examples:</p>
 <ul>
-<li><a href="http://yeoman.io/">Yeoman</a>.</li>
-<li>A webapp that produces a zip for download, like <a href="https://start.spring.io/">Spring Initializr</a> for Spring Boot.</li>
-<li>A custom CLI, possibly in python.</li>
+<li>Spark Catalyst / Spark SQL</li>
+<li>Hive</li>
 </ul>
-<doc-anchor-target id="meta-model">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#meta-model">#</doc-anchor-trigger>
-        <span>Meta-model</span>
-    </h3>
-</doc-anchor-target>
-<p>Instead of a new meta-model, Klass could use an existing meta-model like <a href="https://www.eclipse.org/modeling/emf/">Eclipse Modeling Framework&#x27;s ECore</a>.</p>
-<p>ECore is a fairly complete implementation of UML, with all its warts. ECore also has enhancements to allow it to represent anything expressible in Java, including Generics.</p>
-<p>Klass&#x27;s meta-model is a fairly narrow subset of UML. It addresses some weaknesses in UML, such as the lack of a type hierarchy between the various types of properties.</p>
-<p>Klass&#x27;s meta-model also includes projections and services.</p>
-<doc-anchor-target id="meta-model-language">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#meta-model-language">#</doc-anchor-trigger>
-        <span>Meta-model language</span>
-    </h3>
-</doc-anchor-target>
-<p>Instead of a new DSL, the model could be expressed using:</p>
+<p>In Klass, the model, store, and mapping are all 1-1-1. These tools allow non-trivial mappings between the model and the store.</p>
 <ul>
-<li><a href="https://swagger.io/docs/specification/openapi-extensions/">OpenAPI vendor extensions</a> (maybe, unproven)</li>
-<li>A data format that&#x27;s not a DSL, like json, yml, or xml, conforming to a json schema or xsd.</li>
-<li>Annotations inside a Java or Python program.</li>
-<li>A graphical language like UML.</li>
+<li>Model: Clean domain model</li>
+<li>Store: A model still, but of the data store. Can be messy.</li>
+<li>Mapping: Which tables, columns, etc. map to which part of the clean model. How to perform joins, aggregations.</li>
 </ul>
-<doc-anchor-target id="data-store">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#data-store">#</doc-anchor-trigger>
-        <span>Data Store</span>
-    </h3>
+<p>Systems that support non-trivial mappings tend to be read-only. The mappings are lossy transformations. For example, not every column may be mapped into the model. Or a property may be the result of an aggregation. So there&#x27;s no obvious way to write through the model.</p>
+<p>These systems are powerful analytical tools. Catalyst is a powerful query engine, with advanced planning and routing.</p>
+<p>Read-write systems can&#x27;t support complex mappings, but can rely on the data store for efficient query execution.</p>
+<doc-anchor-target id="openapi">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#openapi">#</doc-anchor-trigger>
+        <span>OpenAPI</span>
+    </h2>
 </doc-anchor-target>
-<p>Rather than a relational database, the data could be stored in:</p>
+<doc-anchor-target id="things-to-like">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#things-to-like">#</doc-anchor-trigger>
+        <span>Things to like</span>
+    </h4>
+</doc-anchor-target>
 <ul>
-<li>A specific non-relational store, like a documentation database or a graph database.</li>
-<li>An abstract DataStore interface, with multiple implementations.</li>
+<li><a href="https://swagger.io/tools/swaggerhub/">SwaggerHub</a> is a site for &quot;Hosted, Interactive API Documentation&quot;.
+<ul>
+<li>It&#x27;s a great resource for developers to find and use a documented api.</li>
+<li>You could imagine it as the foundation for a service discovery mechanism.</li>
 </ul>
-<doc-anchor-target id="audit-data">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#audit-data">#</doc-anchor-trigger>
-        <span>Audit Data</span>
-    </h3>
+</li>
+</ul>
+<doc-anchor-target id="drawbacks">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#drawbacks">#</doc-anchor-trigger>
+        <span>Drawbacks</span>
+    </h4>
 </doc-anchor-target>
-<p>Rather than storing phased-out data in the same tables as active data, they could be stored in separate audit tables.</p>
-<p>This would improve the performance of queries for active data. It would complicate querying for previous versions, especially when those versions have relationships to data that is still active.</p>
-<doc-anchor-target id="relationship-criteria">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#relationship-criteria">#</doc-anchor-trigger>
-        <span>Relationship criteria</span>
-    </h3>
+<ul>
+<li>The OpenAPI model is tightly bound to http.
+<ul>
+<li>It includes implementation details like numeric http codes.</li>
+<li>It cannot represent other service types like gRPC without vendor extensions.</li>
+<li>It cannot represent data layer concerns like keys, foreign keys, joins. It doesn&#x27;t help with fetching data and serializing it to json.</li>
+<li>It cannot represent UI concerns like display names.</li>
+</ul>
+</li>
+<li><a href="https://swagger.io/docs/specification/data-models/data-types/">Relationships are uni-directional</a>.
+<ul>
+<li>So a Question has answers, and Answer has a question, but nothing in the schema links these two properties.</li>
+<li>This is fine for json; and after all OpenAPI doesn&#x27;t help you at the data layer.</li>
+<li>Bidirectional relationships are critical at the data layer, to know that a single foreign key <code v-pre>questionId</code> is used to perform the same join when navigating the relationship in either direction.</li>
+</ul>
+</li>
+<li>Loose ecosystem of tools of varying quality.
+<ul>
+<li>The OpenAPI specification and core tools like the Swagger editor are maintained by core contributors.</li>
+<li>The various code generators for different technologies have different maintainers and varying quality.</li>
+<li>The Jersey 2 generator, which is the most popular http variant for Java, has quality problems.
+<ul>
+<li>Minor releases have produced breaking changes in both the code and the http api.</li>
+<li>Exception handling isn&#x27;t done in Jersey&#x27;s idiomatic way.</li>
+<li>Serializer plugins aren&#x27;t done in Jersey&#x27;s idiomatic way.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The community&#x27;s top contributors created a <a href="https://github.com/OpenAPITools/openapi-generator/blob/master/docs/qna.md">hostile fork called openapi-generator</a>.
+<ul>
+<li>Some of the issues above, like breaking changes, were mentioned in the rationale.</li>
+</ul>
+</li>
+</ul>
+<doc-anchor-target id="spring-boot--jhipster">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#spring-boot--jhipster">#</doc-anchor-trigger>
+        <span>Spring Boot / JHipster</span>
+    </h2>
 </doc-anchor-target>
-<p>The docs show a syntax for relationship criteria that is similar to a sql join.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">klass</div>
-<pre class="language-none"><code v-pre class="language-none">relationship this.id == Answer.questionId</code></pre>
-</doc-codeblock></div>
-<p>It&#x27;s possible to use a syntax where a property is annotated as a foreign key instead.</p>
-<p>It&#x27;s possible to use a syntax where a foreign key tuple is listed instead.</p>
-<p>However, parameterized properties would need a more powerful syntax.</p>
-<doc-anchor-target id="service-syntax">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#service-syntax">#</doc-anchor-trigger>
-        <span>Service syntax</span>
-    </h3>
+<p>Spring Boot builds on top of Spring. JHipster builds on top of Spring Boot.</p>
+<p>The Spring Boot stack is probably the most spiritually similar related work. There&#x27;s plenty to like about it, and some drawbacks that may justify not using it.</p>
+<doc-anchor-target id="things-to-like-1">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#things-to-like-1">#</doc-anchor-trigger>
+        <span>Things to like</span>
+    </h4>
 </doc-anchor-target>
-<p>The service syntax is deliberately flexible enough to represent both http and rpc. If we don&#x27;t care to support rpc, then a more url-centric syntax may make sense.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<div class="codeblock-title">klass</div>
-<pre class="language-none"><code v-pre class="language-none">service QuestionResource
-{
-    /question/{id: Long[1..1]}
-        GET
-        {
-            format      : json;
-            multiplicity: one;
-            criteria    : this.id == id;
-            projection  : QuestionReadProjection;
-        }
-}</code></pre>
-</doc-codeblock></div>
+<ul>
+<li>JHipster includes JDL, a spiritually similar DSL.</li>
+<li><a href="https://start.jhipster.tech/jdl-studio/">JDL-Studio</a> is a web-based IDE with syntax-highlighting and live-updating read-only UML diagrams.</li>
+<li>Relationships in JDL are bidirectional.</li>
+<li><a href="https://www.jhipster.tech/jdl/#relationshipdeclaration">Relationships can be annotated with a display field</a>, which is &quot;the name of the field that should show up in select boxes.&quot; For example, in an auto-generated form to create Answers, there may be a select box for which Question it answers. It should display title, rather than id.</li>
+<li>Spring Data supports many data stores.</li>
+</ul>
+<doc-anchor-target id="drawbacks-1">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#drawbacks-1">#</doc-anchor-trigger>
+        <span>Drawbacks</span>
+    </h4>
+</doc-anchor-target>
+<ul>
+<li>Every entity (class) gets an id property, which is an auto-incrementing integer. There are no natural keys.</li>
+<li>Spring Data has limited support for audit-data. It can track the version number, last updated time, and last updated user. However, all previous versions are lost.</li>
+<li>Hibernate Envers is an extension that is meant to be non-lossy. However:
+<ul>
+<li>Envers is not integrated into Spring Boot / JHipster</li>
+<li>Envers keeps audit data in separate audit tables with a completely different schema. It is difficult to recreate previous state of anything other than a single vertex in isolation.</li>
+<li>Envers adds audit functionality, but doesn&#x27;t disable Hibernate&#x27;s destructive. You have to remember not to call update() and delete().</li>
+</ul>
+</li>
+</ul>
+<doc-anchor-target id="graphql">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#graphql">#</doc-anchor-trigger>
+        <span>GraphQL</span>
+    </h2>
+</doc-anchor-target>
+<p><a href="https://graphql.org/">GraphQL</a> is a query language for APIs. The ecosystem of frameworks that have developed around it can be considered related work.</p>
+<p>GraphQL&#x27;s query language is probably the closest thing in open source to Klass&#x27;s projections.</p>
+<doc-anchor-target id="things-to-like-2">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#things-to-like-2">#</doc-anchor-trigger>
+        <span>Things to like</span>
+    </h4>
+</doc-anchor-target>
+<ul>
+<li>GraphQL&#x27;s <a href="https://graphql.org/learn/queries/#fields">query fields</a> are similar to Klass&#x27;s read projections.
+<ul>
+<li>The nested structure exactly matches the structure of the returned json.</li>
+</ul>
+</li>
+<li><a href="https://graphql.org/learn/queries/#arguments">Fields can take arguments</a>.
+<ul>
+<li>This is another term for parameterized properties.</li>
+<li>This is a powerful technique for refining relationships.</li>
+<li>For example, we can refine the relationship between Question and Answer by declaring a field for a Question&#x27;s answers by some user.</li>
+</ul>
+</li>
+</ul>
+<doc-anchor-target id="drawbacks-2">
+    <h4>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#drawbacks-2">#</doc-anchor-trigger>
+        <span>Drawbacks</span>
+    </h4>
+</doc-anchor-target>
+<ul>
+<li><a href="https://graphql.org/learn/schema/#object-types-and-fields">GraphQL&#x27;s relationships</a> are uni-directional. So a Question has answers, and Answer has a question, but nothing in the schema links these two properties. This is fine for reads; and after all GraphQL started as just a query language. Bidirectional relationships are critical for writes. This is one reason why <a href="https://docs.dgraph.io/master/query-language/">dgraph&#x27;s query language</a> is GraphQL+-, which extends edge declarations with a <a href="https://docs.dgraph.io/master/query-language/#reverse-edges">reverse edge</a>.</li>
+<li>GraphQL makes it easy to express powerful queries for which there is no efficient execution plan.
+<ul>
+<li>For example, a multi-hop graph walk with predicates that narrow the walk on each hop.</li>
+<li>The only possible implementation is to perform IO for every hop.</li>
+<li>GraphQL was invented to stitch together microservice responses into a cohesive subgraph. It assumes that a &quot;foreign key&quot; in one json response will lead to a GET against another service.</li>
+</ul>
+</li>
+<li>GraphQL&#x27;s responses are always json. There&#x27;s no notion of flattening. GraphQL cannot return csv, <a href="http://graphml.graphdrawing.org/">GraphML</a>, etc.</li>
+<li>Mutations feel second class. The mutation bodies conform to a schema, but you&#x27;re on your own for performing the mutation.</li>
+<li>It&#x27;s common to expose a /graphql/ endpoint over http. While not as dangerous as exposing a /sql/ endpoint, it gives complete control to clients by default. It requires extra effort to handle some cross cutting concerns like recording meaningful metrics,  rate limiting, data-level entitlements, etc.</li>
+</ul>
+<doc-anchor-target id="other-related-works">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#other-related-works">#</doc-anchor-trigger>
+        <span>Other related works</span>
+    </h2>
+</doc-anchor-target>
+<ul>
+<li>EdgeDB</li>
+<li>Relay</li>
+<li>dgraph</li>
+<li>FOAM Framework</li>
+<li>TextUML</li>
+</ul>
 
                                 
                                 <!-- Required only on API pages -->
@@ -262,23 +352,16 @@
                             
                                 <nav class="flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../part5/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../part5/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
                                                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                                                <span class="block mt-1">Minimal Viable Product</span>
+                                                <span class="block mt-1">Alternative implementation choices</span>
                                             </span>
                                         </a>
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../part7/">
-                                            <span>
-                                                <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                                                <span class="block mt-1">Related Works</span>
-                                            </span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
-                                        </a>
                                     </div>
                                 </nav>
                             </footer>
@@ -319,6 +402,6 @@
 
     <div id="docs-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Alternative implementation choices", level: 1, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Related Works", level: 1, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>
 </html>

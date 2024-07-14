@@ -6,15 +6,15 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774274755508">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774275316849">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
 
     <!-- Primary Meta Tags -->
-    <title>Minimal Viable Product</title>
-    <meta name="title" content="Minimal Viable Product">
-    <meta name="description" content="The MVP can leave out of scope many of the features in the long-term vision.">
+    <title>Alternative implementation choices</title>
+    <meta name="title" content="Alternative implementation choices">
+    <meta name="description" content="Instead of a maven archetype, initial project creation could be done with:">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://klass.cool/part5/">
@@ -22,22 +22,22 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://klass.cool/part5/">
-    <meta property="og:title" content="Minimal Viable Product">
-    <meta property="og:description" content="The MVP can leave out of scope many of the features in the long-term vision.">
+    <meta property="og:title" content="Alternative implementation choices">
+    <meta property="og:description" content="Instead of a maven archetype, initial project creation could be done with:">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://klass.cool/part5/">
-    <meta property="twitter:title" content="Minimal Viable Product">
-    <meta property="twitter:description" content="The MVP can leave out of scope many of the features in the long-term vision.">
+    <meta property="twitter:title" content="Alternative implementation choices">
+    <meta property="twitter:description" content="Instead of a maven archetype, initial project creation could be done with:">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../resources/css/retype.css?v=3.5.0.774274755508" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.5.0.774275316849" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.774274755508" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.774275316849" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.774274755508" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.774275316849" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -152,48 +152,87 @@
                                 <!-- Rendered if sidebar right is enabled -->
                                 <div id="docs-sidebar-right-toggle"></div>
                                 <!-- Page content  -->
-<doc-anchor-target id="minimal-viable-product" class="break-words">
+<doc-anchor-target id="alternative-implementation-choices" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#minimal-viable-product">#</doc-anchor-trigger>
-        <span>Minimal Viable Product</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#alternative-implementation-choices">#</doc-anchor-trigger>
+        <span>Alternative implementation choices</span>
     </h1>
 </doc-anchor-target>
-<p>The MVP can leave out of scope many of the features in the long-term vision. It should support the creation of a relational schema and basic crud services, but not much more.</p>
-<doc-anchor-target id="json-instead-of-dsl">
+<doc-anchor-target id="one-time-generation">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#json-instead-of-dsl">#</doc-anchor-trigger>
-        <span>JSON instead of DSL</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#one-time-generation">#</doc-anchor-trigger>
+        <span>One-time generation</span>
     </h3>
 </doc-anchor-target>
-<p>Instead of a DSL with a compiler, the initial model can be hand-written in json. Ideally, the json should be a strict subset of the planned bootstrapped meta-model, for an easy transition.</p>
-<doc-anchor-target id="keys">
+<p>Instead of a maven archetype, initial project creation could be done with:</p>
+<ul>
+<li><a href="http://yeoman.io/">Yeoman</a>.</li>
+<li>A webapp that produces a zip for download, like <a href="https://start.spring.io/">Spring Initializr</a> for Spring Boot.</li>
+<li>A custom CLI, possibly in python.</li>
+</ul>
+<doc-anchor-target id="meta-model">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#keys">#</doc-anchor-trigger>
-        <span>Keys</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#meta-model">#</doc-anchor-trigger>
+        <span>Meta-model</span>
     </h3>
 </doc-anchor-target>
-<p>The MVP should include either auto-incrementing ids as keys, or regular natural keys, but not both. If the MVP implements natural keys, it probably does not need to implement composite keys.</p>
-<doc-anchor-target id="operations">
+<p>Instead of a new meta-model, Klass could use an existing meta-model like <a href="https://www.eclipse.org/modeling/emf/">Eclipse Modeling Framework&#x27;s ECore</a>.</p>
+<p>ECore is a fairly complete implementation of UML, with all its warts. ECore also has enhancements to allow it to represent anything expressible in Java, including Generics.</p>
+<p>Klass&#x27;s meta-model is a fairly narrow subset of UML. It addresses some weaknesses in UML, such as the lack of a type hierarchy between the various types of properties.</p>
+<p>Klass&#x27;s meta-model also includes projections and services.</p>
+<doc-anchor-target id="meta-model-language">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#operations">#</doc-anchor-trigger>
-        <span>Operations</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#meta-model-language">#</doc-anchor-trigger>
+        <span>Meta-model language</span>
     </h3>
 </doc-anchor-target>
-<p>The MVP could start with read, followed by replace, upsert, and create. The operations delete and patch (update) could be postponed indefinitely.</p>
+<p>Instead of a new DSL, the model could be expressed using:</p>
+<ul>
+<li><a href="https://swagger.io/docs/specification/openapi-extensions/">OpenAPI vendor extensions</a> (maybe, unproven)</li>
+<li>A data format that&#x27;s not a DSL, like json, yml, or xml, conforming to a json schema or xsd.</li>
+<li>Annotations inside a Java or Python program.</li>
+<li>A graphical language like UML.</li>
+</ul>
+<doc-anchor-target id="data-store">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#data-store">#</doc-anchor-trigger>
+        <span>Data Store</span>
+    </h3>
+</doc-anchor-target>
+<p>Rather than a relational database, the data could be stored in:</p>
+<ul>
+<li>A specific non-relational store, like a documentation database or a graph database.</li>
+<li>An abstract DataStore interface, with multiple implementations.</li>
+</ul>
 <doc-anchor-target id="audit-data">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#audit-data">#</doc-anchor-trigger>
         <span>Audit Data</span>
     </h3>
 </doc-anchor-target>
-<p>The MVP could start without any audit features (<code v-pre>systemTemporal</code>, <code v-pre>versioned</code>, <code v-pre>audited</code>). It could start without other modifiers, like <code v-pre>final</code> and <code v-pre>owned</code>. It wouldn&#x27;t need any macros or inference at first.</p>
-<doc-anchor-target id="bootstrapped-meta-model">
+<p>Rather than storing phased-out data in the same tables as active data, they could be stored in separate audit tables.</p>
+<p>This would improve the performance of queries for active data. It would complicate querying for previous versions, especially when those versions have relationships to data that is still active.</p>
+<doc-anchor-target id="relationship-criteria">
     <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#bootstrapped-meta-model">#</doc-anchor-trigger>
-        <span>Bootstrapped meta-model</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#relationship-criteria">#</doc-anchor-trigger>
+        <span>Relationship criteria</span>
     </h3>
 </doc-anchor-target>
-<p>The meta-model needs to be robust even in the MVP, but it need not be queryable over services in the MVP. Similarly, the dynamic UIs built on the bootstrapped meta-model could come later.</p>
+<p>The docs show a syntax for relationship criteria that is similar to a sql join.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">klass</div>
+<pre class="language-none"><code v-pre class="language-none">relationship this.id == Answer.questionId</code></pre>
+</doc-codeblock></div>
+<p>It&#x27;s possible to use a syntax where a property is annotated as a foreign key instead.</p>
+<p>It&#x27;s possible to use a syntax where a foreign key tuple is listed instead.</p>
+<p>However, parameterized properties would need a more powerful syntax.</p>
+<doc-anchor-target id="service-syntax">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#service-syntax">#</doc-anchor-trigger>
+        <span>Service syntax</span>
+    </h3>
+</doc-anchor-target>
+<p>The service syntax is url-centric. If we want to support both http and rpc, we may want a more flexible syntax.</p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -222,7 +261,7 @@
                                         <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../part6/">
                                             <span>
                                                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                                                <span class="block mt-1">Alternative implementation choices</span>
+                                                <span class="block mt-1">Related Works</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                         </a>
@@ -266,6 +305,6 @@
 
     <div id="docs-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Minimal Viable Product", level: 1, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Alternative implementation choices", level: 1, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>
 </html>
