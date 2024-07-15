@@ -6,7 +6,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774363796210">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774367348747">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -33,11 +33,11 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../resources/css/retype.css?v=3.5.0.774363796210" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.5.0.774367348747" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.774363796210" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.774367348747" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.774363796210" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.774367348747" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -257,7 +257,7 @@
 <li>JHipster includes JDL, a spiritually similar DSL.</li>
 <li><a href="https://start.jhipster.tech/jdl-studio/">JDL-Studio</a> is a web-based IDE with syntax-highlighting and live-updating read-only UML diagrams.</li>
 <li>Relationships in JDL are bidirectional.</li>
-<li><a href="https://www.jhipster.tech/jdl/#relationshipdeclaration">Relationships can be annotated with a display field</a>, which is &quot;the name of the field that should show up in select boxes.&quot; For example, in an auto-generated form to create Answers, there may be a select box for which Question it answers. It should display title, rather than id.</li>
+<li><a href="https://www.jhipster.tech/jdl/#relationshipdeclaration">Relationships can be annotated with a display field</a>, which is &quot;the name of the field that should show up in select boxes.&quot; For example, in an auto-generated form to create Answers, there may be a select box for which Question it answers. It should display <code v-pre>title</code>, rather than <code v-pre>id</code>.</li>
 <li>Spring Data supports many data stores.</li>
 </ul>
 <doc-anchor-target id="drawbacks-1">
@@ -267,7 +267,7 @@
     </h3>
 </doc-anchor-target>
 <ul>
-<li>Every entity (class) gets an id property, which is an auto-incrementing integer. There are no natural keys.</li>
+<li>Every entity (class) gets an <code v-pre>id</code> property, which is an auto-incrementing integer. There are no natural keys.</li>
 <li>Spring Data has limited support for audit-data. It can track the version number, last updated time, and last updated user. However, all previous versions are lost.</li>
 <li>Hibernate Envers is an extension that is meant to be non-lossy. However:
 <ul>
@@ -322,7 +322,7 @@
 </li>
 <li>GraphQL&#x27;s responses are always json. There&#x27;s no notion of flattening. GraphQL cannot return csv, <a href="http://graphml.graphdrawing.org/">GraphML</a>, etc.</li>
 <li>Mutations feel second class. The mutation bodies conform to a schema, but you&#x27;re on your own for performing the mutation.</li>
-<li>It&#x27;s common to expose a /graphql/ endpoint over http. While not as dangerous as exposing a /sql/ endpoint, it gives complete control to clients by default. It requires extra effort to handle some cross cutting concerns like recording meaningful metrics,  rate limiting, data-level entitlements, etc.</li>
+<li>It&#x27;s common to expose a /graphql/ endpoint over http. While not as dangerous as exposing a /sql/ endpoint, it gives complete control to clients by default. It requires extra effort to handle some cross-cutting concerns like recording meaningful metrics,  rate limiting, data-level entitlements, etc.</li>
 </ul>
 <doc-anchor-target id="other-related-works">
     <h2>
