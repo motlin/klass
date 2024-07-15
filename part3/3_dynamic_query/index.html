@@ -6,7 +6,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774275443444">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774320075265">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -33,12 +33,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../resources/css/retype.css?v=3.5.0.774275443444" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.5.0.774320075265" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.774275443444" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.5.0.774320075265" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.774275443444" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.774275443444" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.5.0.774320075265" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.5.0.774320075265" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -166,7 +166,7 @@
     </h2>
 </doc-anchor-target>
 <p>In a production application, we only enable modeled services. In development, it can be useful to allow dynamic queries.</p>
-<p>The dynamic query endpoint is a service that accepts a dynamic projection and criteria as a request body. The format is very similar to the serialized form of a projection or service from the bootstrapped meta-model.</p>
+<p>The dynamic query endpoint is a service that accepts a dynamic projection and criteria as a request body. The format is very similar to the serialized form of a projection or service from the bootstrapped metamodel.</p>
 <p>Say we wanted to query for all questions that start with the words &quot;Why do&quot;. We could POST <code v-pre>/api/meta/query/json</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-json"><code v-pre class="language-json">{
@@ -179,9 +179,7 @@
 }</code></pre>
 </doc-codeblock></div>
 <p>There&#x27;s also a form that uses GET, to allow easier experimentation from the browser. The same query can be encoded as query parameters.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">GET /api/meta/query/json/Question?multiplicity=many&amp;criteria=this.title startsWith &quot;Why do&quot;&amp;include=this.title</code></pre>
-</doc-codeblock></div>
+<p><code v-pre>/api/meta/query/json/Question?multiplicity=many&amp;criteria=this.title startsWith &quot;Why do&quot;&amp;include=this.title</code></p>
 <p>If there&#x27;s an existing projection that you want to reuse, you can just refer to it by name.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-json"><code v-pre class="language-json">{

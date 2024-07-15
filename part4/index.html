@@ -6,7 +6,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774275443444">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774320075265">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -33,12 +33,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../resources/css/retype.css?v=3.5.0.774275443444" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.5.0.774320075265" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.774275443444" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.774320075265" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.774275443444" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=3.5.0.774275443444" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.774320075265" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=3.5.0.774320075265" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -307,6 +307,7 @@ association UserHasQuestionVotes
 </doc-anchor-target>
 <p>When viewing a question on Stack Overflow, you can see your own vote if you&#x27;ve cast one.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">klass</div>
 <pre class="language-none"><code v-pre class="language-none">class Question
     systemTemporal
     versioned
@@ -330,6 +331,7 @@ association UserHasQuestionVotes
 <p>The definition of <code v-pre>myVote()</code> above is fine, and fairly similar to the <code v-pre>upvoted</code> and <code v-pre>downvoted</code> properties in <a href="https://api.stackexchange.com/docs/types/question">the real StackOverflow api</a>.</p>
 <p>However, let&#x27;s add some perhaps unrealistic variants that take parameters, just to see what parameterized properties can do.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">klass</div>
 <pre class="language-none"><code v-pre class="language-none">class Question
     systemTemporal
     versioned
@@ -458,6 +460,7 @@ association UserHasQuestionVotes
 </blockquote>
 <p>We add two aggregation properties to Question; <code v-pre>upvotes</code> and <code v-pre>downvotes</code>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">klass</div>
 <pre class="language-none"><code v-pre class="language-none">class Question
     systemTemporal
     versioned

@@ -6,7 +6,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774275443444">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.774320075265">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.5.0">
@@ -33,11 +33,11 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../resources/css/retype.css?v=3.5.0.774275443444" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.5.0.774320075265" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.774275443444" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.5.0.774320075265" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.774275443444" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.5.0.774320075265" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -159,10 +159,10 @@
     </h1>
 </doc-anchor-target>
 <doc-anchor-target id="one-time-generation">
-    <h3>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#one-time-generation">#</doc-anchor-trigger>
         <span>One-time generation</span>
-    </h3>
+    </h2>
 </doc-anchor-target>
 <p>Instead of a maven archetype, initial project creation could be done with:</p>
 <ul>
@@ -170,21 +170,21 @@
 <li>A webapp that produces a zip for download, like <a href="https://start.spring.io/">Spring Initializr</a> for Spring Boot.</li>
 <li>A custom CLI, possibly in python.</li>
 </ul>
-<doc-anchor-target id="meta-model">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#meta-model">#</doc-anchor-trigger>
-        <span>Meta-model</span>
-    </h3>
+<doc-anchor-target id="metamodel">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#metamodel">#</doc-anchor-trigger>
+        <span>Metamodel</span>
+    </h2>
 </doc-anchor-target>
-<p>Instead of a new meta-model, Klass could use an existing meta-model like <a href="https://www.eclipse.org/modeling/emf/">Eclipse Modeling Framework&#x27;s ECore</a>.</p>
+<p>Instead of a new metamodel, Klass could use an existing metamodel like <a href="https://www.eclipse.org/modeling/emf/">Eclipse Modeling Framework&#x27;s ECore</a>.</p>
 <p>ECore is a fairly complete implementation of UML, with all its warts. ECore also has enhancements to allow it to represent anything expressible in Java, including Generics.</p>
-<p>Klass&#x27;s meta-model is a fairly narrow subset of UML. It addresses some weaknesses in UML, such as the lack of a type hierarchy between the various types of properties.</p>
-<p>Klass&#x27;s meta-model also includes projections and services.</p>
-<doc-anchor-target id="meta-model-language">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#meta-model-language">#</doc-anchor-trigger>
-        <span>Meta-model language</span>
-    </h3>
+<p>Klass&#x27;s metamodel is a fairly narrow subset of UML. It addresses some weaknesses in UML, such as the lack of a type hierarchy between the various types of properties.</p>
+<p>Klass&#x27;s metamodel also includes projections and services.</p>
+<doc-anchor-target id="metamodel-language">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#metamodel-language">#</doc-anchor-trigger>
+        <span>Metamodel language</span>
+    </h2>
 </doc-anchor-target>
 <p>Instead of a new DSL, the model could be expressed using:</p>
 <ul>
@@ -194,10 +194,10 @@
 <li>A graphical language like UML.</li>
 </ul>
 <doc-anchor-target id="data-store">
-    <h3>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#data-store">#</doc-anchor-trigger>
         <span>Data Store</span>
-    </h3>
+    </h2>
 </doc-anchor-target>
 <p>Rather than a relational database, the data could be stored in:</p>
 <ul>
@@ -205,18 +205,18 @@
 <li>An abstract DataStore interface, with multiple implementations.</li>
 </ul>
 <doc-anchor-target id="audit-data">
-    <h3>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#audit-data">#</doc-anchor-trigger>
         <span>Audit Data</span>
-    </h3>
+    </h2>
 </doc-anchor-target>
 <p>Rather than storing phased-out data in the same tables as active data, they could be stored in separate audit tables.</p>
 <p>This would improve the performance of queries for active data. It would complicate querying for previous versions, especially when those versions have relationships to data that is still active.</p>
 <doc-anchor-target id="relationship-criteria">
-    <h3>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#relationship-criteria">#</doc-anchor-trigger>
         <span>Relationship criteria</span>
-    </h3>
+    </h2>
 </doc-anchor-target>
 <p>The docs show a syntax for relationship criteria that is similar to a sql join.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
@@ -227,10 +227,10 @@
 <p>It&#x27;s possible to use a syntax where a foreign key tuple is listed instead.</p>
 <p>However, parameterized properties would need a more powerful syntax.</p>
 <doc-anchor-target id="service-syntax">
-    <h3>
+    <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#service-syntax">#</doc-anchor-trigger>
         <span>Service syntax</span>
-    </h3>
+    </h2>
 </doc-anchor-target>
 <p>The service syntax is url-centric. If we want to support both http and rpc, we may want a more flexible syntax.</p>
 
