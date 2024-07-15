@@ -154,7 +154,7 @@ mvn MVN=default_mvn TARGET=default_target PROFILES=default_profiles *FLAGS=defau
     exit $EXIT_CODE
 
 # end-to-end test for git-test
-test: _check-local-modifications clean mvn
+test: _check-local-modifications clean mvn && _check-local-modifications
 
 upstream_remote := env('UPSTREAM_REMOTE', "upstream")
 upstream_branch := env('UPSTREAM_BRANCH', "main")
