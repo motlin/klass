@@ -305,7 +305,7 @@ jobs:
       - name: 'Clean Maven cache'
         run: rm -rf ~/.m2/repository/cool/klass
 
-  spotless-java:
+  spotless-java-sort-imports:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -314,7 +314,7 @@ jobs:
 
       - uses: actions/cache@v4
         with:
-          key: maven-spotless-java-${{ hashFiles('**/pom.xml') }}
+          key: maven-spotless-java-sort-imports-${{ hashFiles('**/pom.xml') }}
           path: ~/.m2/repository
           restore-keys: |
             maven-spotless-
@@ -325,8 +325,60 @@ jobs:
           java-version-file: .tool-versions
           distribution: oracle
 
-      - name: 'Spotless Check: Java'
-        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-java'
+      - name: 'Spotless Check: Java Import Order'
+        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-java-sort-imports'
+
+      - name: 'Clean Maven cache'
+        run: rm -rf ~/.m2/repository/cool/klass
+
+  spotless-java-unused-imports:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/cache@v4
+        with:
+          key: maven-spotless-java-unused-imports-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository
+          restore-keys: |
+            maven-spotless-
+            maven-
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version-file: .tool-versions
+          distribution: oracle
+
+      - name: 'Spotless Check: Java Unused Imports'
+        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-java-unused-imports'
+
+      - name: 'Clean Maven cache'
+        run: rm -rf ~/.m2/repository/cool/klass
+
+  spotless-java-cleanthat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/cache@v4
+        with:
+          key: maven-spotless-java-cleanthat-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository
+          restore-keys: |
+            maven-spotless-
+            maven-
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version-file: .tool-versions
+          distribution: oracle
+
+      - name: 'Spotless Check: Java cleanthat'
+        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-java-cleanthat'
 
       - name: 'Clean Maven cache'
         run: rm -rf ~/.m2/repository/cool/klass
