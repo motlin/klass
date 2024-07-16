@@ -26,6 +26,39 @@ jobs:
       - name: 'Clean Maven cache'
         run: rm -rf ~/.m2/repository/cool/klass
 
+  maven-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          key: maven-coverage-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository
+          restore-keys: |
+            maven-coverage-
+            maven-
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version-file: .tool-versions
+          distribution: oracle
+
+      - run: ./mvnw verify --activate-profiles jacoco-maven-plugin
+
+      - uses: madrapps/jacoco-report@v1.6.1
+        with:
+          paths: |
+            ${{ github.workspace }}/**/target/site/jacoco/jacoco.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Jacoco Code Coverage"
+          update-comment: true
+          min-coverage-overall: 0
+          min-coverage-changed-files: 0
+
+      - name: "Clean Maven cache"
+        run: rm -rf ~/.m2/repository/cool/klass
+
   maven-enforcer:
     runs-on: ubuntu-latest
     steps:
@@ -280,7 +313,6 @@ jobs:
         run: rm -rf ~/.m2/repository/cool/klass
 
   spotless-formats:
-    name: spotless (formats)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -306,8 +338,7 @@ jobs:
       - name: 'Clean Maven cache'
         run: rm -rf ~/.m2/repository/cool/klass
 
-  spotless-java:
-    name: spotless (java)
+  spotless-java-sort-imports:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -316,7 +347,7 @@ jobs:
 
       - uses: actions/cache@v4
         with:
-          key: maven-spotless-java-${{ hashFiles('**/pom.xml') }}
+          key: maven-spotless-java-sort-imports-${{ hashFiles('**/pom.xml') }}
           path: ~/.m2/repository
           restore-keys: |
             maven-spotless-
@@ -327,14 +358,65 @@ jobs:
           java-version-file: .tool-versions
           distribution: oracle
 
-      - name: 'Spotless Check: Java'
-        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-java'
+      - name: 'Spotless Check: Java Import Order'
+        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-java-sort-imports'
+
+      - name: 'Clean Maven cache'
+        run: rm -rf ~/.m2/repository/cool/klass
+
+  spotless-java-unused-imports:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/cache@v4
+        with:
+          key: maven-spotless-java-unused-imports-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository
+          restore-keys: |
+            maven-spotless-
+            maven-
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version-file: .tool-versions
+          distribution: oracle
+
+      - name: 'Spotless Check: Java Unused Imports'
+        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-java-unused-imports'
+
+      - name: 'Clean Maven cache'
+        run: rm -rf ~/.m2/repository/cool/klass
+
+  spotless-java-cleanthat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/cache@v4
+        with:
+          key: maven-spotless-java-cleanthat-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository
+          restore-keys: |
+            maven-spotless-
+            maven-
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version-file: .tool-versions
+          distribution: oracle
+
+      - name: 'Spotless Check: Java cleanthat'
+        run: ./mvnw spotless:check --activate-profiles 'spotless-check,spotless-java-cleanthat'
 
       - name: 'Clean Maven cache'
         run: rm -rf ~/.m2/repository/cool/klass
 
   spotless-sql:
-    name: spotless (sql)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -361,7 +443,6 @@ jobs:
         run: rm -rf ~/.m2/repository/cool/klass
 
   spotless-pom:
-    name: spotless (pom)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -388,7 +469,6 @@ jobs:
         run: rm -rf ~/.m2/repository/cool/klass
 
   spotless-markdown:
-    name: spotless (markdown)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -415,7 +495,6 @@ jobs:
         run: rm -rf ~/.m2/repository/cool/klass
 
   spotless-json:
-    name: spotless (json)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -442,7 +521,6 @@ jobs:
         run: rm -rf ~/.m2/repository/cool/klass
 
   spotless-yaml:
-    name: spotless (yaml)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
