@@ -157,63 +157,51 @@
 
                     <plugin>
                         <artifactId>maven-enforcer-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>enforce</id>
-                                <configuration>
-                                    <rules>
-                                        <requirePluginVersions>
-                                            <banLatest>true</banLatest>
-                                            <banRelease>true</banRelease>
-                                            <!--Ban snapshots later, for now it's too common to depend on klass snapshots-->
-                                            <banSnapshots>false</banSnapshots>
-                                            <unCheckedPluginList xml:space="preserve">
-                                                org.apache.maven.plugins:maven-site-plugin,
-                                                org.apache.maven.plugins:maven-deploy-plugin,
-                                                io.liftwizard:liftwizard-generator-reladomo-code-plugin,
-                                                io.liftwizard:liftwizard-generator-reladomo-database-plugin,
-                                                io.liftwizard:liftwizard-generator-xsd2bean-plugin,
-                                                cool.klass:klass-compiler-plugin,
-                                                cool.klass:klass-generator-dropwizard-plugin,
-                                                cool.klass:klass-generator-dto-plugin,
-                                                cool.klass:klass-generator-graphql-fragment-plugin,
-                                                cool.klass:klass-generator-graphql-reladomo-finder-plugin,
-                                                cool.klass:klass-generator-graphql-schema-plugin,
-                                                cool.klass:klass-generator-graphql-schema-query-plugin,
-                                                cool.klass:klass-generator-json-view-plugin,
-                                                cool.klass:klass-generator-klass-html-plugin,
-                                                cool.klass:klass-generator-klass-projection-plugin,
-                                                cool.klass:klass-generator-klass-service-plugin,
-                                                cool.klass:klass-generator-liquibase-schema-plugin,
-                                                cool.klass:klass-generator-meta-constants-plugin,
-                                                cool.klass:klass-generator-react-prop-type-plugin,
-                                                cool.klass:klass-generator-reladomo-merge-hooks-plugin,
-                                                cool.klass:klass-generator-reladomo-plugin,
-                                                cool.klass:klass-generator-reladomo-readable-interface-plugin,
-                                                cool.klass:klass-generator-relational-schema-plugin,
-                                                cool.klass:klass-generator-service-resources-plugin,
-                                                cool.klass:klass-generator-uml-nomnoml-plugin
-                                            </unCheckedPluginList>
-                                        </requirePluginVersions>
-                                        <bannedDependencies>
-                                            <excludes combine.children="append">
-                                                <exclude>log4j:log4j</exclude>
-                                                <exclude>commons-logging-api</exclude>
-                                                <exclude>commons-logging</exclude>
-                                                <exclude>org.apache.logging.log4j:log4j</exclude>
-                                                <exclude>org.slf4j:slf4j-simple</exclude>
-                                                <exclude>org.slf4j:slf4j-log4j12</exclude>
-                                                <exclude>org.slf4j:slf4j-jdk14</exclude>
-                                                <exclude>org.slf4j:nop</exclude>
-                                                <exclude>org.slf4j:jcl</exclude>
-                                                <exclude>org.hamcrest:hamcrest-core</exclude>
-                                                <exclude>org.hamcrest:hamcrest</exclude>
-                                            </excludes>
-                                        </bannedDependencies>
-                                    </rules>
-                                </configuration>
-                            </execution>
-                        </executions>
+                        <configuration>
+                            <rules>
+                                <enforceBytecodeVersion>
+                                    <maxJdkVersion>17</maxJdkVersion>
+                                </enforceBytecodeVersion>
+                                <requirePluginVersions>
+                                    <unCheckedPluginList xml:space="preserve">
+                                        org.apache.maven.plugins:maven-site-plugin,
+                                        org.apache.maven.plugins:maven-deploy-plugin,
+                                        io.liftwizard:liftwizard-generator-reladomo-code-plugin,
+                                        io.liftwizard:liftwizard-generator-reladomo-database-plugin,
+                                        io.liftwizard:liftwizard-generator-xsd2bean-plugin,
+                                        cool.klass:klass-compiler-plugin,
+                                        cool.klass:klass-generator-dropwizard-plugin,
+                                        cool.klass:klass-generator-dto-plugin,
+                                        cool.klass:klass-generator-graphql-fragment-plugin,
+                                        cool.klass:klass-generator-graphql-reladomo-finder-plugin,
+                                        cool.klass:klass-generator-graphql-schema-plugin,
+                                        cool.klass:klass-generator-graphql-schema-query-plugin,
+                                        cool.klass:klass-generator-json-view-plugin,
+                                        cool.klass:klass-generator-klass-html-plugin,
+                                        cool.klass:klass-generator-klass-projection-plugin,
+                                        cool.klass:klass-generator-klass-service-plugin,
+                                        cool.klass:klass-generator-liquibase-schema-plugin,
+                                        cool.klass:klass-generator-meta-constants-plugin,
+                                        cool.klass:klass-generator-react-prop-type-plugin,
+                                        cool.klass:klass-generator-reladomo-merge-hooks-plugin,
+                                        cool.klass:klass-generator-reladomo-plugin,
+                                        cool.klass:klass-generator-reladomo-readable-interface-plugin,
+                                        cool.klass:klass-generator-relational-schema-plugin,
+                                        cool.klass:klass-generator-service-resources-plugin,
+                                        cool.klass:klass-generator-uml-nomnoml-plugin
+                                    </unCheckedPluginList>
+                                </requirePluginVersions>
+                                <bannedDependencies>
+                                    <excludes combine.children="append">
+                                        <exclude>log4j:log4j</exclude>
+                                        <exclude>ch.qos.reload4j:reload4j</exclude>
+                                        <exclude>org.slf4j:slf4j-log4j12</exclude>
+                                        <exclude>org.hamcrest:hamcrest-core</exclude>
+                                        <exclude>org.hamcrest:hamcrest</exclude>
+                                    </excludes>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
                     </plugin>
 
                 </plugins>
@@ -231,9 +219,6 @@
                         <artifactId>maven-dependency-plugin</artifactId>
                         <configuration>
                             <ignoredUnusedDeclaredDependencies combine.children="append">
-                                <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>com.google.auto.service:auto-service-annotations</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>com.h2database:h2</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>com.stackoverflow:stackoverflow-domain-model</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>cool.klass.xample.coverage:coverage-example-domain-model</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>cool.klass.xample.coverage:coverage-example-graphql-reladomo-finder</ignoredUnusedDeclaredDependency>
@@ -265,22 +250,6 @@
                                 <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-logging-uncaught-exception-handler</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-object-mapper</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-reladomo</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-clock-fixed</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-clock-incrementing</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-clock-system</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-logging-filter-janino</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-logging-filter-requesturl</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-logging-logstash-console</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-logging-logstash-file</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-uuid-seed</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-uuid-system</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-graphql-query-schema</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-graphql-reladomo-meta</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-logging-buffered-appender</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-logging-p6spy</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-reladomo-simulated-sequence</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.eclipse.collections:eclipse-collections</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.junit.vintage:junit-vintage-engine</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </plugin>
