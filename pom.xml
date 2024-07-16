@@ -161,12 +161,8 @@
                             <execution>
                                 <id>enforce</id>
                                 <configuration>
-                                    <rules>
-                                        <requirePluginVersions>
-                                            <banLatest>true</banLatest>
-                                            <banRelease>true</banRelease>
-                                            <!--Ban snapshots later, for now it's too common to depend on klass snapshots-->
-                                            <banSnapshots>false</banSnapshots>
+                                    <rules combine.children="append">
+                                        <requirePluginVersions combine.children="append">
                                             <unCheckedPluginList xml:space="preserve">
                                                 org.apache.maven.plugins:maven-site-plugin,
                                                 org.apache.maven.plugins:maven-deploy-plugin,
@@ -195,17 +191,10 @@
                                                 cool.klass:klass-generator-uml-nomnoml-plugin
                                             </unCheckedPluginList>
                                         </requirePluginVersions>
-                                        <bannedDependencies>
-                                            <excludes>
+                                        <bannedDependencies combine.children="append">
+                                            <excludes combine.children="append">
                                                 <exclude>log4j:log4j</exclude>
-                                                <exclude>commons-logging-api</exclude>
-                                                <exclude>commons-logging</exclude>
-                                                <exclude>org.apache.logging.log4j:log4j</exclude>
-                                                <exclude>org.slf4j:slf4j-simple</exclude>
                                                 <exclude>org.slf4j:slf4j-log4j12</exclude>
-                                                <exclude>org.slf4j:slf4j-jdk14</exclude>
-                                                <exclude>org.slf4j:nop</exclude>
-                                                <exclude>org.slf4j:jcl</exclude>
                                                 <exclude>org.hamcrest:hamcrest-core</exclude>
                                                 <exclude>org.hamcrest:hamcrest</exclude>
                                             </excludes>
