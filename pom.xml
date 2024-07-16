@@ -162,7 +162,10 @@
                                 <id>enforce</id>
                                 <configuration>
                                     <rules combine.children="append">
-                                        <requirePluginVersions combine.children="append">
+                                        <requirePluginVersions>
+                                            <banLatest>true</banLatest>
+                                            <banRelease>true</banRelease>
+                                            <banSnapshots>false</banSnapshots>
                                             <unCheckedPluginList xml:space="preserve">
                                                 org.apache.maven.plugins:maven-site-plugin,
                                                 org.apache.maven.plugins:maven-deploy-plugin,
