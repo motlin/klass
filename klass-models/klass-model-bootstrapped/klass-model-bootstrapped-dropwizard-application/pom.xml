@@ -557,20 +557,12 @@
             <id>maven-dependency-plugin</id>
 
             <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <artifactId>maven-dependency-plugin</artifactId>
-                            <configuration>
-                                <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-
                 <plugins>
                     <plugin>
                         <artifactId>maven-dependency-plugin</artifactId>
+                        <configuration>
+                            <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

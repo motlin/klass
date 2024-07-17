@@ -119,20 +119,18 @@
             <id>maven-dependency-plugin</id>
 
             <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <artifactId>maven-dependency-plugin</artifactId>
-                            <configuration>
-                                <ignoredUnusedDeclaredDependencies combine.children="append">
-                                    <dependency>${project.groupId}:${app.artifactId}-reladomo-pojos</dependency>
-                                    <dependency>com.goldmansachs.reladomo:reladomo</dependency>
-                                    <dependency>com.google.code.findbugs:jsr305</dependency>
-                                </ignoredUnusedDeclaredDependencies>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <configuration>
+                            <ignoredUnusedDeclaredDependencies combine.children="append">
+                                <dependency>${project.groupId}:${app.artifactId}-reladomo-pojos</dependency>
+                                <dependency>com.goldmansachs.reladomo:reladomo</dependency>
+                                <dependency>com.google.code.findbugs:jsr305</dependency>
+                            </ignoredUnusedDeclaredDependencies>
+                        </configuration>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
         <!--endregion-->
