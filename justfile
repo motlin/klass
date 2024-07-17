@@ -58,6 +58,11 @@ spotless NAME MVN=default_mvn:
     {{MVN}} spotless:apply \
       --activate-profiles 'spotless-check,spotless-{{NAME}}'
 
+# spotless-all
+spotless-all MVN=default_mvn:
+    {{MVN}} spotless:apply \
+      --activate-profiles 'spotless-apply,spotless-formats,spotless-java-sort-imports,spotless-java-unused-imports,spotless-java-cleanthat,spotless-pom,spotless-markdown,spotless-json,spotless-yaml'
+
 # mvn reproducible
 reproducible MVN=default_mvn:
     {{MVN}} verify -DskipTests artifact:check-buildplan
@@ -122,7 +127,7 @@ _check-local-modifications:
     fi
 
 default_target   := env('MVN_TARGET',   "verify")
-default_profiles := env('MVN_PROFILES', "--activate-profiles maven-enforcer-plugin,maven-dependency-plugin,checkstyle-semantics,checkstyle-formatting,checkstyle-semantics-strict,checkstyle-formatting-strict,spotless-write,spotless-formats,spotless-java,spotless-pom,spotless-markdown,spotless-json,spotless-yaml")
+default_profiles := env('MVN_PROFILES', "--activate-profiles maven-enforcer-plugin,maven-dependency-plugin,checkstyle-semantics,checkstyle-formatting,checkstyle-semantics-strict,checkstyle-formatting-strict,spotless-apply,spotless-formats,spotless-java-sort-imports,spotless-java-unused-imports,spotless-java-cleanthat,spotless-pom,spotless-markdown,spotless-json,spotless-yaml")
 default_flags    := env('MVN_FLAGS',    "--threads 2C")
 
 # mvn
