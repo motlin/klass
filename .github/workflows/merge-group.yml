@@ -120,13 +120,7 @@ jobs:
           distribution: oracle
 
       - name: "Produce Checkstyle XML: Semantics"
-        run: ./mvnw checkstyle:check --activate-profiles 'checkstyle-semantics' -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dcheckstyle.output.format=xml
-
-      - name: "Checkstyle GitHub Annotations: Semantics"
-        uses: lcollins/checkstyle-github-action@v3.0.0
-        with:
-          name: "checkstyle annotations (semantics)"
-          path: "**/checkstyle-result.xml"
+        run: ./mvnw checkstyle:check --activate-profiles 'checkstyle-semantics'
 
       - name: "Clean Maven cache"
         run: rm -rf ~/.m2/repository/cool/klass
@@ -153,13 +147,7 @@ jobs:
           distribution: oracle
 
       - name: "Produce Checkstyle XML: Strict Semantics"
-        run: ./mvnw checkstyle:check --activate-profiles 'checkstyle-semantics-strict' -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dcheckstyle.output.format=xml
-
-      - name: "Checkstyle GitHub Annotations: Strict Semantics"
-        uses: lcollins/checkstyle-github-action@v3.0.0
-        with:
-          name: "checkstyle annotations (semantics strict)"
-          path: "**/checkstyle-result.xml"
+        run: ./mvnw checkstyle:check --activate-profiles 'checkstyle-semantics-strict'
 
       - name: "Clean Maven cache"
         run: rm -rf ~/.m2/repository/cool/klass
@@ -186,13 +174,7 @@ jobs:
           distribution: oracle
 
       - name: "Produce Checkstyle XML: Formatting"
-        run: ./mvnw checkstyle:check --activate-profiles 'checkstyle-formatting' -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dcheckstyle.output.format=xml
-
-      - name: "Checkstyle GitHub Annotations: Formatting"
-        uses: lcollins/checkstyle-github-action@v3.0.0
-        with:
-          name: "checkstyle annotations (formatting)"
-          path: "**/checkstyle-result.xml"
+        run: ./mvnw checkstyle:check --activate-profiles 'checkstyle-formatting'
 
       - name: "Clean Maven cache"
         run: rm -rf ~/.m2/repository/cool/klass
@@ -219,13 +201,7 @@ jobs:
           distribution: oracle
 
       - name: "Produce Checkstyle XML: Strict Formatting"
-        run: ./mvnw checkstyle:check --activate-profiles 'checkstyle-formatting-strict' -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dcheckstyle.output.format=xml
-
-      - name: "Checkstyle GitHub Annotations: Strict Formatting"
-        uses: lcollins/checkstyle-github-action@v3.0.0
-        with:
-          name: "checkstyle annotations (formatting strict)"
-          path: "**/checkstyle-result.xml"
+        run: ./mvnw checkstyle:check --activate-profiles 'checkstyle-formatting-strict'
 
       - name: "Clean Maven cache"
         run: rm -rf ~/.m2/repository/cool/klass
