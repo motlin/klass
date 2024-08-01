@@ -209,7 +209,7 @@ fetch:
     #!/usr/bin/env bash
     set -Eeuo pipefail
     if [ "{{offline}}" != "true" ]; then
-        git fetch {{upstream_remote}}
+        git fetch --all --prune --jobs=16
     fi
 
 # Rebase all branches onto configurable upstream/main
