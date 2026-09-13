@@ -261,7 +261,7 @@ public final class DomainModelImpl implements DomainModelWithSourceCode {
 	@Nonnull
 	@Override
 	public TopLevelElementWithSourceCode getTopLevelElementByName(String name) {
-		return (TopLevelElementWithSourceCode) this.topLevelElementsByName.getIfAbsent(name, () -> {
+		return (TopLevelElementWithSourceCode) this.topLevelElementsByName.getIfAbsent(name,() -> {
 				throw new IllegalStateException("No TopLevelElement named '" + name + "'");
 			});
 	}
